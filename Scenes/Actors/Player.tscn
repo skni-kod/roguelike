@@ -7,7 +7,7 @@
 extents = Vector2( 6.7901, 8.18035 )
 
 [sub_resource type="Animation" id=2]
-resource_name = "AttackDown"
+resource_name = "Attack Down"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -35,7 +35,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=3]
-resource_name = "AttackLeft"
+resource_name = "Attack Left"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -63,7 +63,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-resource_name = "AttackRight"
+resource_name = "Attack Right"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -91,7 +91,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "AttackUp"
+resource_name = "Attack Up"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -119,6 +119,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=6]
+resource_name = "Idle Down"
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -135,7 +136,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-resource_name = "IdleLeft"
+resource_name = "Idle Left"
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -151,7 +152,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "IdleRight"
+resource_name = "Idle Right"
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -167,7 +168,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=9]
-resource_name = "IdleUp"
+resource_name = "Idle Up"
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -183,6 +184,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=10]
+resource_name = "Walk Down"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -198,6 +200,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=11]
+resource_name = "Walk Left"
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -213,6 +216,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=12]
+resource_name = "Walk Right"
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -228,6 +232,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=13]
+resource_name = "Walk Up"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -254,7 +259,7 @@ scale = Vector2( 0.435998, 0.444416 )
 texture = ExtResource( 1 )
 vframes = 5
 hframes = 8
-frame = 19
+frame = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.702175, 11.7865 )
@@ -265,18 +270,18 @@ current = true
 zoom = Vector2( 0.2, 0.2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/AttackDown = SubResource( 2 )
-anims/AttackLeft = SubResource( 3 )
-anims/AttackRight = SubResource( 4 )
-anims/AttackUp = SubResource( 5 )
-anims/IdleDown = SubResource( 6 )
-anims/IdleLeft = SubResource( 7 )
-anims/IdleRight = SubResource( 8 )
-anims/IdleUp = SubResource( 9 )
-anims/WalkDown = SubResource( 10 )
-anims/WalkLeft = SubResource( 11 )
-anims/WalkRight = SubResource( 12 )
-anims/WalkUp = SubResource( 13 )
+"anims/Attack Down" = SubResource( 2 )
+"anims/Attack Left" = SubResource( 3 )
+"anims/Attack Right" = SubResource( 4 )
+"anims/Attack Up" = SubResource( 5 )
+"anims/Idle Down" = SubResource( 6 )
+"anims/Idle Left" = SubResource( 7 )
+"anims/Idle Right" = SubResource( 8 )
+"anims/Idle Up" = SubResource( 9 )
+"anims/Walk Down" = SubResource( 10 )
+"anims/Walk Left" = SubResource( 11 )
+"anims/Walk Right" = SubResource( 12 )
+"anims/Walk Up" = SubResource( 13 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
