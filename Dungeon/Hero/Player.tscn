@@ -4,7 +4,7 @@
 [ext_resource path="res://Dungeon/Hero/Player.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6.84068, 17.853 )
+extents = Vector2( 6.7901, 8.18035 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "AttackDown"
@@ -254,10 +254,10 @@ scale = Vector2( 0.435998, 0.444416 )
 texture = ExtResource( 1 )
 vframes = 5
 hframes = 8
-frame = 38
+frame = 19
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.561867, 0.561865 )
+position = Vector2( 0.702175, 11.7865 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
