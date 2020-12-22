@@ -22,7 +22,7 @@ tracks/0/keys = {
 "values": [ 26, 27, 28 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/AttackDown:disabled")
+tracks/1/path = NodePath("AttackCollision/AttackDown:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -50,7 +50,7 @@ tracks/0/keys = {
 "values": [ 35, 36, 37 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/AttackRight2:disabled")
+tracks/1/path = NodePath("AttackCollision/AttackLeft:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -78,7 +78,7 @@ tracks/0/keys = {
 "values": [ 32, 33, 34 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/AttackRight:disabled")
+tracks/1/path = NodePath("AttackCollision/AttackRight:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -106,7 +106,7 @@ tracks/0/keys = {
 "values": [ 29, 30, 31 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/AttackUp:disabled")
+tracks/1/path = NodePath("AttackCollision/AttackUp:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -251,6 +251,7 @@ tracks/0/keys = {
 extents = Vector2( 29.8124, 10 )
 
 [node name="Player" type="KinematicBody2D"]
+collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -259,9 +260,9 @@ scale = Vector2( 0.435998, 0.444416 )
 texture = ExtResource( 1 )
 vframes = 5
 hframes = 8
-frame = 9
+frame = 28
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0.702175, 11.7865 )
 shape = SubResource( 1 )
 
@@ -283,24 +284,25 @@ zoom = Vector2( 0.2, 0.2 )
 "anims/Walk Right" = SubResource( 12 )
 "anims/Walk Up" = SubResource( 13 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AttackCollision" type="Area2D" parent="."]
 
-[node name="AttackDown" type="CollisionShape2D" parent="Area2D"]
+[node name="AttackDown" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( 0, 22.0497 )
 shape = SubResource( 14 )
+disabled = true
 
-[node name="AttackUp" type="CollisionShape2D" parent="Area2D"]
+[node name="AttackUp" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( -0.668167, -27.3951 )
 shape = SubResource( 14 )
 disabled = true
 
-[node name="AttackRight" type="CollisionShape2D" parent="Area2D"]
+[node name="AttackRight" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( 17.3725, -2.00452 )
 rotation = 1.5708
 shape = SubResource( 14 )
 disabled = true
 
-[node name="AttackRight2" type="CollisionShape2D" parent="Area2D"]
+[node name="AttackLeft" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( -16.0362, -1.55907 )
 rotation = 1.5708
 shape = SubResource( 14 )
