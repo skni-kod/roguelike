@@ -1,13 +1,9 @@
 extends KinematicBody2D
 
-const POSITION = Vector2(0,-1)
-
 var motion = Vector2()
 var current_side = "Up"
 var attack = false
-
-func _ready():
-	pass 
+export var speed = 3
 
 func _physics_process(delta):
 	motion = Vector2()
@@ -30,16 +26,16 @@ func _physics_process(delta):
 			$AttackCollision/AttackRight.disabled = true
 			attack = false
 		elif Input.is_action_pressed("down"):
-			motion.y = 5
+			motion.y = speed
 			$AnimationPlayer.play("Walk Down")
 		elif Input.is_action_pressed("up"):
-			motion.y = -5
+			motion.y = -speed
 			$AnimationPlayer.play("Walk Up")
 		elif Input.is_action_pressed("left"):
-			motion.x = -5
+			motion.x = -speed
 			$AnimationPlayer.play("Walk Left")		
 		elif Input.is_action_pressed("right"):
-			motion.x = 5
+			motion.x = speed
 			$AnimationPlayer.play("Walk Right")
 		else:
 			$AnimationPlayer.play("Idle " + current_side)
