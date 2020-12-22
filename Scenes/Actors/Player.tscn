@@ -21,6 +21,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 26, 27, 28 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("AttackCollision/AttackDown:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "Attack Left"
@@ -36,6 +48,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 35, 36, 37 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AttackCollision/AttackLeft:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -53,6 +77,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 32, 33, 34 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("AttackCollision/AttackRight:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "Attack Up"
@@ -68,6 +104,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 29, 30, 31 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AttackCollision/AttackUp:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -220,7 +268,7 @@ scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 vframes = 5
 hframes = 8
-frame = 36
+frame = 31
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 4 )
