@@ -268,7 +268,7 @@ scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 vframes = 5
 hframes = 8
-frame = 31
+frame = 28
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 4 )
@@ -314,3 +314,4 @@ position = Vector2( 10, -2 )
 shape = SubResource( 17 )
 disabled = true
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]
+[connection signal="body_entered" from="AttackCollision" to="." method="_on_AttackCollision_body_entered"]

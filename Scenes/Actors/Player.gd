@@ -5,6 +5,7 @@ var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest
 var attack = false # Zmienna określająca czy bohater jest w trakcie ataku
 export var speed = 2
 var direction = Vector2()
+var hp = 10
 
 func _physics_process(delta):
 	if Input.is_action_pressed("attack"):
@@ -35,3 +36,11 @@ func movement():
 
 func _on_AnimationPlayer_animation_started(anim_name): #Pobierz ostatnią wystartowaną animację
 	current_side = anim_name.split(" ")[-1] #i weź z jej nazwy stronę w którą jest zwrócony bohater
+
+func take_dmg(enemy):
+	hp = hp - enemy.dps
+	print(hp)
+
+func _on_AttackCollision_body_entered(body):
+	if body.is_in_group("Enemy"):
+		body.get_dmg(10)
