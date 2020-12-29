@@ -6,8 +6,8 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-export var health = 600
 onready var health_bar = $HealthBar
+export var health = 100
 
 func _ready():
 	health_bar.on_max_health_updated(health)

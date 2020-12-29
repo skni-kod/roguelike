@@ -101,7 +101,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 8
-frame = 8
+frame = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -109,6 +109,7 @@ position = Vector2( -0.117989, 4.01147 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 visible = false
@@ -119,6 +120,7 @@ shape = SubResource( 2 )
 visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+visible = false
 position = Vector2( 0.166862, 3.83767 )
 shape = SubResource( 3 )
 
@@ -133,11 +135,10 @@ anims/Walk = SubResource( 8 )
 autostart = true
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_left = -7.64005
-margin_top = -8.22692
-margin_right = -7.64005
-margin_bottom = -8.22692
+margin_left = -10.0406
+margin_top = -5.9466
+margin_right = -10.0406
+margin_bottom = -5.9466
 rect_scale = Vector2( 0.2, 0.2 )
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]

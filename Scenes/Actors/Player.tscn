@@ -261,7 +261,7 @@ extents = Vector2( 9, 18 )
 extents = Vector2( 9, 18 )
 
 [node name="Player" type="KinematicBody2D"]
-collision_mask = 6
+collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -285,7 +285,6 @@ margin_top = -59.0
 margin_right = -101.0
 margin_bottom = -59.0
 rect_scale = Vector2( 0.4, 0.4 )
-will_pulse = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/Attack Down" = SubResource( 2 )
@@ -319,7 +318,7 @@ shape = SubResource( 16 )
 disabled = true
 
 [node name="AttackRight" type="CollisionShape2D" parent="AttackCollision"]
-position = Vector2( 10, -2 )
+position = Vector2( 10, -1.9375 )
 shape = SubResource( 17 )
 disabled = true
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]
