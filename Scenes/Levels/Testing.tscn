@@ -217,3 +217,5 @@ position = Vector2( 126.975, 59.2832 )
 
 [node name="Slime" parent="." instance=ExtResource( 11 )]
 position = Vector2( 237.713, -23.0173 )
+collision_layer = 4
+collision_mask = 3
