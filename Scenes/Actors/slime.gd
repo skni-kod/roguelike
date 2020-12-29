@@ -6,7 +6,7 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-export var health = 600
+export var health = 100
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 

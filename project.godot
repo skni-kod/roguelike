@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="roguelike"
-run/main_scene="res://Scenes/Levels/Testing.tscn"
+run/main_scene="res://Scenes/Levels/Main.tscn"
 config/icon="res://icon.png"
 
 [input]
