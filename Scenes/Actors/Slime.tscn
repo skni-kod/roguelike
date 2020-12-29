@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Actors/slime.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Bars/HealthBar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.9055, 7.46424 )
@@ -9,10 +10,10 @@ extents = Vector2( 14.9055, 7.46424 )
 [sub_resource type="CircleShape2D" id=2]
 radius = 84.9011
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 17.0407, 9.93699 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 resource_name = "Attack"
 length = 0.6
 tracks/0/type = "value"
@@ -28,7 +29,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11, 12 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "Die"
 length = 0.6
 tracks/0/type = "value"
@@ -44,7 +45,7 @@ tracks/0/keys = {
 "values": [ 16, 17, 18, 19, 20, 21 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=6]
 resource_name = "Hurt"
 length = 0.4
 loop = true
@@ -61,8 +62,7 @@ tracks/0/keys = {
 "values": [ 14, 13, 14 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "Idle"
+[sub_resource type="Animation" id=7]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -77,8 +77,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "Walk"
+[sub_resource type="Animation" id=8]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -102,33 +101,44 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 8
-frame = 14
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -0.117989, 4.01147 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+visible = false
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 position = Vector2( 0.166862, 3.83767 )
-shape = SubResource( 7 )
+shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Attack = SubResource( 6 )
-anims/Die = SubResource( 8 )
-anims/Hurt = SubResource( 9 )
-anims/Idle = SubResource( 4 )
-anims/Walk = SubResource( 5 )
+anims/Attack = SubResource( 4 )
+anims/Die = SubResource( 5 )
+anims/Hurt = SubResource( 6 )
+anims/Idle = SubResource( 7 )
+anims/Walk = SubResource( 8 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_left = -7.64005
+margin_top = -8.22692
+margin_right = -7.64005
+margin_bottom = -8.22692
+rect_scale = Vector2( 0.2, 0.2 )
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
