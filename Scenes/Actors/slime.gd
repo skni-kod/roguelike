@@ -6,9 +6,11 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-onready var health_bar = $HealthBar
 export var health = 100
+onready var health_bar = $HealthBar
+var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 
+ 
 func _ready():
 	health_bar.on_max_health_updated(health)
 	health_bar.on_health_updated(health, health)
@@ -60,4 +62,9 @@ func get_dmg(dmg):
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		queue_free()
+		
+	var text = floating_dmg.instance()
+	text.amount = dmg
+	text.type = "Damage"
+	add_child(text)	
 		

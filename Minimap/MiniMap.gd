@@ -26,7 +26,6 @@ func _ready():
 			var new_marker = icons["wall"].duplicate()
 			grid.add_child(new_marker)
 			new_marker.show()
-			print(i)
 			markers[new_marker] = Vector2(i.x*16,i.y*16)
 
 func _process(delta):

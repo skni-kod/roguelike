@@ -18,6 +18,7 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+zoom = 1.0
 
 [node name="Frame" type="NinePatchRect" parent="."]
 margin_left = 5.0
@@ -52,5 +53,5 @@ texture = ExtResource( 1 )
 [node name="Hero" type="Sprite" parent="MarginContainer/Grid"]
 position = Vector2( 75, 75 )
 scale = Vector2( 0.02, 0.02 )
-z_index = 1
+z_index = 2
 texture = ExtResource( 3 )

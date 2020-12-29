@@ -6,7 +6,7 @@ var attack = false # Zmienna określająca czy bohater jest w trakcie ataku
 export var speed = 2
 var direction = Vector2()
 export var health = 100
-export var damage = 25
+export var damage = 20
 onready var health_bar = $Camera2D/HealthBar
 
 func _ready():
