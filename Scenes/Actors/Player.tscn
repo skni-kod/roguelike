@@ -321,5 +321,6 @@ disabled = true
 position = Vector2( 10, -2 )
 shape = SubResource( 17 )
 disabled = true
+[connection signal="health_update" from="." to="Camera2D/HealthBar" method="_on_Player_health_update"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]
 [connection signal="body_entered" from="AttackCollision" to="." method="_on_AttackCollision_body_entered"]
