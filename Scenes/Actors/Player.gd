@@ -5,13 +5,9 @@ var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest
 var attack = false # Zmienna określająca czy bohater jest w trakcie ataku
 export var speed = 2
 var direction = Vector2()
-export var health = 100
-export var damage = 25
-onready var health_bar = $Camera2D/HealthBar
-
-func _ready():
-	health_bar.on_max_health_updated(health)
-	health_bar.on_health_updated(health, health)
+var health = 10
+signal health_update(health, amount)
+signal max_health_updated(max_health)
 
 func _physics_process(delta):
 	if Input.is_action_pressed("attack"):
@@ -45,9 +41,9 @@ func _on_AnimationPlayer_animation_started(anim_name): #Pobierz ostatnią wystar
 
 func take_dmg(enemy):
 	health = health - enemy.dps
-	health_bar.on_health_updated(health, enemy.dps)
+	emit_signal("health_update", health, enemy.dps)
 	print(health)
 
 func _on_AttackCollision_body_entered(body):
 	if body.is_in_group("Enemy"):
-		body.get_dmg(damage)
+		body.get_dmg(10)
