@@ -11,10 +11,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HealthBar" type="TextureProgress" parent="."]
+[node name="HealthUnder" type="TextureProgress" parent="."]
 margin_right = 100.0
 margin_bottom = 10.0
 texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 3 )
+tint_progress = Color( 1, 0.337255, 0.337255, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthOver" type="TextureProgress" parent="."]
+margin_right = 100.0
+margin_bottom = 10.0
 texture_over = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
 __meta__ = {
@@ -22,3 +31,7 @@ __meta__ = {
 }
 
 [node name="UpdateTween" type="Tween" parent="."]
+
+[node name="PulseTween" type="Tween" parent="."]
+
+[node name="FlashTween" type="Tween" parent="."]

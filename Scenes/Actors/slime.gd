@@ -2,21 +2,21 @@ extends KinematicBody2D
 
 var player = null
 var move = Vector2.ZERO
-var speed = 0.5
-var dps = 5
+export var speed = 0.5
+export var dps = 5
 var right = 1
 var attack = false
-var hp = 600
-
-var floating_dmg = preload("res://Scenes/FloatingDmg.tscn")
+export var health = 600
+onready var health_bar = $HealthBar
 
 func _ready():
-	pass
+	health_bar.on_max_health_updated(health)
+	health_bar.on_health_updated(health, health)
 
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	if player != null and !attack and hp>0:
+	if player != null and !attack and health>0:
 		$Sprite.scale.x = right
 		move = position.direction_to(player.position) * speed
 		if player.position.x-self.position.x < 0:
@@ -24,7 +24,7 @@ func _physics_process(delta):
 		else:
 			right = -1
 		$AnimationPlayer.play("Walk")
-	elif !attack and hp>0:
+	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
 
 	move_and_collide(move)
@@ -45,22 +45,18 @@ func _on_Atak_body_exited(body):
 	attack = false
 
 func _on_Timer_timeout():
-	if attack and hp>0:
+	if attack and health>0:
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		if attack:
 			player.take_dmg(self)
 			
 func get_dmg(dmg):
-	hp = hp - dmg
+	health = health - dmg
 	$AnimationPlayer.play("Hurt")
-	
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)
-	
-	if hp<=0:
+	health_bar.on_health_updated(health, dmg)
+	health_bar.visible = true
+	if health<=0:
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		queue_free()
