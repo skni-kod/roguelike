@@ -26,7 +26,7 @@ func movement():
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	) # Określenie kierunku poruszania się
+	).normalized() # Określenie kierunku poruszania się
 	velocity = direction * speed
 	velocity = move_and_collide(velocity)
 	if direction == Vector2.ZERO:
