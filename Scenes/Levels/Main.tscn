@@ -197,7 +197,7 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 } ]
 3/z_index = 0
 
-[node name="Testing" type="Node2D"]
+[node name="Main" type="Node2D"]
 
 [node name="Floor" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
@@ -223,6 +223,9 @@ position = Vector2( 237.713, -23.0173 )
 collision_layer = 4
 collision_mask = 3
 
+[node name="Slime2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 116.5, -47.5 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MiniMap" parent="CanvasLayer" instance=ExtResource( 12 )]
@@ -234,5 +237,5 @@ margin_left = -200.0
 margin_top = -200.0
 margin_right = 0.0
 margin_bottom = 0.0
-player = NodePath("../../Player")
-zoom = 0.3
+player = NodePath("../../../Main/Player")
+zoom = 0.25
