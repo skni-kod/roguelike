@@ -4,7 +4,6 @@
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.9055, 7.46424 )
 
@@ -105,23 +104,18 @@ hframes = 8
 frame = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -0.117989, 4.01147 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-visible = false
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-visible = false
 position = Vector2( 0.166862, 3.83767 )
 shape = SubResource( 3 )
 

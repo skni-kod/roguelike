@@ -223,6 +223,11 @@ position = Vector2( 237.713, -23.0173 )
 collision_layer = 4
 collision_mask = 3
 
+[node name="Slime2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 107.149, -49.2094 )
+collision_layer = 4
+collision_mask = 3
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MiniMap" parent="CanvasLayer" instance=ExtResource( 12 )]
