@@ -3,6 +3,7 @@ extends KinematicBody2D
 var velocity = Vector2.ZERO
 var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest bohater
 var attack = false # Zmienna określająca czy bohater jest w trakcie ataku
+var got_hitted = false
 export var speed = 2
 var direction = Vector2()
 export var health = 100
@@ -29,24 +30,29 @@ func movement():
 	).normalized() # Określenie kierunku poruszania się
 	velocity = direction * speed
 	velocity = move_and_collide(velocity)
-	if direction == Vector2.ZERO:
-		$AnimationPlayer.play("Idle " + current_side)
-	elif direction.y < 0:
-		$AnimationPlayer.play("Walk Up")
-	elif direction.y > 0:
-		$AnimationPlayer.play("Walk Down")
-	elif direction.x < 0:
-		$AnimationPlayer.play("Walk Left")
-	elif direction.x > 0:
-		$AnimationPlayer.play("Walk Right")
-
-func _on_AnimationPlayer_animation_started(anim_name): #Pobierz ostatnią wystartowaną animację
-	current_side = anim_name.split(" ")[-1] #i weź z jej nazwy stronę w którą jest zwrócony bohater
+	if !got_hitted:
+		if direction == Vector2.ZERO:
+			$AnimationPlayer.play("Idle")
+		elif direction.y != 0:
+			$AnimationPlayer.play("Run")
+			if direction.x < 0:
+				$Sprite.scale.x = -1
+			else:
+				$Sprite.scale.x = 1
+		elif direction.x < 0:
+			$Sprite.scale.x = -1
+			$AnimationPlayer.play("Run")
+		elif direction.x > 0:
+			$Sprite.scale.x = 1
+			$AnimationPlayer.play("Run")
 
 func take_dmg(enemy):
 	health = health - enemy.dps
 	health_bar.on_health_updated(health, enemy.dps)
-	print(health)
+	got_hitted = true
+	$AnimationPlayer.play("Hit")
+	yield($AnimationPlayer, "animation_finished")
+	got_hitted = false
 
 func _on_AttackCollision_body_entered(body):
 	if body.is_in_group("Enemy"):
