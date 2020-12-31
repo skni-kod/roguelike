@@ -38,14 +38,14 @@ func movement():
 		elif direction.y != 0:
 			$AnimationPlayer.play("Run")
 			if direction.x < 0:
-				$Sprite.scale.x = -1
+				$PlayerSprite.scale.x = -1
 			else:
-				$Sprite.scale.x = 1
+				$PlayerSprite.scale.x = 1
 		elif direction.x < 0:
-			$Sprite.scale.x = -1
+			$PlayerSprite.scale.x = -1
 			$AnimationPlayer.play("Run")
 		elif direction.x > 0:
-			$Sprite.scale.x = 1
+			$PlayerSprite.scale.x = 1
 			$AnimationPlayer.play("Run")
 
 func take_dmg(enemy):
@@ -59,3 +59,9 @@ func take_dmg(enemy):
 func _on_AttackCollision_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)
+
+func _on_Player_health_updated(health, amount):
+	pass
+
+func _on_Player_max_health_updated(health):
+	pass

@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Weapons/1.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Actors/Sword.gd" type="Script" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.0
@@ -11,7 +13,7 @@ height = 6.0
 resource_name = "Hit"
 length = 0.3
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -27,7 +29,7 @@ tracks/0/keys = {
 length = 0.6
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -43,7 +45,7 @@ tracks/0/keys = {
 resource_name = "Run"
 length = 0.7
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -71,7 +73,7 @@ extents = Vector2( 9, 18 )
 collision_mask = 2
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="PlayerSprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 9
 
@@ -110,6 +112,13 @@ disabled = true
 position = Vector2( 10, -1.9375 )
 shape = SubResource( 8 )
 disabled = true
+
+[node name="Sword" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="SwordSprite" type="Sprite" parent="Sword"]
+position = Vector2( 13, 2 )
+texture = ExtResource( 3 )
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
 [connection signal="body_entered" from="AttackCollision" to="." method="_on_AttackCollision_body_entered"]
