@@ -62,9 +62,3 @@ func _flash_damage():
 func on_max_health_updated(max_health):
 	health_under.max_value = max_health
 	health_over.max_value = max_health
-	
-func _on_Player_health_updated(health, amount):
-	on_health_updated(health, amount)
-
-func _on_Player_max_health_updated(health):
-	on_max_health_updated(health)

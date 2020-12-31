@@ -13,8 +13,8 @@ export var health = 100
 export var damage = 20
 
 func _ready():
-	emit_signal("max_health_updated", health, health)
-	emit_signal("health_updated", health)
+	emit_signal("max_health_updated", health)
+	emit_signal("health_updated", health, health)
 
 func _physics_process(delta):
 	if Input.is_action_pressed("attack"):

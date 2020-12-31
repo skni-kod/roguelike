@@ -7,7 +7,7 @@
 radius = 5.0
 height = 6.0
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=2]
 resource_name = "Hit"
 length = 0.3
 tracks/0/type = "value"
@@ -23,7 +23,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=3]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -39,7 +39,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=4]
 resource_name = "Run"
 length = 0.7
 tracks/0/type = "value"
@@ -55,10 +55,10 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="RectangleShape2D" id=12]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 19, 10 )
 
-[sub_resource type="RectangleShape2D" id=13]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 19, 8 )
 
 [sub_resource type="RectangleShape2D" id=7]
@@ -84,21 +84,21 @@ current = true
 zoom = Vector2( 0.2, 0.2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hit = SubResource( 9 )
-anims/Idle = SubResource( 10 )
-anims/Run = SubResource( 11 )
+anims/Hit = SubResource( 2 )
+anims/Idle = SubResource( 3 )
+anims/Run = SubResource( 4 )
 
 [node name="AttackCollision" type="Area2D" parent="."]
 visible = false
 
 [node name="AttackUp" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( 0, -10 )
-shape = SubResource( 12 )
+shape = SubResource( 5 )
 disabled = true
 
 [node name="AttackDown" type="CollisionShape2D" parent="AttackCollision"]
 position = Vector2( 0, 8 )
-shape = SubResource( 13 )
+shape = SubResource( 6 )
 disabled = true
 
 [node name="AttackLeft" type="CollisionShape2D" parent="AttackCollision"]
