@@ -1,5 +1,9 @@
 extends KinematicBody2D
 
+signal health_updated(health, amount)
+signal max_health_updated(health)
+signal attacked(damage)
+
 var velocity = Vector2.ZERO
 var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest bohater
 var attack = false # Zmienna określająca czy bohater jest w trakcie ataku
@@ -8,18 +12,14 @@ export var speed = 2
 var direction = Vector2()
 export var health = 100
 export var damage = 20
-onready var health_bar = $Camera2D/HealthBar
 
 func _ready():
-	health_bar.on_max_health_updated(health)
-	health_bar.on_health_updated(health, health)
+	emit_signal("max_health_updated", health)
+	emit_signal("health_updated", health, health)
 
 func _physics_process(delta):
 	if Input.is_action_pressed("attack"):
-			$AnimationPlayer.play("Attack "+current_side)
-			attack = true
-			yield($AnimationPlayer,"animation_finished")
-			attack = false
+		emit_signal("attacked", damage)
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
 		
@@ -36,24 +36,30 @@ func movement():
 		elif direction.y != 0:
 			$AnimationPlayer.play("Run")
 			if direction.x < 0:
-				$Sprite.scale.x = -1
+				$PlayerSprite.scale.x = -1
 			else:
-				$Sprite.scale.x = 1
+				$PlayerSprite.scale.x = 1
 		elif direction.x < 0:
-			$Sprite.scale.x = -1
+			$PlayerSprite.scale.x = -1
 			$AnimationPlayer.play("Run")
 		elif direction.x > 0:
-			$Sprite.scale.x = 1
+			$PlayerSprite.scale.x = 1
 			$AnimationPlayer.play("Run")
 
 func take_dmg(enemy):
 	health = health - enemy.dps
-	health_bar.on_health_updated(health, enemy.dps)
+	emit_signal("health_updated", health, enemy.dps)
 	got_hitted = true
 	$AnimationPlayer.play("Hit")
 	yield($AnimationPlayer, "animation_finished")
 	got_hitted = false
 
-func _on_AttackCollision_body_entered(body):
+func _on_Sword_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)
+
+func _on_Player_health_updated(health, amount):
+	pass
+
+func _on_Player_max_health_updated(health):
+	pass

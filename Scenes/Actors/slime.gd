@@ -36,7 +36,8 @@ func _on_Wzrok_body_entered(body):
 		player = body
 
 func _on_Wzrok_body_exited(body):
-	player = null
+	if body != self and body.name == "Player":
+		player = null
 
 
 func _on_Atak_body_entered(body):
