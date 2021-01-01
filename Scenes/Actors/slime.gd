@@ -65,7 +65,6 @@ func get_dmg(dmg):
 			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
-		print(health)
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true

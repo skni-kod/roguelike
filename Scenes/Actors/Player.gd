@@ -16,7 +16,7 @@ var coins = 0
 
 func _ready():
 	emit_signal("max_health_updated", health)
-	emit_signal("health_updated", health, health)
+	emit_signal("health_updated", health)
 	$Camera2D/Coins.text = "Coins:"+str(coins)
 
 func _physics_process(delta):
@@ -50,7 +50,7 @@ func movement():
 
 func take_dmg(enemy):
 	health = health - enemy.dps
-	emit_signal("health_updated", health, enemy.dps)
+	emit_signal("health_updated", health)
 	got_hitted = true
 	$AnimationPlayer.play("Hit")
 	yield($AnimationPlayer, "animation_finished")
@@ -67,7 +67,7 @@ func _on_Pick_body_entered(body):
 			body.queue_free()
 	$Camera2D/Coins.text = "Coins:"+str(coins)
   
-func _on_Player_health_updated(health, amount):
+func _on_Player_health_updated(health):
 	pass
 
 func _on_Player_max_health_updated(health):
