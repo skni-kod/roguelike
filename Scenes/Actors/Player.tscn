@@ -74,11 +74,11 @@ collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="PlayerSprite" type="Sprite" parent="."]
+position = Vector2( 0, -4 )
 texture = ExtResource( 1 )
 hframes = 9
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -117,8 +117,13 @@ disabled = true
 script = ExtResource( 4 )
 
 [node name="SwordSprite" type="Sprite" parent="Sword"]
-position = Vector2( 13, 2 )
+position = Vector2( 11, 0 )
 texture = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="Sword"]
+wait_time = 0.3
+[connection signal="attacked" from="." to="Sword" method="_on_Player_attacked"]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
 [connection signal="body_entered" from="AttackCollision" to="." method="_on_AttackCollision_body_entered"]
+[connection signal="timeout" from="Sword/Timer" to="Sword" method="_on_Timer_timeout"]

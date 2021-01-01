@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
-[sub_resource type="CapsuleShape2D" id=9]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 5.50819
 height = 16.8513
 
@@ -107,7 +107,7 @@ frame = 14
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )
 rotation = 1.5708
-shape = SubResource( 9 )
+shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 visible = false

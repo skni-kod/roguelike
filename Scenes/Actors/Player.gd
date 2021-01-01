@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 signal health_updated(health, amount)
 signal max_health_updated(health)
+signal attacked(damage)
 
 var velocity = Vector2.ZERO
 var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest bohater
@@ -18,10 +19,7 @@ func _ready():
 
 func _physics_process(delta):
 	if Input.is_action_pressed("attack"):
-			$AnimationPlayer.play("Attack "+current_side)
-			attack = true
-			yield($AnimationPlayer,"animation_finished")
-			attack = false
+		emit_signal("attacked", damage)
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
 		
