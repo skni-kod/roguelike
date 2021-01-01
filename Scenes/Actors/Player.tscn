@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
@@ -57,17 +57,9 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 19, 10 )
-
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 19, 8 )
-
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 9, 18 )
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 9, 18 )
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 16.0
+height = 0.0
 
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 2
@@ -90,30 +82,7 @@ anims/Hit = SubResource( 2 )
 anims/Idle = SubResource( 3 )
 anims/Run = SubResource( 4 )
 
-[node name="AttackCollision" type="Area2D" parent="."]
-visible = false
-
-[node name="AttackUp" type="CollisionShape2D" parent="AttackCollision"]
-position = Vector2( 0, -10 )
-shape = SubResource( 5 )
-disabled = true
-
-[node name="AttackDown" type="CollisionShape2D" parent="AttackCollision"]
-position = Vector2( 0, 8 )
-shape = SubResource( 6 )
-disabled = true
-
-[node name="AttackLeft" type="CollisionShape2D" parent="AttackCollision"]
-position = Vector2( -10, -2 )
-shape = SubResource( 7 )
-disabled = true
-
-[node name="AttackRight" type="CollisionShape2D" parent="AttackCollision"]
-position = Vector2( 10, -1.9375 )
-shape = SubResource( 8 )
-disabled = true
-
-[node name="Sword" type="Node2D" parent="."]
+[node name="Sword" type="Area2D" parent="."]
 script = ExtResource( 4 )
 
 [node name="SwordSprite" type="Sprite" parent="Sword"]
@@ -122,8 +91,13 @@ texture = ExtResource( 3 )
 
 [node name="Timer" type="Timer" parent="Sword"]
 wait_time = 0.3
+
+[node name="AttackCollision" type="CollisionShape2D" parent="Sword"]
+position = Vector2( 11, 0 )
+shape = SubResource( 9 )
+disabled = true
 [connection signal="attacked" from="." to="Sword" method="_on_Player_attacked"]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
-[connection signal="body_entered" from="AttackCollision" to="." method="_on_AttackCollision_body_entered"]
+[connection signal="body_entered" from="Sword" to="." method="_on_Sword_body_entered"]
 [connection signal="timeout" from="Sword/Timer" to="Sword" method="_on_Timer_timeout"]

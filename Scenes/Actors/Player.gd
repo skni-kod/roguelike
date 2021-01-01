@@ -54,7 +54,7 @@ func take_dmg(enemy):
 	yield($AnimationPlayer, "animation_finished")
 	got_hitted = false
 
-func _on_AttackCollision_body_entered(body):
+func _on_Sword_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)
 

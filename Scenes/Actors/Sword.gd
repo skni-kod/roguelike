@@ -10,11 +10,11 @@ func _physics_process(delta):
 	if !attack:
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
-			rotation = PI + mouse_position.angle()
+			rotation = PI + mouse_position.angle() * 0.1
 		elif rotation > PI:
-			rotation = -PI + mouse_position.angle()
+			rotation = -PI + mouse_position.angle() * 0.1
 		else:
-			rotation += mouse_position.angle()
+			rotation += mouse_position.angle() * 0.1
 		if rotation < -PI/2 or rotation > PI/2:
 			$SwordSprite.scale.y = -1
 		else:
@@ -28,9 +28,16 @@ func _on_Player_attacked(damage):
 		print(attack_vector, sin(rotation_degrees))
 		print(rotation_degrees)
 		position += attack_vector
+		if rotation < -PI/2 or rotation > PI/2:
+			$SwordSprite.rotation_degrees = -90
+		else:
+			$SwordSprite.rotation_degrees = 90
+		$AttackCollision.disabled = false
 		timer.start()
 
 func _on_Timer_timeout():
 	position -= attack_vector
+	$SwordSprite.rotation_degrees = 0
+	$AttackCollision.disabled = true
 	attack = false
 	timer.stop()
