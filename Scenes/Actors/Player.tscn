@@ -1,13 +1,24 @@
-[gd_scene load_steps=10 format=2]
+
+[gd_scene load_steps=24 format=2]
+
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
+
+[ext_resource path="res://Fonts/dogica.ttf" type="DynamicFontData" id=4]
+
 [ext_resource path="res://Assets/Weapons/1.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Actors/Sword.gd" type="Script" id=4]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.0
 height = 6.0
+
+[sub_resource type="DynamicFont" id=2]
+size = 8
+font_data = ExtResource( 4 )
+
 
 [sub_resource type="Animation" id=2]
 resource_name = "Hit"
@@ -22,6 +33,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
+
 "values": [ 8 ]
 }
 
@@ -44,6 +56,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=4]
 resource_name = "Run"
 length = 0.7
+
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
@@ -61,7 +74,12 @@ tracks/0/keys = {
 radius = 16.0
 height = 0.0
 
-[node name="Player" type="KinematicBody2D"]
+[sub_resource type="CircleShape2D" id=19]
+radius = 23.1513
+
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
 collision_mask = 2
 script = ExtResource( 2 )
 
@@ -77,6 +95,18 @@ shape = SubResource( 1 )
 current = true
 zoom = Vector2( 0.2, 0.2 )
 
+[node name="Coins" type="Label" parent="Camera2D"]
+margin_left = -102.132
+margin_top = -54.1075
+margin_right = -62.1316
+margin_bottom = -40.1075
+rect_scale = Vector2( 0.6, 0.6 )
+custom_fonts/font = SubResource( 2 )
+text = "Coins:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 2 )
 anims/Idle = SubResource( 3 )
@@ -84,6 +114,14 @@ anims/Run = SubResource( 4 )
 
 [node name="Sword" type="Area2D" parent="."]
 script = ExtResource( 4 )
+
+
+[node name="Pick" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pick"]
+shape = SubResource( 19 )
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]
+[connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 
 [node name="SwordSprite" type="Sprite" parent="Sword"]
 position = Vector2( 11, 0 )
@@ -101,3 +139,4 @@ disabled = true
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
 [connection signal="body_entered" from="Sword" to="." method="_on_Sword_body_entered"]
 [connection signal="timeout" from="Sword/Timer" to="Sword" method="_on_Timer_timeout"]
+

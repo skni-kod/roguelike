@@ -12,7 +12,11 @@
 [ext_resource path="res://Assets/TileMap/wall/wall_crack.png" type="Texture" id=10]
 [ext_resource path="res://Assets/TileMap/floor/floor_3.png" type="Texture" id=11]
 [ext_resource path="res://Minimap/MiniMap.tscn" type="PackedScene" id=12]
+
+[ext_resource path="res://Scenes/Loot/GoldCoin.tscn" type="PackedScene" id=13]
+
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
+
 
 [sub_resource type="TileSet" id=1]
 0/name = "floor_6.png 0"
@@ -240,6 +244,14 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="Slime2" parent="." instance=ExtResource( 1 )]
+
+position = Vector2( 107.149, -49.2094 )
+collision_layer = 4
+collision_mask = 3
+
+[node name="GoldCoin" parent="." instance=ExtResource( 13 )]
+position = Vector2( 83.9265, 46.5168 )
+
 position = Vector2( 116.5, -47.5 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]

@@ -6,7 +6,7 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-export var health = 100
+export var health = 1000
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 
@@ -36,7 +36,9 @@ func _on_Wzrok_body_entered(body):
 		player = body
 
 func _on_Wzrok_body_exited(body):
+
 	if body != self and body.name == "Player":
+
 		player = null
 
 
@@ -51,14 +53,18 @@ func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
-		if attack:
-			player.take_dmg(self)
+		player.take_dmg(self)
 			
 func get_dmg(dmg):
-	health = health - dmg
-	$AnimationPlayer.play("Hurt")
-	health_bar.on_health_updated(health, dmg)
-	health_bar.visible = true
+	if health>0:
+		if player.position.x-self.position.x < 0:
+			self.position.x += 10
+		else:
+			self.position.x -= 10
+		health = health - dmg
+		$AnimationPlayer.play("Hurt")
+		health_bar.on_health_updated(health, dmg)
+		health_bar.visible = true
 	if health<=0:
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
