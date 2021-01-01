@@ -25,13 +25,13 @@ func _ready():
 	player_node.connect("health_updated", self, "on_health_updated")
 	player_node.connect("max_health_updated", self, "on_max_health_updated")
 
-func on_health_updated(health, amount):
+func on_health_updated(health):
 	health_over.value = health
 	update_tween.interpolate_property(health_under, "value", health_under.value, health, 0.4, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	update_tween.start()
 
 	_assign_color(health)
-	if amount < 0:
+	if health < 0:
 		_flash_damage()
 
 func _assign_color(health):

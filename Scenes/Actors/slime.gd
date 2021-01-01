@@ -6,14 +6,16 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-export var health = 1000
+var max_hp = 200
+var hp:float = max_hp
+export var health = 100
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 
  
 func _ready():
 	health_bar.on_max_health_updated(health)
-	health_bar.on_health_updated(health, health)
+	health_bar.on_health_updated(health)
 
 func _physics_process(delta):
 	move = Vector2.ZERO
@@ -61,9 +63,11 @@ func get_dmg(dmg):
 			self.position.x += 10
 		else:
 			self.position.x -= 10
-		health = health - dmg
+		hp -= dmg
+		health = hp/max_hp*100
+		print(health)
 		$AnimationPlayer.play("Hurt")
-		health_bar.on_health_updated(health, dmg)
+		health_bar.on_health_updated(health)
 		health_bar.visible = true
 	if health<=0:
 		$AnimationPlayer.play("Die")
