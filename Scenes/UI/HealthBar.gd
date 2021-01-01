@@ -20,6 +20,11 @@ onready var update_tween := $UpdateTween
 onready var pulse_tween := $PulseTween
 onready var flash_tween := $FlashTween
 
+func _ready():
+	var player_node := get_tree().get_root().find_node("Player", true, false)
+	player_node.connect("health_updated", self, "on_health_updated")
+	player_node.connect("max_health_updated", self, "on_max_health_updated")
+
 func on_health_updated(health, amount):
 	health_over.value = health
 	update_tween.interpolate_property(health_under, "value", health_under.value, health, 0.4, Tween.TRANS_SINE, Tween.EASE_IN_OUT)

@@ -4,8 +4,9 @@
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 14.9055, 7.46424 )
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.50819
+height = 16.8513
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 84.9011
@@ -104,7 +105,10 @@ hframes = 8
 frame = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.117989, 4.01147 )
+
+position = Vector2( 0, 6 )
+rotation = 1.5708
+
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
@@ -130,6 +134,7 @@ anims/Walk = SubResource( 8 )
 autostart = true
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
+visible = false
 margin_left = -10.0406
 margin_top = -5.9466
 margin_right = -10.0406
