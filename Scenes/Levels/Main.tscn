@@ -248,5 +248,8 @@ collision_mask = 3
 [node name="GoldCoin2" parent="." instance=ExtResource( 14 )]
 position = Vector2( 162.476, 40.4086 )
 
+[node name="GoldCoin3" parent="." instance=ExtResource( 14 )]
+position = Vector2( 90.6384, -14.0308 )
+
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 126.975, 59.2832 )

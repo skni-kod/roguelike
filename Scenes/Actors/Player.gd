@@ -62,8 +62,9 @@ func _on_Sword_body_entered(body):
 
 func _on_Pick_body_entered(body):
 	if body.is_in_group("Pickable"):
-		if body.name == "GoldCoin":
+		if "GoldCoin" in body.name:
 			coins += 10
+			body.queue_free()
 	$Camera2D/Coins.text = "Coins:"+str(coins)
   
 func _on_Player_health_updated(health, amount):
