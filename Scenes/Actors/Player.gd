@@ -15,12 +15,12 @@ export var damage = 20
 var coins = 0
 
 func _ready():
-	health_bar.on_max_health_updated(health)
-	health_bar.on_health_updated(health, health)
+	emit_signal("max_health_updated", health)
+	emit_signal("health_updated", health, health)
 	$Camera2D/Coins.text = "Coins:"+str(coins)
 
 func _physics_process(delta):
-	if Input.is_action_pressed("attack"):
+	if Input.is_action_just_pressed("attack"):
 		emit_signal("attacked", damage)
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
@@ -59,7 +59,6 @@ func take_dmg(enemy):
 func _on_Sword_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)
-
 
 func _on_Pick_body_entered(body):
 	if body.is_in_group("Pickable"):

@@ -25,8 +25,6 @@ func _on_Player_attacked(damage):
 	if !attack:
 		attack = true
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-		print(attack_vector, sin(rotation_degrees))
-		print(rotation_degrees)
 		position += attack_vector
 		if rotation < -PI/2 or rotation > PI/2:
 			$SwordSprite.rotation_degrees = -90

@@ -1,15 +1,9 @@
-
-[gd_scene load_steps=24 format=2]
-
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
-
-[ext_resource path="res://Fonts/dogica.ttf" type="DynamicFontData" id=4]
-
 [ext_resource path="res://Assets/Weapons/1.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Actors/Sword.gd" type="Script" id=4]
-
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.0
@@ -17,10 +11,8 @@ height = 6.0
 
 [sub_resource type="DynamicFont" id=2]
 size = 8
-font_data = ExtResource( 4 )
 
-
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=7]
 resource_name = "Hit"
 length = 0.3
 tracks/0/type = "value"
@@ -33,7 +25,6 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-
 "values": [ 8 ]
 }
 
@@ -56,7 +47,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=4]
 resource_name = "Run"
 length = 0.7
-
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
@@ -70,23 +60,24 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=9]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 16.0
 height = 0.0
 
-[sub_resource type="CircleShape2D" id=19]
+[sub_resource type="CircleShape2D" id=6]
 radius = 23.1513
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
 ]]
-collision_mask = 2
+collision_mask = 6
 script = ExtResource( 2 )
 
 [node name="PlayerSprite" type="Sprite" parent="."]
 position = Vector2( 0, -4 )
 texture = ExtResource( 1 )
 hframes = 9
+frame = 8
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -108,20 +99,13 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hit = SubResource( 2 )
+anims/Hit = SubResource( 7 )
 anims/Idle = SubResource( 3 )
 anims/Run = SubResource( 4 )
 
 [node name="Sword" type="Area2D" parent="."]
+collision_mask = 6
 script = ExtResource( 4 )
-
-
-[node name="Pick" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pick"]
-shape = SubResource( 19 )
-[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started"]
-[connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 
 [node name="SwordSprite" type="Sprite" parent="Sword"]
 position = Vector2( 11, 0 )
@@ -132,11 +116,16 @@ wait_time = 0.3
 
 [node name="AttackCollision" type="CollisionShape2D" parent="Sword"]
 position = Vector2( 11, 0 )
-shape = SubResource( 9 )
+shape = SubResource( 5 )
 disabled = true
+
+[node name="Pick" type="Area2D" parent="."]
+
+[node name="PickCollision" type="CollisionShape2D" parent="Pick"]
+shape = SubResource( 6 )
 [connection signal="attacked" from="." to="Sword" method="_on_Player_attacked"]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
 [connection signal="body_entered" from="Sword" to="." method="_on_Sword_body_entered"]
 [connection signal="timeout" from="Sword/Timer" to="Sword" method="_on_Timer_timeout"]
-
+[connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
