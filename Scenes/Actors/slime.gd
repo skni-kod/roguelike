@@ -9,6 +9,7 @@ var attack = false
 var max_hp = 200
 var hp:float = max_hp
 export var health = 100
+var drop = {"coins":1,"weapon":"axe"}
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 

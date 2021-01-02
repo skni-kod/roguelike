@@ -14,6 +14,7 @@ export var health = 100
 export var damage = 20
 var coins = 0
 var weapon = null
+var equipment = ["Blade","Axe"]
 
 func _ready():
 	emit_signal("max_health_updated", health)
@@ -27,8 +28,14 @@ func _physics_process(delta):
 		movement()
 	if weapon != null:
 		if Input.is_action_just_pressed("pick"):
-			var weapon1 = weapon.get_node("Sprite").texture
-			$Sword.change_weapon(weapon1)
+			var weapon1 = weapon.WeaponName
+			for i in equipment:
+				if str(get_node(i)) != "[Object:null]":
+					get_node(i).queue_free()
+			print(get_child_count())
+			weapon1 = load("res://Scenes/Equipment/"+weapon1+".tscn")
+			weapon1 = weapon1.instance()
+			add_child(weapon1)
 			weapon.queue_free()
 			weapon = null
 	
