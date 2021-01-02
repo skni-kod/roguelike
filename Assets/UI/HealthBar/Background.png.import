@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/minimap.png-ab110cca1c4c572a9354149bb7320e99.stex"
+path="res://.import/Background.png-9718d93d07fce0058b4856f00eb2c543.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Minimap/minimap.png"
-dest_files=[ "res://.import/minimap.png-ab110cca1c4c572a9354149bb7320e99.stex" ]
+source_file="res://Assets/UI/HealthBar/Background.png"
+dest_files=[ "res://.import/Background.png-9718d93d07fce0058b4856f00eb2c543.stex" ]
 
 [params]
 
