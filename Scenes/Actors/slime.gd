@@ -6,10 +6,10 @@ export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-var max_hp = 200
+var max_hp = 20
 var hp:float = max_hp
 export var health = 100
-var drop = {"coins":1,"weapon":"axe"}
+var drop = {"coins":1,"weapon":"Axe"}
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 
@@ -72,6 +72,12 @@ func get_dmg(dmg):
 	if health<=0:
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
+		var level = get_tree().get_root().find_node("Main", true, false)
+		var weapon = load("res://Scenes/Loot/Weapon.tscn")
+		weapon = weapon.instance()
+		weapon.WeaponName = drop["weapon"]
+		weapon.position = self.position
+		level.add_child(weapon)
 		queue_free()
 		
 	var text = floating_dmg.instance()

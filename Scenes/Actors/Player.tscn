@@ -105,9 +105,7 @@ anims/Run = SubResource( 5 )
 shape = SubResource( 7 )
 
 [node name="Blade" parent="." instance=ExtResource( 3 )]
-[connection signal="attacked" from="." to="Blade" method="_on_Player_attacked"]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="max_health_updated" from="." to="." method="_on_Player_max_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]
-[connection signal="body_entered" from="Blade" to="." method="_on_Sword_body_entered"]

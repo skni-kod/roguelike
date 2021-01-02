@@ -11,10 +11,10 @@ var got_hitted = false
 export var speed = 2
 var direction = Vector2()
 export var health = 100
-export var damage = 20
 var coins = 0
 var weapon = null
 var equipment = ["Blade","Axe"]
+var equipped = "Blade"
 
 func _ready():
 	emit_signal("max_health_updated", health)
@@ -23,21 +23,26 @@ func _ready():
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("attack"):
-		emit_signal("attacked", damage)
+		emit_signal("attacked")
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
 	if weapon != null:
 		if Input.is_action_just_pressed("pick"):
-			var weapon1 = weapon.WeaponName
-			for i in equipment:
-				if str(get_node(i)) != "[Object:null]":
-					get_node(i).queue_free()
-			print(get_child_count())
-			weapon1 = load("res://Scenes/Equipment/"+weapon1+".tscn")
-			weapon1 = weapon1.instance()
-			add_child(weapon1)
-			weapon.queue_free()
-			weapon = null
+			var weaponName = weapon.WeaponName
+			var level = get_tree().get_root().find_node("Main", true, false)
+			var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
+			weaponUsed = weaponUsed.instance()
+			weaponUsed.position = weapon.position
+			weaponUsed.WeaponName = equipped
+			level.add_child(weaponUsed)
+			if equipped != weaponName:
+				get_node(equipped).queue_free()
+				equipped = weaponName
+				weapon.queue_free()
+				weapon = load("res://Scenes/Equipment/"+equipped+".tscn")
+				weapon = weapon.instance()
+				add_child(weapon) 
+				weapon = null
 	
 func movement():
 	direction = Vector2(
@@ -68,10 +73,6 @@ func take_dmg(enemy):
 	$AnimationPlayer.play("Hit")
 	yield($AnimationPlayer, "animation_finished")
 	got_hitted = false
-
-func _on_Sword_body_entered(body):
-	if body.is_in_group("Enemy"):
-		body.get_dmg(damage)
 
 func _on_Pick_body_entered(body):
 	if body.is_in_group("Pickable"):
