@@ -2,6 +2,8 @@ extends Node2D
 
 var mouse_position
 var attack = false
+var sprite = '1.png'
+var sprite_path = "res://Assets/Loot/Weapons/"
 var attack_vector = Vector2.ZERO
 export var attack_range = 15
 onready var timer = $Timer
@@ -19,7 +21,6 @@ func _physics_process(delta):
 			$SwordSprite.scale.y = -1
 		else:
 			$SwordSprite.scale.y = 1
-
 
 func _on_Player_attacked(damage):
 	if !attack:
@@ -39,3 +40,6 @@ func _on_Timer_timeout():
 	$AttackCollision.disabled = true
 	attack = false
 	timer.stop()
+
+func change_weapon(texture):
+	$SwordSprite.texture = texture
