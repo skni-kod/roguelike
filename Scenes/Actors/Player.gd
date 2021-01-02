@@ -13,6 +13,7 @@ var direction = Vector2()
 export var health = 100
 export var damage = 20
 var coins = 0
+var weapon = null
 
 func _ready():
 	emit_signal("max_health_updated", health)
@@ -24,7 +25,13 @@ func _physics_process(delta):
 		emit_signal("attacked", damage)
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
-		
+	if weapon != null:
+		if Input.is_action_just_pressed("pick"):
+			var weapon1 = weapon.get_node("Sprite").texture
+			$Sword.change_weapon(weapon1)
+			weapon.queue_free()
+			weapon = null
+	
 func movement():
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -47,7 +54,6 @@ func movement():
 		elif direction.x > 0:
 			$PlayerSprite.scale.x = 1
 			$AnimationPlayer.play("Run")
-
 func take_dmg(enemy):
 	health = health - enemy.dps
 	emit_signal("health_updated", health)
@@ -65,11 +71,15 @@ func _on_Pick_body_entered(body):
 		if "GoldCoin" in body.name:
 			coins += 10
 			body.queue_free()
+		elif "Weapon" in body.name:
+			weapon = body
 	$Camera2D/Coins.text = "Coins:"+str(coins)
-  
+
 func _on_Player_health_updated(health):
 	pass
 
 func _on_Player_max_health_updated(health):
 	pass
 
+func _on_Pick_body_exited(body):
+	weapon = null

@@ -130,3 +130,4 @@ shape = SubResource( 7 )
 [connection signal="body_entered" from="Sword" to="." method="_on_Sword_body_entered"]
 [connection signal="timeout" from="Sword/Timer" to="Sword" method="_on_Timer_timeout"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
+[connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]

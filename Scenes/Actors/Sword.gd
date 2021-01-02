@@ -2,8 +2,6 @@ extends Node2D
 
 var mouse_position
 var attack = false
-var sprite = '1.png'
-var sprite_path = "res://Assets/Loot/Weapons/"
 var attack_vector = Vector2.ZERO
 export var attack_range = 15
 onready var timer = $Timer
