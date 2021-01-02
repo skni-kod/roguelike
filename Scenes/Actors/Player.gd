@@ -1,7 +1,6 @@
 extends KinematicBody2D
 
 signal health_updated(health, amount)
-signal max_health_updated(health)
 signal attacked(damage)
 
 var velocity = Vector2.ZERO
@@ -15,7 +14,6 @@ export var damage = 20
 var coins = 0
 
 func _ready():
-	emit_signal("max_health_updated", health)
 	emit_signal("health_updated", health)
 	$Camera2D/Coins.text = "Coins:"+str(coins)
 
@@ -68,8 +66,5 @@ func _on_Pick_body_entered(body):
 	$Camera2D/Coins.text = "Coins:"+str(coins)
   
 func _on_Player_health_updated(health):
-	pass
-
-func _on_Player_max_health_updated(health):
 	pass
 

@@ -8,13 +8,12 @@ var right = 1
 var attack = false
 var max_hp = 200
 var hp:float = max_hp
-export var health = 100
+export var health = 1000
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 
  
 func _ready():
-	health_bar.on_max_health_updated(health)
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):

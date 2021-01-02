@@ -22,8 +22,7 @@ onready var flash_tween := $FlashTween
 
 func _ready():
 	var player_node := get_tree().get_root().find_node("Player", true, false)
-	player_node.connect("health_updated", self, "on_health_updated")
-	player_node.connect("max_health_updated", self, "on_max_health_updated")
+	player_node.connect("health_updated", self, "on_Player_health_updated")
 
 func on_health_updated(health):
 	health_over.value = health
@@ -59,6 +58,6 @@ func _flash_damage():
 		flash_tween.interpolate_callback(health_over, time, "set", "tint_progress", color)
 	flash_tween.start()
 
-func on_max_health_updated(max_health):
-	health_under.max_value = max_health
-	health_over.max_value = max_health
+func on_Player_health_updated(health):
+	if find_parent("UI"):
+		on_health_updated(health)
