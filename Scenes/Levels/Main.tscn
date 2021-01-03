@@ -11,7 +11,7 @@
 [ext_resource path="res://Assets/TileMap/wall/wall_side_left .png" type="Texture" id=9]
 [ext_resource path="res://Assets/TileMap/wall/wall_crack.png" type="Texture" id=10]
 [ext_resource path="res://Assets/TileMap/floor/floor_3.png" type="Texture" id=11]
-[ext_resource path="res://Minimap/MiniMap.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Loot/GoldCoin.tscn" type="PackedScene" id=14]
 
@@ -203,6 +203,10 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
+[node name="HealthBar" parent="UI" instance=ExtResource( 13 )]
+rect_scale = Vector2( 2, 2 )
+will_pulse = true
+
 [node name="MiniMap" parent="UI" instance=ExtResource( 12 )]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -212,12 +216,7 @@ margin_left = -200.0
 margin_top = -200.0
 margin_right = 0.0
 margin_bottom = 0.0
-player = NodePath("../../../Main/Player")
-zoom = 0.25
-
-[node name="HealthBar" parent="UI" instance=ExtResource( 13 )]
-rect_scale = Vector2( 2, 2 )
-will_pulse = true
+player = NodePath("../../Player")
 
 [node name="Floor" type="TileMap" parent="."]
 tile_set = SubResource( 1 )

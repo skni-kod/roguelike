@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Equipment/Axe.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 18.2015
+radius = 12.5317
 
 [node name="Axe" type="Area2D"]
 script = ExtResource( 2 )
