@@ -60,7 +60,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CircleShape2D" id=7]
+[sub_resource type="CircleShape2D" id=6]
 radius = 16.1054
 
 [node name="Player" type="KinematicBody2D" groups=[
@@ -102,7 +102,7 @@ anims/Run = SubResource( 5 )
 [node name="Pick" type="Area2D" parent="."]
 
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="Blade" parent="." instance=ExtResource( 3 )]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]

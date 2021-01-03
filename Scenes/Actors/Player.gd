@@ -29,13 +29,13 @@ func _physics_process(delta):
 	if weapon != null:
 		if Input.is_action_just_pressed("pick"):
 			var weaponName = weapon.WeaponName
-			var level = get_tree().get_root().find_node("Main", true, false)
-			var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
-			weaponUsed = weaponUsed.instance()
-			weaponUsed.position = weapon.position
-			weaponUsed.WeaponName = equipped
-			level.add_child(weaponUsed)
 			if equipped != weaponName:
+				var level = get_tree().get_root().find_node("Main", true, false)
+				var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
+				weaponUsed = weaponUsed.instance()
+				weaponUsed.position = weapon.position
+				weaponUsed.WeaponName = equipped
+				level.add_child(weaponUsed)
 				get_node(equipped).queue_free()
 				equipped = weaponName
 				weapon.queue_free()
