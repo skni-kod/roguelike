@@ -1,11 +1,18 @@
 extends StaticBody2D
 
 var WeaponName
-var Stats = {"attack":"5","spd":"1","knc":"0.5"}
+var Stats = {}
 var popups = {}
+var weapons = {}
 
 
 func _ready():
+	var file = File.new()
+	file.open("res://Jsons/ItemStats.json", file.READ)
+	var text = file.get_as_text()
+	weapons = JSON.parse(text).result
+	Stats = weapons["Weapons"][WeaponName]
+	file.close()
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
 	$Sprite.texture = texture
 
