@@ -6,7 +6,8 @@ var attack_vector = Vector2.ZERO
 export var attack_range = 15
 onready var timer = $Timer
 onready var player_node := get_tree().get_root().find_node("Player", true, false)
-var damage = 10
+var damage = 1
+var attack_speed = 0.0
 
 func _ready():
 	player_node.connect("attacked", self, "_on_Player_attacked")
@@ -28,21 +29,26 @@ func _physics_process(delta):
 func _on_Player_attacked():
 	if !attack:
 		attack = true
-		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-		position += attack_vector
-		if rotation < -PI/2 or rotation > PI/2:
-			$SwordSprite.rotation_degrees = -90
-		else:
-			$SwordSprite.rotation_degrees = 90
 		$AttackCollision.disabled = false
+		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
 		timer.start()
 
 func _on_Timer_timeout():
-	position -= attack_vector
-	$SwordSprite.rotation_degrees = 0
-	$AttackCollision.disabled = true
-	attack = false
-	timer.stop()
+	attack_speed += 0.01
+	if attack_speed <= 0.15:
+		position += attack_vector * (0.01/0.15)
+		if rotation < -PI/2 or rotation > PI/2:
+			$SwordSprite.rotation_degrees += -90 * (0.01/0.15)
+		else:
+			$SwordSprite.rotation_degrees += 90 * (0.01/0.15)
+		
+	elif attack_speed > 0.3:
+		position -= attack_vector
+		$SwordSprite.rotation_degrees = 0
+		$AttackCollision.disabled = true
+		attack = false
+		attack_speed = 0
+		timer.stop()
 
 func change_weapon(texture):
 	$SwordSprite.texture = texture

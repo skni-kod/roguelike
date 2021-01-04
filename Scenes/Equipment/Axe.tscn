@@ -14,7 +14,7 @@ position = Vector2( 11, 0 )
 texture = ExtResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.01
 
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 11, 0 )
