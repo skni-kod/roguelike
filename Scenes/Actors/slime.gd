@@ -8,16 +8,17 @@ var right = 1
 var attack = false
 var max_hp = 20
 var hp:float = max_hp
+
 export var health = 100
 var drop = {"minCoins":0,"maxCoins":5}
 var rng = RandomNumberGenerator.new()
+
 onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
  
 func _ready():
-	health_bar.on_max_health_updated(health)
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):

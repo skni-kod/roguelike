@@ -1,7 +1,6 @@
 extends KinematicBody2D
 
 signal health_updated(health, amount)
-signal max_health_updated(health)
 signal attacked(damage)
 signal open()
 
@@ -19,7 +18,6 @@ var equipped = "Blade"
 var chest = null
 
 func _ready():
-	emit_signal("max_health_updated", health)
 	emit_signal("health_updated", health)
 	$Camera2D/Coins.text = "Coins:"+str(coins)
 
@@ -93,8 +91,6 @@ func _on_Pick_body_entered(body):
 func _on_Player_health_updated(health):
 	pass
 
-func _on_Player_max_health_updated(health):
-	pass
-
 func _on_Pick_body_exited(body):
 	weapon = null
+
