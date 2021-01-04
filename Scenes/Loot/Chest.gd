@@ -4,7 +4,8 @@ var rng = RandomNumberGenerator.new()
 var randomPosition
 var coins = rng.randf_range(3, 10)
 var level
-var player_node 
+var player_node
+var opened = false
 
 func _ready():
 		rng.randomize()
@@ -14,11 +15,13 @@ func _ready():
 		print()
 		
 func _open():
-	$AnimationPlayer.play("Open")
-	yield($AnimationPlayer,"animation_finished")
-	for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
-			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
-			coin = coin.instance()
-			coin.position = randomPosition
-			level.add_child(coin)
+	if !opened:
+		opened = true
+		$AnimationPlayer.play("Open")
+		yield($AnimationPlayer,"animation_finished")
+		for i in range(0,coins):
+				randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+				var coin = load("res://Scenes/Loot/GoldCoin.tscn")
+				coin = coin.instance()
+				coin.position = randomPosition
+				level.add_child(coin)

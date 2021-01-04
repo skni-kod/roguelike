@@ -16,10 +16,12 @@ var weapon = null
 var equipment = ["Blade","Axe"]
 var equipped = "Blade"
 var chest = null
+var level 
 
 func _ready():
+	level = get_tree().get_root().find_node("Main", true, false)
 	emit_signal("health_updated", health)
-	$Camera2D/Coins.text = "Coins:"+str(coins)
+	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("attack"):
@@ -30,7 +32,6 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("pick"):
 			var weaponName = weapon.WeaponName
 			if equipped != weaponName:
-				var level = get_tree().get_root().find_node("Main", true, false)
 				var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 				weaponUsed = weaponUsed.instance()
 				weaponUsed.position = weapon.position
@@ -46,6 +47,7 @@ func _physics_process(delta):
 	if chest != null:
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open")
+			chest = null
 	
 func movement():
 	direction = Vector2(
@@ -86,7 +88,7 @@ func _on_Pick_body_entered(body):
 			weapon = body
 		elif "Chest" in body.name:
 			chest = body
-	$Camera2D/Coins.text = "Coins:"+str(coins)
+	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 
 func _on_Player_health_updated(health):
 	pass
