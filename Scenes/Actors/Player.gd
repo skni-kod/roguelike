@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal health_updated(health, amount)
 signal max_health_updated(health)
 signal attacked(damage)
+signal open()
 
 var velocity = Vector2.ZERO
 var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest bohater
@@ -15,6 +16,7 @@ var coins = 0
 var weapon = null
 var equipment = ["Blade","Axe"]
 var equipped = "Blade"
+var chest = null
 
 func _ready():
 	emit_signal("max_health_updated", health)
@@ -43,6 +45,9 @@ func _physics_process(delta):
 				weapon = weapon.instance()
 				add_child(weapon) 
 				weapon = null
+	if chest != null:
+		if Input.is_action_just_pressed("pick"):
+			emit_signal("open")
 	
 func movement():
 	direction = Vector2(
@@ -81,6 +86,8 @@ func _on_Pick_body_entered(body):
 			body.queue_free()
 		elif "Weapon" in body.name:
 			weapon = body
+		elif "Chest" in body.name:
+			chest = body
 	$Camera2D/Coins.text = "Coins:"+str(coins)
 
 func _on_Player_health_updated(health):
