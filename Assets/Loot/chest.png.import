@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/minimap.png-ab110cca1c4c572a9354149bb7320e99.stex"
+path="res://.import/chest.png-aa3fd014a0fc69141c34c71c1ec15bf7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Minimap/minimap.png"
-dest_files=[ "res://.import/minimap.png-ab110cca1c4c572a9354149bb7320e99.stex" ]
+source_file="res://Assets/Loot/chest.png"
+dest_files=[ "res://.import/chest.png-aa3fd014a0fc69141c34c71c1ec15bf7.stex" ]
 
 [params]
 

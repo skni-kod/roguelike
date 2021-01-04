@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hero.png-dfeaf0c4823a7be061d75f76c8de8cdd.stex"
+path="res://.import/wall.png-28248c279d26bf59f1396e5277a2013a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Minimap/hero.png"
-dest_files=[ "res://.import/hero.png-dfeaf0c4823a7be061d75f76c8de8cdd.stex" ]
+source_file="res://Assets/UI/Minimap/wall.png"
+dest_files=[ "res://.import/wall.png-28248c279d26bf59f1396e5277a2013a.stex" ]
 
 [params]
 

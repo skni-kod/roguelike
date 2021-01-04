@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 signal health_updated(health, amount)
 signal attacked(damage)
+signal open()
 
 var velocity = Vector2.ZERO
 var current_side = "Up" # Zmienna zawierająca stronę w którą odwrócony jest bohater
@@ -10,8 +11,11 @@ var got_hitted = false
 export var speed = 2
 var direction = Vector2()
 export var health = 100
-export var damage = 20
 var coins = 0
+var weapon = null
+var equipment = ["Blade","Axe"]
+var equipped = "Blade"
+var chest = null
 
 func _ready():
 	emit_signal("health_updated", health)
@@ -19,10 +23,30 @@ func _ready():
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("attack"):
-		emit_signal("attacked", damage)
+		emit_signal("attacked")
 	elif !attack: #Jeżeli nie atakuje to
 		movement()
-		
+	if weapon != null:
+		if Input.is_action_just_pressed("pick"):
+			var weaponName = weapon.WeaponName
+			if equipped != weaponName:
+				var level = get_tree().get_root().find_node("Main", true, false)
+				var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
+				weaponUsed = weaponUsed.instance()
+				weaponUsed.position = weapon.position
+				weaponUsed.WeaponName = equipped
+				level.add_child(weaponUsed)
+				get_node(equipped).queue_free()
+				equipped = weaponName
+				weapon.queue_free()
+				weapon = load("res://Scenes/Equipment/"+equipped+".tscn")
+				weapon = weapon.instance()
+				add_child(weapon) 
+				weapon = null
+	if chest != null:
+		if Input.is_action_just_pressed("pick"):
+			emit_signal("open")
+	
 func movement():
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -45,7 +69,6 @@ func movement():
 		elif direction.x > 0:
 			$PlayerSprite.scale.x = 1
 			$AnimationPlayer.play("Run")
-
 func take_dmg(enemy):
 	health = health - enemy.dps
 	emit_signal("health_updated", health)
@@ -54,17 +77,20 @@ func take_dmg(enemy):
 	yield($AnimationPlayer, "animation_finished")
 	got_hitted = false
 
-func _on_Sword_body_entered(body):
-	if body.is_in_group("Enemy"):
-		body.get_dmg(damage)
-
 func _on_Pick_body_entered(body):
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:
 			coins += 10
 			body.queue_free()
+		elif "Weapon" in body.name:
+			weapon = body
+		elif "Chest" in body.name:
+			chest = body
 	$Camera2D/Coins.text = "Coins:"+str(coins)
-  
+
 func _on_Player_health_updated(health):
 	pass
+
+func _on_Pick_body_exited(body):
+	weapon = null
 
