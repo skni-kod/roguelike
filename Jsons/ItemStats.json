@@ -1,13 +1,19 @@
-{"Weapons":{
-    "Blade":{
-        "attack":"10",
-        "spd":"0.5",
-        "knc":"0.1"
-    },
-    "Axe":{
-        "attack":"5",
-        "spd":"0.5",
-        "knc":"0.1"
+{
+    "Weapons": {
+        "Blade": {
+            "attack": "10",
+            "spd": "0.5",
+            "knc": "0.2"
+        },
+        "Axe": {
+            "attack": "5",
+            "spd": "0.5",
+            "knc": "0.3"
+        },
+        "Knife": {
+            "attack": "3",
+            "spd": "1",
+            "knc": "0.1"
+        }
     }
-}
 }
