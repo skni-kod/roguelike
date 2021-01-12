@@ -27,6 +27,7 @@ func _ready():
 		add_child(weapon)
 
 func rand_num(from,to):
-		for i in range(from,to):
-			   arr.append(i)
-		arr.shuffle()
+	randomize()
+	for i in range(from,to):
+		   arr.append(i)
+	arr.shuffle()
