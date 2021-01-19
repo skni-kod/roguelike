@@ -1,4 +1,8 @@
+# Lil Devil.gd
 extends KinematicBody2D
+
+const FIREBALL_SCENE = preload("Fireball.tscn")
+const SPEED = 100
 
 var player = null
 var move = Vector2.ZERO
@@ -56,10 +60,10 @@ func _on_Atak_body_exited(body):
 	attack = false
 
 func _on_Timer_timeout():
-	if attack and health>0: # funkcje wykonane gdy atakuje
+	if attack and health>0: # funkcje gdy atakuje
+		var fireball = FIREBALL_SCENE.instance()
+		add_child(fireball)
 		$AnimationPlayer.play("Attack")
-		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(self)
 			
 func get_dmg(dmg):
 	if health>0:
