@@ -1,4 +1,4 @@
-# Lil Devil.gd
+# Big Devil.gd
 extends KinematicBody2D
 
 const FIREBALL_SCENE = preload("Fireball.tscn")
@@ -36,7 +36,7 @@ func _physics_process(delta):
 			right = 1
 		else:
 			right = -1
-		$AnimationPlayer.play("Walk")
+			$AnimationPlayer.play("Walk")
 	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
 	move_and_collide(move)
@@ -63,13 +63,13 @@ func _on_Atak_body_exited(body):
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje gdy atakuje
-		if !$AnimationPlayer.play("Idle"):
-			$AnimationPlayer.play("Attack")
+		$AnimationPlayer.play("Attack")
 		var fireball = FIREBALL_SCENE.instance()
 		var main = get_tree().get_root().find_node("Main", true, false)
 		fireball.position = self.position + $Position2D.position
 		fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).position
 		main.add_child(fireball)
+		print($Timer.time_left)
 		
 			
 func get_dmg(dmg):
