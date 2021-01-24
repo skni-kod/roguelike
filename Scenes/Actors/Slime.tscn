@@ -113,20 +113,17 @@ hframes = 8
 frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 6 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 position = Vector2( 0.166862, 3.83767 )

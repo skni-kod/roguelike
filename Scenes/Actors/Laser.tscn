@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Actors/Laser.gd" type="Script" id=1]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.57105
+height = 92.8264
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.291391, 0.589404, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.977051, 0.592528, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 4.95
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 150.0
+angular_velocity = 45.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+color_ramp = SubResource( 3 )
+hue_variation_random = 1.0
+
+[node name="Laser" type="KinematicBody2D" groups=[
+"Projectile",
+]]
+collision_layer = 12
+collision_mask = 2147483651
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 50, 0 )
+rotation = 1.5708
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Atak" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+position = Vector2( 47.564, 0 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 128
+lifetime = 0.65
+process_material = SubResource( 4 )
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 0.001
+[connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]

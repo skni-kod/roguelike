@@ -6,7 +6,7 @@ var attack_vector = Vector2.ZERO
 export var attack_range = 15
 onready var timer = $Timer
 onready var player_node := get_tree().get_root().find_node("Player", true, false)
-var damage = 5
+var damage = 10
 export var smoothing = 0.25
 
 func _ready():
