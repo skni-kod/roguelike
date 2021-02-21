@@ -1,6 +1,8 @@
 # Fireball.gd
 extends KinematicBody2D
-
+# UWAGA WORK IN PROGRESS
+# NIE DZIAŁA TAK JAK POWINNO
+# UWAGA WORK IN PROGRESS
 const FIREBALL_SPEED = 100
 
 onready var direction = Vector2.ZERO

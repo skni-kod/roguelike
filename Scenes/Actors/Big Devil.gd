@@ -1,8 +1,10 @@
 # Big Devil.gd
 extends KinematicBody2D
-
-const LASER_SCENE = preload("Laser.tscn")
-const SPEED = 100
+# UWAGA WORK IN PROGRESS
+# praktycznie kopia Lil Devila, zmieniony sprite, fireball na laser itd.
+# UWAGA WORK IN PROGRESS
+const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
+const SPEED = 100 
 
 var player = null
 var move = Vector2.ZERO
