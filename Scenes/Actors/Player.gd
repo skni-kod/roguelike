@@ -22,6 +22,7 @@ func _ready():
 	emit_signal("health_updated", health)
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.damage = 10
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 func _physics_process(delta):
@@ -39,9 +40,10 @@ func _physics_process(delta):
 				weaponUsed.WeaponName = equipped
 				level.add_child(weaponUsed)
 				equipped = weaponName
-				weapon.queue_free()
 				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+weaponName+'.gd'))
 				$EquippedWeapon.timer = $EquippedWeapon/Timer
+				$EquippedWeapon.damage = int(weapon.Stats['attack'])
+				weapon.queue_free()
 				weapon = null
 	if chest != null:
 		if Input.is_action_just_pressed("pick"):
