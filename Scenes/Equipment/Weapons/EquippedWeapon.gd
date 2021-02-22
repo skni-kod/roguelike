@@ -1,5 +1,7 @@
 extends Node2D
 
+#Inicjuje działanie broni posiadanej przez playera na stacie poziomu (potem jest bezużyteczny)
+
 onready var timer = $Timer
 onready var player_node := get_tree().get_root().find_node("Player", true, false)
 
