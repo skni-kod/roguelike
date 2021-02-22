@@ -1,22 +1,22 @@
 extends Node2D
 
-var mouse_position
-var attack = false
-var attack_vector = Vector2.ZERO
-export var attack_range = 15
-onready var timer
+var mouse_position #Pozycja kursora
+var attack = false #Czy postać atakuje
+var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
+export var attack_range = 15 #Zasięg ataku
+var timer #Stoper
 var damage = 1
 var attack_speed = 0.0
 var a = 1
 
 func _physics_process(delta):
-	if a:
+	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/axe.png")
 		$AttackCollision.scale.x = 1
 		$AttackCollision.scale.y = 1
 		a = 0
-	if !attack:
+	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
 			rotation = PI + mouse_position.angle() * 0.1
@@ -30,13 +30,13 @@ func _physics_process(delta):
 			$WeaponSprite.scale.y = 1
 
 func _on_Player_attacked():
-	if !attack:
+	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
 		attack = true
 		$AttackCollision.disabled = false
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
 		timer.start()
 
-func _on_Timer_timeout():
+func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku
 	attack_speed += 0.01
 	if attack_speed <= 0.15:
 		position += attack_vector * (0.01/0.15)
@@ -56,6 +56,6 @@ func _on_Timer_timeout():
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
 
-func _on_EquippedWeapon_body_entered(body):
+func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)
