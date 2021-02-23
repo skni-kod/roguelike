@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Equipment/Weapons/EquippedWeapon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Equipment/Blade.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.0
@@ -87,7 +87,7 @@ anims/Run = SubResource( 4 )
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
 shape = SubResource( 5 )
 
-[node name="EquippedWeapon" parent="." instance=ExtResource( 3 )]
+[node name="Blade" parent="." instance=ExtResource( 3 )]
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]

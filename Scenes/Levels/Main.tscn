@@ -264,7 +264,7 @@ position = Vector2( 162.476, 40.4086 )
 position = Vector2( 90.6384, -14.0308 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 126.975, 59.2832 )
+position = Vector2( 110.475, 58.7832 )
 z_index = 2
 
 [node name="Chest" parent="." instance=ExtResource( 15 )]
