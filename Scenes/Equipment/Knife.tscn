@@ -18,6 +18,7 @@ wait_time = 0.01
 
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 11, 0 )
+scale = Vector2( 0.35, 0.55 )
 shape = SubResource( 1 )
 disabled = true
 [connection signal="body_entered" from="." to="." method="_on_Axe_body_entered"]
