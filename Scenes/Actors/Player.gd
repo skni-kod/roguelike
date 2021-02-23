@@ -13,7 +13,6 @@ var direction = Vector2()
 export var health = 100
 var coins = 0
 var weapon = null
-var equipment = ["Blade","Axe"]
 var equipped = "Blade"
 var chest = null
 var level 
@@ -22,7 +21,10 @@ func _ready():
 	level = get_tree().get_root().find_node("Main", true, false)
 	emit_signal("health_updated", health)
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
-
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.damage = 10
+	$EquippedWeapon.timer = $EquippedWeapon/Timer
+	
 func _physics_process(delta):
 	if Input.is_action_just_pressed("attack"):
 		emit_signal("attacked")
@@ -37,12 +39,11 @@ func _physics_process(delta):
 				weaponUsed.position = weapon.position
 				weaponUsed.WeaponName = equipped
 				level.add_child(weaponUsed)
-				get_node(equipped).queue_free()
 				equipped = weaponName
+				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+weaponName+'.gd'))
+				$EquippedWeapon.timer = $EquippedWeapon/Timer
+				$EquippedWeapon.damage = int(weapon.Stats['attack'])
 				weapon.queue_free()
-				weapon = load("res://Scenes/Equipment/"+equipped+".tscn")
-				weapon = weapon.instance()
-				add_child(weapon) 
 				weapon = null
 	if chest != null:
 		if Input.is_action_just_pressed("pick"):

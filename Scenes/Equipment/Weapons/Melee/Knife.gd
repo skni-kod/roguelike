@@ -6,7 +6,7 @@ var attack_vector = Vector2.ZERO
 export var attack_range = 15
 onready var timer = $Timer
 onready var player_node := get_tree().get_root().find_node("Player", true, false)
-var damage = 3
+var damage = 1
 var attack_speed = 0
 
 func _ready():
@@ -35,12 +35,12 @@ func _on_Player_attacked():
 
 func _on_Timer_timeout():
 	attack_speed += 0.01
-	if attack_speed <= 0.1:
-		position += attack_vector * (0.01/0.1)
+	if attack_speed <= 0.15:
+		position += attack_vector * (0.01/0.15)
 		if rotation < -PI/2 or rotation > PI/2:
-			$SwordSprite.rotation_degrees += -90 * (0.01/0.1)
+			$SwordSprite.rotation_degrees += -90 * (0.01/0.15)
 		else:
-			$SwordSprite.rotation_degrees += 90 * (0.01/0.1)
+			$SwordSprite.rotation_degrees += 90 * (0.01/0.15)
 		
 	elif attack_speed > 0.1:
 		position -= attack_vector
