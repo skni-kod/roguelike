@@ -13,9 +13,9 @@ func generate_level():
 	var map = walker.walk(2000)
 	walker.queue_free()
 	for location in map:
-		tileMap.set_cellv(location*2, 1)
-		tileMap.set_cellv(location*2+Vector2(1,0), 1)
-		tileMap.set_cellv(location*2+Vector2(0,1), 1)
-		tileMap.set_cellv(location*2+Vector2(1,1), 1)
+		tileMap.set_cellv(location*2, rand_range(0,2))
+		tileMap.set_cellv(location*2+Vector2(1,0), rand_range(0,2))
+		tileMap.set_cellv(location*2+Vector2(0,1), rand_range(0,2))
+		tileMap.set_cellv(location*2+Vector2(1,1), rand_range(0,2))
 		
 	tileMap.update_bitmask_region(borders.position, borders.end)
