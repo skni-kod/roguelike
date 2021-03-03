@@ -8,11 +8,14 @@ var timer #Stoper
 var damage = 1
 var attack_speed = 0.0
 var a = 1
+var projectile
+var level
 
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fire_scepter.png")
+		level = get_tree().get_root().find_node("Main", true, false)
 		$AttackCollision.scale.x = 1
 		$AttackCollision.scale.y = 1
 		a = 0
@@ -34,6 +37,11 @@ func _on_Player_attacked():
 		attack = true
 		$AttackCollision.disabled = false
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
+		projectile = preload("res://Scenes/Equipment/Weapons/Magic/Projectiles/Fireball.tscn")
+		projectile = projectile.instance()
+		projectile.position = get_parent().position
+		projectile.rotation = self.rotation
+		level.add_child(projectile)
 		timer.start()
 
 func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku

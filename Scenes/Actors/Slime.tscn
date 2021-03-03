@@ -96,6 +96,7 @@ tracks/0/keys = {
 [node name="Slime" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
+collision_layer = 4
 script = ExtResource( 1 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
