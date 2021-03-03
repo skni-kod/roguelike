@@ -40,7 +40,7 @@ func _physics_process(delta):
 				weaponUsed.WeaponName = equipped
 				level.add_child(weaponUsed)
 				equipped = weaponName
-				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+weaponName+'.gd'))
+				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weapon.Stats['range']+'/'+weaponName+'.gd'))
 				$EquippedWeapon.timer = $EquippedWeapon/Timer
 				$EquippedWeapon.damage = int(weapon.Stats['attack'])
 				weapon.queue_free()

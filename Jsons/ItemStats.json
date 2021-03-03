@@ -3,27 +3,44 @@
         "Blade": {
             "attack": "10",
             "spd": "0.5",
-            "knc": "0.2"
+            "knc": "0.2",
+            "range": "melee",
+            "effect": "none"
         },
         "Axe": {
             "attack": "5",
             "spd": "0.5",
-            "knc": "0.3"
+            "knc": "0.3",
+            "range": "melee",
+            "effect": "none"
         },
         "Knife": {
             "attack": "3",
             "spd": "1",
-            "knc": "0.1"
+            "knc": "0.1",
+            "range": "melee",
+            "effect": "none"
         },
         "Hammer": {
             "attack": "3",
             "spd": "1",
-            "knc": "0.1"
+            "knc": "0.1",
+            "range": "melee",
+            "effect": "none"
         },
         "Spear": {
             "attack": "3",
             "spd": "1",
-            "knc": "0.1"
+            "knc": "0.1",
+            "range": "melee",
+            "effect": "none"
+        },
+        "Fire Scepter": {
+            "attack": "10",
+            "spd": "1",
+            "knc": "0",
+            "range": "magic",
+            "effect": "none"
         }
     }
 }
