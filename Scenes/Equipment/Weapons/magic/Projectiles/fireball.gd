@@ -1,15 +1,13 @@
 # Fireball.gd
 extends KinematicBody2D
 
-const FIREBALL_SPEED = 100
+const FIREBALL_SPEED = 100 #szybkość poruszania się fireballa
 
-var mouse_position = get_global_mouse_position() - global_position# pozycja playera w którego celuje
 var dps = 20 # damage, który fireball zadaje
 var velocity
 
 func _ready():
-	print(get_global_mouse_position() - global_position)
-	velocity = Vector2(FIREBALL_SPEED, 0).rotated(rotation)
+	velocity = Vector2(FIREBALL_SPEED, 0).rotated(rotation) #Określa kierunek fireballa zgodnie z rotacją broni
 
 	
 func _physics_process(delta):
