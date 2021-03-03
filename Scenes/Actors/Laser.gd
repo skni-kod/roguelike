@@ -1,9 +1,8 @@
-# Fireball.gd
+# Laser.gd
 extends KinematicBody2D
 # UWAGA WORK IN PROGRESS
 # NIE DZIAŁA TAK JAK POWINNO
 # UWAGA WORK IN PROGRESS
-const FIREBALL_SPEED = 100
 
 onready var direction = Vector2.ZERO
 var player_Pos = Vector2.ZERO
@@ -15,6 +14,7 @@ func _ready():
 	rotation = (player_Pos - origin).normalized().angle()
 	
 	set_physics_process(true)
+	$Lifetime.start()
 	
 	
 func _on_Atak_body_entered(body):
@@ -23,5 +23,7 @@ func _on_Atak_body_entered(body):
 		
 		
 func _on_Lifetime_timeout():
-	pass
+	print("Laser out")
+	queue_free()
+	
 	

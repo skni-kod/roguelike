@@ -1,10 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Actors/Laser.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.57105
-height = 92.8264
+height = 96.1761
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0.291391, 0.589404, 1 )
@@ -13,7 +13,15 @@ colors = PoolColorArray( 1, 1, 1, 1, 0.977051, 0.592528, 0, 1, 1, 0, 0, 1 )
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.981013, 0.323864 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+trail_divisor = 16
+trail_size_modifier = SubResource( 5 )
 emission_shape = 1
 emission_sphere_radius = 4.95
 flag_disable_z = true
@@ -27,6 +35,31 @@ orbit_velocity_random = 0.0
 scale = 2.0
 color_ramp = SubResource( 3 )
 hue_variation_random = 1.0
+
+[sub_resource type="Gradient" id=7]
+colors = PoolColorArray( 1, 0.231445, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 2
+emission_box_extents = Vector3( 1, 5, 1 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.5
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 1.0
+tangential_accel = 1.0
+angle = 59.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 0.2
+color_ramp = SubResource( 8 )
 
 [node name="Laser" type="KinematicBody2D" groups=[
 "Projectile",
@@ -52,9 +85,25 @@ shape = SubResource( 1 )
 [node name="Particles2D" type="Particles2D" parent="."]
 amount = 128
 lifetime = 0.65
-process_material = SubResource( 4 )
+preprocess = 5.0
+speed_scale = 2.0
+process_material = SubResource( 6 )
+
+[node name="Particles2D2" type="Particles2D" parent="."]
+amount = 128
+lifetime = 0.65
+preprocess = 5.0
+speed_scale = 2.0
+process_material = SubResource( 6 )
 
 [node name="Lifetime" type="Timer" parent="."]
-wait_time = 0.001
+
+[node name="Particles2D3" type="Particles2D" parent="."]
+position = Vector2( 99.4572, -3.8147e-06 )
+amount = 16
+preprocess = 10.0
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 9 )
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
 [connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]

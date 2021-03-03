@@ -4,6 +4,7 @@ extends KinematicBody2D
 # praktycznie kopia Lil Devila, zmieniony sprite, fireball na laser itd.
 # UWAGA WORK IN PROGRESS
 const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
+const LASER_LOAD = preload("Laser_Load.tscn") # wczytuję laser jako LASER_LOAD
 const SPEED = 100 
 
 var player = null
@@ -27,6 +28,8 @@ var randomPosition
 var hit_pos
 var target
 var laser_color = Color(1.0, 0, 0, 0.1)
+
+var is_loading = 0
  
 func _ready():
 	health_bar.on_health_updated(health)
@@ -34,7 +37,7 @@ func _ready():
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
-	if target != null:
+	if target != null and int(delta*100) % 5 == 0:
 		aim()
 	if player != null and health>0:
 		$Sprite.scale.x = right
@@ -61,7 +64,15 @@ func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player":
 		target = body
 		attack = true
+		load_laser()
 		$Timer.start()
+
+func load_laser():
+	is_loading = 1
+	var loading = LASER_LOAD.instance()
+	loading.position = self.position + $Position2D.position
+	var main = get_tree().get_root().find_node("Main", true, false)
+	main.add_child(loading)
 
 func _on_Atak_body_exited(body):
 	if body.name == "Player":
@@ -88,11 +99,15 @@ func shoot(target_poz):
 	laser.position = self.position + $Position2D.position
 	laser.player_Pos = get_tree().get_root().find_node("Player", true, false).position
 	main.add_child(laser)
+	load_laser()
+	$Timer.start()
 		
 func _on_Timer_timeout():
 	if health>0 and attack and target: # funkcje gdy żyje
 		shoot(target.position)
 		print($Timer.time_left)
+	else:
+		pass
 		
 		
 			
