@@ -1,19 +1,22 @@
 extends Node2D
 
-var mouse_position
-var attack = false
-var attack_vector = Vector2.ZERO
-export var attack_range = 15
-onready var timer = $Timer
-onready var player_node := get_tree().get_root().find_node("Player", true, false)
-var damage = 1
-var attack_speed = 0
-
-func _ready():
-	player_node.connect("attacked", self, "_on_Player_attacked")
+var mouse_position #Pozycja kursora
+var attack = false #Czy postać atakuje
+var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
+export var attack_range = 15 #Zasięg ataku
+var timer #Stoper
+var damage
+var attack_speed = 0.0
+var a = 1
 
 func _physics_process(delta):
-	if !attack:
+	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
+		timer.set_wait_time(0.01)
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/hammer.png")
+		$AttackCollision.scale.x = 1
+		$AttackCollision.scale.y = 1
+		a = 0
+	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
 			rotation = PI + mouse_position.angle() * 0.1
@@ -22,37 +25,37 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * 0.1
 		if rotation < -PI/2 or rotation > PI/2:
-			$SwordSprite.scale.y = -1
+			$WeaponSprite.scale.y = -1
 		else:
-			$SwordSprite.scale.y = 1
+			$WeaponSprite.scale.y = 1
 
 func _on_Player_attacked():
-	if !attack:
+	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
 		attack = true
 		$AttackCollision.disabled = false
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
 		timer.start()
 
-func _on_Timer_timeout():
+func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku
 	attack_speed += 0.01
 	if attack_speed <= 0.15:
 		position += attack_vector * (0.01/0.15)
 		if rotation < -PI/2 or rotation > PI/2:
-			$SwordSprite.rotation_degrees += -90 * (0.01/0.15)
+			$WeaponSprite.rotation_degrees += -90 * (0.01/0.15)
 		else:
-			$SwordSprite.rotation_degrees += 90 * (0.01/0.15)
+			$WeaponSprite.rotation_degrees += 90 * (0.01/0.15)
 		
-	elif attack_speed > 0.1:
+	elif attack_speed > 0.3:
 		position -= attack_vector
-		$SwordSprite.rotation_degrees = 0
+		$WeaponSprite.rotation_degrees = 0
 		$AttackCollision.disabled = true
 		attack = false
 		attack_speed = 0
 		timer.stop()
 
 func change_weapon(texture):
-	$SwordSprite.texture = texture
+	$WeaponSprite.texture = texture
 
-func _on_Axe_body_entered(body):
+func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage)

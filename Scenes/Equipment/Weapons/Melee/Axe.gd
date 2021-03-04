@@ -5,7 +5,7 @@ var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
 export var attack_range = 15 #Zasięg ataku
 var timer #Stoper
-var damage = 1
+var damage
 var attack_speed = 0.0
 var a = 1
 
