@@ -63,10 +63,11 @@ func _on_Timer_timeout():
 			
 func get_dmg(dmg):
 	if health>0:
-		if player.position.x-self.position.x < 0:
-			self.position.x += 10
-		else:
-			self.position.x -= 10
+		if player != null:
+			if player.position.x-self.position.x < 0:
+				self.position.x += 10
+			else:
+				self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")
