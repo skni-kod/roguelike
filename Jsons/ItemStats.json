@@ -41,6 +41,22 @@
             "knc": "0",
             "range": "magic",
             "effect": "none"
+        },
+         "BloodSword": {
+            "attack": "10",
+            "spd": "0.5",
+            "knc": "0.2",
+            "range": "melee",
+            "effect": "none"
         }
+        ,
+         "FMS": {
+            "attack": "10",
+            "spd": "0.5",
+            "knc": "0.2",
+            "range": "melee",
+            "effect": "none"
+        }
+        
     }
 }

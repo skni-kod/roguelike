@@ -8,12 +8,15 @@ var timer #Stoper
 var damage
 var a = 1
 
+
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.25)
-		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/knife.png")
-		$AttackCollision.scale.x = 0.5
-		$AttackCollision.scale.y = 0.5
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/BloodSword.png")
+		$AttackCollision.scale.x = 0.8
+		$AttackCollision.scale.y = 0.9
+		$WeaponSprite.scale.x = 0.8
+		$WeaponSprite.scale.y = -0.8
 		
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
@@ -25,9 +28,9 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * 0.1
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.y = -1
+			$WeaponSprite.scale.y = -0.8
 		else:
-			$WeaponSprite.scale.y = 1
+			$WeaponSprite.scale.y = 0.8
 
 func _on_Player_attacked():
 	if !attack: #Sprawdza czy broń nie jest w trakcie ataku
