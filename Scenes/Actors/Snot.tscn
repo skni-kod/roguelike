@@ -1,23 +1,84 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
-
+[ext_resource path="res://Assets/Enemies/snot.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Actors/Snot.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 5.50819
-height = 16.8513
+radius = 7.4746
+height = 1.92495
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 84.9011
+radius = 23.8348
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 17.0407, 9.93699 )
+[sub_resource type="CircleShape2D" id=3]
+radius = 3.83014
 
 [sub_resource type="Animation" id=4]
-resource_name = "Attack"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Hurt"
 length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=7]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 1 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Walk"
+length = 0.75
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -28,106 +89,52 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 8, 9, 10, 11, 12 ]
+"values": [ 0, 1, 2, 3, 0 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "Die"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 16, 17, 18, 19, 20, 21 ]
-}
-
-[sub_resource type="Animation" id=6]
-resource_name = "Hurt"
-length = 0.4
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ 14, 13, 14 ]
-}
-
-[sub_resource type="Animation" id=7]
-length = 0.3
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ 1, 2, 3 ]
-}
-
-[sub_resource type="Animation" id=8]
-length = 0.3
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ 3, 4, 5 ]
-}
-
-[node name="Slime" type="KinematicBody2D" groups=[
+[node name="snot" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
-script = ExtResource( 1 )
+collision_layer = 4
+collision_mask = 3
+script = ExtResource( 3 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+[node name="HealthBar" parent="." instance=ExtResource( 2 )]
 visible = false
-margin_left = -10.0406
-margin_top = -5.9466
-margin_right = -10.0406
-margin_bottom = -5.9466
-rect_scale = Vector2( 0.2, 0.2 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -7.91883
+margin_top = -11.9944
+margin_right = -6.91883
+margin_bottom = -11.9944
+rect_scale = Vector2( 0.15, 0.2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-vframes = 3
+texture = ExtResource( 1 )
 hframes = 8
-frame = 8
+frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 6 )
-rotation = 1.5708
+position = Vector2( 0, 0.00473362 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-position = Vector2( -0.117981, 4.09191 )
+visible = false
+position = Vector2( 0.297302, -0.148651 )
+scale = Vector2( 3, 3 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-position = Vector2( 0.166862, 3.83767 )
+visible = false
+scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,5 +1,5 @@
 extends KinematicBody2D
-#slime
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.5
@@ -28,9 +28,9 @@ func _physics_process(delta):
 		$Sprite.scale.x = right
 		move = position.direction_to(player.position) * speed
 		if player.position.x-self.position.x < 0:
-			right = 1
-		else:
 			right = -1
+		else:
+			right = 1
 		$AnimationPlayer.play("Walk")
 	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
@@ -58,8 +58,10 @@ func _on_Atak_body_exited(body):
 func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
-		yield($AnimationPlayer,"animation_finished")
 		player.take_dmg(self)
+		yield($AnimationPlayer,"animation_finished")
+
+
 			
 func get_dmg(dmg):
 	
