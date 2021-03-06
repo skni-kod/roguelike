@@ -9,10 +9,11 @@ radius = 4.50836
 height = 0.0
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 84.9011
+radius = 35.3736
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 17.0407, 9.93699 )
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 8.46189
+height = 0.0
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"
@@ -118,23 +119,24 @@ frame = 3
 region_rect = Rect2( 1, 0, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -1.11362, 2.44997 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-visible = false
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.44545, 0.111362 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 visible = false
-position = Vector2( 0.166862, 3.83767 )
-shape = SubResource( 3 )
+position = Vector2( 0.723678, 2.72405 )
+shape = SubResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 4 )
