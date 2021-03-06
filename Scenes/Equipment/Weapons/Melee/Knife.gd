@@ -14,7 +14,8 @@ func _physics_process(delta):
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/knife.png")
 		$AttackCollision.scale.x = 0.5
 		$AttackCollision.scale.y = 0.5
-		
+		$AttackCollision.position.x = 10
+		$AttackCollision.position.y = 0		
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
@@ -26,8 +27,10 @@ func _physics_process(delta):
 			rotation += mouse_position.angle() * 0.1
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.y = -1
+			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 		else:
 			$WeaponSprite.scale.y = 1
+			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 
 func _on_Player_attacked():
 	if !attack: #Sprawdza czy broń nie jest w trakcie ataku

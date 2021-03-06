@@ -40,6 +40,8 @@ func _physics_process(delta):
 				weaponUsed.WeaponName = equipped
 				level.add_child(weaponUsed)
 				equipped = weaponName
+				#Wycentruj broń na graczu, zmień broń
+				$EquippedWeapon.position=Vector2.ZERO
 				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weapon.Stats['range']+'/'+weaponName+'.gd'))
 				$EquippedWeapon.timer = $EquippedWeapon/Timer
 				$EquippedWeapon.damage = int(weapon.Stats['attack'])

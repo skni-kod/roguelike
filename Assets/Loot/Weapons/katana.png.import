@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fire_scepter.png-479d5bced9fdfce4eef52c2783863b5b.stex"
+path="res://.import/katana.png-625acb1d8535378bb886b6a4f01168e7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/fire_scepter.png"
-dest_files=[ "res://.import/fire_scepter.png-479d5bced9fdfce4eef52c2783863b5b.stex" ]
+source_file="res://Assets/Loot/Weapons/katana.png"
+dest_files=[ "res://.import/katana.png-625acb1d8535378bb886b6a4f01168e7.stex" ]
 
 [params]
 

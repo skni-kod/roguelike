@@ -14,6 +14,13 @@
             "range": "melee",
             "effect": "none"
         },
+        "Katana": {
+            "attack": "25",
+            "spd": "0.3",
+            "knc": "0",
+            "range": "melee",
+            "effect": "none"
+        },
         "Knife": {
             "attack": "3",
             "spd": "1",
