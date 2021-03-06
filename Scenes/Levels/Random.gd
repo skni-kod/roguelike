@@ -142,9 +142,9 @@ func get_random_tile(probability: float) -> int: #losowanie podłogi lub przeszk
 func _pick_random_texture(cell_type: int): #losowanie tekstury z TileMap
 	var interval := Vector2()
 	if cell_type == Cell.WALL:
-		interval = Vector2(4,4)
+		interval = Vector2(0,3)
 	elif cell_type == Cell.FLOOR:
-		interval = Vector2(5,5)
+		interval = Vector2(4,20)
 	elif cell_type == Cell.OBSTACLE:
 		interval = Vector2(0,3)
 	return _rng.randi_range(interval.x, interval.y)
