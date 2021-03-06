@@ -3,11 +3,13 @@ class_name Random
 signal started
 signal finished
 
-enum Cell {WALL, FLOOR, OBSTACLE}
-export(float, 0, 1) var ground_probability := 0.1
+
+#enum Cell {WALL, FLOOR, OBSTACLE}
+#export(float, 0, 1) var ground_probability := 0.5
 
 var size := Vector2(10,10) #rozmiar planszy
 onready var _tile_map : TileMap = $TileMap # $TileMap == get.node("TileMap")
+onready var room_gen = get_node("Room_gen")
 var _rng := RandomNumberGenerator.new()
 var dl = size.y
 var szer = size.x
@@ -31,16 +33,7 @@ func generate(): #właściwa funkcja generująca z sygnałami
 func generate_perimeter(): #generacja pokoju
 	for n in 4:
 		for m in step:
-			for x in [szer,size.x + szer - 1]:
-				for y in range(dl, size.y + dl):
-					_tile_map.set_cell(x,y,_pick_random_texture(Cell.WALL)) #generacja ścian
-			for x in range (szer + 1, size.x + szer - 1):
-				for y in [dl, size.y + dl - 1]:
-					_tile_map.set_cell(x,y,_pick_random_texture(Cell.WALL)) #generacja ścian
-			for x in range (szer + 1, size.x + szer - 1):
-				for y in range(dl + 1, size.y + dl - 1):
-					var cell := get_random_tile(ground_probability) 
-					_tile_map.set_cell(x,y,cell) #generacja podłogi
+			room_gen.generate_room(szer, dl, _tile_map, size)
 			if hist == 0:
 				if m < 2:
 					dl -= size.y
@@ -136,15 +129,15 @@ func generate_perimeter(): #generacja pokoju
 #		step_history_x.append(dl)
 #####
 
-func get_random_tile(probability: float) -> int: #losowanie podłogi lub przeszkody (obecnie nieużywane)
-	return _pick_random_texture(Cell.FLOOR) #if _rng.randf() > probability else _pick_random_texture(Cell.OBSTACLE)
-
-func _pick_random_texture(cell_type: int): #losowanie tekstury z TileMap
-	var interval := Vector2()
-	if cell_type == Cell.WALL:
-		interval = Vector2(0,3)
-	elif cell_type == Cell.FLOOR:
-		interval = Vector2(4,20)
-	elif cell_type == Cell.OBSTACLE:
-		interval = Vector2(0,3)
-	return _rng.randi_range(interval.x, interval.y)
+#func get_random_tile(probability: float) -> int: #losowanie podłogi lub przeszkody (obecnie nieużywane)
+#	return _pick_random_texture(Cell.FLOOR) #if _rng.randf() > probability else _pick_random_texture(Cell.OBSTACLE)
+#
+#func _pick_random_texture(cell_type: int): #losowanie tekstury z TileMap
+#	var interval
+#	if cell_type == Cell.WALL:
+#		interval = 0
+#	elif cell_type == Cell.FLOOR:
+#		interval = 0
+#	elif cell_type == Cell.OBSTACLE:
+#		interval = 1
+#	return interval

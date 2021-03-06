@@ -1,11 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Levels/Random.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/TileMap/floor/floor_4.png" type="Texture" id=3]
 [ext_resource path="res://Assets/TileMap/floor/floor_1.png" type="Texture" id=4]
-[ext_resource path="res://Scenes/Levels/Set.tres" type="TileSet" id=5]
+[ext_resource path="res://Assets/TileMap/TileMap.tres" type="TileSet" id=5]
 [ext_resource path="res://Assets/TileMap/floor/floor_2.png" type="Texture" id=6]
+[ext_resource path="res://Room_gen.gd" type="Script" id=7]
 [ext_resource path="res://Assets/TileMap/floor/floor_6.png" type="Texture" id=8]
 [ext_resource path="res://Assets/TileMap/floor/floor_3.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=12]
@@ -134,8 +135,12 @@ format = 1
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 126.975, 59.2832 )
 z_index = 2
+speed = 20
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
+
+[node name="Room_gen" type="Node2D" parent="."]
+script = ExtResource( 7 )
