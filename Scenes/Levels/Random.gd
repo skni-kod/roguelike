@@ -7,7 +7,7 @@ signal finished
 #enum Cell {WALL, FLOOR, OBSTACLE}
 #export(float, 0, 1) var ground_probability := 0.5
 
-var size := Vector2(10,10) #rozmiar planszy
+var size := Vector2(15,10) #rozmiar planszy
 onready var _tile_map : TileMap = $TileMap # $TileMap == get.node("TileMap")
 onready var room_gen = get_node("Room_gen")
 var _rng := RandomNumberGenerator.new()
@@ -36,48 +36,48 @@ func generate_perimeter(): #generacja pokoju
 			room_gen.generate_room(szer, dl, _tile_map, size)
 			if hist == 0:
 				if m < 2:
-					dl -= size.y
+					dl -= size.y + 1
 				else:
 					gen = _rng.randi_range(0,10)
 					if gen >= 0 and gen <= 6:
-						dl -= size.y
+						dl -= size.y + 1
 					elif gen > 6 and gen <= 8:
-						szer += size.x
+						szer += size.x + 1
 					elif gen > 8 and gen <= 10:
-						szer -= size.x
+						szer -= size.x + 1
 			elif hist == 1:
 				if m < 2:
-					szer += size.x
+					szer += size.x + 1
 				else:
 					gen = _rng.randi_range(0,10)
 					if gen >= 0 and gen <= 6:
-						szer += size.x
+						szer += size.x + 1
 					elif gen > 6 and gen <= 8:
-						dl += size.y
+						dl += size.y + 1
 					elif gen > 8 and gen <= 10:
-						dl -= size.y
+						dl -= size.y + 1
 			elif hist == 2:
 				if m < 2:
-					dl += size.y
+					dl += size.y + 1
 				else:
 					gen = _rng.randi_range(0,10)
 					if gen >= 0 and gen <= 6:
-						dl += size.y
+						dl += size.y + 1
 					elif gen > 6 and gen <= 8:
-						szer += size.x
+						szer += size.x + 1
 					elif gen > 8 and gen <= 10:
-						szer -= size.x
+						szer -= size.x + 1
 			elif hist == 3:
 				if m < 2:
-					szer -= size.x
+					szer -= size.x + 1
 				else:
 					gen = _rng.randi_range(0,10)
 					if gen >= 0 and gen <= 6:
-						szer -= size.x
+						szer -= size.x + 1
 					elif gen > 6 and gen <= 8:
-						dl += size.y
+						dl += size.y + 1
 					elif gen > 8 and gen <= 10:
-						dl -= size.y
+						dl -= size.y + 1
 		szer = size.x
 		dl = size.y
 		hist += 1
