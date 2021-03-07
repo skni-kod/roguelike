@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Enemies/cuckshooter.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/UI/HealthBar.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Actors/cuckshooter.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]

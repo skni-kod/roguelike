@@ -257,4 +257,4 @@ z_index = 2
 position = Vector2( 90.5444, 80.8976 )
 
 [node name="cuckshooter" parent="." instance=ExtResource( 17 )]
-position = Vector2( 181.546, -39.2205 )
+position = Vector2( 177.474, -30.7215 )
