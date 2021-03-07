@@ -11,7 +11,7 @@ height = 0.0
 [sub_resource type="CircleShape2D" id=2]
 radius = 35.3736
 
-[sub_resource type="CapsuleShape2D" id=9]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 8.46189
 height = 0.0
 
@@ -115,7 +115,7 @@ flash_color = Color( 1, 0.270588, 0, 1 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 8
-frame = 3
+frame = 2
 region_rect = Rect2( 1, 0, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -136,7 +136,7 @@ position = Vector2( -0.44545, 0.111362 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 visible = false
 position = Vector2( 0.723678, 2.72405 )
-shape = SubResource( 9 )
+shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 4 )

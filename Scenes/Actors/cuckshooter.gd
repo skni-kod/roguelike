@@ -1,11 +1,12 @@
 extends KinematicBody2D
 
+onready var BULLET_SCENE = preload("res://Scenes/Actors/CucksBullet.tscn")
+
 var player = null
 var move = Vector2.ZERO
-export var speed = 3
+export var speed = 0.1
 export var dps = 10
 var right = 1
-var attack = false
 var max_hp = 10
 var hp:float = max_hp
 
@@ -19,11 +20,11 @@ var randomPosition
 
 func _ready():
 	health_bar.on_health_updated(health)
-	
+
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	if player !=null and !attack and health>0:
+	if player !=null:
 		$Sprite.scale.x= right
 		move = position.direction_to(player.position) * speed
 		if player.position.x - self.position.x < 0:
@@ -31,31 +32,33 @@ func _physics_process(delta):
 		else:
 			right = 1
 		$AnimationPlayer.play("Walk")
-	elif !attack and health>0:
+	elif player == null:
+		move = Vector2.ZERO
 		$AnimationPlayer.play("Idle")
-	
-	move_and_collide(move)
-	
-func _on_Wzrok_body_entered(body):
+		
+	move = move.normalized()
+	move = move_and_collide(move)
+
+func _on_Area2D_body_entered(body):
 	if body != self and body.name == "Player":
 		player = body
-		
-func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player":
-		player = null
-		
-func  _on_Atak_body_entered(body):
-	if body != self and body.name == "Player":
-		attack = true
-		
-func _on_Atak_body_exited(body):
-	attack = false
-	
+
+
+func _on_Area2D_body_exited(body):
+	player = null
+
+func fire():
+	var bullet = BULLET_SCENE.instance()
+	bullet.position = get_global_position()
+	bullet.player = player
+	get_parent().add_child(bullet)
+	$Timer.set_wait_time(1)
+	$AnimationPlayer.play("Attack")
+	yield($AnimationPlayer,"animation_finished")
+
 func _on_Timer_timeout():
-	if attack and health>0:
-		$AnimationPlayer.play("Attack")
-		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(self)
+	if player !=null and health>0:
+		fire()
 		
 		
 func get_dmg(dmg):
@@ -86,3 +89,4 @@ func get_dmg(dmg):
 	text.amount = dmg
 	text.type = "Damage"
 	add_child(text)		
+
