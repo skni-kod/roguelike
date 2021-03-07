@@ -18,8 +18,8 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
-func _ready():
-	health_bar.on_health_updated(health)
+#func _ready():
+	#health_bar.on_health_updated(health)
 
 func _physics_process(delta):
 	move = Vector2.ZERO
@@ -53,15 +53,14 @@ func fire():
 	bullet.player = player
 	get_parent().add_child(bullet)
 	$Timer.set_wait_time(1)
-	$AnimationPlayer.play("Attack")
-	yield($AnimationPlayer,"animation_finished")
+	
 
 func _on_Timer_timeout():
 	if player !=null and health>0:
 		fire()
 		
 		
-func get_dmg(dmg):
+"""func get_dmg(dmg):
 	if health>0:
 		if player.position.x - self.position.x < 0:
 			self.position.x += 10
@@ -90,3 +89,4 @@ func get_dmg(dmg):
 	text.type = "Damage"
 	add_child(text)		
 
+"""

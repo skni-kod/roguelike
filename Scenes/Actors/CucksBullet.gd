@@ -1,4 +1,4 @@
-extends Area2D
+extends KinematicBody2D
 
 var move = Vector2.ZERO
 var look_vec = Vector2.ZERO
@@ -17,4 +17,9 @@ func _physics_process(delta):
 	position += move	
 
 
-
+func _on_Area2D_body_entered(body):
+	if body.is_in_group("Player"):
+		body.take_dmg(20)
+		queue_free()
+	else:
+		queue_free()
