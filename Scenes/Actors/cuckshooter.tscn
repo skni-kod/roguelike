@@ -5,7 +5,7 @@
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4.21886, 4.42302 )
+extents = Vector2( 4.44158, 4.97983 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Attack"
@@ -102,10 +102,12 @@ collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
-margin_left = -49.6314
-margin_top = -18.167
-margin_right = -49.6314
-margin_bottom = -18.167
+visible = false
+margin_left = -10.2437
+margin_top = -7.75467
+margin_right = -10.2437
+margin_bottom = -7.75467
+rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -113,7 +115,7 @@ vframes = 4
 hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.388077, 3.33823 )
+position = Vector2( -0.388077, 3.11551 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
@@ -127,6 +129,7 @@ anims/Idle = SubResource( 6 )
 anims/Walk = SubResource( 7 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.229851, 3.00339 )
 collision_mask = 2147483649
 
@@ -136,6 +139,7 @@ rotation = -0.13439
 shape = SubResource( 8 )
 
 [node name="Strzelanie" type="Area2D" parent="."]
+visible = false
 position = Vector2( 0.0834274, 3.67081 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Strzelanie"]
