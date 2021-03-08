@@ -35,6 +35,7 @@ func _on_Player_attacked():
 			$SwordSprite.rotation_degrees = -90
 			$AttackCollision.rotation_degrees = -90
 		else:
+			$AttackCollision.rotation_degrees = 90
 			$SwordSprite.rotation_degrees = 90
 			$AttackCollision.rotation_degrees = 90
 		$AttackCollision.disabled = false
