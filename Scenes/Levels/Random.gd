@@ -9,12 +9,11 @@ signal finished
 
 var size := Vector2(15,10) #rozmiar planszy
 onready var _tile_map : TileMap = $TileMap # $TileMap == get.node("TileMap")
-onready var room_gen = get_node("Room_gen")
-var _rng := RandomNumberGenerator.new()
+onready var room_gen = get_node("Room_gen") #importowanie funkcji z Room_gen.gd
+var _rng := RandomNumberGenerator.new() 
 var dl = size.y
 var szer = size.x
 var gen = 0
-var spr = 0
 var step = 6
 var hist = 0
 func _ready(): #funkcja wykonująca
@@ -33,50 +32,50 @@ func generate(): #właściwa funkcja generująca z sygnałami
 func generate_perimeter(): #generacja pokoju
 	for n in 4:
 		for m in step:
-			room_gen.generate_room(szer, dl, _tile_map, size)
-			if hist == 0:
-				if m < 2:
+			room_gen.generate_room(szer, dl, _tile_map, size) #odniesienie do Room_gen.gd
+			if hist == 0: #rysowanie w górę
+				if m < 2: # pierwsze 2 pokoje są prosto
 					dl -= size.y + 1
-				else:
+				else: #kolejnie pokoje losują, w którą stronę się rysują
 					gen = _rng.randi_range(0,10)
-					if gen >= 0 and gen <= 6:
+					if gen >= 0 and gen <= 6: #prosto
 						dl -= size.y + 1
-					elif gen > 6 and gen <= 8:
+					elif gen > 6 and gen <= 8: #prawo
 						szer += size.x + 1
-					elif gen > 8 and gen <= 10:
+					elif gen > 8 and gen <= 10: #lewo
 						szer -= size.x + 1
-			elif hist == 1:
+			elif hist == 1: #rysowanie w prawo
 				if m < 2:
-					szer += size.x + 1
+					szer += size.x + 1 #prawo
 				else:
 					gen = _rng.randi_range(0,10)
-					if gen >= 0 and gen <= 6:
+					if gen >= 0 and gen <= 6: #prawo
 						szer += size.x + 1
-					elif gen > 6 and gen <= 8:
+					elif gen > 6 and gen <= 8: #dół
 						dl += size.y + 1
-					elif gen > 8 and gen <= 10:
+					elif gen > 8 and gen <= 10: #góra
 						dl -= size.y + 1
-			elif hist == 2:
+			elif hist == 2: #rysowanie w dół
 				if m < 2:
-					dl += size.y + 1
+					dl += size.y + 1 #dół
 				else:
 					gen = _rng.randi_range(0,10)
-					if gen >= 0 and gen <= 6:
+					if gen >= 0 and gen <= 6: #dół
 						dl += size.y + 1
-					elif gen > 6 and gen <= 8:
+					elif gen > 6 and gen <= 8: #prawo
 						szer += size.x + 1
-					elif gen > 8 and gen <= 10:
+					elif gen > 8 and gen <= 10: #lewo
 						szer -= size.x + 1
-			elif hist == 3:
+			elif hist == 3: #rysowanie w lewo
 				if m < 2:
-					szer -= size.x + 1
+					szer -= size.x + 1 #lewo
 				else:
 					gen = _rng.randi_range(0,10)
-					if gen >= 0 and gen <= 6:
+					if gen >= 0 and gen <= 6: #lewo
 						szer -= size.x + 1
-					elif gen > 6 and gen <= 8:
+					elif gen > 6 and gen <= 8: #dół
 						dl += size.y + 1
-					elif gen > 8 and gen <= 10:
+					elif gen > 8 and gen <= 10: #góra
 						dl -= size.y + 1
 		szer = size.x
 		dl = size.y
