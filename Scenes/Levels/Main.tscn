@@ -243,7 +243,7 @@ rect_scale = Vector2( 2, 2 )
 
 [node name="background" type="Sprite" parent="."]
 modulate = Color( 0.4, 0.356863, 0.647059, 1 )
-position = Vector2( 1072.04, 917.344 )
+position = Vector2( 1072.04, 916.783 )
 texture = ExtResource( 21 )
 
 [node name="Floor" type="TileMap" parent="."]
@@ -478,7 +478,7 @@ position = Vector2( 1111.11, 1317.07 )
 position = Vector2( 1208.62, 1318.26 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 270.57, 355.864 )
+position = Vector2( 308.668, 359.039 )
 z_index = 2
 
 [node name="sknikod" type="Sprite" parent="."]

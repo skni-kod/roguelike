@@ -6,7 +6,7 @@
 radius = 6.32664
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.296296, 0.540741, 0.703704, 1 )
+offsets = PoolRealArray( 0, 0.139073, 0.540741, 0.807947, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 1, 0.621094, 0, 1, 1, 1, 1, 1, 1, 0.574219, 0, 1, 0.980469, 0, 0, 1 )
 
 [sub_resource type="GradientTexture" id=3]
@@ -46,6 +46,7 @@ orbit_velocity = 1.0
 orbit_velocity_random = 1.0
 orbit_velocity_curve = SubResource( 5 )
 linear_accel = 10.0
+radial_accel = 14.73
 radial_accel_curve = SubResource( 7 )
 tangential_accel_curve = SubResource( 9 )
 angle = 297.9
@@ -64,11 +65,8 @@ rotation = 1.5708
 shape = SubResource( 1 )
 disabled = true
 
-[node name="Lifetime" type="Timer" parent="."]
-wait_time = 3.0
-
 [node name="Particles2D" type="Particles2D" parent="."]
 rotation = 1.5708
 amount = 128
+local_coords = false
 process_material = SubResource( 10 )
-[connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]

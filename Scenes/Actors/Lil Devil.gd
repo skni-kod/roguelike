@@ -95,11 +95,6 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
-#		var weapon = load("res://Scenes/Loot/Weapon.tscn")
-#		weapon = weapon.instance()
-#		weapon.WeaponName = drop["weapon"]
-#		weapon.position = self.position
-#		level.add_child(weapon)
 		queue_free()
 		
 	var text = floating_dmg.instance()

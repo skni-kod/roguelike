@@ -1,10 +1,9 @@
 # Big Devil.gd
 extends KinematicBody2D
 # UWAGA WORK IN PROGRESS
-# praktycznie kopia Lil Devila, zmieniony sprite, fireball na laser itd.
 # UWAGA WORK IN PROGRESS
 const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
-const LASER_LOAD = preload("Laser_Load.tscn") # wczytuję laser jako LASER_LOAD
+#const LASER_LOAD = preload("Laser_Load.tscn") # wczytuję laser jako LASER_LOAD
 const SPEED = 100 
 
 var player = null
@@ -28,11 +27,10 @@ var randomPosition
 var hit_pos
 var target
 var laser_color = Color(1.0, 0, 0, 0.1)
-
-var is_loading = 0
  
 func _ready():
 	health_bar.on_health_updated(health)
+	$Laser_Load.visible = false
 	$Timer.stop()
 	
 func _physics_process(delta):
@@ -64,18 +62,12 @@ func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player":
 		target = body
 		attack = true
-		load_laser()
+		$Laser_Load.visible = true
 		$Timer.start()
-
-func load_laser():
-	is_loading = 1
-	var loading = LASER_LOAD.instance()
-	loading.position = self.position + $Position2D.position
-	var main = get_tree().get_root().find_node("Main", true, false)
-	main.add_child(loading)
-
+	
 func _on_Atak_body_exited(body):
 	if body.name == "Player":
+		$Laser_Load.visible = false
 		target = null
 		attack = false
 		$Timer.stop()
@@ -88,9 +80,9 @@ func aim():
 	if result:
 		hit_pos = result.position
 		if result.collider.name == "Player":
-			$Laser.rotation = (target.position - position).angle() + 2 * Vector2(0.5, -0.5).angle() # doprecyzowanie rotacji raya
-			
-
+			$Laser.rotation = (target.position - position).angle() + 2 * Vector2(0.5, -0.5).angle() + 10 * (target.position + target.velocity) # doprecyzowanie rotacji raya
+		
+		
 # strzelanie do target -> pozycja (Vector2) 
 func shoot(target_poz):
 	$AnimationPlayer.play("Attack")
@@ -99,18 +91,22 @@ func shoot(target_poz):
 	laser.position = self.position + $Position2D.position
 	laser.player_Pos = get_tree().get_root().find_node("Player", true, false).position
 	main.add_child(laser)
-	load_laser()
-	$Timer.start()
+		
 		
 func _on_Timer_timeout():
 	if health>0 and attack and target: # funkcje gdy żyje
 		shoot(target.position)
 		print($Timer.time_left)
-	else:
-		pass
+		$Laser_Load.visible = false
+		$Cooldown.start()
 		
 		
-			
+func _on_Cooldown_timeout():
+	if health>0 and attack and target:
+		$Laser_Load.visible = true
+		$Timer.start()
+		
+		
 func get_dmg(dmg):
 	if health>0:
 		if player.position.x-self.position.x < 0:
@@ -134,11 +130,6 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
-#		var weapon = load("res://Scenes/Loot/Weapon.tscn")
-#		weapon = weapon.instance()
-#		weapon.WeaponName = drop["weapon"]
-#		weapon.position = self.position
-#		level.add_child(weapon)
 		queue_free()
 		
 	var text = floating_dmg.instance()
