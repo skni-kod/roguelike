@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/knight iso char.png-2888112c80dc77ce2e548067e8e7a722.stex"
+path="res://.import/cuckshooter.png-6a3133baabbcf838456e520d3ebadc70.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Hero/Sprites&Animations/knight iso char.png"
-dest_files=[ "res://.import/knight iso char.png-2888112c80dc77ce2e548067e8e7a722.stex" ]
+source_file="res://Assets/Enemies/cuckshooter.png"
+dest_files=[ "res://.import/cuckshooter.png-6a3133baabbcf838456e520d3ebadc70.stex" ]
 
 [params]
 
