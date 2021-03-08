@@ -16,6 +16,9 @@ func _ready():
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
 	$Sprite.texture = texture
 
+func take_dmg(a):
+	pass
+
 func _on_PopUp_body_entered(body):
 	if body.name == "Player":
 		var popup = load("res://Scenes/UI/ItemStats.tscn")

@@ -478,7 +478,7 @@ position = Vector2( 1111.11, 1317.07 )
 position = Vector2( 1208.62, 1318.26 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 308.668, 359.039 )
+position = Vector2( 308.668, 358.882 )
 z_index = 2
 
 [node name="sknikod" type="Sprite" parent="."]
@@ -488,4 +488,4 @@ scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 20 )
 
 [node name="Big Devil" parent="." instance=ExtResource( 18 )]
-position = Vector2( 497.263, 356.292 )
+position = Vector2( 505.021, 356.32 )

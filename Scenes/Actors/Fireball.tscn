@@ -51,7 +51,6 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 shape = SubResource( 2 )

@@ -9,7 +9,7 @@ const SPEED = 100
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.25
-export var dps = 5
+export var dps = 1
 var right = 1
 var attack = false
 export var max_hp = 30
@@ -96,7 +96,6 @@ func shoot(target_poz):
 func _on_Timer_timeout():
 	if health>0 and attack and target: # funkcje gdy żyje
 		shoot(target.position)
-		print($Timer.time_left)
 		$Laser_Load.visible = false
 		$Cooldown.start()
 		

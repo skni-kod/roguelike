@@ -7,7 +7,6 @@ const SPEED = 100 # szybkość fireballa
 var player = null # shit i atrybuty obiektu i zmienne przydatne potem
 var move = Vector2.ZERO
 export var speed = 0.5
-export var dps = 5
 var right = 1
 var attack = false
 export var max_hp = 30

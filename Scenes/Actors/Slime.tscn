@@ -12,7 +12,7 @@ height = 16.8513
 radius = 84.9011
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 17.0407, 9.93699 )
+extents = Vector2( 22.0971, 9.93699 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"

@@ -107,6 +107,7 @@ position = Vector2( 0, 3.375 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+gravity = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 visible = false
@@ -126,10 +127,8 @@ one_shot = true
 autostart = true
 
 [node name="Cooldown" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
-
-[node name="Laser" type="RayCast2D" parent="."]
-cast_to = Vector2( 0, 100 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -0.589928, 2.83162 )
@@ -138,3 +137,4 @@ position = Vector2( -0.589928, 2.83162 )
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
 [connection signal="body_exited" from="Atak" to="." method="_on_Atak_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
