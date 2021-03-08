@@ -25,7 +25,6 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	print(anim.get_current_animation())
 	if player !=null and health>0:
 		$Sprite.scale.x= right
 		move = position.direction_to(player.position) * speed
@@ -87,10 +86,8 @@ func get_dmg(dmg):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
-		print("zyje")
 	if health<=0:
 		$AnimationPlayer.play("Die")
-		print("nie zyje")
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)
 		rng.randomize()
