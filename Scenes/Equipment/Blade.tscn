@@ -4,10 +4,14 @@
 [ext_resource path="res://Scenes/Equipment/Blade.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 7.77723
-height = 11.477
+radius = 6.73109
+height = 12.1274
 
-[node name="Blade" type="Area2D"]
+[node name="Blade" type="Area2D" groups=[
+"Weapon",
+]]
+collision_layer = 2147483680
+collision_mask = 32
 script = ExtResource( 2 )
 
 [node name="SwordSprite" type="Sprite" parent="."]
