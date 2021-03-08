@@ -3,9 +3,8 @@
 [ext_resource path="res://Assets/Loot/Weapons/blade.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Equipment/Blade.gd" type="Script" id=2]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 7.77723
-height = 11.477
+[sub_resource type="CircleShape2D" id=1]
+radius = 18.2015
 
 [node name="Blade" type="Area2D"]
 script = ExtResource( 2 )
