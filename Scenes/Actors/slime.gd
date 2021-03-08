@@ -1,12 +1,12 @@
 extends KinematicBody2D
-#slime
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.5
 export var dps = 5
 var right = 1
 var attack = false
-var max_hp =61
+var max_hp = 20
 var hp:float = max_hp
 
 export var health = 100
@@ -42,7 +42,9 @@ func _on_Wzrok_body_entered(body):
 		player = body
 
 func _on_Wzrok_body_exited(body):
+
 	if body != self and body.name == "Player":
+
 		player = null
 
 
@@ -55,18 +57,11 @@ func _on_Atak_body_exited(body):
 
 func _on_Timer_timeout():
 	if attack and health>0:
-		player.take_dmg(self)
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
-		
+		player.take_dmg(self)
 			
 func get_dmg(dmg):
-	
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	
 	if health>0:
 		if player.position.x-self.position.x < 0:
 			self.position.x += 10
@@ -96,5 +91,8 @@ func get_dmg(dmg):
 #		level.add_child(weapon)
 		queue_free()
 		
-	
+	var text = floating_dmg.instance()
+	text.amount = dmg
+	text.type = "Damage"
+	add_child(text)	
 		
