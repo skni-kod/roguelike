@@ -33,7 +33,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "Die"
-length = 0.5
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -65,7 +65,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-length = 0.3
+length = 0.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -73,14 +74,14 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.25, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 0 ]
 }
 
 [sub_resource type="Animation" id=8]
-length = 0.8
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -88,10 +89,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+"values": [ 0, 4, 5, 6, 7, 8 ]
 }
 
 [node name="Cuck" type="KinematicBody2D" groups=[
@@ -115,7 +116,7 @@ flash_color = Color( 1, 0.270588, 0, 1 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 8
-frame = 2
+frame = 8
 region_rect = Rect2( 1, 0, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -124,6 +125,7 @@ position = Vector2( -1.11362, 2.44997 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.09191 )

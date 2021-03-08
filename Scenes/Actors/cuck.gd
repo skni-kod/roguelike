@@ -6,7 +6,7 @@ export var speed = 3
 export var dps = 10
 var right = 1
 var attack = false
-var max_hp = 10
+var max_hp = 50
 var hp:float = max_hp
 
 export var health = 100
@@ -53,9 +53,10 @@ func _on_Atak_body_exited(body):
 	
 func _on_Timer_timeout():
 	if attack and health>0:
+		player.take_dmg(self)
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(self)
+		
 		
 		
 func get_dmg(dmg):
@@ -70,6 +71,7 @@ func get_dmg(dmg):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 	if health<=0:
+		attack = false
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)
