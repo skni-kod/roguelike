@@ -32,9 +32,7 @@ func _on_Player_attacked():
 		position += attack_vector
 		if rotation < -PI/2 or rotation > PI/2:
 			$SwordSprite.rotation_degrees = -90
-			$AttackCollision.rotation_degrees = -90
 		else:
-			$AttackCollision.rotation_degrees = 90
 			$SwordSprite.rotation_degrees = 90
 		$AttackCollision.disabled = false
 		timer.start()

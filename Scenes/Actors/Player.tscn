@@ -88,8 +88,6 @@ anims/Run = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Blade" parent="." instance=ExtResource( 3 )]
-collision_layer = 0
-collision_mask = 4
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]
