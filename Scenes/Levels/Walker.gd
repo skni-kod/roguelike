@@ -1,10 +1,10 @@
 extends Node
 class_name Walker
 
-const DIRECTIONS = [Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.DOWN]
+const DIRECTIONS = [Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.DOWN] # Komentarz 1
 
-var position = Vector2.ZERO
-var direction = Vector2.RIGHT
+var position = Vector2.ZERO # Komentarz 2
+var direction = Vector2.RIGHT # Komentarz 3
 var borders = Rect2()
 var step_history = []
 var steps_since_turn = 0

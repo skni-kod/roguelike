@@ -1,16 +1,16 @@
 extends Node
 
-var borders = Rect2(1, 1, 50, 50)
+var borders = Rect2(1, 1, 10, 10)
 
 onready var tileMap = $Floor
 
 func _ready():
 	randomize()
-	generate_level()
+	#generate_level()
 
 func generate_level():
-	var walker = Walker.new(Vector2(25, 25), borders)
-	var map = walker.walk(2000)
+	var walker = Walker.new(Vector2(5, 5), borders)
+	var map = walker.walk(5)
 	walker.queue_free()
 	for location in map:
 		tileMap.set_cellv(location*2, rand_range(0,2))
