@@ -1,12 +1,15 @@
+# Lil Devil.gd
 extends KinematicBody2D
-#slime
-var player = null
+# bazowane na slime.gd
+const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
+const SPEED = 100 # szybkość fireballa
+
+var player = null # shit i atrybuty obiektu i zmienne przydatne potem
 var move = Vector2.ZERO
 export var speed = 0.5
-export var dps = 5
 var right = 1
 var attack = false
-var max_hp =61
+export var max_hp = 30
 var hp:float = max_hp
 
 export var health = 100
@@ -20,13 +23,14 @@ var randomPosition
  
 func _ready():
 	health_bar.on_health_updated(health)
+	$Timer.stop()
 
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	if player != null and !attack and health>0:
+	if player != null and health>0:
 		$Sprite.scale.x = right
-		move = position.direction_to(player.position) * speed
+		move = position.direction_to(player.position) * -speed
 		if player.position.x-self.position.x < 0:
 			right = 1
 		else:
@@ -34,7 +38,6 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Walk")
 	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
-
 	move_and_collide(move)
 
 func _on_Wzrok_body_entered(body):
@@ -49,30 +52,31 @@ func _on_Wzrok_body_exited(body):
 func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player":
 		attack = true
+		$Timer.start() # gdy wchodzi player do sfery ataku, to startuje timer
 
 func _on_Atak_body_exited(body):
-	attack = false
+	if body.name == "Player":
+		attack = false
+		$Timer.stop()
+
 
 func _on_Timer_timeout():
-	if attack and health>0: # funkcje wykonane gdy atakuje
-		player.take_dmg(self)
-		$AnimationPlayer.play("Attack")
-		yield($AnimationPlayer,"animation_finished")
+	if attack and health>0: # funkcje gdy atakuje
+		if !$AnimationPlayer.play("Idle"):
+			$AnimationPlayer.play("Attack") 
+		var fireball = FIREBALL_SCENE.instance() # tworzę nową instancję fireballa
+		var main = get_tree().get_root().find_node("Main", true, false) 
+		fireball.position = self.position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
+		fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).position # wprowadzam player_Pos do fireballa jako pozycję playera
+		main.add_child(fireball) # ustawiam fireballa jako child maina
 		
 			
 func get_dmg(dmg):
-	
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	
 	if health>0:
-		if player != null:
-			if player.position.x-self.position.x < 0:
-				self.position.x += 10
-			else:
-				self.position.x -= 10
+		if player.position.x-self.position.x < 0:
+			self.position.x += 10
+		else:
+			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")
@@ -90,12 +94,10 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
-#		var weapon = load("res://Scenes/Loot/Weapon.tscn")
-#		weapon = weapon.instance()
-#		weapon.WeaponName = drop["weapon"]
-#		weapon.position = self.position
-#		level.add_child(weapon)
 		queue_free()
 		
-	
+	var text = floating_dmg.instance()
+	text.amount = dmg
+	text.type = "Damage"
+	add_child(text)	
 		

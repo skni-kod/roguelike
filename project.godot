@@ -19,6 +19,10 @@ config/name="roguelike"
 run/main_scene="res://Scenes/Levels/Main.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/height=800
+
 [input]
 
 move_up={
@@ -57,7 +61,10 @@ pick={
 2d_physics/layer_1="player"
 2d_physics/layer_2="world"
 2d_physics/layer_3="enemy"
-2d_physics/layer_4="projectile"
+2d_physics/layer_4="projectiles"
+2d_physics/layer_5="laser"
+2d_physics/layer_6="weapons"
+2d_physics/projectiles=false
 
 [rendering]
 

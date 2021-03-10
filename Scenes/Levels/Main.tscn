@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://Scenes/Actors/Slime.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Actors/cuckshooter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/TileMap/floor/floor_4.png" type="Texture" id=3]
 [ext_resource path="res://Assets/TileMap/floor/floor_1.png" type="Texture" id=4]
@@ -203,30 +203,44 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 3/z_index = 0
 
 [node name="Main" type="Node2D"]
+position = Vector2( 0.629959, 0 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="HealthBar" parent="UI" instance=ExtResource( 13 )]
-rect_scale = Vector2( 2, 2 )
+anchor_left = 0.000615194
+anchor_right = 0.000615194
+margin_left = 3.25883
+margin_top = 4.749
+margin_right = 3.25883
+margin_bottom = 4.749
+rect_scale = Vector2( 3, 3 )
 will_pulse = true
 
 [node name="MiniMap" parent="UI" instance=ExtResource( 12 )]
 anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 1.03
+anchor_bottom = 1.036
 margin_left = -200.0
 margin_top = -200.0
-margin_right = 0.0
-margin_bottom = 0.0
+margin_right = -30.7201
+margin_bottom = -21.6
 player = NodePath("../../Player")
 
 [node name="Coins" parent="UI" instance=ExtResource( 16 )]
-margin_left = -1.75198
-margin_top = 20.0226
-margin_right = 46.248
-margin_bottom = 34.0226
+anchor_left = 0.000615194
+anchor_right = 0.000615213
+margin_left = 6.12583
+margin_top = 39.112
+margin_right = 54.1258
+margin_bottom = 53.112
 rect_scale = Vector2( 2, 2 )
+
+[node name="background" type="Sprite" parent="."]
+modulate = Color( 0.4, 0.356863, 0.647059, 1 )
+position = Vector2( 1072.04, 916.783 )
+texture = ExtResource( 21 )
 
 [node name="Floor" type="TileMap" parent="."]
 z_index = -1
@@ -259,15 +273,30 @@ collision_mask = 3
 dps = 8
 health = 750
 
-[node name="GoldCoin2" parent="." instance=ExtResource( 14 )]
-position = Vector2( 162.476, 40.4086 )
+[node name="Lil Devil4" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1176.75, 1173.48 )
 
-[node name="GoldCoin3" parent="." instance=ExtResource( 14 )]
-position = Vector2( 90.6384, -14.0308 )
+[node name="Lil Devil5" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1061.16, 1460.37 )
+
+[node name="Lil Devil6" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1175.33, 1462.16 )
+
+[node name="Lil Devil7" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1111.11, 1317.07 )
+
+[node name="Lil Devil8" parent="." instance=ExtResource( 17 )]
+position = Vector2( 1208.62, 1318.26 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 126.975, 59.2832 )
+position = Vector2( 308.668, 358.882 )
 z_index = 2
 
-[node name="Chest" parent="." instance=ExtResource( 15 )]
-position = Vector2( 90.5444, 80.8976 )
+[node name="sknikod" type="Sprite" parent="."]
+visible = false
+position = Vector2( 1589.87, 1318 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 20 )
+
+[node name="Big Devil" parent="." instance=ExtResource( 18 )]
+position = Vector2( 505.021, 356.32 )
