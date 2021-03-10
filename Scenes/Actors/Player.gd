@@ -11,7 +11,6 @@ var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 var coins = 0 #ilośc coinsów bohatera
 var weapon = null #??????
-var equipment = ["Blade","Axe"] #???ekwipunek bohatera???
 var equipped = "Blade" #???aktualnie wyekwipowana broń???
 var chest = null #??????
 var level #przypisanie sceny głównej
@@ -20,6 +19,10 @@ func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilośćią coinsów bohatera
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.damage = 10
+	$EquippedWeapon.timer = $EquippedWeapon/Timer
+
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
@@ -35,12 +38,13 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				weaponUsed.position = weapon.position
 				weaponUsed.WeaponName = equipped
 				level.add_child(weaponUsed)
-				get_node(equipped).queue_free()
 				equipped = weaponName
+				#Wycentruj broń na graczu, zmień broń
+				$EquippedWeapon.position=Vector2.ZERO
+				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weapon.Stats['range']+'/'+weaponName+'.gd'))
+				$EquippedWeapon.timer = $EquippedWeapon/Timer
+				$EquippedWeapon.damage = int(weapon.Stats['attack'])
 				weapon.queue_free()
-				weapon = load("res://Scenes/Equipment/"+equipped+".tscn")
-				weapon = weapon.instance()
-				add_child(weapon) 
 				weapon = null
 	if chest != null:
 		if Input.is_action_just_pressed("pick"):
