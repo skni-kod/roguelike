@@ -9,7 +9,6 @@ signal finished
 
 var size := Vector2(15,10) #rozmiar planszy
 onready var _tile_map : TileMap = $TileMap # $TileMap == get.node("TileMap")
-onready var room_gen = get_node("Room_gen") #importowanie funkcji z Room_gen.gd
 var _rng := RandomNumberGenerator.new() 
 var dl = size.y
 var szer = size.x
@@ -32,7 +31,10 @@ func generate(): #właściwa funkcja generująca z sygnałami
 func generate_perimeter(): #generacja pokoju
 	for n in 4:
 		for m in step:
-			room_gen.generate_room(szer, dl, _tile_map, size) #odniesienie do Room_gen.gd
+			for x in range (szer, size.x + szer):
+				for y in range(dl, size.y + dl):
+					_tile_map.set_cell(x,y,0)
+					_tile_map.update_bitmask_region(Vector2(x-1,y-1),Vector2(x+1,y+1)) #odniesienie do Room_gen.gd
 			if hist == 0: #rysowanie w górę
 				if m < 2: # pierwsze 2 pokoje są prosto
 					dl -= size.y + 1
