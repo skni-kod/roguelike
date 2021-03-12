@@ -18,6 +18,6 @@ jobs:
     name: Create Branch
     steps:
         - name: Create Issue Branch
-          uses: robvanderleek/create-issue-branch@main
+          uses: robvanderleek/create-issue-branch@master
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
