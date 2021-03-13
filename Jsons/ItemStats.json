@@ -23,7 +23,14 @@
         },
         "Knife": {
             "attack": "3",
-            "spd": "1",
+            "spd": "2",
+            "knc": "0.1",
+            "range": "melee",
+            "effect": "none"
+        },
+		 "Knife_SR": {
+            "attack": "3",
+            "spd": "2",
             "knc": "0.1",
             "range": "melee",
             "effect": "none"
@@ -55,12 +62,32 @@
             "knc": "0.2",
             "range": "melee",
             "effect": "none"
-        }
-        ,
+        },
          "FMS": {
             "attack": "10",
             "spd": "0.5",
             "knc": "0.2",
+            "range": "melee",
+            "effect": "none"
+        },
+         "Shield": {
+            "attack": "0",
+            "spd": "0.5",
+            "knc": "4",
+            "range": "melee",
+            "effect": "none"
+        },
+         "Spin": {
+            "attack": "5",
+            "spd": "0.5",
+            "knc": "0",
+            "range": "melee",
+            "effect": "none"
+        },
+         "FlySpear": {
+            "attack": "5",
+            "spd": "0.5",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         }
