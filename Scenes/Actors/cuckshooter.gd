@@ -52,7 +52,7 @@ func _on_Area2D_body_exited(body):
 		speed = 0.5 #zmienia sie predkosc cucka dzieki czemu zaczyna sie poruszac
 		
 func _on_Wzrok_body_entered(body):  
-	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (strzelanie -> collisionshape) to:
+	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (wzrok -> collisionshape) to:
 		player = body #player juz nie jest nullem, dzieki czemu cuck moze isc w jego strone (patrz -> _physics_process(delta))
 		eyes = true #jezeli jest w polu wzrok a nie jest w polu strzelanie to odgrywana jest animacja chodzenia (patrz ->_physics_process(delta))
 
@@ -64,7 +64,7 @@ func _on_Wzrok_body_exited(body):
 func fire():
 	var bullet = BULLET_SCENE.instance() #tworzy sie instancja bulletu
 	bullet.position = get_global_position() + $Position2D.position
-	bullet.player = player #bullet obiera kierunek na playera
+	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
 	get_parent().add_child(bullet)
 	$Timer.set_wait_time(0.5) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
 

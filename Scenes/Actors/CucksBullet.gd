@@ -12,8 +12,8 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	move = move.move_toward(look_vec,delta) #skierowanie wektora pocisku w strone playera
-	move = move.normalized() * speed #normalizacja wektora, w necie polecam wpisac o co dokladniej chodzi
+	move = move.move_toward(look_vec,delta) #Zmiana położenia o wektor look_vec w czasie delta.
+	move = move.normalized() * speed #Wyrównanie długości wektora nie zależnie od kierunku, ale lepiej sobie zobaczyć na necie
 	position += move	
 
 
