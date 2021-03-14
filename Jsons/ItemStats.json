@@ -90,6 +90,13 @@
             "knc": "0",
             "range": "melee",
             "effect": "none"
+        },
+         "FlySpear2": {
+            "attack": "5",
+            "spd": "0.5",
+            "knc": "0",
+            "range": "melee",
+            "effect": "none"
         }
         
     }
