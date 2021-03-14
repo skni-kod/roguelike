@@ -90,7 +90,6 @@ texture = ExtResource( 1 )
 hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 3.455 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -100,17 +99,17 @@ visible = false
 position = Vector2( -0.601517, 2.75438 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-visible = false
 position = Vector2( 0, 3.375 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
 gravity = 0.0
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-visible = false
 position = Vector2( 0, 2.569 )
 shape = SubResource( 3 )
 

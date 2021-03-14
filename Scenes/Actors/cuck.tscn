@@ -120,23 +120,20 @@ frame = 8
 region_rect = Rect2( 1, 0, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -1.11362, 2.44997 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 position = Vector2( -0.44545, 0.111362 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-visible = false
 position = Vector2( 0.723678, 2.72405 )
 shape = SubResource( 3 )
 

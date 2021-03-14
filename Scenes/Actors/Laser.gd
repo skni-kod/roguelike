@@ -18,10 +18,7 @@ func _ready():
 	$Line2D.points[1] = Vector2.ZERO
 	$Lifetime.start()
 	self.is_casting = true
-
 	rotation = (player_Pos - origin).normalized().angle()
-	print($Lifetime.time_left)
-	
 
 
 func _physics_process(delta):
@@ -42,8 +39,6 @@ func _physics_process(delta):
 	$Line2D.points[1] = cast_point
 	$LaserParticles.position = cast_point * 0.5
 	$LaserParticles.process_material.emission_box_extents.x = cast_point.length() * 0.5
-	
-	
 
 
 func set_is_casting(cast: bool):
@@ -78,6 +73,5 @@ func disappear():
 
 
 func _on_Lifetime_timeout():
-	print("disappear")
 	disappear()
 

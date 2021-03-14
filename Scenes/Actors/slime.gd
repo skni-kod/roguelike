@@ -1,3 +1,4 @@
+# Slime.gd
 extends KinematicBody2D
 #slime
 var player = null
