@@ -6,4 +6,7 @@ branches:
   - label: enhancement
     name: develop
     prefix: enhancement/
+  - label: documentation
+    name: develop
+    prefix: documentation/
 openDraftPR: true
