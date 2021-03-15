@@ -263,5 +263,15 @@ position = Vector2( 90.6384, -14.0308 )
 position = Vector2( 126.975, 59.2832 )
 z_index = 2
 
+<<<<<<< Updated upstream
 [node name="Chest" parent="." instance=ExtResource( 15 )]
 position = Vector2( 90.5444, 80.8976 )
+=======
+[node name="sknikod" type="Sprite" parent="."]
+position = Vector2( 1589.87, 1318 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 20 )
+
+[node name="cuckshooter" parent="." instance=ExtResource( 1 )]
+position = Vector2( 479.138, 350.429 )
+>>>>>>> Stashed changes

@@ -71,6 +71,7 @@ hframes = 9
 frame = 8
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -83,6 +84,11 @@ anims/Idle = SubResource( 3 )
 anims/Run = SubResource( 4 )
 
 [node name="Pick" type="Area2D" parent="."]
+<<<<<<< Updated upstream
+=======
+visible = false
+collision_layer = 0
+>>>>>>> Stashed changes
 
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
 shape = SubResource( 5 )

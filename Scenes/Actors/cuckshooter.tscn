@@ -1,0 +1,153 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Enemies/cuckshooterupdated.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Actors/cuckshooter.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.44158, 4.97983 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "Attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 16, 17 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Die"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 8, 9, 10, 11, 12 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Hurt"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 24, 25, 26 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Idle"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 4, 5, 6, 7, 8 ]
+}
+
+[sub_resource type="CircleShape2D" id=7]
+radius = 106.78
+
+[sub_resource type="CircleShape2D" id=8]
+radius = 76.8374
+
+[node name="cuckshooter" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_left = -10.2437
+margin_top = -7.75467
+margin_right = -10.2437
+margin_bottom = -7.75467
+rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 3
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -0.388077, 3.0104 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 2 )
+anims/Die = SubResource( 3 )
+anims/Hurt = SubResource( 4 )
+anims/Idle = SubResource( 5 )
+anims/Walk = SubResource( 6 )
+
+[node name="Wzrok" type="Area2D" parent="."]
+position = Vector2( -0.229851, 3.00339 )
+collision_mask = 2147483649
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+position = Vector2( 9.53674e-06, -0.761456 )
+rotation = -0.13439
+shape = SubResource( 7 )
+
+[node name="Strzelanie" type="Area2D" parent="."]
+position = Vector2( 0.0834274, 3.67081 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Strzelanie"]
+position = Vector2( -1.31442, -1.00113 )
+shape = SubResource( 8 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 2.0888, 2.91352 )
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
+[connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
+[connection signal="body_entered" from="Strzelanie" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Strzelanie" to="." method="_on_Area2D_body_exited"]
