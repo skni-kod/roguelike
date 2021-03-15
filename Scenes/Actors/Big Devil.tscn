@@ -123,7 +123,6 @@ anims/Walk = SubResource( 8 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
-autostart = true
 
 [node name="Cooldown" type="Timer" parent="."]
 wait_time = 5.0
