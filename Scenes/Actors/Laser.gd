@@ -36,7 +36,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider()
 		if body.name == "Player":
-			statusEffect.bleeding = true
+			statusEffect.bleeding = true # w trakcie trafienia laserem w playera to otrzymuje on krwawienie
 			body.take_dmg(dmg)
 		
 	$Line2D.points[1] = cast_point
