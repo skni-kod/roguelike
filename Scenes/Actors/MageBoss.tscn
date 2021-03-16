@@ -1,10 +1,12 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scenes/Actors/MageBoss.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/waterball.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Enemies/WindBall.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Enemies/EarthBall.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.7905, 9.28471 )
@@ -62,14 +64,38 @@ scale = 3.0
 scale_curve = SubResource( 10 )
 color = Color( 0, 0.317647, 0.843137, 1 )
 
+[sub_resource type="ParticlesMaterial" id=14]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 10 )
+color = Color( 0.584314, 0.796078, 0.878431, 1 )
+
+[sub_resource type="ParticlesMaterial" id=13]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 10 )
+color = Color( 0.172549, 0.117647, 0.12549, 1 )
+
 [node name="MageBoss" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 1 )
+angular_velocity = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.297638, 0.543308 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -77,6 +103,7 @@ shape = SubResource( 1 )
 [node name="Wzrok" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+visible = false
 position = Vector2( -0.117981, 4.44547 )
 shape = SubResource( 2 )
 
@@ -87,41 +114,79 @@ anims/Hurt = SubResource( 5 )
 anims/Idle = SubResource( 6 )
 anims/Walk = SubResource( 7 )
 
-[node name="RotationCentre" type="Node2D" parent="."]
+[node name="WaterFireCenter" type="Node2D" parent="."]
 
-[node name="Fireball" type="Area2D" parent="RotationCentre"]
+[node name="Fireball" type="Area2D" parent="WaterFireCenter"]
 position = Vector2( -40, 0 )
 collision_layer = 8
 
-[node name="Sprite" type="Sprite" parent="RotationCentre/Fireball"]
-texture = ExtResource( 4 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RotationCentre/Fireball"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterFireCenter/Fireball"]
+visible = false
 shape = SubResource( 8 )
 
-[node name="Particles2D2" type="Particles2D" parent="RotationCentre/Fireball"]
+[node name="Particles2D2" type="Particles2D" parent="WaterFireCenter/Fireball"]
 position = Vector2( -0.166847, 0.250281 )
 amount = 10
 lifetime = 0.2
 local_coords = false
 process_material = SubResource( 11 )
 
-[node name="Waterball" type="Area2D" parent="RotationCentre"]
+[node name="Sprite" type="Sprite" parent="WaterFireCenter/Fireball"]
+texture = ExtResource( 4 )
+
+[node name="Waterball" type="Area2D" parent="WaterFireCenter"]
 position = Vector2( 40, 0 )
 collision_layer = 8
 
-[node name="Sprite" type="Sprite" parent="RotationCentre/Waterball"]
-texture = ExtResource( 5 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RotationCentre/Waterball"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterFireCenter/Waterball"]
 visible = false
 shape = SubResource( 8 )
 
-[node name="Particles2D3" type="Particles2D" parent="RotationCentre/Waterball"]
+[node name="Particles2D3" type="Particles2D" parent="WaterFireCenter/Waterball"]
 amount = 10
 lifetime = 0.2
 local_coords = false
 process_material = SubResource( 12 )
+
+[node name="Sprite" type="Sprite" parent="WaterFireCenter/Waterball"]
+texture = ExtResource( 5 )
+
+[node name="EarthWindCenter" type="Node2D" parent="."]
+
+[node name="WindBall" type="Area2D" parent="EarthWindCenter"]
+position = Vector2( 0, -60 )
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EarthWindCenter/WindBall"]
+visible = false
+shape = SubResource( 8 )
+
+[node name="Particles2D2" type="Particles2D" parent="EarthWindCenter/WindBall"]
+amount = 10
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 14 )
+
+[node name="Sprite" type="Sprite" parent="EarthWindCenter/WindBall"]
+texture = ExtResource( 6 )
+
+[node name="EarthBall" type="Area2D" parent="EarthWindCenter"]
+position = Vector2( 0, 60 )
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EarthWindCenter/EarthBall"]
+visible = false
+shape = SubResource( 8 )
+
+[node name="Particles2D2" type="Particles2D" parent="EarthWindCenter/EarthBall"]
+position = Vector2( -0.166847, 0.250282 )
+amount = 10
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 13 )
+
+[node name="Sprite" type="Sprite" parent="EarthWindCenter/EarthBall"]
+texture = ExtResource( 7 )
 
 [node name="MissilesTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -135,8 +200,14 @@ margin_top = -16.6616
 margin_right = -9.74297
 margin_bottom = -16.6616
 rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="EarthWindTimer" type="Timer" parent="."]
+wait_time = 2.0
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
-[connection signal="body_entered" from="RotationCentre/Fireball" to="." method="_on_Fireball_body_entered"]
-[connection signal="body_entered" from="RotationCentre/Waterball" to="." method="_on_Waterball_body_entered"]
+[connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
+[connection signal="body_entered" from="WaterFireCenter/Waterball" to="." method="_on_Waterball_body_entered"]
+[connection signal="body_entered" from="EarthWindCenter/WindBall" to="." method="_on_WindBall_body_entered"]
+[connection signal="body_entered" from="EarthWindCenter/EarthBall" to="." method="_on_EarthBall_body_entered"]
 [connection signal="timeout" from="MissilesTimer" to="." method="_on_MissilesTimer_timeout"]
+[connection signal="timeout" from="EarthWindTimer" to="." method="_on_EarthWindTimer_timeout"]

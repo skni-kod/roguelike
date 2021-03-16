@@ -6,7 +6,6 @@ var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.3 #Zmienna przechowująca szybkość poruszania
 export var dps = 20 #Zmienna przechowująca wartość ataku
 var right = 1 #Czy MageBoss jest obrócony w prawo
-var attack = false #Czy MageBoss jest w trakcie ataku
 var max_hp = 500 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
 
@@ -19,9 +18,12 @@ var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
 export var angular_velocity = 3.0
-export var speed_during_change = 0.3
-var outer_rotation = false
-var change_rotation = true
+export var speed_during_change1 = 0.3
+export var speed_during_change2 = 1
+var outer_rotation1 = false
+var change_rotation1 = true
+var outer_rotation2 = false
+var change_rotation2 = true
 
 func _ready():
 	health_bar.on_health_updated(health)
@@ -29,22 +31,22 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	if player != null and !attack and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
+	if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
 		$Sprite.scale.x = right #Obróć MageBoss
-		move = position.direction_to(player.position) * speed #Ustaw wektor na pozycję gracza
-		if position.distance_to(player.position) < 35:
+		if position.distance_to(player.position) < 35.0:
 			move = -position.direction_to(player.position) * speed
-		elif position.distance_to(player.position) > 60:
+		elif position.distance_to(player.position) > 60.0:
 			move = position.direction_to(player.position) * speed
 		if player.position.x-self.position.x < 0:
 			right = 1 #MageBoss ma być obrócony w prawo
 		else:
 			right = -1 #MageBoss ma być obrócony w lewo
 		$AnimationPlayer.play("Walk")
-	elif !attack and health>0:
+	elif health>0:
 		$AnimationPlayer.play("Idle")
 	move_and_collide(move)
-	rotate_missiles()
+	rotate_water_fire()
+	rotate_earth_wind()
 
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player": #Jeśli gracz wejdzie w pole widzenia to przypisz jego węzeł do zmiennej
@@ -55,13 +57,24 @@ func _on_Wzrok_body_exited(body):
 		player = null
 
 func _on_MissilesTimer_timeout():
-	change_rotation = true
+	change_rotation1 = true
+	
+func _on_EarthWindTimer_timeout():
+	change_rotation2 = true
 	
 func _on_Fireball_body_entered(body):
 	if body.name == "Player":
 		player.take_dmg(5.0)
 
 func _on_Waterball_body_entered(body):
+	if body.name == "Player":
+		player.take_dmg(5.0)
+		
+func _on_WindBall_body_entered(body):
+	if body.name == "Player":
+		player.take_dmg(5.0)
+
+func _on_EarthBall_body_entered(body):
 	if body.name == "Player":
 		player.take_dmg(5.0)
 
@@ -93,27 +106,44 @@ func get_dmg(dmg):
 			level.add_child(coin)
 		queue_free() #Usuń węzeł MageBoss
 		
-func rotate_missiles():
-	var radius = $RotationCentre/Fireball.position.distance_to($RotationCentre.position)
+func rotate_water_fire():
+	var radius = $WaterFireCenter/Fireball.position.distance_to($WaterFireCenter.position)
 	var angle = angular_velocity/radius
-	$RotationCentre.rotate(angle)
-#	$RotationCentre/Fireball/Particles2D.rotate(-0.03)
-	$RotationCentre/Fireball.rotate(0.1)
-	$RotationCentre/Waterball.rotate(0.1)
-	if outer_rotation == false && change_rotation == true:
-		if $RotationCentre/Fireball.position.distance_to($RotationCentre.position) > 30:
-			$RotationCentre/Fireball.position += $RotationCentre/Fireball.position.direction_to($RotationCentre.position) * speed_during_change
-			$RotationCentre/Waterball.position += $RotationCentre/Waterball.position.direction_to($RotationCentre.position) * speed_during_change
-		else:
-			outer_rotation = true
-			change_rotation = false
-			$MissilesTimer.start()
-	elif change_rotation == true:
-		if $RotationCentre/Fireball.position.distance_to($RotationCentre.position) < 60:
-			$RotationCentre/Fireball.position -= $RotationCentre/Fireball.position.direction_to($RotationCentre.position) * speed_during_change
-			$RotationCentre/Waterball.position -= $RotationCentre/Waterball.position.direction_to($RotationCentre.position) * speed_during_change
-		else:
-			outer_rotation = false
-			change_rotation = false
-			$MissilesTimer.start()
-		
+	$WaterFireCenter.rotate(angle)
+	for missile in [$WaterFireCenter/Fireball, $WaterFireCenter/Waterball]:
+		missile.rotate(0.1)
+		if outer_rotation1 == false && change_rotation1 == true:
+			if missile.position.distance_to($WaterFireCenter.position) > 30:
+				missile.position += missile.position.direction_to($WaterFireCenter.position) * speed_during_change1
+			else:
+				outer_rotation1 = true
+				change_rotation1 = false
+				$MissilesTimer.start()
+		elif change_rotation1 == true:
+			if missile.position.distance_to($WaterFireCenter.position) < 60:
+				missile.position -= missile.position.direction_to($WaterFireCenter.position) * speed_during_change1
+			else:
+				outer_rotation1 = false
+				change_rotation1 = false
+				$MissilesTimer.start()
+
+func rotate_earth_wind():
+	var radius = $EarthWindCenter/WindBall.position.distance_to($EarthWindCenter.position)
+	var angle = angular_velocity/radius
+	$EarthWindCenter.rotate(angle)
+	for missile in [$EarthWindCenter/EarthBall, $EarthWindCenter/WindBall]:
+		missile.rotate(0.1)
+		if outer_rotation2 == false && change_rotation2 == true:
+			if missile.position.distance_to($EarthWindCenter.position) > 40:
+				missile.position += missile.position.direction_to($EarthWindCenter.position) * speed_during_change2
+			else:
+				outer_rotation2 = true
+				change_rotation2 = false
+				$EarthWindTimer.start()
+		elif change_rotation2 == true:
+			if missile.position.distance_to($EarthWindCenter.position) < 100:
+				missile.position -= missile.position.direction_to($EarthWindCenter.position) * speed_during_change2
+			else:
+				outer_rotation2 = false
+				change_rotation2 = false
+				$EarthWindTimer.start()
