@@ -1,0 +1,142 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Scenes/Actors/MageBoss.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Enemies/waterball.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.7905, 9.28471 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 155.866
+
+[sub_resource type="Animation" id=3]
+resource_name = "Attack"
+length = 0.6
+
+[sub_resource type="Animation" id=4]
+resource_name = "Die"
+length = 0.6
+
+[sub_resource type="Animation" id=5]
+resource_name = "Hurt"
+length = 0.4
+loop = true
+
+[sub_resource type="Animation" id=6]
+length = 0.3
+
+[sub_resource type="Animation" id=7]
+length = 0.3
+
+[sub_resource type="CircleShape2D" id=8]
+radius = 4.51876
+
+[sub_resource type="Curve" id=9]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 10 )
+color = Color( 0.968627, 0.541176, 0.00392157, 1 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 10 )
+color = Color( 0, 0.317647, 0.843137, 1 )
+
+[node name="MageBoss" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.297638, 0.543308 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Wzrok" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+position = Vector2( -0.117981, 4.44547 )
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 3 )
+anims/Die = SubResource( 4 )
+anims/Hurt = SubResource( 5 )
+anims/Idle = SubResource( 6 )
+anims/Walk = SubResource( 7 )
+
+[node name="RotationCentre" type="Node2D" parent="."]
+
+[node name="Fireball" type="Area2D" parent="RotationCentre"]
+position = Vector2( -40, 0 )
+collision_layer = 8
+
+[node name="Sprite" type="Sprite" parent="RotationCentre/Fireball"]
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RotationCentre/Fireball"]
+shape = SubResource( 8 )
+
+[node name="Particles2D2" type="Particles2D" parent="RotationCentre/Fireball"]
+position = Vector2( -0.166847, 0.250281 )
+amount = 10
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 11 )
+
+[node name="Waterball" type="Area2D" parent="RotationCentre"]
+position = Vector2( 40, 0 )
+collision_layer = 8
+
+[node name="Sprite" type="Sprite" parent="RotationCentre/Waterball"]
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RotationCentre/Waterball"]
+visible = false
+shape = SubResource( 8 )
+
+[node name="Particles2D3" type="Particles2D" parent="RotationCentre/Waterball"]
+amount = 10
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 12 )
+
+[node name="MissilesTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+margin_left = -9.74297
+margin_top = -16.6616
+margin_right = -9.74297
+margin_bottom = -16.6616
+rect_scale = Vector2( 0.2, 0.2 )
+[connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
+[connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
+[connection signal="body_entered" from="RotationCentre/Fireball" to="." method="_on_Fireball_body_entered"]
+[connection signal="body_entered" from="RotationCentre/Waterball" to="." method="_on_Waterball_body_entered"]
+[connection signal="timeout" from="MissilesTimer" to="." method="_on_MissilesTimer_timeout"]
