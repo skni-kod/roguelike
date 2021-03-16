@@ -1,12 +1,11 @@
 # Laser.gd
 extends RayCast2D
-# UWAGA WORK IN PROGRESS
-# NIE DZIAŁA TAK JAK POWINNO
-# UWAGA WORK IN PROGRESS
+
+onready var statusEffect = get_node("../UI/StatusBar")
 
 var player_Pos = Vector2.ZERO
 onready var origin = self.position
-var dps = 1
+var dmg = 1
 
 var is_casting := false setget set_is_casting
 
@@ -37,7 +36,8 @@ func _physics_process(delta):
 		
 		body = self.get_collider()
 		if body.name == "Player":
-			body.take_dmg(get_tree().get_root().find_node("Big Devil", true, false))
+			statusEffect.bleeding = true
+			body.take_dmg(dmg)
 		
 	$Line2D.points[1] = cast_point
 	$LaserParticles.position = cast_point * 0.5

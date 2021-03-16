@@ -1,0 +1,143 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/UI/StatusEffects/StatusEffects.png" type="Texture" id=1]
+[ext_resource path="res://Assets/UI/StatusEffects/Knockback.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/StatusEffects/Freezing.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/StatusEffects/Burning.png" type="Texture" id=4]
+[ext_resource path="res://Assets/UI/StatusEffects/Poison.png" type="Texture" id=5]
+[ext_resource path="res://Assets/UI/StatusEffects/Bleeding.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/UI/StatusBar.gd" type="Script" id=7]
+
+[node name="StatusBar" type="Control"]
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+rect_scale = Vector2( -2, 2 )
+columns = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Burning" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="BurningSprite" type="Sprite" parent="GridContainer/Burning"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 4 )
+hframes = 3
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Burning"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Damage" type="Timer" parent="GridContainer/Burning"]
+wait_time = 0.5
+one_shot = true
+
+[node name="Freezing" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="FreezingSprite" type="Sprite" parent="GridContainer/Freezing"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 3 )
+hframes = 3
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Freezing"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Knockback" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="KnockbackSprite" type="Sprite" parent="GridContainer/Knockback"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 2 )
+hframes = 3
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Knockback"]
+wait_time = 5.0
+one_shot = true
+
+[node name="Poison" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="PoisonSprite" type="Sprite" parent="GridContainer/Poison"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 5 )
+hframes = 3
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Poison"]
+wait_time = 10.0
+one_shot = true
+
+[node name="Damage" type="Timer" parent="GridContainer/Poison"]
+one_shot = true
+
+[node name="Bleeding" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="BleedingSprite" type="Sprite" parent="GridContainer/Bleeding"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 6 )
+hframes = 3
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Bleeding"]
+wait_time = 5.0
+one_shot = true
+
+[node name="Damage" type="Timer" parent="GridContainer/Bleeding"]
+wait_time = 0.5
+one_shot = true
+
+[node name="Weakness" type="CenterContainer" parent="GridContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Weakness" type="Sprite" parent="GridContainer/Weakness"]
+position = Vector2( 16, 16 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 1 )
+vframes = 7
+hframes = 3
+frame = 18
+
+[node name="Lifetime" type="Timer" parent="GridContainer/Weakness"]
+wait_time = 3.5
+one_shot = true
+[connection signal="timeout" from="GridContainer/Burning/Lifetime" to="." method="_on_Burning_Lifetime_timeout"]
+[connection signal="timeout" from="GridContainer/Burning/Damage" to="." method="_on_Burning_Damage_timeout"]
+[connection signal="timeout" from="GridContainer/Freezing/Lifetime" to="." method="_on_Freezing_Lifetime_timeout"]
+[connection signal="timeout" from="GridContainer/Knockback/Lifetime" to="." method="_on_Knockback_Lifetime_timeout"]
+[connection signal="timeout" from="GridContainer/Poison/Lifetime" to="." method="_on_Poison_Lifetime_timeout"]
+[connection signal="timeout" from="GridContainer/Poison/Damage" to="." method="_on_Poison_Damage_timeout"]
+[connection signal="timeout" from="GridContainer/Bleeding/Lifetime" to="." method="_on_Bleeding_Lifetime_timeout"]
+[connection signal="timeout" from="GridContainer/Bleeding/Damage" to="." method="_on_Bleeding_Damage_timeout"]
+[connection signal="timeout" from="GridContainer/Weakness/Lifetime" to="." method="_on_Weakness_Lifetime_timeout"]
