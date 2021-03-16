@@ -16,7 +16,7 @@ func _ready():
 	file.close()
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
 	$Sprite.texture = texture
-
+#test
 func take_dmg(a):
 	pass
 

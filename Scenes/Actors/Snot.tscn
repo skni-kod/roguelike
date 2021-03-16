@@ -121,19 +121,17 @@ position = Vector2( 0, 0.00473362 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-visible = false
 position = Vector2( 0.297302, -0.148651 )
 scale = Vector2( 3, 3 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-visible = false
 scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 3 )
 
