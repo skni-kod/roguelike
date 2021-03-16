@@ -9,8 +9,8 @@ onready var origin = self.position # miejsce startowe fireballa
 var dps = 15 # damage, który fireball zadaje
 
 func _ready():
-	#player_Pos = get_tree().get_root().find_node("Player", true, false).position
-	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany (jednostkowy) wektor pozycji player_Pos i origin
+	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany (jednostkowy) 
+												   # wektor pozycji player_Pos i origin
 	
 	set_physics_process(true)
 	
@@ -20,6 +20,6 @@ func _physics_process(delta):
 	
 func _on_Atak_body_entered(body):
 	if body.name == "Player":
-		body.take_dmg(self) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dps
+		body.take_dmg(dps) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dps
 		
 		
