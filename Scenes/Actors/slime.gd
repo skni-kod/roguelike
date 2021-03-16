@@ -9,7 +9,7 @@ var attack = false #Czy slime jest w trakcie ataku
 var max_hp =61 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
 
-export var health = 100 #Pozostałe życie w procentach
+var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":0,"maxCoins":5} #Przedział definiujący ile slime może zostawić po sobie coinów
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
 
