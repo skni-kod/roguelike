@@ -4,7 +4,9 @@ onready var BULLET_SCENE = preload("res://Scenes/Actors/CucksBullet.tscn") #zala
 
 var player = null
 var move = Vector2.ZERO
-export var speed = 0 
+
+export var speed = 0.5 
+
 var right = 1
 export var max_hp = 100
 var hp:float = max_hp
