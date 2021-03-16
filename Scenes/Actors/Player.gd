@@ -11,7 +11,7 @@ var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 var coins = 0 #ilośc coinsów bohatera
 var weapon = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
-var equipped = "Blade" #Aktualnie wyekwipowana broń
+var equipped = "Blade" #Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 
@@ -34,7 +34,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weapon != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			var weaponName = weapon.WeaponName #Przypisz nazwę broni leżącej na ziemi do zmiennej
-			if equipped != weaponName: #Jeżeli nazwa aktualnej broni jak tej do podniesienia to nic nie rów (najpewniej rozwiązanie tymczasowe)
+			if equipped != weaponName: #Jeżeli nazwa aktualnej broni jak tej do podniesienia to nic nie rób (najpewniej rozwiązanie tymczasowe)
 				var weaponUsed = load("res://Scenes/Loot/Weapon.tscn") #Wczytaj scenę broni aby utworzyć węzeł dla broni którą gracz upuści
 				weaponUsed = weaponUsed.instance()
 				weaponUsed.position = weapon.position #Upuść broń na tą samą pozycję co broń podnoszona
