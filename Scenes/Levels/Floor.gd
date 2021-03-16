@@ -28,6 +28,6 @@ func _ready():
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
-	for i in range(from,to): #Pętla dodaje do zmienner arr wszystkie liczby od "from" do "to"
+	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"
 		   arr.append(i)
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
