@@ -55,7 +55,7 @@ func _on_Atak_body_exited(body):
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
-		player.take_dmg(self)
+		player.take_dmg(dps)
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		

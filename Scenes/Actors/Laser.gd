@@ -37,7 +37,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider()
 		if body.name == "Player":
-			body.take_dmg(get_tree().get_root().find_node("Big Devil", true, false))
+			body.take_dmg(dps)
 		
 	$Line2D.points[1] = cast_point
 	$LaserParticles.position = cast_point * 0.5

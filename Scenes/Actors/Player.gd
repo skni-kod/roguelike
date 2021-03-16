@@ -74,8 +74,8 @@ func movement(): #funkcja poruszania się
 			$PlayerSprite.scale.x = 1 #obróć bohatera w prawo
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
-func take_dmg(enemy): #otrzymanie obrażeń przez bohatera
-	health = health - enemy.dps #aktualizacja ilości życia
+func take_dmg(dps): #otrzymanie obrażeń przez bohatera
+	health = health - dps #aktualizacja ilości życia
 	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 	got_hitted = true #bohater jest uderzany
 	$AnimationPlayer.play("Hit") #włącz animację "Hit"

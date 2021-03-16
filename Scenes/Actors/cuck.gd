@@ -53,7 +53,7 @@ func _on_Atak_body_exited(body):#jezeli player wyszedl z pola ataku (atak -> col
 	
 func _on_Timer_timeout():
 	if attack and health>0:
-		player.take_dmg(self) #wywolywana jest funkcja zabierania dmg playerowi
+		player.take_dmg(dps) #wywolywana jest funkcja zabierania dmg playerowi
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		
