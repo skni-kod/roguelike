@@ -1,14 +1,11 @@
 # Laser.gd
 extends RayCast2D
 
-var player_Pos = Vector2.ZERO # pozycja gracza, pozyskiwana zewnętrznie poprzez przekazanie jego współrzędnych
+var player_Pos = Vector2.ZERO # placeholder pozycji gracza, definicja zmiennej która będzie ją przechowywać
 onready var origin = self.position # pozycja własna początku lasera
 var dps = 1 # dps lasera
 
-var is_casting := false setget set_is_casting # zmienna warunkująca czy laser jest emitowany
-											  # := przypisanie typu do zmiennej, is_casting to bool
-											  # setget set_is_casting - set_is_casting zostaje wywołana moment 
-											  # zanim is_casting zostanie zmieniona, decyduje co zrobić z is_casting
+var is_casting := false setget set_is_casting # zmienna warunkująca czy laser jest emitowany, := to przypisanie typu do zmiennej, is_casting to bool setget set_is_casting - set_is_casting zostaje wywołana moment zanim is_casting zostanie zmieniona, decyduje co zrobić z is_casting
 
 var body = null
 var attack = false
@@ -22,15 +19,14 @@ func _ready():
 
 
 func _physics_process(delta):
-	var cast_point := cast_to # przypisanie z typem cast_point to miejsca do którego powinien zostać wyemitowany laser
-	force_raycast_update() # raycast zostaje zupdatowany
+	var cast_point := cast_to # przypisanie z typem cast_point do miejsca do którego powinien zostać wyemitowany laser
+	force_raycast_update() # raycast zostaje zaktualizowany
 	
 	$CollisionParticles.emitting = is_colliding() # CollisionParticles zostają emitowane gdy laser na coś natrafi
 	
 	if is_colliding():
 		cast_point = to_local(get_collision_point()) # znajduje punkt kolizji i zamienia go na lokalną pozycję
-		$CollisionParticles.global_rotation = get_collision_normal().angle() # ustawienie globalnej rotacji CollisionParticles
-																			 # wobec kąta normalnego kolizji
+		$CollisionParticles.global_rotation = get_collision_normal().angle() # ustawienie globalnej rotacji CollisionParticles wobec kąta normalnego kolizji
 		$CollisionParticles.position = cast_point # pozycja CollisionParticles to punkt, do którego zostają wyemitowane
 		
 		body = self.get_collider() # body to pierwsze ciało z którym skoliduje ray/laser
@@ -57,7 +53,7 @@ func set_is_casting(cast: bool):
 
 func appear():
 	$Tween.stop_all() # zatrzymuje wszystkie działania Tweena
-	$Tween.interpolate_property($Line2D, "width", 0, 10.0, 0.2) # włącza pojawiania się lasera
+	$Tween.interpolate_property($Line2D, "width", 0, 10.0, 0.2) # włącza pojawianie się lasera
 	$Tween.start() # startuje Tweena
 
 
