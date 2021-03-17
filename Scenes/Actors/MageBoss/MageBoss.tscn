@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
@@ -91,6 +91,12 @@ orbit_velocity_random = 0.0
 scale = 3.0
 scale_curve = SubResource( 14 )
 color = Color( 0.172549, 0.117647, 0.12549, 1 )
+
+[sub_resource type="ParticlesMaterial" id=18]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
 
 [node name="MageBoss" type="KinematicBody2D" groups=[
 "Enemy",
@@ -203,8 +209,19 @@ rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="EarthWindTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="ShieldCenter" type="Node2D" parent="."]
+
+[node name="Shield" type="Particles2D" parent="ShieldCenter"]
+position = Vector2( -19.6219, 0 )
+amount = 30
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 18 )
+texture = ExtResource( 4 )
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
+[connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
 [connection signal="body_entered" from="WaterFireCenter/Waterball" to="." method="_on_Waterball_body_entered"]
 [connection signal="body_entered" from="EarthWindCenter/WindBall" to="." method="_on_WindBall_body_entered"]
 [connection signal="body_entered" from="EarthWindCenter/EarthBall" to="." method="_on_EarthBall_body_entered"]

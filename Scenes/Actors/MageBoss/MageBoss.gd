@@ -52,6 +52,10 @@ func _physics_process(delta):
 	rotate_water_fire()
 	rotate_earth_wind()
 	control_phases()
+	if phase_active == true:
+		$ShieldCenter.rotate(0.5)
+	if phase_active == false:
+		$ShieldCenter/Shield.visible = false
 
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player": #Jeśli gracz wejdzie w pole widzenia to przypisz jego węzeł do zmiennej
@@ -177,21 +181,29 @@ func phase1_start():
 	summon1 = summon1.instance()
 	main.add_child(summon1)
 	summon1.position = self.position
+	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
+	$ShieldCenter/Shield.visible = true
 	
 func phase2_start():
 	var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
 	summon2 = summon2.instance()
 	main.add_child(summon2)
 	summon2.position = self.position
+	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
+	$ShieldCenter/Shield.visible = true
 	
 func phase3_start():
 	var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
 	summon3 = summon3.instance()
 	main.add_child(summon3)
 	summon3.position = self.position
+	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
+	$ShieldCenter/Shield.visible = true
 	
 func phase4_start():
 	var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
 	summon4 = summon4.instance()
 	main.add_child(summon4)
 	summon4.position = self.position
+	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
+	$ShieldCenter/Shield.visible = true
