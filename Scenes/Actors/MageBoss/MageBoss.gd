@@ -9,16 +9,17 @@ var right = 1 #Czy MageBoss jest obrócony w prawo
 var max_hp = 500 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
 onready var main := get_tree().get_root().find_node("Main", true, false)
+onready var UI := get_tree().get_root().find_node("UI", true, false)
 
 var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":30,"maxCoins":60} #Przedział definiujący ile MageBoss może zostawić po sobie coinów
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
 
-onready var health_bar = $HealthBar
+var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
-export var angular_velocity = 2.0
+export var angular_velocity = 2.5
 export var speed_during_change1 = 0.3
 export var speed_during_change2 = 1
 var outer_rotation1 = false
@@ -30,7 +31,10 @@ var phase = 0
 var phase_active = false
 
 func _ready():
-	health_bar.on_health_updated(health)
+	health_bar = health_bar.instance()
+	UI.add_child(health_bar)
+	health_bar.set_anchors_preset(5)
+	health_bar.value = health
 
 func _physics_process(delta):
 	move = Vector2.ZERO
@@ -98,8 +102,7 @@ func get_dmg(dmg):
 			hp -= dmg
 			health = hp/max_hp*100
 			$AnimationPlayer.play("Hurt")
-			health_bar.on_health_updated(health)
-			health_bar.visible = true
+			health_bar.value = health
 		#Jeżeli poziom zdrowia spadnie do 0
 		if health<=0:
 			$AnimationPlayer.play("Die")
@@ -114,6 +117,7 @@ func get_dmg(dmg):
 				coin = coin.instance()
 				coin.position = randomPosition
 				level.add_child(coin)
+				health_bar.queue_free()
 			queue_free() #Usuń węzeł MageBoss
 		
 func rotate_water_fire():
@@ -177,33 +181,43 @@ func control_phases():
 		phase4_start()
 
 func phase1_start():
-	var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
-	summon1 = summon1.instance()
-	main.add_child(summon1)
-	summon1.position = self.position
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
 	$ShieldCenter/Shield.visible = true
+	$PhaseTimer.start()
 	
 func phase2_start():
-	var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
-	summon2 = summon2.instance()
-	main.add_child(summon2)
-	summon2.position = self.position
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
 	$ShieldCenter/Shield.visible = true
+	$PhaseTimer.start()
 	
 func phase3_start():
-	var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
-	summon3 = summon3.instance()
-	main.add_child(summon3)
-	summon3.position = self.position
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
 	$ShieldCenter/Shield.visible = true
+	$PhaseTimer.start()
 	
 func phase4_start():
-	var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
-	summon4 = summon4.instance()
-	main.add_child(summon4)
-	summon4.position = self.position
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
 	$ShieldCenter/Shield.visible = true
+	$PhaseTimer.start()
+
+func _on_PhaseTimer_timeout():
+	if phase == 1:
+		var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
+		summon1 = summon1.instance()
+		main.add_child(summon1)
+		summon1.position = self.position
+	elif phase == 2:
+		var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
+		summon2 = summon2.instance()
+		main.add_child(summon2)
+		summon2.position = self.position
+	elif phase == 3:
+		var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
+		summon3 = summon3.instance()
+		main.add_child(summon3)
+		summon3.position = self.position
+	elif phase == 4:
+		var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
+		summon4 = summon4.instance()
+		main.add_child(summon4)
+		summon4.position = self.position

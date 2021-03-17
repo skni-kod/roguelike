@@ -1,8 +1,7 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/waterball.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Enemies/WindBall.png" type="Texture" id=6]
@@ -196,19 +195,14 @@ texture = ExtResource( 7 )
 
 [node name="MissilesTimer" type="Timer" parent="."]
 wait_time = 3.0
+one_shot = true
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 3 )]
-margin_left = -9.74297
-margin_top = -16.6616
-margin_right = -9.74297
-margin_bottom = -16.6616
-rect_scale = Vector2( 0.2, 0.2 )
-
 [node name="EarthWindTimer" type="Timer" parent="."]
 wait_time = 2.0
+one_shot = true
 
 [node name="ShieldCenter" type="Node2D" parent="."]
 
@@ -219,6 +213,10 @@ lifetime = 0.2
 local_coords = false
 process_material = SubResource( 18 )
 texture = ExtResource( 4 )
+
+[node name="PhaseTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
@@ -227,3 +225,4 @@ texture = ExtResource( 4 )
 [connection signal="body_entered" from="EarthWindCenter/EarthBall" to="." method="_on_EarthBall_body_entered"]
 [connection signal="timeout" from="MissilesTimer" to="." method="_on_MissilesTimer_timeout"]
 [connection signal="timeout" from="EarthWindTimer" to="." method="_on_EarthWindTimer_timeout"]
+[connection signal="timeout" from="PhaseTimer" to="." method="_on_PhaseTimer_timeout"]
