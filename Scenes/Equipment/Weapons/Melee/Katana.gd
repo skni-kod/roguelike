@@ -15,9 +15,9 @@ func _physics_process(delta):
 		timer.set_wait_time(0.2)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/Katana.png")
 		#Ustaw wartość kolizji dla broni
-		$AttackCollision.scale.x = 1.5
-		$AttackCollision.scale.y = 0.6
-		$AttackCollision.position.x = 16
+		$AttackCollision.scale.x = 1.7
+		$AttackCollision.scale.y = 0.2
+		$AttackCollision.position.x = 15
 		$AttackCollision.position.y = 0
 		isWeaponReady = 0
 	if !attack:

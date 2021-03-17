@@ -13,8 +13,8 @@ func _physics_process(delta):
 		timer.set_wait_time(0.25)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/blade.png")
 		$AttackCollision.scale.x = 1
-		$AttackCollision.scale.y = 1
-		$AttackCollision.position.x = 10
+		$AttackCollision.scale.y = 0.3
+		$AttackCollision.position.x = 14
 		$AttackCollision.position.y = 0
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
