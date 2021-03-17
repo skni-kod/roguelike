@@ -1,6 +1,6 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://Scenes/Actors/MageBoss.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
@@ -15,15 +15,12 @@ extents = Vector2( 14.7905, 9.28471 )
 radius = 155.866
 
 [sub_resource type="Animation" id=3]
-resource_name = "Attack"
 length = 0.6
 
 [sub_resource type="Animation" id=4]
-resource_name = "Die"
 length = 0.6
 
 [sub_resource type="Animation" id=5]
-resource_name = "Hurt"
 length = 0.4
 loop = true
 
@@ -53,7 +50,16 @@ scale = 3.0
 scale_curve = SubResource( 10 )
 color = Color( 0.968627, 0.541176, 0.00392157, 1 )
 
-[sub_resource type="ParticlesMaterial" id=12]
+[sub_resource type="CircleShape2D" id=12]
+radius = 4.51876
+
+[sub_resource type="Curve" id=13]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=14]
+curve = SubResource( 13 )
+
+[sub_resource type="ParticlesMaterial" id=15]
 emission_shape = 1
 emission_sphere_radius = 1.0
 flag_disable_z = true
@@ -61,10 +67,10 @@ gravity = Vector3( 0, 0, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 3.0
-scale_curve = SubResource( 10 )
+scale_curve = SubResource( 14 )
 color = Color( 0, 0.317647, 0.843137, 1 )
 
-[sub_resource type="ParticlesMaterial" id=14]
+[sub_resource type="ParticlesMaterial" id=16]
 emission_shape = 1
 emission_sphere_radius = 1.0
 flag_disable_z = true
@@ -72,10 +78,10 @@ gravity = Vector3( 0, 0, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 3.0
-scale_curve = SubResource( 10 )
+scale_curve = SubResource( 14 )
 color = Color( 0.584314, 0.796078, 0.878431, 1 )
 
-[sub_resource type="ParticlesMaterial" id=13]
+[sub_resource type="ParticlesMaterial" id=17]
 emission_shape = 1
 emission_sphere_radius = 1.0
 flag_disable_z = true
@@ -83,7 +89,7 @@ gravity = Vector3( 0, 0, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 3.0
-scale_curve = SubResource( 10 )
+scale_curve = SubResource( 14 )
 color = Color( 0.172549, 0.117647, 0.12549, 1 )
 
 [node name="MageBoss" type="KinematicBody2D" groups=[
@@ -95,7 +101,6 @@ script = ExtResource( 1 )
 angular_velocity = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0.297638, 0.543308 )
 rotation = 1.5708
 shape = SubResource( 1 )
@@ -103,7 +108,6 @@ shape = SubResource( 1 )
 [node name="Wzrok" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-visible = false
 position = Vector2( -0.117981, 4.44547 )
 shape = SubResource( 2 )
 
@@ -121,7 +125,6 @@ position = Vector2( -40, 0 )
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterFireCenter/Fireball"]
-visible = false
 shape = SubResource( 8 )
 
 [node name="Particles2D2" type="Particles2D" parent="WaterFireCenter/Fireball"]
@@ -139,14 +142,13 @@ position = Vector2( 40, 0 )
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterFireCenter/Waterball"]
-visible = false
-shape = SubResource( 8 )
+shape = SubResource( 12 )
 
 [node name="Particles2D3" type="Particles2D" parent="WaterFireCenter/Waterball"]
 amount = 10
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 12 )
+process_material = SubResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="WaterFireCenter/Waterball"]
 texture = ExtResource( 5 )
@@ -158,14 +160,13 @@ position = Vector2( 0, -60 )
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EarthWindCenter/WindBall"]
-visible = false
-shape = SubResource( 8 )
+shape = SubResource( 12 )
 
 [node name="Particles2D2" type="Particles2D" parent="EarthWindCenter/WindBall"]
 amount = 10
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 14 )
+process_material = SubResource( 16 )
 
 [node name="Sprite" type="Sprite" parent="EarthWindCenter/WindBall"]
 texture = ExtResource( 6 )
@@ -175,15 +176,14 @@ position = Vector2( 0, 60 )
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EarthWindCenter/EarthBall"]
-visible = false
-shape = SubResource( 8 )
+shape = SubResource( 12 )
 
 [node name="Particles2D2" type="Particles2D" parent="EarthWindCenter/EarthBall"]
 position = Vector2( -0.166847, 0.250282 )
 amount = 10
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 13 )
+process_material = SubResource( 17 )
 
 [node name="Sprite" type="Sprite" parent="EarthWindCenter/EarthBall"]
 texture = ExtResource( 7 )
@@ -205,7 +205,6 @@ rect_scale = Vector2( 0.2, 0.2 )
 wait_time = 2.0
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
-[connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
 [connection signal="body_entered" from="WaterFireCenter/Waterball" to="." method="_on_Waterball_body_entered"]
 [connection signal="body_entered" from="EarthWindCenter/WindBall" to="." method="_on_WindBall_body_entered"]
 [connection signal="body_entered" from="EarthWindCenter/EarthBall" to="." method="_on_EarthBall_body_entered"]
