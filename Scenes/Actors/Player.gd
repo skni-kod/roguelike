@@ -4,55 +4,87 @@ signal health_updated(health, amount) #deklaracja sygnału który będzie emitow
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 
+
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 2 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 var coins = 0 #ilośc coinsów bohatera
-var weapon = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
+var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 var equipped = "Blade" #Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
+var all_weapons = {} #wszystkie bronki
+var weapons = {} #posiadane bronki
+
+onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
+onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
-	#Rozwiązanie tymczasowe związane z wyświetlaniem aaktualnej broni gracza
+	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
 	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
 	$EquippedWeapon.damage = 10
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
-
+	
+	all_weapons = {
+		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
+		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
+		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
+		"FireScepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/FMS.png"),
+		"Hammer" : preload("res://Assets/Loot/Weapons/Hammer.png"),
+		"Katana" : preload("res://Assets/Loot/Weapons/Katana.png"),
+		"Knife" : preload("res://Assets/Loot/Weapons/Knife.png"),
+		"Spear" : preload("res://Assets/Loot/Weapons/Spear.png")
+	}
+	weapons = {
+		"Slot1" : "Blade",
+		"Slot2" : "Empty"
+	}
+	ui_access_wslot1.texture = all_weapons[weapons["Slot1"]]
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
+
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
 		movement() #wywołanie funkcji poruszania się
-	if weapon != null: #Jeżeli gracz stoi przy broni do podniesienia
+	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			var weaponName = weapon.WeaponName #Przypisz nazwę broni leżącej na ziemi do zmiennej
-			if equipped != weaponName: #Jeżeli nazwa aktualnej broni jak tej do podniesienia to nic nie rób (najpewniej rozwiązanie tymczasowe)
-				var weaponUsed = load("res://Scenes/Loot/Weapon.tscn") #Wczytaj scenę broni aby utworzyć węzeł dla broni którą gracz upuści
-				weaponUsed = weaponUsed.instance()
-				weaponUsed.position = weapon.position #Upuść broń na tą samą pozycję co broń podnoszona
-				weaponUsed.WeaponName = equipped #Ustaw nazwę broni upuszczanej na broń wcześniej wyekwipowaną
-				level.add_child(weaponUsed) #utwórz węzeł broni leżącej na ziemi
-				equipped = weaponName #Zmień nazwę aktualnej broni na tą podniesioną
-				#Wycentruj broń na graczu, zmień broń
-				$EquippedWeapon.position=Vector2.ZERO
-				$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weapon.Stats['range']+'/'+weaponName+'.gd')) #Wczytuje skrypt odpowiedni dla danej broni
-				$EquippedWeapon.timer = $EquippedWeapon/Timer #Przypisuje do zmiennej stoper
-				$EquippedWeapon.damage = int(weapon.Stats['attack']) #Przypisz broni wartość ataku
-				weapon.queue_free() #Usuń instancję podniesionej broni
-				weapon = null
+			var weaponName = weaponToTake.WeaponName
+			if equipped != weaponName:
+				if weapons["Slot2"] == "Empty":
+					weapons["Slot2"] = weaponName
+					ui_access_wslot2.texture = all_weapons[weaponName]
+				else:
+					var current_weapon = check_current_weapon()
+					if current_weapon == 1:
+						weapons["Slot1"] = all_weapons[weaponName]
+						ui_access_wslot1.texture = all_weapons[weaponName]
+						actualweapon_access.texture = all_weapons[weaponName]
+					elif current_weapon == 2:
+						weapons["Slot2"] = weaponName
+						ui_access_wslot2.texture = all_weapons[weaponName]
+						actualweapon_access.texture = all_weapons[weaponName]
+						
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
 			chest = null
-	
+			
+func check_current_weapon():
+	var current_weapon = actualweapon_access.texture
+	if all_weapons[weapons["Slot1"]] == actualweapon_access.texture:
+		return 1
+	elif all_weapons[weapons["Slot2"]] == actualweapon_access.texture:
+		return 2
+
 func movement(): #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -90,7 +122,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
-			weapon = body
+			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
@@ -99,6 +131,6 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 	pass
 
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
-	weapon = null
+	weaponToTake = null
 	chest = null
 

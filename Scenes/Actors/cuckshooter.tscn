@@ -115,6 +115,7 @@ vframes = 4
 hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -0.388077, 3.11551 )
 shape = SubResource( 1 )
 
@@ -129,6 +130,7 @@ anims/Idle = SubResource( 5 )
 anims/Walk = SubResource( 6 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.229851, 3.00339 )
 collision_layer = 0
 collision_mask = 2147483649
@@ -139,6 +141,7 @@ rotation = -0.13439
 shape = SubResource( 7 )
 
 [node name="Strzelanie" type="Area2D" parent="."]
+visible = false
 position = Vector2( 0.0834274, 3.67081 )
 collision_layer = 0
 
