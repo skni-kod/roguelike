@@ -24,6 +24,7 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="PopUp" type="Area2D" parent="."]
+collision_layer = 2147483649
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopUp"]
 shape = SubResource( 2 )

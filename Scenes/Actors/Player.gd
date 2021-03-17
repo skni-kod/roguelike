@@ -77,7 +77,7 @@ func movement(): #funkcja poruszania się
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
 func take_dmg(dps): #otrzymanie obrażeń przez bohatera
-	health = health - (dps * statusEffect.damageMultiplier) #aktualizacja ilości życia
+	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 	got_hitted = true #bohater jest uderzany
 	$AnimationPlayer.play("Hit") #włącz animację "Hit"

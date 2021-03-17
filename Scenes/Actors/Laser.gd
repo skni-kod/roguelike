@@ -19,7 +19,6 @@ func _ready():
 	self.is_casting = true
 
 	rotation = (player_Pos - origin).normalized().angle()
-	print($Lifetime.time_left)
 	
 
 
@@ -36,7 +35,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider()
 		if body.name == "Player":
-			statusEffect.bleeding = true # w trakcie trafienia laserem w playera to otrzymuje on krwawienie
+			statusEffect.burning = true # w trakcie trafienia laserem w playera to otrzymuje on podpalenie z prawdopodobieństwem
 			body.take_dmg(dmg)
 		
 	$Line2D.points[1] = cast_point
@@ -78,6 +77,5 @@ func disappear():
 
 
 func _on_Lifetime_timeout():
-	print("disappear")
 	disappear()
 
