@@ -130,6 +130,7 @@ anims/Walk = SubResource( 6 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 position = Vector2( -0.229851, 3.00339 )
+collision_layer = 0
 collision_mask = 2147483649
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -139,6 +140,7 @@ shape = SubResource( 7 )
 
 [node name="Strzelanie" type="Area2D" parent="."]
 position = Vector2( 0.0834274, 3.67081 )
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Strzelanie"]
 position = Vector2( -1.31442, -1.00113 )

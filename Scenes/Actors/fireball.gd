@@ -10,8 +10,8 @@ onready var origin = self.position # miejsce startowe fireballa
 var dmg = 10 # damage, który fireball zadaje
 
 func _ready():
-	#player_Pos = get_tree().get_root().find_node("Player", true, false).position
-	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany (jednostkowy) wektor pozycji player_Pos i origin
+	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany (jednostkowy) 
+												   # wektor pozycji player_Pos i origin
 	
 	set_physics_process(true)
 	
@@ -23,5 +23,4 @@ func _on_Atak_body_entered(body):
 	if body.name == "Player":
 		statusEffect.burning = true # w trakcie kolizji fireballa z playerem, ten zostaje podpalony z prawdopodobieństwem
 		body.take_dmg(dmg) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dmg
-		
-		
+    

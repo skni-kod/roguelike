@@ -9,13 +9,13 @@ var speed = 3
 var dps = 15
 
 func _ready():
-	look_vec = player.position - global_position
+	look_vec = player.position - global_position #kierunek wektora
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
 	
-	move = move.move_toward(look_vec,delta)
-	move = move.normalized() * speed
+	move = move.move_toward(look_vec,delta) #Zmiana położenia o wektor look_vec w czasie delta.
+	move = move.normalized() * speed #Wyrównanie długości wektora nie zależnie od kierunku, ale lepiej sobie zobaczyć na necie
 	position += move	
 
 

@@ -101,6 +101,7 @@ visible = false
 position = Vector2( -0.601517, 2.75438 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( 0, 3.375 )
@@ -108,6 +109,7 @@ shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
 gravity = 0.0
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 position = Vector2( 0, 2.569 )
@@ -123,7 +125,6 @@ anims/Walk = SubResource( 8 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
-autostart = true
 
 [node name="Cooldown" type="Timer" parent="."]
 wait_time = 2.0
