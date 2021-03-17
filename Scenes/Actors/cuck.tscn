@@ -124,7 +124,6 @@ position = Vector2( -1.11362, 2.44997 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.09191 )
