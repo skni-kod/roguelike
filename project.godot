@@ -64,6 +64,7 @@ pick={
 2d_physics/layer_4="projectiles"
 2d_physics/layer_5="laser"
 2d_physics/layer_6="weapons"
+2d_physics/layer_7="coins"
 2d_physics/projectiles=false
 
 [rendering]

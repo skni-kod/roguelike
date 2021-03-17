@@ -4,6 +4,8 @@ signal health_updated(health, amount) #deklaracja sygnału który będzie emitow
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 
+onready var statusEffect = get_node("../UI/StatusBar")
+
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 2 #wartośc szybkości bohatera
@@ -58,7 +60,7 @@ func movement(): #funkcja poruszania się
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	).normalized() # Określenie kierunku poruszania się
-	velocity = direction * speed #pomnożenie wektora kierunku z wartością szybkości daje prędkość
+	velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
 	velocity = move_and_collide(velocity) #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
 		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
@@ -77,7 +79,7 @@ func movement(): #funkcja poruszania się
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
 func take_dmg(dps): #otrzymanie obrażeń przez bohatera
-	health = health - dps #aktualizacja ilości życia
+	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 	got_hitted = true #bohater jest uderzany
 	$AnimationPlayer.play("Hit") #włącz animację "Hit"
