@@ -34,7 +34,7 @@ func generate_perimeter(): #generacja pokoju
 			for x in range (szer, size.x + szer):
 				for y in range(dl, size.y + dl):
 					_tile_map.set_cell(x,y,0)
-					_tile_map.update_bitmask_region(Vector2(x-1,y-1),Vector2(x+1,y+1)) #odniesienie do Room_gen.gd
+					_tile_map.update_bitmask_region(Vector2(x-1,y-1),Vector2(x+1,y+1)) 
 			if hist == 0: #rysowanie w górę
 				if m < 2: # pierwsze 2 pokoje są prosto
 					dl -= size.y + 1
@@ -82,6 +82,7 @@ func generate_perimeter(): #generacja pokoju
 		szer = size.x
 		dl = size.y
 		hist += 1
+
 #			if spr == 0:
 #				gen = _rng.randi_range(1,3)
 #			elif spr == 1:

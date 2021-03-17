@@ -63,6 +63,7 @@ radius = 16.1054
 ]]
 collision_mask = 6
 script = ExtResource( 2 )
+speed = 10
 
 [node name="PlayerSprite" type="Sprite" parent="."]
 position = Vector2( 0, -4 )
@@ -75,7 +76,7 @@ shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 0.3, 0.3 )
+zoom = Vector2( 0.6, 0.6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 2 )
