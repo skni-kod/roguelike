@@ -21,7 +21,7 @@ func _ready(): #funkcja wykonująca
 	generate()
 	
 func setup(): #funkcja, która ustawia wymiary okna (można bardziej zmodyfikować)
-	OS.set_window_size(Vector2(1300,600))
+	OS.set_window_size(Vector2(1280,720))
 
 func generate(): #właściwa funkcja generująca z sygnałami
 	emit_signal("started")
