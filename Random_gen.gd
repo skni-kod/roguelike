@@ -6,7 +6,7 @@ var map = []
 var rooms = []
 var queue = []
 var rng := RandomNumberGenerator.new()
-var ilosc_pok = 20
+var roomsNum = 20
 var n = 0
 var szer = 512
 var dl = 288
@@ -15,11 +15,12 @@ var scene = load("res://Scenes/Levels/Room.tscn")
 
 func generate():
 	rng.randomize()
-	var pokoj = scene.instance()
-	add_child(pokoj)
-	map.append(pokoj.position)
+	var room = scene.instance()
+	add_child(room)
+	map.append(room.position)
+	rooms.append(room)
 	gen = rng.randi_range(1,4)
-	while n < ilosc_pok - 1:
+	while n < roomsNum - 1:
 		rng.randomize()
 		randomize()
 		if n != 0:
@@ -28,7 +29,7 @@ func generate():
 		for i in range(gen):
 			step(directions[i])
 			n += 1
-			if n >= ilosc_pok - 1:
+			if n >= roomsNum - 1:
 				break
 		if queue:
 			position = queue.pop_front()
@@ -36,11 +37,11 @@ func generate():
 func step(direction):
 	var target_position = position + direction
 	if not target_position in map:
-		var pokoj = scene.instance()
-		add_child(pokoj)
-		pokoj.position.x = target_position.x * szer
-		pokoj.position.y = target_position.y * dl
-		rooms.append(pokoj)
+		var room = scene.instance()
+		add_child(room)
+		room.position.x = target_position.x * szer
+		room.position.y = target_position.y * dl
+		rooms.append(room)
 		map.append(target_position)
 		queue.append(target_position)
 	else:
@@ -51,10 +52,11 @@ func _ready():
 
 func _physics_process(delta):
 	if Input.is_action_pressed("ui_accept"):
+		print(rooms)
 		for room in rooms:
 			room.queue_free()
-		map = []
 		rooms = []
+		map = []
 		queue = []
 		position = Vector2.ZERO
 		n = 0
