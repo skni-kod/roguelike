@@ -83,6 +83,8 @@ func take_dmg(dps): #otrzymanie obrażeń przez bohatera
 	$AnimationPlayer.play("Hit") #włącz animację "Hit"
 	yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
 	got_hitted = false #bohater nie jest uderzany
+	if (health <= 0):
+		get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
