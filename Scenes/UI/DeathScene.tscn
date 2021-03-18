@@ -13,15 +13,15 @@ script = ExtResource( 3 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer"]
-position = Vector2( 961.04, 541.092 )
-scale = Vector2( 1.50142, 1.50064 )
+position = Vector2( 964.586, 543.092 )
+scale = Vector2( 1.00609, 1.01214 )
 texture = ExtResource( 1 )
 
 [node name="Button" type="Button" parent="CanvasLayer"]
-margin_left = 791.121
-margin_top = 875.126
-margin_right = 1090.12
-margin_bottom = 939.126
+margin_left = 810.148
+margin_top = 532.634
+margin_right = 1109.15
+margin_bottom = 596.634
 custom_fonts/font = SubResource( 1 )
 text = "Zacznij od nowa"
 __meta__ = {
