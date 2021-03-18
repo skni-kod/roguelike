@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/UI/StatusEffects/StatusEffects.png" type="Texture" id=1]
 [ext_resource path="res://Assets/UI/StatusEffects/Knockback.png" type="Texture" id=2]
@@ -11,19 +11,20 @@
 [ext_resource path="res://Scenes/UI/DisplayTime.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/UI/DisplayStacks.gd" type="Script" id=10]
 [ext_resource path="res://Fonts/Fipps-Regular.otf" type="DynamicFontData" id=11]
+[ext_resource path="res://Assets/UI/StatusEffects/Regeneration.png" type="Texture" id=12]
 
-[sub_resource type="Theme" id=2]
+[sub_resource type="Theme" id=1]
 default_font = ExtResource( 8 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 8
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 32
 extra_spacing_char = 2
 font_data = ExtResource( 11 )
 
-[sub_resource type="Theme" id=1]
-default_font = SubResource( 3 )
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
 
 [node name="StatusBar" type="Control"]
 grow_horizontal = 0
@@ -68,7 +69,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -86,7 +87,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_vertical = 2
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -129,7 +130,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -148,7 +149,7 @@ rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -190,7 +191,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -209,7 +210,7 @@ rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -252,7 +253,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -271,7 +272,7 @@ rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -312,7 +313,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -331,7 +332,7 @@ rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -352,7 +353,7 @@ one_shot = true
 visible = false
 margin_left = 180.0
 margin_right = 212.0
-margin_bottom = 51.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -370,7 +371,7 @@ margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 align = 1
@@ -389,7 +390,7 @@ rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme = SubResource( 1 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
@@ -405,6 +406,68 @@ __meta__ = {
 [node name="Lifetime" type="Timer" parent="StatusContainer/Knockback/DisplayTime"]
 wait_time = 5.0
 one_shot = true
+
+[node name="Healing" type="MarginContainer" parent="StatusContainer"]
+visible = false
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="HealingSprite" type="Sprite" parent="StatusContainer/Healing"]
+position = Vector2( 16, 16 )
+rotation = -3.14159
+scale = Vector2( 1, -1 )
+texture = ExtResource( 12 )
+hframes = 3
+
+[node name="DisplayStacks" type="Label" parent="StatusContainer/Healing"]
+margin_right = 32.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 32, 32 )
+rect_clip_content = true
+size_flags_vertical = 1
+theme = SubResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+align = 1
+valign = 1
+clip_text = true
+max_lines_visible = 1
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisplayTime" type="Label" parent="StatusContainer/Healing"]
+margin_right = 32.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 32, 19 )
+rect_clip_content = true
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+align = 1
+valign = 1
+clip_text = true
+max_lines_visible = 1
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lifetime" type="Timer" parent="StatusContainer/Healing/DisplayTime"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Healing" type="Timer" parent="StatusContainer/Healing"]
+wait_time = 0.5
+one_shot = true
 [connection signal="timeout" from="StatusContainer/Burning/DisplayTime/Lifetime" to="." method="_on_Burning_Lifetime_timeout"]
 [connection signal="timeout" from="StatusContainer/Burning/Damage" to="." method="_on_Burning_Damage_timeout"]
 [connection signal="timeout" from="StatusContainer/Poison/DisplayTime/Lifetime" to="." method="_on_Poison_Lifetime_timeout"]
@@ -414,3 +477,5 @@ one_shot = true
 [connection signal="timeout" from="StatusContainer/Freezing/DisplayTime/Lifetime" to="." method="_on_Freezing_Lifetime_timeout"]
 [connection signal="timeout" from="StatusContainer/Weakness/DisplayTime/Lifetime" to="." method="_on_Weakness_Lifetime_timeout"]
 [connection signal="timeout" from="StatusContainer/Knockback/DisplayTime/Lifetime" to="." method="_on_Knockback_Lifetime_timeout"]
+[connection signal="timeout" from="StatusContainer/Healing/DisplayTime/Lifetime" to="." method="_on_Healing_Lifetime_timeout"]
+[connection signal="timeout" from="StatusContainer/Healing/Healing" to="." method="_on_Healing_Healing_timeout"]

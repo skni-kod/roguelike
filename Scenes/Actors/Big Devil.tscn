@@ -89,16 +89,14 @@ rect_scale = Vector2( 0.2, 0.2 )
 scale = Vector2( -1, 1 )
 texture = ExtResource( 1 )
 hframes = 8
-frame = 4
+
+[node name="Laser_Load" parent="." instance=ExtResource( 4 )]
+position = Vector2( -0.601517, 2.75438 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3.455 )
 rotation = 1.5708
 shape = SubResource( 1 )
-
-[node name="Laser_Load" parent="." instance=ExtResource( 4 )]
-visible = false
-position = Vector2( -0.601517, 2.75438 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 collision_layer = 0

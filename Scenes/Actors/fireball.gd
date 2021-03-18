@@ -21,6 +21,6 @@ func _physics_process(delta):
 	
 func _on_Atak_body_entered(body):
 	if body.name == "Player":
-		statusEffect.burning = true # w trakcie kolizji fireballa z playerem, ten zostaje podpalony z prawdopodobieństwem
+		statusEffect.burning = true # w trakcie kolizji fireballa z playerem, ten może zostać podpalony z szansą 50%
 		body.take_dmg(dmg) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dmg
-    
+	
