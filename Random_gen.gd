@@ -6,42 +6,52 @@ var map = []
 var rooms = []
 var queue = []
 var rng := RandomNumberGenerator.new()
-var roomsNum = 20
+var roomsNum = 30
 var n = 0
 var szer = 512
 var dl = 288
 var gen = 0
 var scene = load("res://Scenes/Levels/Room.tscn")
 
+func draw(map):
+	for i in range(len(map)):
+		var room = scene.instance()
+		add_child(room)
+		room.position.x = map[i].x * szer
+		room.position.y = map[i].y * dl
+		rooms.append(room)
+
 func generate():
-	rng.randomize()
-	var room = scene.instance()
-	add_child(room)
-	map.append(room.position)
-	rooms.append(room)
+	var Room = scene.instance()
+	add_child(Room)
+	map.append(Room.position)
+	rooms.append(Room)
 	gen = rng.randi_range(1,4)
 	while n < roomsNum - 1:
-		rng.randomize()
-		randomize()
 		if n != 0:
 			gen = rng.randi_range(1,2)
 		directions.shuffle()
-		for i in range(gen):
+		for i in gen:
 			step(directions[i])
 			n += 1
 			if n >= roomsNum - 1:
 				break
 		if queue:
 			position = queue.pop_front()
+		else:
+			for room in rooms:
+				room.queue_free()
+				rooms = []
+				map = []
+				queue = []
+				position = Vector2.ZERO
+				n = 0
+				generate()
+	draw(map)
 
 func step(direction):
 	var target_position = position + direction
 	if not target_position in map:
-		var room = scene.instance()
-		add_child(room)
-		room.position.x = target_position.x * szer
-		room.position.y = target_position.y * dl
-		rooms.append(room)
 		map.append(target_position)
 		queue.append(target_position)
 	else:
@@ -52,7 +62,6 @@ func _ready():
 
 func _physics_process(delta):
 	if Input.is_action_pressed("ui_accept"):
-		print(rooms)
 		for room in rooms:
 			room.queue_free()
 		rooms = []
