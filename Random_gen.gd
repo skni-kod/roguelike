@@ -6,7 +6,7 @@ var map = []
 var rooms = []
 var queue = []
 var rng := RandomNumberGenerator.new()
-var ilosc_pok = 10
+var ilosc_pok = 20
 var n = 0
 var szer = 512
 var dl = 288
@@ -18,7 +18,7 @@ func generate():
 	var pokoj = scene.instance()
 	add_child(pokoj)
 	map.append(pokoj.position)
-	gen = 1
+	gen = rng.randi_range(1,4)
 	while n < ilosc_pok - 1:
 		rng.randomize()
 		randomize()
@@ -50,7 +50,7 @@ func _ready():
 	generate()
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_pressed("ui_accept"):
 		for room in rooms:
 			room.queue_free()
 		map = []
