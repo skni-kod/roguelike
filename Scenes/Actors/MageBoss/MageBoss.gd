@@ -33,7 +33,6 @@ var phase_active = false
 func _ready():
 	health_bar = health_bar.instance()
 	UI.add_child(health_bar)
-	health_bar.set_anchors_preset(5)
 	health_bar.value = health
 
 func _physics_process(delta):
