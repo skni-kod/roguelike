@@ -25,6 +25,7 @@ color = Color( 0.968627, 0.541176, 0.00392157, 1 )
 
 [node name="Fireball" type="Area2D"]
 collision_layer = 8
+collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

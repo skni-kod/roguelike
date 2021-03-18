@@ -25,6 +25,7 @@ color = Color( 0.623529, 0.792157, 0.870588, 1 )
 
 [node name="Windball" type="Area2D"]
 collision_layer = 8
+collision_mask = 2147483651
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -39,4 +40,4 @@ amount = 10
 lifetime = 0.2
 local_coords = false
 process_material = SubResource( 4 )
-[connection signal="body_entered" from="." to="." method="_on_Waterball_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Windball_body_entered"]

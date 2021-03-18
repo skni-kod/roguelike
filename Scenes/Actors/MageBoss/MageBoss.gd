@@ -55,8 +55,7 @@ func _physics_process(delta):
 	rotate_water_fire()
 	rotate_earth_wind()
 	control_phases()
-	if phase_active == true:
-		$ShieldCenter.rotate(0.5)
+	$ShieldCenter.rotate(0.5)
 	if phase_active == false:
 		$ShieldCenter/Shield.visible = false
 
@@ -89,6 +88,28 @@ func _on_WindBall_body_entered(body):
 func _on_EarthBall_body_entered(body):
 	if body.name == "Player":
 		player.take_dmg(5.0)
+
+func _on_PhaseTimer_timeout():
+	if phase == 1:
+		var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
+		summon1 = summon1.instance()
+		main.add_child(summon1)
+		summon1.position = self.position
+	elif phase == 2:
+		var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
+		summon2 = summon2.instance()
+		main.add_child(summon2)
+		summon2.position = self.position
+	elif phase == 3:
+		var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
+		summon3 = summon3.instance()
+		main.add_child(summon3)
+		summon3.position = self.position
+	elif phase == 4:
+		var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
+		summon4 = summon4.instance()
+		main.add_child(summon4)
+		summon4.position = self.position
 
 func get_dmg(dmg):
 	if phase_active == false:
@@ -198,25 +219,3 @@ func phase4_start():
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
 	$ShieldCenter/Shield.visible = true
 	$PhaseTimer.start()
-
-func _on_PhaseTimer_timeout():
-	if phase == 1:
-		var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
-		summon1 = summon1.instance()
-		main.add_child(summon1)
-		summon1.position = self.position
-	elif phase == 2:
-		var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
-		summon2 = summon2.instance()
-		main.add_child(summon2)
-		summon2.position = self.position
-	elif phase == 3:
-		var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
-		summon3 = summon3.instance()
-		main.add_child(summon3)
-		summon3.position = self.position
-	elif phase == 4:
-		var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
-		summon4 = summon4.instance()
-		main.add_child(summon4)
-		summon4.position = self.position

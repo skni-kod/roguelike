@@ -6,10 +6,8 @@
 [node name="BossHealthBar" type="TextureProgress"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -288.0
+margin_left = -278.0
 margin_top = 10.0
-margin_right = -10.0
-margin_bottom = 58.0
 rect_scale = Vector2( 2, 2 )
 value = 100.0
 texture_under = ExtResource( 1 )
