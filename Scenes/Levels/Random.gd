@@ -3,6 +3,7 @@ class_name Random
 signal started
 signal finished
 
+#TO JEST STARA WERSJA
 
 #enum Cell {WALL, FLOOR, OBSTACLE}
 #export(float, 0, 1) var ground_probability := 0.5
