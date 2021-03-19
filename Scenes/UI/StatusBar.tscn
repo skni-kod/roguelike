@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://Assets/UI/StatusEffects/StatusEffects.png" type="Texture" id=1]
+[ext_resource path="res://Assets/UI/StatusEffects/Weakness.png" type="Texture" id=1]
 [ext_resource path="res://Assets/UI/StatusEffects/Knockback.png" type="Texture" id=2]
 [ext_resource path="res://Assets/UI/StatusEffects/Freezing.png" type="Texture" id=3]
 [ext_resource path="res://Assets/UI/StatusEffects/Burning.png" type="Texture" id=4]
@@ -38,7 +38,7 @@ __meta__ = {
 [node name="StatusContainer" type="HBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -212.0
+margin_left = -256.0
 margin_bottom = 51.0
 rect_min_size = Vector2( 32, 51 )
 size_flags_horizontal = 11
@@ -49,8 +49,8 @@ __meta__ = {
 
 [node name="Burning" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 144.0
-margin_right = 176.0
+margin_left = 8.0
+margin_right = 40.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 32, 51 )
 size_flags_horizontal = 8
@@ -61,6 +61,7 @@ position = Vector2( 16, 16 )
 rotation = 3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 4 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Burning"]
@@ -110,8 +111,8 @@ one_shot = true
 
 [node name="Poison" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 180.0
-margin_right = 212.0
+margin_left = 44.0
+margin_right = 76.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
@@ -122,6 +123,7 @@ position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 5 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Poison"]
@@ -171,9 +173,9 @@ one_shot = true
 
 [node name="Bleeding" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 51.0
+margin_left = 80.0
+margin_right = 112.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -183,6 +185,7 @@ position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 6 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Bleeding"]
@@ -233,8 +236,8 @@ one_shot = true
 
 [node name="Freezing" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 180.0
-margin_right = 212.0
+margin_left = 116.0
+margin_right = 148.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
@@ -245,6 +248,7 @@ position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 3 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Freezing"]
@@ -291,21 +295,20 @@ one_shot = true
 
 [node name="Weakness" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 144.0
-margin_right = 176.0
-margin_bottom = 51.0
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="Weakness" type="Sprite" parent="StatusContainer/Weakness"]
+[node name="WeaknessSprite" type="Sprite" parent="StatusContainer/Weakness"]
 position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 1 )
-vframes = 7
+flip_h = true
 hframes = 3
-frame = 18
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Weakness"]
 margin_right = 32.0
@@ -351,8 +354,8 @@ one_shot = true
 
 [node name="Knockback" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 180.0
-margin_right = 212.0
+margin_left = 188.0
+margin_right = 220.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
@@ -363,6 +366,7 @@ position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 2 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Knockback"]
@@ -409,8 +413,8 @@ one_shot = true
 
 [node name="Healing" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 180.0
-margin_right = 212.0
+margin_left = 224.0
+margin_right = 256.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
@@ -421,6 +425,7 @@ position = Vector2( 16, 16 )
 rotation = -3.14159
 scale = Vector2( 1, -1 )
 texture = ExtResource( 12 )
+flip_h = true
 hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Healing"]

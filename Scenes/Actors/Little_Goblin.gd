@@ -53,7 +53,7 @@ func _on_Timer_timeout():
 	if attack and health>0:		#Jeśli gracz znajduję się w polu Atak i goblin żyje to zadaj obrażenia
 		$AnimationPlayer.play("Atak")
 		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(self)
+		player.take_dmg(dps)
 
 func get_dmg(dmg):
 	if health > 0 :
@@ -73,5 +73,5 @@ func get_dmg(dmg):
 	var text = floating_dmg.instance()
 	text.amount = dmg
 	text.type = "Damage"
-	add_child(text)	
+	add_child(text)
 

@@ -52,6 +52,44 @@ var healAmount = 30
 func _ready():
 	pass
 
+# funkcje zmieniające sprite danych efektów
+func _physics_process(delta):
+	if burning:
+		if $StatusContainer/Burning/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Burning/DisplayTime/Lifetime.time_left > $StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Burning/BurningSprite.frame = 1
+		elif $StatusContainer/Burning/DisplayTime/Lifetime.time_left < $StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Burning/BurningSprite.frame = 2
+	if bleeding:
+		if $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left > $StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Bleeding/BleedingSprite.frame = 1
+		elif $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left < $StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Bleeding/BleedingSprite.frame = 2
+	if poison:
+		if $StatusContainer/Poison/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Poison/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Poison/DisplayTime/Lifetime.time_left > $StatusContainer/Poison/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Poison/PoisonSprite.frame = 1
+		elif $StatusContainer/Poison/DisplayTime/Lifetime.time_left < $StatusContainer/Poison/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Poison/PoisonSprite.frame = 2
+	if freezing:
+		if $StatusContainer/Freezing/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Freezing/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Freezing/DisplayTime/Lifetime.time_left > $StatusContainer/Freezing/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Freezing/FreezingSprite.frame = 1
+		elif $StatusContainer/Freezing/DisplayTime/Lifetime.time_left < $StatusContainer/Freezing/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Freezing/FreezingSprite.frame = 2
+	if knockback:
+		if $StatusContainer/Knockback/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Knockback/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Knockback/DisplayTime/Lifetime.time_left > $StatusContainer/Knockback/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Knockback/KnockbackSprite.frame = 1
+		elif $StatusContainer/Knockback/DisplayTime/Lifetime.time_left < $StatusContainer/Knockback/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Knockback/KnockbackSprite.frame = 2
+	if weakness:
+		if $StatusContainer/Weakness/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Weakness/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Weakness/DisplayTime/Lifetime.time_left > $StatusContainer/Weakness/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Weakness/WeaknessSprite.frame = 1
+		elif $StatusContainer/Weakness/DisplayTime/Lifetime.time_left < $StatusContainer/Weakness/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Weakness/WeaknessSprite.frame = 2
+	if healing:
+		if $StatusContainer/Healing/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Healing/DisplayTime/Lifetime.time_left > $StatusContainer/Healing/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Healing/HealingSprite.frame = 1
+		elif $StatusContainer/Healing/DisplayTime/Lifetime.time_left < $StatusContainer/Healing/DisplayTime/Lifetime.wait_time/3:
+			$StatusContainer/Healing/HealingSprite.frame = 2
+
 
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
@@ -107,6 +145,7 @@ func _on_Poison_Lifetime_timeout():
 	playerBody.modulate = Color(1, 1, 1)
 	$StatusContainer/Poison.visible = false
 	$StatusContainer/Poison/Damage.stop()
+	$StatusContainer/Poison/PoisonSprite.frame = 0
 
 
 func _on_Poison_Damage_timeout():
@@ -138,6 +177,7 @@ func _on_Bleeding_Lifetime_timeout():
 	playerBleedingParticles.emitting = false
 	$StatusContainer/Bleeding.visible = false
 	$StatusContainer/Bleeding/Damage.stop()
+	$StatusContainer/Bleeding/BleedingSprite.frame = 0
 
 
 func _on_Bleeding_Damage_timeout():
@@ -156,7 +196,6 @@ func healing(var heal):
 		$StatusContainer/Healing.visible = true
 		$StatusContainer/Healing/DisplayTime/Lifetime.start()
 		$StatusContainer/Healing/DisplayTime.timer_on = true
-		#$StatusContainer/Healing/DisplayStacks.stacks = healingStacks
 		$StatusContainer/Healing/Healing.start()
 
 
@@ -165,6 +204,8 @@ func _on_Healing_Lifetime_timeout():
 	healingStacks = 0
 	playerBody.modulate = Color(1, 1, 1)
 	$StatusContainer/Healing.visible = false
+	$StatusContainer/Healing/Healing.stop()
+	$StatusContainer/Healing/HealingSprite.frame = 0
 
 
 func _on_Healing_Healing_timeout():
@@ -198,6 +239,7 @@ func _on_Freezing_Lifetime_timeout():
 	speedMultiplier = 1 # przywracam współczynnik prędkości do oryginalnej wartości
 	playerBody.modulate = Color(1, 1, 1)
 	$StatusContainer/Freezing.visible = false
+	$StatusContainer/Freezing/FreezingSprite.frame = 0
 
 
 # -------------- ODBICIE -------------- #
@@ -223,6 +265,7 @@ func _on_Knockback_Lifetime_timeout():
 	knockback = false
 	knockbackStacks = 0
 	$StatusContainer/Knockback.visible = false
+	$StatusContainer/Knockback/KnockbackSprite.frame = 0
 
 
 # -------------- OSŁABIENIE -------------- #
@@ -249,6 +292,7 @@ func _on_Weakness_Lifetime_timeout():
 	weaknessStacks = 0
 	playerBody.modulate = Color(1, 1, 1)
 	$StatusContainer/Weakness.visible = false
+	$StatusContainer/Weakness/WeaknessSprite.frame = 0
 
 
 # FUNKCJA GENERUJĄCA PRAWDĘ/FAŁSZ Z PRAWDOPODOBIEŃSTWA #
