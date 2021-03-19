@@ -258,4 +258,3 @@ z_index = 2
 
 [node name="MageBoss" parent="." instance=ExtResource( 1 )]
 position = Vector2( 292.704, 326.929 )
-angular_velocity = 2.5

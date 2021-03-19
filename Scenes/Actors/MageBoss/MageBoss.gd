@@ -10,9 +10,10 @@ var max_hp = 500 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
 onready var main := get_tree().get_root().find_node("Main", true, false)
 onready var UI := get_tree().get_root().find_node("UI", true, false)
+var alive = true
 
 var health = 100 #Pozostałe życie w procentach
-var drop = {"minCoins":30,"maxCoins":60} #Przedział definiujący ile MageBoss może zostawić po sobie coinów
+var drop = {"minCoins":40,"maxCoins":50} #Przedział definiujący ile MageBoss może zostawić po sobie coinów
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
 
 var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")
@@ -37,27 +38,19 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	
-	if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
-		$Sprite.scale.x = right #Obróć MageBoss
-		if position.distance_to(player.position) < 35.0:
-			move = -position.direction_to(player.position) * speed
-		elif position.distance_to(player.position) > 60.0:
-			move = position.direction_to(player.position) * speed
-		if player.position.x-self.position.x < 0:
-			right = 1 #MageBoss ma być obrócony w prawo
-		else:
-			right = -1 #MageBoss ma być obrócony w lewo
-		$AnimationPlayer.play("Walk")
-	elif health>0:
-		$AnimationPlayer.play("Idle")
-	move_and_collide(move)
-	rotate_water_fire()
-	rotate_earth_wind()
-	control_phases()
-	$ShieldCenter.rotate(0.5)
-	if phase_active == false:
-		$ShieldCenter/Shield.visible = false
+	if alive:
+		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
+			if position.distance_to(player.position) < 50:
+				move = -position.direction_to(player.position) * speed
+			elif position.distance_to(player.position) > 60.0:
+				move = position.direction_to(player.position) * speed
+		move_and_collide(move)
+		rotate_water_fire()
+		rotate_earth_wind()
+		control_phases()
+		$ShieldCenter.rotate(0.5)
+		if phase_active == false:
+			$ShieldCenter/Shield.emitting = false
 
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player": #Jeśli gracz wejdzie w pole widzenia to przypisz jego węzeł do zmiennej
@@ -112,7 +105,7 @@ func _on_PhaseTimer_timeout():
 		summon4.position = self.position
 
 func get_dmg(dmg):
-	if phase_active == false:
+	if phase_active == false and alive:
 		var text = floating_dmg.instance()
 		text.amount = dmg
 		text.type = "Damage"
@@ -125,6 +118,9 @@ func get_dmg(dmg):
 			health_bar.value = health
 		#Jeżeli poziom zdrowia spadnie do 0
 		if health<=0:
+			alive = false
+			$WaterFireCenter.queue_free()
+			$EarthWindCenter.queue_free()
 			$AnimationPlayer.play("Die")
 			yield($AnimationPlayer,"animation_finished")
 			#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
@@ -164,7 +160,7 @@ func rotate_water_fire():
 func rotate_earth_wind():
 	var radius = $EarthWindCenter/WindBall.position.distance_to($EarthWindCenter.position)
 	var angle = angular_velocity/radius
-	$EarthWindCenter.rotate(angle)
+	$EarthWindCenter.rotate(-angle)
 	for missile in $EarthWindCenter.get_children():
 		missile.rotate(0.1)
 		if outer_rotation2 == false && change_rotation2 == true:
@@ -202,20 +198,20 @@ func control_phases():
 
 func phase1_start():
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
-	$ShieldCenter/Shield.visible = true
+	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
 	
 func phase2_start():
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
-	$ShieldCenter/Shield.visible = true
+	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
 	
 func phase3_start():
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
-	$ShieldCenter/Shield.visible = true
+	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
 	
 func phase4_start():
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
-	$ShieldCenter/Shield.visible = true
+	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()

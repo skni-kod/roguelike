@@ -1,33 +1,44 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Enemies/mage.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/waterball.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Enemies/WindBall.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Enemies/EarthBall.png" type="Texture" id=7]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 14.7905, 9.28471 )
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.244444, 0.525926, 0.777778, 1 )
+colors = PoolColorArray( 0.654902, 0.839216, 0.92549, 1, 0, 0.32549, 0.85098, 1, 0.960784, 0.486275, 0.00392157, 1, 0.262745, 0.203922, 0.152941, 1, 0.65098, 0.827451, 0.913725, 1 )
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.113924, 0.682955 ), 0.0, 0.0, 0, 0, Vector2( 0.246835, 0.993182 ), 0.0, 0.0, 0, 0, Vector2( 0.360759, 0.673864 ), 0.0, 0.0, 0, 0, Vector2( 0.493671, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.601266, 0.682955 ), 0.0, 0.0, 0, 0, Vector2( 0.746835, 1 ), -0.0807954, -0.0807954, 0, 0, Vector2( 0.879747, 0.673864 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 1
+emission_sphere_radius = 15.0
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale_random = 1.0
+scale_curve = SubResource( 4 )
+color_ramp = SubResource( 2 )
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 18.563
+
+[sub_resource type="CircleShape2D" id=7]
 radius = 155.866
-
-[sub_resource type="Animation" id=3]
-length = 0.6
-
-[sub_resource type="Animation" id=4]
-length = 0.6
-
-[sub_resource type="Animation" id=5]
-length = 0.4
-loop = true
-
-[sub_resource type="Animation" id=6]
-length = 0.3
-
-[sub_resource type="Animation" id=7]
-length = 0.3
 
 [sub_resource type="CircleShape2D" id=8]
 radius = 4.51876
@@ -97,31 +108,135 @@ gravity = Vector3( 0, 0, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 
+[sub_resource type="Curve" id=19]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=20]
+offsets = PoolRealArray( 0, 0.244444, 0.525926, 0.777778, 1 )
+colors = PoolColorArray( 0.654902, 0.839216, 0.92549, 1, 0, 0.32549, 0.85098, 1, 0.960784, 0.486275, 0.00392157, 1, 0.262745, 0.203922, 0.152941, 1, 1, 1, 1, 0 )
+
+[sub_resource type="Animation" id=21]
+resource_name = "Die"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Particles2D:process_material:scale_curve:curve")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ SubResource( 3 ), SubResource( 19 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:lifetime")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2.0, 3.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:process_material:emission_sphere_radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 15.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Particles2D:explosiveness")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1.0, 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Particles2D:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Particles2D:process_material:radial_accel")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0.0, 50.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Particles2D:process_material:color_ramp:gradient")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ SubResource( 1 ), SubResource( 20 ) ]
+}
+
+[sub_resource type="Animation" id=22]
+resource_name = "Hurt"
+
+[sub_resource type="Animation" id=23]
+resource_name = "Idle"
+
+[sub_resource type="Animation" id=24]
+resource_name = "Walk"
+
 [node name="MageBoss" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 1 )
-angular_velocity = 1.0
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 400
+lifetime = 2.0
+speed_scale = 0.5
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.297638, 0.543308 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.44547 )
-shape = SubResource( 2 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Attack = SubResource( 3 )
-anims/Die = SubResource( 4 )
-anims/Hurt = SubResource( 5 )
-anims/Idle = SubResource( 6 )
-anims/Walk = SubResource( 7 )
+shape = SubResource( 7 )
 
 [node name="WaterFireCenter" type="Node2D" parent="."]
 
@@ -197,9 +312,6 @@ texture = ExtResource( 7 )
 wait_time = 3.0
 one_shot = true
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-
 [node name="EarthWindTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
@@ -217,6 +329,12 @@ texture = ExtResource( 4 )
 [node name="PhaseTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Die = SubResource( 21 )
+anims/Hurt = SubResource( 22 )
+anims/Idle = SubResource( 23 )
+anims/Walk = SubResource( 24 )
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
