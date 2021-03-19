@@ -56,10 +56,10 @@ func _ready():
 func _physics_process(delta):
 	if burning:
 		if $StatusContainer/Burning/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Burning/DisplayTime/Lifetime.time_left > $StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3:
-			$StatusContainer/Burning/BurningSprite.frame = 1
+			$StatusContainer/Burning/BurningSprite.frame = 1 # w 2/3 czasu życia efektu zmienia na kolejną klatkę
 		elif $StatusContainer/Burning/DisplayTime/Lifetime.time_left < $StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3:
-			$StatusContainer/Burning/BurningSprite.frame = 2
-	if bleeding:
+			$StatusContainer/Burning/BurningSprite.frame = 2 # w 1/3 czasu życia efektu zmienia na kolejną klatkę
+	if bleeding: # poniżej każdy proces przebiega jak powyżej
 		if $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left > $StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3:
 			$StatusContainer/Bleeding/BleedingSprite.frame = 1
 		elif $StatusContainer/Bleeding/DisplayTime/Lifetime.time_left < $StatusContainer/Bleeding/DisplayTime/Lifetime.wait_time/3:
@@ -115,7 +115,7 @@ func _on_Burning_Lifetime_timeout():
 	$StatusContainer/Burning.visible = false # wyłączam wyświetlanie ikonki efektu na StatusBarze
 	$StatusContainer/Burning/DisplayTime.timer_on = false # wyłączam timer/wyświetlanie czasu
 	$StatusContainer/Burning/DisplayStacks.stacks = 0 # resetuję ilość stacków na 0
-	$StatusContainer/Burning/BurningSprite.frame = 0
+	$StatusContainer/Burning/BurningSprite.frame = 0 # resetowanie klatki do pierwszej (przygotowanie do kolejnego wywołania)
 
 
 func _on_Burning_Damage_timeout():
@@ -187,6 +187,7 @@ func _on_Bleeding_Damage_timeout():
 
 
 # -------------- REGENERACJA -------------- #
+# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func healing(var heal):
 	if heal:
 		if healingStacks <= healingMaxStacks:
