@@ -18,7 +18,7 @@ func update_grid_position():
 	if grid_position == new_grid_position:
 		return
 	grid_position = new_grid_position
-	position = grid_position * grid_size / 2
+	position = grid_position * grid_size
 
 func _physics_process(delta):
 	update_grid_position()

@@ -35,7 +35,6 @@ margin_bottom = 34.0226
 rect_scale = Vector2( 2, 2 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 256, 144 )
 z_index = 2
 
 [node name="TileMap" type="TileMap" parent="."]
