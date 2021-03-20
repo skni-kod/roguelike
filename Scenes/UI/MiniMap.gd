@@ -1,12 +1,14 @@
 extends MarginContainer
 
 export (NodePath) var player
-export var zoom = 0.3 #Zmienna określająca przybliżenie minimapy
+export var zoom = 0.5 #Zmienna określająca przybliżenie minimapy
 
-#Zmienne przypisujące elementy MiniMapy (dla wygody)
+#Zmienne przypisujące elementy MiniMapy 
 onready var grid = $MarginContainer/Grid
 onready var player_marker = $MarginContainer/Grid/Hero
 onready var wall_marker = $MarginContainer/Grid/Wall
+onready var chest_marker = $MarginContainer2/Grid/ChestMarker
+onready var icons  = {"chest": chest_marker}
 
 onready var tiles = [] #Zmienna przechowująca wszystkie kafelki ściany
 
@@ -24,11 +26,14 @@ func _ready():
 			grid.add_child(new_marker) #Dodaje do mapy ikonę
 			new_marker.show()
 			markers[new_marker] = Vector2(i.x*16,i.y*16) #Przypisuje pozycję na mapie kafelkom
-
+		var news_marker = chest_marker.duplicate() #Bierze ikonę skrzyni
+		grid.add_child(news_marker) #Dodaje
+		news_marker.show()          #Wyświetla
+		
+		
 func _process(delta):
 	if !player: #Jeżeli nie znaleziono węzła gracza to zakończ dałanie funkcji
 		return
 	for item in markers: #Pętla ustala położenie ikon względem gracza
 		var obj_pos = (markers[item] - get_node(player).position) * grid_scale + grid.rect_size/2
 		item.position = obj_pos
-	 
