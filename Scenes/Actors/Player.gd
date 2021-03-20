@@ -15,6 +15,24 @@ var equipped = "Blade" #Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 
+var base_health = health #zmienna przechowująca bazowe hp bohatera
+
+#zmienne do funkcji potionów
+var base_hp = null  
+var Half_hp_Potion = 0
+var Full_hp_Potion = 0
+var Potion20 = 0
+var Potion60 = 0
+var Potion100 = 0
+
+func ClearPotions(): #funkcja resetująca ilość potionów
+	Half_hp_Potion = 0
+	Full_hp_Potion = 0
+	Potion20 = 0
+	var Potion60 = 0
+	var Potion100 = 0
+
+
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
@@ -52,6 +70,49 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
 			chest = null
+	
+	if Input.is_action_just_pressed("use_potion"): #funkcja wywoływana jak nacisniety zostanie przycisk Potka z slotu nr1
+		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		base_hp = level.get_node("Player").base_health
+		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
+			return
+		if Half_hp_Potion > 0: 									#jeżeli gracz posiada jakieś potki half hp to:
+			if level.get_node("Player").health > 0.5*base_hp:	#jeżeli gracz ma ponad pół hp to:
+				level.get_node("Player").health = base_hp		#ustawia jego hp na wartość bazowego czyli 100% (zabezpieczenie żeby niedodawało wiecej hp niż bazówka)
+			else: 	#jeżeli ma mniej niż pół hp
+				level.get_node("Player").health += 0.5*base_hp #leczy o pół hp
+				
+			emit_signal("health_updated", health) #emituje sygnał do aktualizacji paska hp
+			Half_hp_Potion -= 1 #odejmuje jedną potke halp hp
+		elif Full_hp_Potion > 0: #jeżeli gracz posiada potki full hp to:
+			level.get_node("Player").health = base_hp #ustawia hp playera na bazowe hp
+			emit_signal("health_updated", health) #emituje sygnał do aktualizacji paska hp
+			Full_hp_Potion -= 1 #odejmuje jednego potka full hp
+		elif Potion20 > 0:
+			if level.get_node("Player").health > base_hp-20:
+				level.get_node("Player").health = base_hp
+			else:
+				level.get_node("Player").health += 20
+			emit_signal("health_updated", health)
+			Potion20 -= 1
+		elif Potion60 > 0:
+			if level.get_node("Player").health > base_hp-60:
+				level.get_node("Player").health = base_hp
+			else:
+				level.get_node("Player").health += 60
+			emit_signal("health_updated", health)
+			Potion60 -= 1
+		elif Potion100 > 0:
+			if level.get_node("Player").health > base_hp-100:
+				level.get_node("Player").health = base_hp
+			else:
+				level.get_node("Player").health += 1000
+			emit_signal("health_updated", health)
+			Potion100 -= 1
+		
+		print("Fullhp: ",Full_hp_Potion)
+		print("Halfhp: ",Half_hp_Potion)	
+		print("potek+60: ",Potion60)	
 	
 func movement(): #funkcja poruszania się
 	direction = Vector2(
@@ -93,6 +154,50 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			weapon = body
 		elif "Chest" in body.name:
 			chest = body
+		elif "potek50%" in body.name: #jeżeli player wejdzie w potka
+			level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+			if level.get_node("Player").Half_hp_Potion != 0: #sprawdzenie czy player posiada jakieś potki 50%
+				level.get_node("Player").Half_hp_Potion += 1 #jeżeli ma to ilosc potek 50% zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			else: #jeżeli nie posiada potki 50% aktualna potka jest zamieniana na potke 50%
+				ClearPotions() #zeruje ilość wszystkich potek
+				level.get_node("Player").Half_hp_Potion += 1 #zwieksza ilość potek 50% o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			print("Fullhp: ",Full_hp_Potion)
+			print("Halfhp: ",Half_hp_Potion)	
+			print("potek+60: ",Potion60)		
+			
+		elif "potek100%" in body.name: #jeżeli player wejdzie w potka
+			level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+			if level.get_node("Player").Full_hp_Potion != 0: #sprawdzenie czy player posiada jakieś potki 100%
+				level.get_node("Player").Full_hp_Potion += 1 #jeżeli ma to ilosc potek 100% zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			else: #jeżeli nie posiada potki 100% aktualna potka jest zamieniana na potke 100%
+				ClearPotions() #zeruje ilość wszystkich potek
+				level.get_node("Player").Full_hp_Potion += 1 #zwieksza ilość potek 100% o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			print("Fullhp: ",Full_hp_Potion)
+			print("Halfhp: ",Half_hp_Potion)	
+			print("potek+60: ",Potion60)
+		elif "potek60" in body.name: #jeżeli player wejdzie w potka
+			level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+			if level.get_node("Player").Potion60 != 0: #sprawdzenie czy player posiada jakieś potki 100%
+				level.get_node("Player").Potion60 += 1 #jeżeli ma to ilosc potek 100% zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			else: #jeżeli nie posiada potki 100% aktualna potka jest zamieniana na potke 100%
+				ClearPotions() #zeruje ilość wszystkich potek
+				level.get_node("Player").Potion60 += 1 #zwieksza ilość potek 100% o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				
+			print("Fullhp: ",Full_hp_Potion)
+			print("Halfhp: ",Half_hp_Potion)	
+			print("potek+60: ",Potion60)	
+			
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 
 func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawne działanie sygnałów
