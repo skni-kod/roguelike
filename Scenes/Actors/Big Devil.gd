@@ -31,7 +31,7 @@ var laser_color = Color(1.0, 0, 0, 0.1)
  
 func _ready():
 	health_bar.on_health_updated(health) # wczytuję życie do paska życia
-	$Laser_Load.visible = false
+	$Laser_Load.emit = false
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
