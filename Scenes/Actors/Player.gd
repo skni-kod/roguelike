@@ -50,10 +50,8 @@ func _ready(): #po inicjacji bohatera
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	
 func _physics_process(delta): #funkcja wywoływana co klatkę
-	if weaponToTake == null:
-		print("lalalallala")
-	else:
-		print("huehuehue")
+	for i in range(1,3):
+		print(weapons[i])
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -61,7 +59,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if equipped != weaponToTake.WeaponName:
-				print("gitens")
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
 				else:
@@ -107,7 +104,7 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
+		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 	else:
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
@@ -115,8 +112,7 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
-	weaponOnGround.queue_free()
-	weaponOnGround=null
+		weaponOnGround.queue_free()
 	
 	
 		
@@ -157,7 +153,6 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
-			print("Brońka")
 			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
@@ -168,6 +163,5 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
-	print("NieBrońka")
 	chest = null
 
