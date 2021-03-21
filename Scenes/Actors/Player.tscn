@@ -4,36 +4,36 @@
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Equipment/Weapons/EquippedWeapon.tscn" type="PackedScene" id=3]
 
-[sub_resource type="Gradient" id=23]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.794702, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 0.359375, 0, 0, 1, 0.600586, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=24]
-gradient = SubResource( 23 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="Curve" id=25]
+[sub_resource type="Curve" id=3]
 max_value = 1024.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488506, 505.018 ), -83.0659, -83.0659, 0, 0, Vector2( 1, 1024 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=26]
-curve = SubResource( 25 )
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
 
-[sub_resource type="Curve" id=27]
+[sub_resource type="Curve" id=5]
 min_value = -5.0
 max_value = 10.0
 _data = [ Vector2( 0, 10 ), 0.0, 0.0, 0, 0, Vector2( 0.988506, -4.96591 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=28]
-curve = SubResource( 27 )
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
 
-[sub_resource type="Curve" id=29]
+[sub_resource type="Curve" id=7]
 max_value = 2.0
 _data = [ Vector2( 0, 0.493182 ), 0.0, 0.0, 0, 0, Vector2( 0.442529, 0.990909 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=30]
-curve = SubResource( 29 )
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
 
-[sub_resource type="ParticlesMaterial" id=31]
+[sub_resource type="ParticlesMaterial" id=9]
 emission_shape = 2
 emission_box_extents = Vector3( 3, 5, 1 )
 flag_disable_z = true
@@ -43,17 +43,17 @@ gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-linear_accel_curve = SubResource( 28 )
-damping_curve = SubResource( 26 )
+linear_accel_curve = SubResource( 6 )
+damping_curve = SubResource( 4 )
 scale = 2.0
 scale_random = 1.0
-scale_curve = SubResource( 30 )
-color_ramp = SubResource( 24 )
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 2 )
 
-[sub_resource type="RectangleShape2D" id=22]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 5.69842, 7.46412 )
 
-[sub_resource type="Animation" id=32]
+[sub_resource type="Animation" id=11]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
@@ -68,7 +68,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=33]
+[sub_resource type="Animation" id=12]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -153,7 +153,7 @@ emitting = false
 amount = 128
 lifetime = 10.0
 local_coords = false
-process_material = SubResource( 31 )
+process_material = SubResource( 9 )
 
 [node name="PlayerSprite" type="Sprite" parent="."]
 position = Vector2( 0, -4 )
@@ -162,15 +162,15 @@ hframes = 9
 frame = 8
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
-shape = SubResource( 22 )
+shape = SubResource( 10 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.2, 0.2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hit = SubResource( 32 )
-anims/Idle = SubResource( 33 )
+anims/Hit = SubResource( 11 )
+anims/Idle = SubResource( 12 )
 anims/Run = SubResource( 13 )
 
 [node name="Pick" type="Area2D" parent="."]

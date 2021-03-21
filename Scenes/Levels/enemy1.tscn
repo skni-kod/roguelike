@@ -245,13 +245,9 @@ tile_data = PoolIntArray( -393213, 3, 0, -393212, 3, 0, -393211, 3, 0, -393210, 
 
 [node name="Slime" parent="." instance=ExtResource( 5 )]
 position = Vector2( 237.713, -23.3323 )
-collision_layer = 4
-collision_mask = 3
 
 [node name="Slime2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 107.149, -49.2094 )
-collision_layer = 4
-collision_mask = 3
 
 [node name="GoldCoin2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 162.476, 40.4086 )

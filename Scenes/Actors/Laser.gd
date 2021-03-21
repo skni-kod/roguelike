@@ -33,7 +33,6 @@ func _physics_process(delta):
 		
 		body = self.get_collider() # body to pierwsze ciało z którym skoliduje ray/laser
 		if body.name == "Player":
-			statusEffect.burning = true # w trakcie trafienia laserem w playera to otrzymuje on podpalenie z prawdopodobieństwem
 			body.take_dmg(dmg)
 		
 	$Line2D.points[1] = cast_point # punkt nr 1 $Line2D zostaje ustawiony jako cast_point

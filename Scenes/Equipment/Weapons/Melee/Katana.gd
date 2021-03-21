@@ -14,7 +14,7 @@ var attack_speed=0 #Animacja ataku
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
-		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/Katana.png")
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/katana.png")
 		#Ustaw wartość kolizji dla broni
 		$AttackCollision.scale.x = 1.7
 		$AttackCollision.scale.y = 0.2
