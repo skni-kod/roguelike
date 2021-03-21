@@ -17,6 +17,7 @@ var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
+var current_weapon
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
@@ -33,15 +34,15 @@ func _ready(): #po inicjacji bohatera
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
-		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
-		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
+		"Axe" : preload("res://Assets/Loot/Weapons/Axe.png"),
+		"Blade" : preload("res://Assets/Loot/Weapons/Blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
-		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
+		"Fire Scepter" : preload("res://Assets/Loot/Weapons/Firescepter.png"),
 		"FMS" : preload("res://Assets/Loot/Weapons/FMS.png"),
-		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
-		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
-		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
-		"Spear" : preload("res://Assets/Loot/Weapons/spear.png")
+		"Hammer" : preload("res://Assets/Loot/Weapons/Hammer.png"),
+		"Katana" : preload("res://Assets/Loot/Weapons/Katana.png"),
+		"Knife" : preload("res://Assets/Loot/Weapons/Knife.png"),
+		"Spear" : preload("res://Assets/Loot/Weapons/Spear.png")
 	}
 	weapons = {
 		1 : "Blade",
@@ -50,8 +51,6 @@ func _ready(): #po inicjacji bohatera
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	
 func _physics_process(delta): #funkcja wywoływana co klatkę
-	for i in range(1,3):
-		print(weapons[i])
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -62,28 +61,36 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
 				else:
-					swap_weapon(check_current_weapon(),weaponToTake)
+					if current_weapon != null:
+						swap_weapon(current_weapon,weaponToTake)
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
 			chest = null
 	if weapons[2] != "Empty":
 		if Input.is_action_just_pressed("change_weapon_slot"):
-			change_weapon_slot(check_current_weapon())
+			current_weapon = check_current_weapon()
+			change_weapon_slot(current_weapon)
 			
 func check_current_weapon():
-	if all_weapons[weapons[1]] == actualweapon_access.texture:
+	print(actualweapon_access.texture)
+	if weapons[2] == "Empty":
 		return 1
-	elif all_weapons[weapons[2]] == actualweapon_access.texture:
-		return 2
+	else:
+		if all_weapons[weapons[1]] == actualweapon_access.texture:
+			return 1
+		if all_weapons[weapons[2]] == actualweapon_access.texture:
+			return 2
 
 func change_weapon_slot(currentSlot):
 	if currentSlot == 1:
+		equipped == weapons[2]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[2])+'.gd')) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		#$EquippedWeapon.damage = int(weaponOnGround.Stats['attack']) to trzeba jakos inaczej
-	else:
+	if currentSlot == 2:
+		equipped == weapons[1]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[1])+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -101,13 +108,16 @@ func swap_weapon(slot,weaponOnGround):
 		weaponUsed.position = weaponOnGround.position
 		level.add_child(weaponUsed)
 		weapons[slot] = weaponOnGround.WeaponName
+		equipped == weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
+		weaponOnGround.queue_free()
 	else:
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
+		equipped == weapons[2]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -153,6 +163,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
+			current_weapon = check_current_weapon()
 			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
