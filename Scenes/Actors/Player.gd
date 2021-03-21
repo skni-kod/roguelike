@@ -11,6 +11,7 @@ var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 2 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
+var base_health = 100 # bazowa ilość życia gracza
 var coins = 0 #ilośc coinsów bohatera
 var weapon = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 var equipped = "Blade" #Aktualnie używana broń
