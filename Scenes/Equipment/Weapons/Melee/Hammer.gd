@@ -13,9 +13,9 @@ func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/hammer.png")
-		$AttackCollision.scale.x = 1
-		$AttackCollision.scale.y = 1
-		$AttackCollision.position.x = 10
+		$AttackCollision.scale.x = 0.6
+		$AttackCollision.scale.y = 0.5
+		$AttackCollision.position.x = 17
 		$AttackCollision.position.y = 0
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
@@ -32,6 +32,10 @@ func _physics_process(delta):
 		else:
 			$WeaponSprite.scale.y = 1
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+			
+func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
+	position.x=0.281
+	position.y=0.281
 
 func _on_Player_attacked():
 	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
@@ -56,6 +60,7 @@ func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku
 		attack = false
 		attack_speed = 0
 		timer.stop()
+		reset_pivot()
 
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
