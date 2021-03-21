@@ -27,8 +27,6 @@ onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weap
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 
-var base_health = health #zmienna przechowująca bazowe hp bohatera
-onready var statusEffect = get_node("../UI/StatusBar")
 
 
 #zmienne do funkcji potionów
