@@ -1,9 +1,11 @@
 extends KinematicBody2D
 
-
+onready var statusEffect = get_node("../UI/StatusBar")
 onready var direction = Vector2.ZERO # kąt odchylenia toru pocisku
+
 var player_Pos = Vector2.ZERO # pozycja gracza w którego celuje
 onready var origin = self.position  # miejsce startowe pocisku
+
 var dps = 10 # damage, który pocisk zadaje
 const goblin_ball_speed = 50 #prędkość pocisku
 
@@ -16,4 +18,5 @@ func _physics_process(delta):
 	
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
-		body.take_dmg(self)		# jeśli pocisk natrafi na body playera to zadaje mu damage o wartości dps
+		statusEffect.poison = true
+		body.take_dmg(dps)		# jeśli pocisk natrafi na body playera to zadaje mu damage o wartości dps

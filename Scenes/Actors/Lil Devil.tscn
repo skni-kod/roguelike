@@ -116,15 +116,14 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2147483649
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( 0, 3.375 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 position = Vector2( 0, 2.569 )
