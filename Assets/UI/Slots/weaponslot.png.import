@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bloodsword.png-adf6ee7c9bb1819b87b218cd6fb62f3a.stex"
+path="res://.import/weaponslot.png-5085470747d02e50a2030f37354206cc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/bloodsword.png"
-dest_files=[ "res://.import/bloodsword.png-adf6ee7c9bb1819b87b218cd6fb62f3a.stex" ]
+source_file="res://Assets/UI/Slots/weaponslot.png"
+dest_files=[ "res://.import/weaponslot.png-5085470747d02e50a2030f37354206cc.stex" ]
 
 [params]
 
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bloodsword.png-adf6ee7c9bb1819b87b218cd6fb62f3a.stex"
+path="res://.import/Potion50.png-9beb6ba1d5f9068e6810107c2fc9099b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/bloodsword.png"
-dest_files=[ "res://.import/bloodsword.png-adf6ee7c9bb1819b87b218cd6fb62f3a.stex" ]
+source_file="res://Assets/Loot/Potions/Potion50.png"
+dest_files=[ "res://.import/Potion50.png-9beb6ba1d5f9068e6810107c2fc9099b.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
