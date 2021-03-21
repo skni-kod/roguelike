@@ -18,6 +18,8 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
+var first_weapon_stats = {"attack":float(10)}
+var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
@@ -57,6 +59,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		movement() #wywołanie funkcji poruszania się
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
+			print(equipped)
 			if equipped != weaponToTake.WeaponName:
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
@@ -84,31 +87,33 @@ func check_current_weapon():
 
 func change_weapon_slot(currentSlot):
 	if currentSlot == 1:
-		equipped == weapons[2]
+		equipped = weapons[2]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[2])+'.gd')) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		#$EquippedWeapon.damage = int(weaponOnGround.Stats['attack']) to trzeba jakos inaczej
+		$EquippedWeapon.damage = second_weapon_stats['attack']
 	if currentSlot == 2:
-		equipped == weapons[1]
+		equipped = weapons[1]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[1])+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		#$EquippedWeapon.damage = int(weaponOnGround.Stats['attack']) to trzeba jakos inaczej
+		$EquippedWeapon.damage = first_weapon_stats['attack']
 
 func swap_weapon(slot,weaponOnGround):
 	if weapons[2] != "Empty":
 		if slot == 1:
 			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
+			first_weapon_stats = weaponOnGround.Stats
 		elif slot == 2:
 			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
+			second_weapon_stats = weaponOnGround.Stats
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
 		weaponUsed.position = weaponOnGround.position
 		level.add_child(weaponUsed)
 		weapons[slot] = weaponOnGround.WeaponName
-		equipped == weapons[slot]
+		equipped = weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -117,7 +122,8 @@ func swap_weapon(slot,weaponOnGround):
 	else:
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
-		equipped == weapons[2]
+		equipped = weapons[2]
+		second_weapon_stats = weaponOnGround.Stats
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
