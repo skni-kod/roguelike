@@ -31,7 +31,7 @@ var laser_color = Color(1.0, 0, 0, 0.1)
  
 func _ready():
 	health_bar.on_health_updated(health) # wczytuję życie do paska życia
-	$Laser_Load.visible = false
+	$Laser_Load.emit = false
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
@@ -109,10 +109,10 @@ func _on_Cooldown_timeout():
 		
 func get_dmg(dmg):
 	if health>0:
-		if player.position.x-self.position.x < 0:
-			self.position.x += 10
-		else:
-			self.position.x -= 10
+#		if player.position.x-self.position.x < 0:
+#			self.position.x += 10
+#		else:
+#			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")

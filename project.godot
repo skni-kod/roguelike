@@ -21,7 +21,9 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/height=800
+window/size/width=1920
+window/size/height=1080
+window/size/borderless=true
 
 [input]
 
@@ -69,6 +71,7 @@ change_weapon_slot={
 2d_physics/layer_4="projectiles"
 2d_physics/layer_5="laser"
 2d_physics/layer_6="weapons"
+2d_physics/layer_7="coins"
 2d_physics/projectiles=false
 
 [rendering]

@@ -2,11 +2,12 @@
 extends KinematicBody2D
 
 const FIREBALL_SPEED = 100
+onready var statusEffect = get_node("../UI/StatusBar")
 
 onready var direction = Vector2.ZERO # kąt odchylenia toru fireballa
 var player_Pos = Vector2.ZERO # pozycja playera w którego celuje
 onready var origin = self.position # miejsce startowe fireballa
-var dps = 15 # damage, który fireball zadaje
+var dmg = 10 # damage, który fireball zadaje
 
 func _ready():
 	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany (jednostkowy) 
@@ -20,6 +21,6 @@ func _physics_process(delta):
 	
 func _on_Atak_body_entered(body):
 	if body.name == "Player":
-		body.take_dmg(dps) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dps
-		
-		
+		statusEffect.burning = true # w trakcie kolizji fireballa z playerem, ten może zostać podpalony z szansą 50%
+		body.take_dmg(dmg) # jeśli fireball natrafi na body playera to zadaje mu damage o wartości dmg
+	

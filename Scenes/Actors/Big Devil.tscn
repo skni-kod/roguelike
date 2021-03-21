@@ -55,6 +55,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -89,14 +90,13 @@ scale = Vector2( -1, 1 )
 texture = ExtResource( 1 )
 hframes = 8
 
+[node name="Laser_Load" parent="." instance=ExtResource( 4 )]
+position = Vector2( -0.601517, 2.75438 )
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3.455 )
 rotation = 1.5708
 shape = SubResource( 1 )
-
-[node name="Laser_Load" parent="." instance=ExtResource( 4 )]
-visible = false
-position = Vector2( -0.601517, 2.75438 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 collision_layer = 0
@@ -125,7 +125,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Cooldown" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
 one_shot = true
 
 [node name="Position2D" type="Position2D" parent="."]

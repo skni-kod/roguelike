@@ -12,9 +12,9 @@ func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.25)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/knife.png")
-		$AttackCollision.scale.x = 0.5
-		$AttackCollision.scale.y = 0.5
-		$AttackCollision.position.x = 10
+		$AttackCollision.scale.x = 0.75
+		$AttackCollision.scale.y = 0.25
+		$AttackCollision.position.x = 12
 		$AttackCollision.position.y = 0		
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza

@@ -1,9 +1,11 @@
 # Laser.gd
 extends RayCast2D
 
-var player_Pos = Vector2.ZERO # placeholder pozycji gracza, definicja zmiennej która będzie ją przechowywać
-onready var origin = self.position # pozycja własna początku lasera
-var dps = 1 # dps lasera
+onready var statusEffect = get_node("../UI/StatusBar")
+
+var player_Pos = Vector2.ZERO
+onready var origin = self.position
+var dmg = 1
 
 var is_casting := false setget set_is_casting # zmienna warunkująca czy laser jest emitowany, := to przypisanie typu do zmiennej, is_casting to bool setget set_is_casting - set_is_casting zostaje wywołana moment zanim is_casting zostanie zmieniona, decyduje co zrobić z is_casting
 
@@ -12,11 +14,11 @@ var attack = false
 
 func _ready():
 	set_physics_process(false)
-	$Line2D.points[1] = Vector2.ZERO # punkt nr 1 $Line2D znajduje się w pozycji Vector2.ZERO
-	$Lifetime.start() # startuje timer z czasem życia lasera
-	self.is_casting = true # laser jest emitowany -> set_is_casting
-	rotation = (player_Pos - origin).normalized().angle() # ustawienie rotacji lasera w stronę gracza
+	$Line2D.points[1] = Vector2.ZERO
+	$Lifetime.start()
+	self.is_casting = true
 
+	rotation = (player_Pos - origin).normalized().angle()
 
 func _physics_process(delta):
 	var cast_point := cast_to # przypisanie z typem cast_point do miejsca do którego powinien zostać wyemitowany laser
@@ -31,7 +33,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider() # body to pierwsze ciało z którym skoliduje ray/laser
 		if body.name == "Player":
-		  body.take_dmg(dps)
+			body.take_dmg(dmg)
 		
 	$Line2D.points[1] = cast_point # punkt nr 1 $Line2D zostaje ustawiony jako cast_point
 	$LaserParticles.position = cast_point * 0.5 # pozycja LaserParticles zostaje ustawiona w połowie długości do cast_point
@@ -66,5 +68,4 @@ func disappear():
 
 
 func _on_Lifetime_timeout():
-	disappear() # gdy czas życia minie, laser znika -> disappear()
-
+	disappear()
