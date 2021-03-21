@@ -29,15 +29,14 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	if player != null and health>0:
-		self.scale.x = right
-		move = position.direction_to(player.position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
-		if abs(player.position.x)-abs(self.position.x) < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
-			right = -1
+		move = -position.direction_to(player.position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
+		if player.position.x - self.position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+			$Sprites.scale.x = -0.5
 		else:
-			right = 1
+			$Sprites.scale.x = 0.5
 		$BodyAnimationPlayer.play("Walk")
 	elif !attack and health>0:
-		$BodyAnimationPlayer.play("Idle")
+		#$BodyAnimationPlayer.play("Idle")
 		$HeadAnimationPlayer.play("Idle")
 	move_and_collide(move)
 

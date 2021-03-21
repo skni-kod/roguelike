@@ -30,7 +30,7 @@ loop = true
 length = 0.4
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("HeadSprite:frame")
+tracks/0/path = NodePath("Sprites/HeadSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -44,23 +44,24 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=8]
 length = 0.5
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("BodySprite:frame")
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 4, 4, 5, 6, 7 ]
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 7 ]
 }
 
 [sub_resource type="Animation" id=9]
 resource_name = "Attack"
 tracks/0/type = "value"
-tracks/0/path = NodePath("HeadSprite:frame")
+tracks/0/path = NodePath("Sprites/HeadSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -85,7 +86,7 @@ loop = true
 length = 0.4
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("HeadSprite:frame")
+tracks/0/path = NodePath("Sprites/HeadSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -100,7 +101,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=13]
 length = 0.5
 tracks/0/type = "value"
-tracks/0/path = NodePath("BodySprite:frame")
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -127,26 +128,29 @@ margin_right = -10.041
 margin_bottom = -11.991
 rect_scale = Vector2( 0.2, 0.2 )
 
-[node name="BodySprite" type="Sprite" parent="."]
+[node name="Sprites" type="Node2D" parent="."]
 scale = Vector2( 0.5, 0.5 )
+
+[node name="BodySprite" type="Sprite" parent="Sprites"]
 texture = ExtResource( 4 )
 hframes = 8
 frame = 7
 
-[node name="HeadSprite" type="Sprite" parent="."]
-position = Vector2( 2.18442, -4.01897 )
-scale = Vector2( 0.5, 0.5 )
+[node name="HeadSprite" type="Sprite" parent="Sprites"]
+position = Vector2( 4.36884, -8.03794 )
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 8
 frame = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.734604, -1.905 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -154,6 +158,7 @@ position = Vector2( 0, 3.375 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 collision_layer = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
