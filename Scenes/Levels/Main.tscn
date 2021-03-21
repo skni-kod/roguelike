@@ -14,8 +14,6 @@
 [ext_resource path="res://Assets/TileMap/floor/floor_3.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Scenes/Loot/GoldCoin.tscn" type="PackedScene" id=14]
-[ext_resource path="res://Scenes/Loot/60healthPotion.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Scenes/Equipment/Weapons/EquippedWeapon.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scenes/Loot/50%Potion.tscn" type="PackedScene" id=18]
@@ -276,32 +274,3 @@ tile_data = PoolIntArray( 786444, 0, 0, 786445, 0, 0, 786446, 0, 0, 786447, 0, 0
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 577.992, 363.866 )
 z_index = 2
-
-[node name="Slime" parent="." instance=ExtResource( 1 )]
-position = Vector2( 457.824, 254.225 )
-
-[node name="GoldCoin" parent="." instance=ExtResource( 14 )]
-position = Vector2( 252.37, 341 )
-
-[node name="20healthPotion" parent="." instance=ExtResource( 20 )]
-position = Vector2( 270.753, 500.597 )
-
-[node name="20healthPotion2" parent="." instance=ExtResource( 20 )]
-position = Vector2( 270.753, 527.924 )
-
-[node name="100%Potion" parent="." instance=ExtResource( 19 )]
-position = Vector2( 389.205, 501.597 )
-
-[node name="100%Potion2" parent="." instance=ExtResource( 19 )]
-position = Vector2( 389.205, 527.174 )
-
-[node name="50%Potion" parent="." instance=ExtResource( 18 )]
-position = Vector2( 345.26, 501.597 )
-
-[node name="50%Potion2" parent="." instance=ExtResource( 18 )]
-position = Vector2( 345.26, 522.924 )
-
-[node name="60healthPotion" parent="." instance=ExtResource( 15 )]
-
-[node name="60healthPotion2" parent="." instance=ExtResource( 15 )]
-position = Vector2( 308.361, 522.924 )
