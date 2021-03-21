@@ -16,14 +16,13 @@ _global_script_class_icons={
 [application]
 
 config/name="roguelike"
-run/main_scene="res://Scenes/Levels/Main.tscn"
+run/main_scene="res://Scenes/title_screen/TitleScreen.tscn"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=1920
-window/size/height=1080
-window/size/borderless=true
+window/size/width=1280
+window/size/height=720
 
 [input]
 

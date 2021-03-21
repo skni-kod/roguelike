@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/title_screen/buttons/MenuButton.tscn" type="PackedScene" id=1]
+
+[node name="ExitButton" instance=ExtResource( 1 )]
+margin_bottom = 60.0
+
+[node name="Label" parent="." index="0"]
+text = "Exit"
