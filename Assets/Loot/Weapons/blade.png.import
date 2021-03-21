@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Blade.png-34fe93b3c44fb2f8e5d2eaca98a03726.stex"
+path="res://.import/blade.png-f81652b23d8a85cd90b9a2c377d2a5ab.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/Blade.png"
-dest_files=[ "res://.import/Blade.png-34fe93b3c44fb2f8e5d2eaca98a03726.stex" ]
+source_file="res://Assets/Loot/Weapons/blade.png"
+dest_files=[ "res://.import/blade.png-f81652b23d8a85cd90b9a2c377d2a5ab.stex" ]
 
 [params]
 

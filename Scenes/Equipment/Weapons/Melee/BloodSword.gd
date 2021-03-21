@@ -12,6 +12,7 @@ var a = 1
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.25)
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/bloodsword.png")
 		$AttackCollision.scale.x = 1.5
 		$AttackCollision.scale.y = 0.3
 		$AttackCollision.position.x = 12

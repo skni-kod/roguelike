@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Knife.png-a916990b10af411094165cdc9a26a378.stex"
+path="res://.import/knife.png-3b99c118e814b8829991b0de55d5a331.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/Knife.png"
-dest_files=[ "res://.import/Knife.png-a916990b10af411094165cdc9a26a378.stex" ]
+source_file="res://Assets/Loot/Weapons/knife.png"
+dest_files=[ "res://.import/knife.png-3b99c118e814b8829991b0de55d5a331.stex" ]
 
 [params]
 
