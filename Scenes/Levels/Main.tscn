@@ -13,7 +13,7 @@
 [ext_resource path="res://Assets/TileMap/floor/floor_3.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Scenes/Actors/Lil Devil.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Actors/Big Devil.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Scenes/Levels/Floor.gd" type="Script" id=22]
 
@@ -266,5 +266,5 @@ tile_data = PoolIntArray( 786444, 0, 0, 786445, 0, 0, 786446, 0, 0, 786447, 0, 0
 position = Vector2( 293.349, 363.866 )
 z_index = 2
 
-[node name="Lil Devil" parent="." instance=ExtResource( 14 )]
-position = Vector2( 555.803, 373.951 )
+[node name="Big Devil" parent="." instance=ExtResource( 14 )]
+position = Vector2( 515.806, 362.656 )
