@@ -34,15 +34,15 @@ func _ready(): #po inicjacji bohatera
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
-		"Axe" : preload("res://Assets/Loot/Weapons/Axe.png"),
-		"Blade" : preload("res://Assets/Loot/Weapons/Blade.png"),
-		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
-		"Fire Scepter" : preload("res://Assets/Loot/Weapons/Firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/FMS.png"),
-		"Hammer" : preload("res://Assets/Loot/Weapons/Hammer.png"),
-		"Katana" : preload("res://Assets/Loot/Weapons/Katana.png"),
-		"Knife" : preload("res://Assets/Loot/Weapons/Knife.png"),
-		"Spear" : preload("res://Assets/Loot/Weapons/Spear.png")
+		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
+		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
+		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
+		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
+		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
+		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
+		"Spear" : preload("res://Assets/Loot/Weapons/spear.png")
 	}
 	weapons = {
 		1 : "Blade",
@@ -70,10 +70,10 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weapons[2] != "Empty":
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
+			print(current_weapon)
 			change_weapon_slot(current_weapon)
 			
 func check_current_weapon():
-	print(actualweapon_access.texture)
 	if weapons[2] == "Empty":
 		return 1
 	else:
