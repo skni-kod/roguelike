@@ -6,12 +6,14 @@ var map = []
 var rooms = []
 var queue = []
 var rng := RandomNumberGenerator.new()
-var roomsNum = 30
+var roomsNum = 10
 var n = 0
 var szer = 512
 var dl = 288
 var gen = 0
 var scene = load("res://Scenes/Levels/Room.tscn")
+var room_num = []
+var a = 0
 
 func draw(map):
 	for i in range(len(map)):
@@ -20,12 +22,12 @@ func draw(map):
 		room.position.x = map[i].x * szer
 		room.position.y = map[i].y * dl
 		rooms.append(room)
+		room_num.append(a)
+		a += 1
 
 func generate():
-	var Room = scene.instance()
-	add_child(Room)
-	map.append(Room.position)
-	rooms.append(Room)
+	map.append(Vector2(0,0))
+	rng.randomize()
 	gen = rng.randi_range(1,4)
 	while n < roomsNum - 1:
 		if n != 0:

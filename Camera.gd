@@ -8,6 +8,8 @@ var grid_position = Vector2()
 onready var parent = get_parent()
 
 func _ready():
+	zoom.x = 0.4
+	zoom.y = 0.4
 	set_as_toplevel(true)
 	update_grid_position()
 	
@@ -19,6 +21,6 @@ func update_grid_position():
 		return
 	grid_position = new_grid_position
 	position = grid_position * grid_size
-
+	
 func _physics_process(delta):
 	update_grid_position()

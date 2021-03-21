@@ -17,7 +17,6 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
- 
 func _ready():
 	health_bar.on_health_updated(health)
 
@@ -59,7 +58,7 @@ func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(self)
+		#player.take_dmg(dps)
 			
 func get_dmg(dmg):
 	if health>0:
