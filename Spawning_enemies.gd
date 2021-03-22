@@ -1,5 +1,8 @@
 extends Node
 
+var arr = [] #Pusta tablica dla losowych liczb
+var names = [] #Pusta tablica dla nazw broni
+
 onready var tilemap = get_node("../TileMap")
 var rand = RandomNumberGenerator.new()
 var all_enemies = {
@@ -91,12 +94,42 @@ func _on_Node2D_body_entered(body):
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"):
 		close_door()
-	
+
+func weapon():
+	var weapon #Zmienna przechowująca scenę broni
+	var weapons #Zmienna przechowująca bronie pobrane z pliku .json
+	var file = File.new() #Tworzy zmienną plik
+	file.open("res://Jsons/ItemStats.json", file.READ) #Otwiera plik i go wczytuje
+	var text = file.get_as_text() #Pobiera dane z pliku
+	weapons = JSON.parse(text).result #Dane typu json trzeba sparsować na typ właściwy dla języka
+	file.close() #Zamknięcie połączenia pliku
+	weapons = weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
+	for i in weapons: #Pętla przypisująca nazwy do zmiennej
+		names.append(i)
+	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
+
+	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
+	weapon = weapon.instance()
+	weapon.WeaponName = names[arr[0]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names
+	if weapon.WeaponName == "Fire Scepter":
+		weapon.WeaponName = names[arr[1]]
+	weapon.position = Vector2(rand.randf_range(-180,180),rand.randf_range(-80,80)) #Przypisuje pozycję broni
+	add_child(weapon) #Tworzy broń na podłodze
+
+func rand_num(from,to):
+	randomize() #Pobiera ziarno dla funkcji losowych
+	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"
+		   arr.append(i)
+	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
+
 func open(body):
 	print(body)
 	if body.health <= 0:
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
+		rand.randomize()
+		if rand.randf_range(0,100) <= 33:
+			weapon()
 		if drzwi[3]:
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)

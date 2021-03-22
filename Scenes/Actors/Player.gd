@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {}
+var first_weapon_stats = {"attack":float(10)}
 var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -78,7 +78,7 @@ func _ready(): #po inicjacji bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
 	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
-	$EquippedWeapon.damage = 1000
+	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
