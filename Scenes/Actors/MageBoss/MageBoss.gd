@@ -13,7 +13,7 @@ var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
 var alive = true
 onready var main := get_tree().get_root().find_node("Main", true, false)
 onready var UI := get_tree().get_root().find_node("UI", true, false)
-onready var statusEffect = get_node("../UI/StatusBar")
+onready var statusEffect = get_node("../../../UI/StatusBar")
 
 var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":40,"maxCoins":50} #Przedział definiujący ile MageBoss może zostawić po sobie coinów

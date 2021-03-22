@@ -8,7 +8,7 @@ var player = null
 var move = Vector2.ZERO
 export var speed = 0.5 
 var right = 1
-export var max_hp = 100
+export var max_hp = 10
 var hp:float = max_hp
 var attack = false #sluzy do informowania czy player jest w polu strzelanie (strzelanie -> colisionshape2d)
 var eyes = false #sluzy do informowania czy player jest w polu wzrok (wzrok -> collisionshape2d)
@@ -27,9 +27,9 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	if player !=null and health>0: #jezeli playera jest w polu widzenia i jest zywy
-		move = position.direction_to(player.position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
+		move = global_position.direction_to(player.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
 		$Sprite.scale.x= right #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
-		if player.position.x - self.position.x < 0:
+		if player.global_position.x - self.global_position.x < 0:
 			right = -1 #obraca sie sprite cucka w zaleznosci od umiejscowienia playera
 		else:
 			right = 1
@@ -92,7 +92,7 @@ func get_dmg(dmg):
 		rng.randomize() #zmienna sluzaca do losowania coinsow
 		var coins = rng.randf_range(drop["minCoins"], drop["maxCoins"])
 		for i in range(0,coins):
-			randomPosition= Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10)) #"losowanie" pozycji monety
+			randomPosition= Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) #"losowanie" pozycji monety
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition

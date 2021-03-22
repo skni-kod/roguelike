@@ -31,8 +31,8 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	if player != null and health>0:
-		move = -position.direction_to(player.position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
-		if player.position.x - self.position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+		move = -global_position.direction_to(player.global_position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
+		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -0.5
 		else:
 			$Sprites.scale.x = 0.5
@@ -73,8 +73,8 @@ func _on_Timer_timeout():
 func shoot():
 	var fireball = FIREBALL_SCENE.instance() # stworzenie nowej instancji fireballa
 	var main = get_tree().get_root().find_node("Main", true, false) 
-	fireball.position = self.position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
-	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).position # wprowadzam player_Pos do fireballa jako pozycję playera
+	fireball.position = self.global_position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
+	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # wprowadzam player_Pos do fireballa jako pozycję playera
 	main.add_child(fireball) # ustawiam fireballa jako child maina
 
 
@@ -102,7 +102,7 @@ func get_dmg(dmg):
 		rng.randomize()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition

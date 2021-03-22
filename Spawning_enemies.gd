@@ -5,7 +5,7 @@ var rand = RandomNumberGenerator.new()
 var all_enemies = {
 		0 : preload("res://Scenes/Actors/Big Devil.tscn"),
 		1 : preload("res://Scenes/Actors/cuck.tscn"),
-		2: preload("res://Scenes/Actors/cuckshooter.tscn"),
+		2 : preload("res://Scenes/Actors/cuckshooter.tscn"),
 		3 : preload("res://Scenes/Actors/goblin_shaman.tscn"),
 		4 : preload("res://Scenes/Actors/Lil Devil.tscn"),
 		5 : preload("res://Scenes/Actors/Little_Goblin.tscn"),
@@ -74,7 +74,8 @@ func _on_Node2D_body_entered(body):
 		if not current_id in id_list and not boss:
 			for i in range(0,5):
 				rand.randomize()
-				var enemy = all_enemies[rand.randi_range(0,8)].instance()
+#				var enemy = all_enemies[rand.randi_range(0,8)].instance()
+				var enemy = all_enemies[4].instance()
 				rand.randomize()
 				enemy.position.x = rand.randf_range(-180,180)
 				rand.randomize()
@@ -94,7 +95,7 @@ func _on_Node2D_body_entered(body):
 	
 func open(body):
 	print(body)
-	if body.health < 0:
+	if body.health <= 0:
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
 		if drzwi[3]:

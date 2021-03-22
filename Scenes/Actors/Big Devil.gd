@@ -41,8 +41,8 @@ func _physics_process(delta):
 		aim() # strzał w czasie, gdy jakiś target został wyznaczony
 	if player != null and health>0: # gdy BD żyje oraz w jego zasięgu jest gracz
 		$Sprite.scale.x = right
-		move = position.direction_to(player.position) * -speed # odsuwanie się od gracza, gdy jest za blisko
-		if player.position.x-self.position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
+		move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
 			right = 1
 			$AnimationPlayer.play("Walk") 
 		else:
@@ -128,7 +128,7 @@ func get_dmg(dmg):
 		rng.randomize()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition

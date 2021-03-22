@@ -9,7 +9,7 @@ onready var statusEffect = get_node("../../../UI/StatusBar")
 
 
 func _ready():
-	look_vec = player.position - global_position #kierunek wektora
+	look_vec = player.global_position - global_position #kierunek wektora
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
