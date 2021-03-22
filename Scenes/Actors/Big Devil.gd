@@ -7,6 +7,8 @@ extends KinematicBody2D
 const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
 const SPEED = 100 
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.25

@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 var player = null	#Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 0.4		#Zmienna przechowująca szybkość poruszania

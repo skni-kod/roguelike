@@ -1,6 +1,9 @@
 # Slime.gd
 extends KinematicBody2D
 #slime
+
+signal died(body)
+
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.5 #Zmienna przechowująca szybkość poruszania

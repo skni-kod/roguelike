@@ -4,6 +4,8 @@ extends KinematicBody2D
 const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 const SPEED = 100 # szybkość fireballa
 
+signal died(body)
+
 var player = null # shit i atrybuty obiektu i zmienne przydatne potem
 var move = Vector2.ZERO
 export var speed = 0.5

@@ -1,5 +1,8 @@
 extends KinematicBody2D
 #Little_Goblin
+
+signal died(body)
+
 var player = null		#Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 1.5		#Zmienna przechowująca szybkość poruszania

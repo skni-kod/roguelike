@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.5
