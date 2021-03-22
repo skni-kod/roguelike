@@ -3,8 +3,7 @@ extends KinematicBody2D
 #summon
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
-export var speed = 0.7 #Zmienna przechowująca szybkość poruszania
-export var dps = 5 #Zmienna przechowująca wartość ataku
+export var speed = 0.8 #Zmienna przechowująca szybkość poruszania
 var attack = false #Czy summon jest w trakcie ataku
 var max_hp = 100 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
@@ -25,7 +24,7 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	
 	if player != null and health>0: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
-		move = position.direction_to(player.position) * speed #Ustaw wektor na pozycję gracza
+		move = position.direction_to(player.position) * speed
 	move_and_collide(move)
 
 func _on_Atak_body_entered(body): 
@@ -40,7 +39,7 @@ func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
-		$Timer.set_wait_time(1.0)
+		$Timer.start()
 		fire()
 		
 func get_dmg(dmg):
@@ -64,6 +63,7 @@ func get_dmg(dmg):
 		#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
 		var boss = get_tree().get_root().find_node("MageBoss", true, false)
 		boss.phase_active = false
+		boss.find_node("FireTimer", true, false).stop()
 		queue_free() #Usuń węzeł summon
 		
 func fire():		# funkcja odpowiadająca za tworzenie pocisków
