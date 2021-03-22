@@ -2,7 +2,17 @@ extends Node
 
 onready var tilemap = get_node("../TileMap")
 var rand = RandomNumberGenerator.new()
-var enemy_scene = load("res://Scenes/Actors/Slime.tscn")
+var all_enemies = {
+		0 : preload("res://Scenes/Actors/Big Devil.tscn"),
+		1 : preload("res://Scenes/Actors/cuck.tscn"),
+		2: preload("res://Scenes/Actors/cuckshooter.tscn"),
+		3 : preload("res://Scenes/Actors/goblin_shaman.tscn"),
+		4 : preload("res://Scenes/Actors/Lil Devil.tscn"),
+		5 : preload("res://Scenes/Actors/Little_Goblin.tscn"),
+		6 : preload("res://Scenes/Actors/Potato.tscn"),
+		7 : preload("res://Scenes/Actors/Slime.tscn"),
+		8 : preload("res://Scenes/Actors/Snot.tscn")
+	}
 var bossScene = load("res://Scenes/Actors/MageBoss/MageBoss.tscn")
 var id_list = []
 var current_id
@@ -19,7 +29,7 @@ func _ready():
 	generation.connect("boss", self, "check_boss")
 
 func check_boss(room):
-	if room.x == round(self.global_position.x/512) and room.y == round(self.global_position.y/288):
+	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
 
 func close_door():
@@ -63,12 +73,14 @@ func _on_Node2D_body_entered(body):
 		current_id = get_instance_id()
 		if not current_id in id_list and not boss:
 			for i in range(0,5):
-				var enemy = enemy_scene.instance()
+				rand.randomize()
+				var enemy = all_enemies[rand.randi_range(0,8)].instance()
 				rand.randomize()
 				enemy.position.x = rand.randf_range(-180,180)
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-80,80)
 				add_child(enemy)
+				print(enemy.get_tree())
 				enemy.connect("died", self, "open")
 		elif boss:
 			ilosc_enemy = 1
@@ -77,7 +89,7 @@ func _on_Node2D_body_entered(body):
 			bossIns.connect("died", self, "open")
 			close_door()
 		id_list.append(current_id)
-	if body.name == "Slime":
+	if body.is_in_group("Enemy"):
 		close_door()
 	
 func open(body):
