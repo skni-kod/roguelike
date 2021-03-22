@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(10)}
+var first_weapon_stats = {"attack":float(20)}
 var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -268,7 +268,7 @@ func swap_weapon(slot,weaponOnGround):
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
-		weaponUsed.position = weaponOnGround.position
+		weaponUsed.position = weaponOnGround.global_position
 		level.add_child(weaponUsed)
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
