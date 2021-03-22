@@ -18,7 +18,7 @@ var weakness := false setget weakness
 var healing := false setget healing
 
 # bazowe wartości dmg zadawanego przez poszczególne efekty
-var burningDMG = 2
+var burningDMG = 0.5
 var bleedingDMG = 2
 var poisonDMG = 2
 

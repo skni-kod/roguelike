@@ -24,7 +24,7 @@ func _ready(): #po inicjacji bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aaktualnej broni gracza
 	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
-	$EquippedWeapon.damage = 10
+	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 
 

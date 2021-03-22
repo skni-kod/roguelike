@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 3
@@ -25,8 +27,8 @@ func _physics_process(delta):
 	
 	if player !=null and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
 		$Sprite.scale.x= right
-		move = position.direction_to(player.position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
-		if player.position.x - self.position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
+		move = global_position.direction_to(player.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
+		if player.global_position.x - self.global_position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
 			right = -1
 		else:
 			right = 1
@@ -69,17 +71,19 @@ func get_dmg(dmg):
 		health_bar.visible = true
 	if health<=0: #jezeli cuck nie zyje
 		attack = false 
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die") #odtwarzana animacja umierana
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)
 		rng.randomize()
 		var coins = rng.randf_range(drop["minCoins"], drop["maxCoins"])
 		for i in range(0,coins): #losowane ilosc coinsow ktore wypadna po zabiciu
-			randomPosition= Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+			randomPosition= Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free()
 	var text = floating_dmg.instance()
 	text.amount = dmg

@@ -4,6 +4,8 @@ extends KinematicBody2D
 const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 const SPEED = 100 # szybkość fireballa
 
+signal died(body)
+
 var player = null # shit i atrybuty obiektu i zmienne przydatne potem
 var move = Vector2.ZERO
 export var speed = 0.5
@@ -30,10 +32,9 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	
 	if player != null and health>0:
-		$Sprite.scale.x = right
-		move = position.direction_to(player.position) * -speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
-		if player.position.x-self.position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
-			right = 1
+		move = -global_position.direction_to(player.global_position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
+		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+			$Sprites.scale.x = -0.5
 		else:
 			right = -1
 		$AnimationPlayer.play("Walk")
@@ -73,8 +74,8 @@ func _on_Timer_timeout():
 func shoot():
 	var fireball = FIREBALL_SCENE.instance() # stworzenie nowej instancji fireballa
 	var main = get_tree().get_root().find_node("Main", true, false) 
-	fireball.position = self.position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
-	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).position # wprowadzam player_Pos do fireballa jako pozycję playera
+	fireball.position = self.global_position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
+	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # wprowadzam player_Pos do fireballa jako pozycję playera
 	main.add_child(fireball) # ustawiam fireballa jako child maina
 
 
@@ -93,17 +94,21 @@ func get_dmg(dmg):
 		health_bar.visible = true
 		
 	if health<=0:
-		$AnimationPlayer.play("Die")
-		yield($AnimationPlayer,"animation_finished")
+		$CollisionShape2D.set_deferred("disabled",true)
+		$BodyAnimationPlayer.play("Die")
+		$HeadAnimationPlayer.play("Die")
+		yield($BodyAnimationPlayer,"animation_finished")
+		yield($HeadAnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main", true, false)
 		rng.randomize()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free()
 		
 	var text = floating_dmg.instance()

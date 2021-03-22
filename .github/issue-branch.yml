@@ -1,0 +1,12 @@
+autoCloseIssue: true
+branches:
+  - label: refactor
+    name: develop
+    prefix: refactor/
+  - label: enhancement
+    name: develop
+    prefix: enhancement/
+  - label: documentation
+    name: develop
+    prefix: documentation/
+openDraftPR: true
