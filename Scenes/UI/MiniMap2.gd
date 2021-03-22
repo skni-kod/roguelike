@@ -1,7 +1,7 @@
 extends MarginContainer
 
 export (NodePath) var player
-export var zoom = 0.5 #Zmienna określająca przybliżenie minimapy
+export var zoom = 1 #Zmienna określająca przybliżenie minimapy
 
 #Zmienne przypisujące elementy MiniMapy 
 onready var grid = $MarginContainer/Grid
@@ -47,11 +47,11 @@ func _unhandled_input(event): #Funckcja mapy
 	if event is InputEventKey:
 		if n==0:
 			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = false  
+				self.visible = true 
 				n=n+1                       
 		else:
 			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = true                    
+				self.visible = false                   
 				
 				n=n-1
 			

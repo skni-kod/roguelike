@@ -5,7 +5,6 @@
 [ext_resource path="res://Assets/TileMap/minimap.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/UI/MiniMap.gd" type="Script" id=4]
 
-
 [node name="MiniMap" type="MarginContainer"]
 margin_left = -0.157486
 margin_top = -0.472466
