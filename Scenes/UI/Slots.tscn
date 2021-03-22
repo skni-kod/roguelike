@@ -104,7 +104,7 @@ __meta__ = {
 position = Vector2( 20, 33 )
 scale = Vector2( 2.25, 2.25 )
 
-[node name="Potionslot1" type="NinePatchRect" parent="Background"]
+[node name="Potionslot2" type="NinePatchRect" parent="Background"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -35.0
@@ -115,11 +115,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="potionsprite1" type="Sprite" parent="Background/Potionslot1"]
+[node name="potion2_amount" type="Label" parent="Background/Potionslot2"]
+margin_left = 28.1784
+margin_top = 51.0
+margin_right = 55.1784
+margin_bottom = 65.0
+rect_scale = Vector2( 0.563047, 1.25093 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="potionsprite2" type="Sprite" parent="Background/Potionslot2"]
 position = Vector2( 20, 33 )
 scale = Vector2( 2.25, 2.25 )
 
-[node name="Potionslot2" type="NinePatchRect" parent="Background"]
+[node name="Potionslot1" type="NinePatchRect" parent="Background"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -132,6 +142,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="potionsprite2" type="Sprite" parent="Background/Potionslot2"]
+[node name="potion1_amount" type="Label" parent="Background/Potionslot1"]
+margin_left = 27.9135
+margin_top = 51.0
+margin_right = 47.9135
+margin_bottom = 66.0
+rect_scale = Vector2( 0.751103, 1.1442 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="potionsprite1" type="Sprite" parent="Background/Potionslot1"]
 position = Vector2( 20, 30 )
 scale = Vector2( 2.25, 2.25 )

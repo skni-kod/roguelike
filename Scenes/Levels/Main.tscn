@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/Actors/Slime.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
@@ -16,6 +16,10 @@
 [ext_resource path="res://Scenes/UI/Slots.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/Actors/cuck.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/Loot/50%Potion.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Loot/100%Potion.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Loot/20healthPotion.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Loot/60healthPotion.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Scenes/Levels/Floor.gd" type="Script" id=22]
 
 [sub_resource type="TileSet" id=1]
@@ -259,18 +263,3 @@ tile_data = PoolIntArray( 786444, 0, 0, 786445, 0, 0, 786446, 0, 0, 786447, 0, 0
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 577.992, 363.866 )
 z_index = 2
-
-[node name="Slime" parent="." instance=ExtResource( 1 )]
-position = Vector2( 457.824, 254.225 )
-
-[node name="Cuck" parent="." instance=ExtResource( 15 )]
-position = Vector2( 227.127, 216.728 )
-
-[node name="Cuck2" parent="." instance=ExtResource( 15 )]
-position = Vector2( 224.454, 279.982 )
-
-[node name="Cuck3" parent="." instance=ExtResource( 15 )]
-position = Vector2( 302.854, 224.3 )
-
-[node name="Cuck4" parent="." instance=ExtResource( 15 )]
-position = Vector2( 308.199, 290.227 )

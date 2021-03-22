@@ -2,15 +2,16 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bloodSword.png-25893be673c74f7deb0ab599e31c186c.stex"
+path="res://.import/BloodSword.png-19f9794306d6fcc6be16b61cce3c671e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/bloodSword.png"
-dest_files=[ "res://.import/bloodSword.png-25893be673c74f7deb0ab599e31c186c.stex" ]
+source_file="res://Assets/Loot/Weapons/BloodSword.png"
+dest_files=[ "res://.import/BloodSword.png-19f9794306d6fcc6be16b61cce3c671e.stex" ]
+
 
 [params]
 
