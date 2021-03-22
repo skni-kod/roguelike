@@ -90,7 +90,7 @@ scale = Vector2( -1, 1 )
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 4
-frame = 7
+frame = 3
 
 [node name="Laser_Load" parent="." instance=ExtResource( 4 )]
 position = Vector2( -0.601517, 2.75438 )
