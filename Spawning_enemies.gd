@@ -39,9 +39,9 @@ func _on_Node2D_body_entered(body):
 			for i in range(0,5):
 				var enemy = enemy_scene.instance()
 				rand.randomize()
-				enemy.position.x = rand.randf_range(-200,200)
+				enemy.position.x = rand.randf_range(-180,180)
 				rand.randomize()
-				enemy.position.y = rand.randf_range(-100,100)
+				enemy.position.y = rand.randf_range(-80,80)
 				add_child(enemy)
 				enemy.connect("died", self, "open")
 		id_list.append(current_id)
@@ -65,7 +65,7 @@ func _on_Node2D_body_entered(body):
 	
 func open(body):
 	print(body)
-	if body.health == 0:
+	if body.health < 0:
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
 		if drzwi[3]:
