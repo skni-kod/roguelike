@@ -6,8 +6,8 @@ onready var direction = Vector2.ZERO # kąt odchylenia toru pocisku
 var player_Pos = Vector2.ZERO # pozycja gracza w którego celuje
 onready var origin = self.position  # miejsce startowe pocisku
 
-var dps = 10 # damage, który pocisk zadaje
-const goblin_ball_speed = 50 #prędkość pocisku
+var dps = 20 # damage, który pocisk zadaje
+const goblin_ball_speed = 80 #prędkość pocisku
 
 func _ready():
 	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany wektor pozycji gracza i strzelca

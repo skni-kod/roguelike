@@ -1,51 +1,28 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Assets/Enemies/Goblin_Shaman.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Enemies/Goblin_shaman.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/goblin_shaman.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.48481, 6.21742 )
+extents = Vector2( 6.64108, 9.84897 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 73.1829
+radius = 110.395
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 45.8954
+radius = 59.6725
 
 [sub_resource type="Animation" id=4]
 length = 0.7
-tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 7, 7, 7, 7, 7 ]
-}
 
 [sub_resource type="Animation" id=5]
 length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 2 ]
-}
 
 [sub_resource type="Animation" id=6]
+length = 0.6
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Goblin_shaman:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -59,7 +36,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=7]
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Goblin_shaman:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -67,8 +44,8 @@ tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 1, 4, 5, 6, 0, 4, 5, 6, 0, 0 ]
+"update": 0,
+"values": [ 3, 4, 5, 6, 7, 3, 4, 5, 6, 7 ]
 }
 
 [node name="goblin_shaman" type="KinematicBody2D" groups=[
@@ -79,30 +56,29 @@ collision_layer = 2147483652
 collision_mask = 3
 script = ExtResource( 2 )
 
-[node name="HealthBar" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_left = -4.12946
-margin_top = -5.89921
-margin_right = -4.12946
-margin_bottom = -5.89921
-rect_scale = Vector2( 0.11, 0.2 )
-
-[node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0.16587, -0.0286713 )
-scale = Vector2( 0.101101, 0.116061 )
+[node name="Goblin_shaman" type="Sprite" parent="."]
+position = Vector2( 0.469467, -0.440389 )
+scale = Vector2( 0.17, 0.207 )
 texture = ExtResource( 1 )
 hframes = 8
-frame = 7
+
+[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_left = -3.41208
+margin_top = -15.6985
+margin_right = -2.71208
+margin_bottom = -15.5475
+rect_scale = Vector2( 0.11, 0.2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.944371, 3.31207 )
+position = Vector2( 1.79698, 4.79272 )
 shape = SubResource( 1 )
 
 [node name="wzrok" type="Area2D" parent="."]
-position = Vector2( 0.148651, 0 )
+position = Vector2( 0.524074, -0.0417137 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wzrok"]
-position = Vector2( 0.144784, 2.58946 )
+position = Vector2( -0.240355, 0.325927 )
 shape = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -124,7 +100,7 @@ wait_time = 2.0
 autostart = true
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( 2.47765, 4.71937 )
+position = Vector2( 5.21859, 6.14258 )
 [connection signal="body_entered" from="wzrok" to="." method="_on_wzrok_body_entered"]
 [connection signal="body_exited" from="wzrok" to="." method="_on_wzrok_body_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

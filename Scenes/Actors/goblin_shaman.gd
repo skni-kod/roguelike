@@ -3,9 +3,9 @@ extends KinematicBody2D
 var player = null	#Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 0.4		#Zmienna przechowująca szybkość poruszania
-var right = 0.1		#Kierunek obrócenia
+var right = 0.17		#Kierunek obrócenia
 var attack = false		#Czy atakuje
-var max_hp = 50		#Zmienna przechowywująca ilość życia
+var max_hp = 100		#Zmienna przechowywująca ilość życia
 var hp:float = max_hp	#Zmienna przechowuje ilość pozostałego życia
 var summon = false		#Czy przywołuje
 onready var main := get_tree().get_root().find_node("Main", true, false)
@@ -25,12 +25,12 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	
 	if player != null and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
-		$sprite.scale.x = right		# obrót w stronę gracza
+		$Goblin_shaman.scale.x = right		# obrót w stronę gracza
 		move = -position.direction_to(player.position) * speed		# Ustaw wektor na ruch w stronę gracza
 		if player.position.x-self.position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
-			right = -0.1
+			right = 0.17
 		else:
-			right = 0.1
+			right = -0.17
 		$AnimationPlayer.play("Walk")
 	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
@@ -42,7 +42,7 @@ func summon():		# funkcja odpowiadająca za przywoływanie goblinów
 	var goblinscene = load("res://Scenes/Actors/Little_Goblin.tscn")
 	goblinscene = goblinscene.instance()
 	var spawnposition = Vector2.ZERO
-	if right >0:
+	if right >0 :
 		spawnposition = Vector2(self.position.x+20,self.position.y)
 	else:
 		spawnposition = Vector2(self.position.x-20,self.position.y)
