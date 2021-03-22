@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/title_screen/banner.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/title_screen/buttons/StartButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/title_screen/buttons/OptionsButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/title_screen/buttons/ExitButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scenes/title_screen/title_screen.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/title_screen/music/roguelike7.ogg" type="AudioStream" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 5 )
+
+[node name="TitleScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="VBoxContainer" parent="."]
+margin_left = 310.0
+margin_top = -3.0
+margin_right = 1009.0
+margin_bottom = 682.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Menu"]
+margin_right = 699.0
+margin_bottom = 442.0
+texture = ExtResource( 1 )
+stretch_mode = 6
+
+[node name="CenterRow" type="HBoxContainer" parent="Menu"]
+margin_top = 446.0
+margin_right = 699.0
+margin_bottom = 636.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Menu/CenterRow"]
+margin_right = 699.0
+margin_bottom = 190.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StartButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 2 )]
+margin_right = 699.0
+margin_bottom = 60.0
+scene_to_load = "res://Scenes/Levels/Main.tscn"
+
+[node name="OptionsButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
+margin_top = 64.0
+margin_right = 699.0
+margin_bottom = 124.0
+scene_to_load = "res://Scenes/title_screen/game/OptionsScene.tscn"
+
+[node name="ExitButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 4 )]
+margin_top = 128.0
+margin_right = 699.0
+margin_bottom = 188.0
+scene_to_load = "res://Scenes/title_screen/game/ExitScene.tscn"
+
+[node name="Version" type="Label" parent="Menu"]
+margin_top = 640.0
+margin_right = 699.0
+margin_bottom = 685.0
+custom_fonts/font = SubResource( 1 )
+text = "Version 0.0.1
+By SKNI KOD"
+
+[node name="FadeIn" parent="." instance=ExtResource( 7 )]
+visible = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -10.0
+autoplay = true
+[connection signal="fade_finished" from="FadeIn" to="." method="_on_FadeIn_fade_finished"]

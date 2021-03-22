@@ -4,7 +4,7 @@ onready var BULLET_SCENE = preload("res://Scenes/Actors/CucksBullet.tscn") #zala
 
 var player = null
 var move = Vector2.ZERO
-export var speed = 0 
+export var speed = 0.5 
 var right = 1
 export var max_hp = 100
 var hp:float = max_hp
@@ -74,10 +74,10 @@ func _on_Timer_timeout():
 			
 func get_dmg(dmg):
 	if health>0:
-		if player.position.x - self.position.x < 0: #knockback
-			self.position.x += 10
-		else:
-			self.position.x -= 10
+#		if player.position.x - self.position.x < 0: #knockback
+#			self.position.x += 10
+#		else:
+#			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health) 

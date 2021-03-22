@@ -1,0 +1,108 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scenes/Actors/Laser.gd" type="Script" id=1]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.957031, 0, 0, 1 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 0.918182, 5.77398 )
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.549669, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0, 0, 0.442953, 1, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+flag_disable_z = true
+spread = 90.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+flag_disable_z = true
+spread = 90.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 2
+emission_box_extents = Vector3( 2, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 1, 1, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+angular_velocity = 5.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 1.0
+tangential_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+color = Color( 1, 0, 0, 1 )
+
+[node name="Laser" type="RayCast2D"]
+cast_to = Vector2( 105, 0 )
+collision_mask = 19
+collide_with_areas = true
+script = ExtResource( 1 )
+
+[node name="Line2D" type="Line2D" parent="."]
+scale = Vector2( 1, 0.25 )
+points = PoolVector2Array( 0, 0, 5, 0 )
+width = 5.0
+default_color = Color( 1, 0, 0, 1 )
+gradient = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 104.231, -0.159754 )
+shape = SubResource( 2 )
+
+[node name="CastingParticles" type="Particles2D" parent="."]
+emitting = false
+amount = 64
+lifetime = 0.3
+process_material = SubResource( 7 )
+
+[node name="CollisionParticles" type="Particles2D" parent="."]
+emitting = false
+amount = 64
+lifetime = 0.3
+process_material = SubResource( 8 )
+
+[node name="LaserParticles" type="Particles2D" parent="."]
+position = Vector2( 2.434, 0 )
+emitting = false
+amount = 64
+lifetime = 0.3
+local_coords = false
+process_material = SubResource( 9 )
+
+[node name="Lifetime" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]
