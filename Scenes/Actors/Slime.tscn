@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Scenes/Actors/slime.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
@@ -9,14 +9,14 @@ radius = 5.50819
 height = 16.8513
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 84.9011
+radius = 82.5845
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 17.0407, 9.93699 )
+extents = Vector2( 22.0971, 9.93699 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"
-length = 0.6
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -96,6 +96,8 @@ tracks/0/keys = {
 [node name="Slime" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource( 1 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
@@ -110,7 +112,7 @@ rect_scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 8
-frame = 8
+frame = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )

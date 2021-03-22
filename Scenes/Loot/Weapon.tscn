@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Assets/Loot/Weapons/axe.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Loot/Weapons/Axe.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Loot/Weapon.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -13,6 +13,8 @@ radius = 19.0189
 [node name="Weapon" type="StaticBody2D" groups=[
 "Pickable",
 ]]
+z_index = 1
+collision_layer = 32
 collision_mask = 2
 script = ExtResource( 2 )
 
@@ -23,6 +25,7 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="PopUp" type="Area2D" parent="."]
+collision_layer = 2147483649
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopUp"]
 shape = SubResource( 2 )
