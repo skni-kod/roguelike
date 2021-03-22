@@ -70,6 +70,7 @@ func get_dmg(dmg):
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var _level = get_tree().get_root().find_node("Main", true, false)
+		emit_signal("died", self)
 		queue_free()	#Usuń węzeł goblina
 	var text = floating_dmg.instance()
 	text.amount = dmg

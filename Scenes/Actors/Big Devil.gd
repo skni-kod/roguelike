@@ -131,6 +131,7 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free()
 		
 	var text = floating_dmg.instance()

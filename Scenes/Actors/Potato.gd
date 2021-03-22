@@ -98,6 +98,7 @@ func get_dmg(dmg):
 #		weapon.WeaponName = drop["weapon"]
 #		weapon.position = self.position
 #		level.add_child(weapon)
+		emit_signal("died", self)
 		queue_free()
 		
 	
