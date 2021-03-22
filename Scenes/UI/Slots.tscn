@@ -15,9 +15,56 @@ __meta__ = {
 [node name="Background" type="ColorRect" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -172.0
-margin_right = 172.0
+margin_left = -0.187294
+margin_top = -172.704
+margin_right = 171.813
+margin_bottom = -0.703613
 color = Color( 0, 0, 0, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="w1slotbg" type="ColorRect" parent="Background"]
+margin_left = 66.0
+margin_right = 106.0
+margin_bottom = 72.0
+rect_pivot_offset = Vector2( 40, 71 )
+color = Color( 0.152941, 0.909804, 0.0431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="w2slotbg" type="ColorRect" parent="Background"]
+visible = false
+margin_left = 66.0
+margin_top = 100.0
+margin_right = 107.0
+margin_bottom = 172.0
+rect_pivot_offset = Vector2( 40, 71 )
+color = Color( 0.152941, 0.909804, 0.0431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="p2slotbg" type="ColorRect" parent="Background"]
+margin_left = 132.0
+margin_top = 50.0
+margin_right = 172.0
+margin_bottom = 122.0
+rect_pivot_offset = Vector2( 40, 71 )
+color = Color( 0.152941, 0.909804, 0.0431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="p1slotbg" type="ColorRect" parent="Background"]
+visible = false
+margin_left = 0.442299
+margin_top = 50.0
+margin_right = 40.4423
+margin_bottom = 122.0
+rect_pivot_offset = Vector2( 40, 71 )
+color = Color( 0.152941, 0.909804, 0.0431373, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -25,9 +72,10 @@ __meta__ = {
 [node name="Weaponslot1" type="NinePatchRect" parent="Background"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -20.0
-margin_right = 20.0
-margin_bottom = 70.0
+margin_left = -19.9646
+margin_top = 0.9646
+margin_right = 20.0354
+margin_bottom = 70.9646
 texture = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -43,8 +91,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -20.5
-margin_top = -70.0
+margin_top = -71.0
 margin_right = 20.5
+margin_bottom = -1.0
 texture = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -54,7 +103,7 @@ __meta__ = {
 position = Vector2( 20, 33 )
 scale = Vector2( 2.25, 2.25 )
 
-[node name="Potionslot1" type="NinePatchRect" parent="Background"]
+[node name="Potionslot2" type="NinePatchRect" parent="Background"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -35.0
@@ -65,11 +114,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="potionsprite1" type="Sprite" parent="Background/Potionslot1"]
+[node name="potion2_amount" type="Label" parent="Background/Potionslot2"]
+margin_left = 28.1784
+margin_top = 51.0
+margin_right = 55.1784
+margin_bottom = 65.0
+rect_scale = Vector2( 0.563047, 1.25093 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="potionsprite2" type="Sprite" parent="Background/Potionslot2"]
 position = Vector2( 20, 33 )
 scale = Vector2( 2.25, 2.25 )
 
-[node name="Potionslot2" type="NinePatchRect" parent="Background"]
+[node name="Potionslot1" type="NinePatchRect" parent="Background"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -82,6 +141,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="potionsprite2" type="Sprite" parent="Background/Potionslot2"]
+[node name="potion1_amount" type="Label" parent="Background/Potionslot1"]
+margin_left = 27.9135
+margin_top = 51.0
+margin_right = 47.9135
+margin_bottom = 66.0
+rect_scale = Vector2( 0.751103, 1.1442 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="potionsprite1" type="Sprite" parent="Background/Potionslot1"]
 position = Vector2( 20, 30 )
 scale = Vector2( 2.25, 2.25 )

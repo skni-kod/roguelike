@@ -297,7 +297,7 @@ func _on_Weakness_Lifetime_timeout():
 
 
 # FUNKCJA GENERUJĄCA PRAWDĘ/FAŁSZ Z PRAWDOPODOBIEŃSTWA #
-func prawdopodobienstwo(var procent_prawdopodobienstwa):
+func prawdopodobienstwo(procent_prawdopodobienstwa):
 	randomize()
 	var percent = randf() # generator losowej liczby float/procentu
 	if (percent > procent_prawdopodobienstwa):
