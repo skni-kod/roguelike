@@ -1,6 +1,9 @@
 # Slime.gd
 extends KinematicBody2D
 #slime
+
+signal died(body)
+
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.5 #Zmienna przechowująca szybkość poruszania
@@ -9,7 +12,6 @@ var right = 1 #Czy slime jest obrócony w prawo
 var attack = false #Czy slime jest w trakcie ataku
 var max_hp =61 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
-
 var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":0,"maxCoins":5} #Przedział definiujący ile slime może zostawić po sobie coinów
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
@@ -18,7 +20,6 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
- 
 func _ready():
 	health_bar.on_health_updated(health)
 
@@ -59,7 +60,6 @@ func _on_Timer_timeout():
 		player.take_dmg(dps)
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
-		
 			
 func get_dmg(dmg):
 	
@@ -89,6 +89,7 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free() #Usuń węzeł slime
 		
 	
