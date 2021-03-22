@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 3
@@ -69,6 +71,7 @@ func get_dmg(dmg):
 		health_bar.visible = true
 	if health<=0: #jezeli cuck nie zyje
 		attack = false 
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die") #odtwarzana animacja umierana
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)
@@ -80,6 +83,7 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free()
 	var text = floating_dmg.instance()
 	text.amount = dmg

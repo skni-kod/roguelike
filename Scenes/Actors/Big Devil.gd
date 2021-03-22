@@ -7,6 +7,8 @@ extends KinematicBody2D
 const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
 const SPEED = 100 
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.25
@@ -119,6 +121,7 @@ func get_dmg(dmg):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 	if health<=0:
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main", true, false)
@@ -130,6 +133,7 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		emit_signal("died", self)
 		queue_free()
 		
 	var text = floating_dmg.instance()

@@ -1,12 +1,15 @@
 extends KinematicBody2D
 #Little_Goblin
+
+signal died(body)
+
 var player = null		#Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
-export var speed = 1		#Zmienna przechowująca szybkość poruszania
-export var dps = 5		#Zmienna przechowująca wartość ataku
-var right = 0.1		#Kierunek obrócenia
+export var speed = 1.5		#Zmienna przechowująca szybkość poruszania
+export var dps = 10		#Zmienna przechowująca wartość ataku
+var right = 0.155		#Kierunek obrócenia
 var attack = false		#Czy atakuje
-var max_hp = 10		#Zmienna przechowywująca ilość życia
+var max_hp = 30		#Zmienna przechowywująca ilość życia
 var hp:float = max_hp	#Zmienna przechowuje ilość pozostałego życia
 
 export var health = 100 	#Pozostałe życie w procentach
@@ -24,9 +27,9 @@ func _physics_process(delta):
 		$sprite.scale.x = right		# obrót w stronę gracza
 		move = position.direction_to(player.position) * speed	# Ustaw wektor na ruch w stronę gracza
 		if player.position.x-self.position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
-			right = -0.1
+			right = -0.155
 		else:
-			right = 0.1
+			right = 0.155
 		$AnimationPlayer.play("Walk")
 	elif !attack and health>0:
 		$AnimationPlayer.play("Idle")
@@ -66,9 +69,11 @@ func get_dmg(dmg):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 	if health <=0 :
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var _level = get_tree().get_root().find_node("Main", true, false)
+		emit_signal("died", self)
 		queue_free()	#Usuń węzeł goblina
 	var text = floating_dmg.instance()
 	text.amount = dmg

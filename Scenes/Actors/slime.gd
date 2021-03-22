@@ -77,6 +77,7 @@ func get_dmg(dmg):
 		health_bar.visible = true
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
