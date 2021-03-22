@@ -1,12 +1,14 @@
 extends Node
 
+signal boss(bossRoom)
+
 var directions = [Vector2.DOWN,Vector2.UP,Vector2.RIGHT,Vector2.LEFT]
 var position = Vector2.ZERO
 var map = []
 var rooms = []
 var queue = []
 var rng := RandomNumberGenerator.new()
-var roomsNum = 10
+var roomsNum = 20
 var n = 0
 var szer = 512
 var dl = 288
@@ -53,7 +55,8 @@ func draw(map):
 	for room in oneDoorRooms:
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
-	
+	print(furthestRoom[0])
+	emit_signal("boss", furthestRoom[0])
 
 func generate():
 	map.append(Vector2(0,0))
@@ -92,13 +95,13 @@ func step(direction):
 func _ready():
 	generate()
 
-func _physics_process(delta):
-	if Input.is_action_pressed("ui_accept"):
-		for room in rooms:
-			room.queue_free()
-		rooms = []
-		map = []
-		queue = []
-		position = Vector2.ZERO
-		n = 0
-		generate()
+#func _physics_process(delta):
+#	if Input.is_action_pressed("ui_accept"):
+#		for room in rooms:
+#			room.queue_free()
+#		rooms = []
+#		map = []
+#		queue = []
+#		position = Vector2.ZERO
+#		n = 0
+#		generate()

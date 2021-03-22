@@ -1,6 +1,9 @@
 # MageBoss.gd
 extends KinematicBody2D
 #MageBoss
+
+signal died(body)
+
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.2 #Zmienna przechowująca szybkość poruszania
@@ -134,6 +137,7 @@ func get_dmg(dmg):
 				coin.position = randomPosition
 				level.add_child(coin)
 				health_bar.queue_free()
+			emit_signal("died", self)
 			queue_free() #Usuń węzeł MageBoss
 		
 func rotate_water_fire():

@@ -3,6 +3,7 @@ extends Node
 onready var tilemap = get_node("../TileMap")
 var rand = RandomNumberGenerator.new()
 var enemy_scene = load("res://Scenes/Actors/Slime.tscn")
+var bossScene = load("res://Scenes/Actors/MageBoss/MageBoss.tscn")
 var id_list = []
 var current_id
 var down = Vector2(7,8)
@@ -11,9 +12,34 @@ var right = Vector2(14,4)
 var left = Vector2(0,4)
 var drzwi = [true,true,true,true]
 var ilosc_enemy
+var boss = false
+onready var generation = get_node("../../../Main")
 
 func _ready():
-	pass
+	generation.connect("boss", self, "check_boss")
+
+func check_boss(room):
+	if room.x == round(self.global_position.x/512) and room.y == round(self.global_position.y/288):
+		boss = true
+
+func close_door():
+	tilemap.set_cell(6,8,28)
+	tilemap.set_cell(7,8,29)
+	tilemap.set_cell(8,8,30)
+	tilemap.set_cell(7,7,31)
+	tilemap.set_cell(6,0,24)
+	tilemap.set_cell(7,0,25)
+	tilemap.set_cell(8,0,26)
+	tilemap.set_cell(7,1,27)
+	tilemap.set_cell(14,3,20)
+	tilemap.set_cell(14,4,21)
+	tilemap.set_cell(14,5,22)
+	tilemap.set_cell(13,4,23)
+	tilemap.set_cell(0,3,16)
+	tilemap.set_cell(0,4,17)
+	tilemap.set_cell(0,5,18)
+	tilemap.set_cell(1,4,19)
+
 func _on_Node2D_body_entered(body):
 	if body.name == "Player":
 		ilosc_enemy = 5
@@ -35,7 +61,7 @@ func _on_Node2D_body_entered(body):
 			drzwi[3] = false
 		print(drzwi)
 		current_id = get_instance_id()
-		if not current_id in id_list:
+		if not current_id in id_list and not boss:
 			for i in range(0,5):
 				var enemy = enemy_scene.instance()
 				rand.randomize()
@@ -44,24 +70,15 @@ func _on_Node2D_body_entered(body):
 				enemy.position.y = rand.randf_range(-80,80)
 				add_child(enemy)
 				enemy.connect("died", self, "open")
+		elif boss:
+			ilosc_enemy = 1
+			var bossIns = bossScene.instance()
+			add_child(bossIns)
+			bossIns.connect("died", self, "open")
+			close_door()
 		id_list.append(current_id)
 	if body.name == "Slime":
-		tilemap.set_cell(6,8,28)
-		tilemap.set_cell(7,8,29)
-		tilemap.set_cell(8,8,30)
-		tilemap.set_cell(7,7,31)
-		tilemap.set_cell(6,0,24)
-		tilemap.set_cell(7,0,25)
-		tilemap.set_cell(8,0,26)
-		tilemap.set_cell(7,1,27)
-		tilemap.set_cell(14,3,20)
-		tilemap.set_cell(14,4,21)
-		tilemap.set_cell(14,5,22)
-		tilemap.set_cell(13,4,23)
-		tilemap.set_cell(0,3,16)
-		tilemap.set_cell(0,4,17)
-		tilemap.set_cell(0,5,18)
-		tilemap.set_cell(1,4,19)
+		close_door()
 	
 func open(body):
 	print(body)
