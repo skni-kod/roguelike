@@ -1,9 +1,8 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Equipment/Weapons/EquippedWeapon.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Camera.gd" type="Script" id=4]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.794702, 1 )
@@ -168,7 +167,6 @@ shape = SubResource( 10 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.2, 0.2 )
-script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 11 )
