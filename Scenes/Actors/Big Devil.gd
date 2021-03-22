@@ -79,11 +79,11 @@ func _on_Atak_body_exited(body):
 # z daną collision_mask + celuje w gracza
 func aim(): 
 	var space_state = get_world_2d().direct_space_state # pozyskanie obecnego stanu fizycznego danego World2D w celu wyznaczeń kolizji
-	var result = space_state.intersect_ray(position, target.position, [self], collision_mask) # rzucanie rayem, aby intersectował z danym targetem
+	var result = space_state.intersect_ray(global_position, target.global_position, [self], collision_mask) # rzucanie rayem, aby intersectował z danym targetem
 	if result:
 		hit_pos = result.position # pozycja trafienia to pozycja trafienia przez ray targetu
 		if result.collider.name == "Player":
-			$Laser.rotation = (target.position - position).angle() + 2 * Vector2(0.5, -0.5).angle() + 10 * (target.position + target.velocity) # doprecyzowanie rotacji raya
+			$Laser.rotation = (target.global_position - global_position).angle() + 2 * Vector2(0.5, -0.5).angle() + 10 * (target.global_position + target.velocity) # doprecyzowanie rotacji raya
 		
 		
 # strzelanie do target -> pozycja (Vector2) 
@@ -91,8 +91,8 @@ func shoot(target_poz):
 	$AnimationPlayer.play("Attack")
 	var laser = LASER_SCENE.instance() # załadowanie instancji lasera
 	var main = get_tree().get_root().find_node("Main", true, false) # pozyskanie danego node sceny
-	laser.position = self.position + $Position2D.position # ustawienie pozycji lasera na pozycję Position2D
-	laser.player_Pos = get_tree().get_root().find_node("Player", true, false).position # pozyskanie pozycji gracza
+	laser.position = self.global_position + $Position2D.position # ustawienie pozycji lasera na pozycję Position2D
+	laser.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # pozyskanie pozycji gracza
 	main.add_child(laser) # dodanie lasera do sceny
 		
 		
