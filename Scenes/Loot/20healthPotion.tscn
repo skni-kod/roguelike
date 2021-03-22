@@ -13,6 +13,7 @@ height = 0.929382
 [node name="20healthPotion" type="StaticBody2D" groups=[
 "Pickable",
 ]]
+collision_mask = 0
 
 [node name="PotionNameHolder" type="Label" parent="."]
 visible = false

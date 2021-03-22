@@ -47,7 +47,6 @@ __meta__ = {
 }
 
 [node name="p2slotbg" type="ColorRect" parent="Background"]
-visible = false
 margin_left = 132.0
 margin_top = 50.0
 margin_right = 172.0

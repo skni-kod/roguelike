@@ -137,7 +137,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
 			chest = null
-      
+	  
 	if potion != null: #Jeżeli gracz stoi przy potionie
 		if Input.is_action_just_pressed("pick"): #jeżeli gracz naciśnie przycisk pick
 			var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
@@ -147,7 +147,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 			else:
 				potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
 				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
-        
+		
 			if "50%Potion" in potion_name:
 				potions_amount["50%Potion"]+=1 #zwieksza ilość potek 50% o 1
 			elif "100%Potion" in potion_name:
