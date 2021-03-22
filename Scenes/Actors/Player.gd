@@ -60,14 +60,14 @@ func movement(): #funkcja poruszania się
 		elif direction.y != 0: #jeżeli porusza się w pionie
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 			if direction.x < 0: #jeżeli idzie w lewo
-				$PlayerSprite.scale.x = -1 #obróć bohatera w lewo
+				$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
 			else: #jeżeli idzie w prawo
-				$PlayerSprite.scale.x = 1 #obróć bohatera w prawo
+				$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
 		elif direction.x < 0: #jeżeli idzie w lewo
-			$PlayerSprite.scale.x = -1 #obróć bohatera w lewo
+			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 		elif direction.x > 0: #jeżeli idzie w prawo
-			$PlayerSprite.scale.x = 1 #obróć bohatera w prawo
+			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
 func take_dmg(dps): #otrzymanie obrażeń przez bohatera
