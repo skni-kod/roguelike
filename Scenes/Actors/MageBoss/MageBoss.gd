@@ -48,10 +48,10 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	if alive:
 		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
-			if position.distance_to(player.position) < 55.0:
-				move = -position.direction_to(player.position) * speed
-			elif position.distance_to(player.position) > 65.0:
-				move = position.direction_to(player.position) * speed
+			if global_position.distance_to(player.global_position) < 55.0:
+				move = -global_position.direction_to(player.global_position) * speed
+			elif global_position.distance_to(player.global_position) > 65.0:
+				move = global_position.direction_to(player.global_position) * speed
 		move_and_collide(move)
 		rotate_water_fire()
 		rotate_earth_wind()
@@ -98,22 +98,22 @@ func _on_PhaseTimer_timeout():
 		var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
 		summon1 = summon1.instance()
 		main.add_child(summon1)
-		summon1.position = self.position
+		summon1.position = self.global_position
 	elif phase == 2:
 		var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
 		summon2 = summon2.instance()
 		main.add_child(summon2)
-		summon2.position = self.position
+		summon2.position = self.global_position
 	elif phase == 3:
 		var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
 		summon3 = summon3.instance()
 		main.add_child(summon3)
-		summon3.position = self.position
+		summon3.position = self.global_position
 	elif phase == 4:
 		var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
 		summon4 = summon4.instance()
 		main.add_child(summon4)
-		summon4.position = self.position
+		summon4.position = self.global_position
 		
 func _on_FireTimer_timeout():
 	fire()
@@ -142,7 +142,7 @@ func get_dmg(dmg):
 			rng.randomize()
 			var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 			for i in range(0,coins):
-				randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+				randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 				var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 				coin = coin.instance()
 				coin.position = randomPosition
@@ -152,42 +152,42 @@ func get_dmg(dmg):
 			queue_free() #Usuń węzeł MageBoss
 		
 func rotate_water_fire():
-	var radius = $WaterFireCenter/Fireball.position.distance_to($WaterFireCenter.position)
+	var radius = $WaterFireCenter/Fireball.global_position.distance_to($WaterFireCenter.global_position)
 	var angle = angular_velocity/radius
 	$WaterFireCenter.rotate(angle)
 	for missile in $WaterFireCenter.get_children():
 		missile.rotate(0.1)
 		if outer_rotation1 == false && change_rotation1 == true:
-			if missile.position.distance_to($WaterFireCenter.position) > 30:
-				missile.position += missile.position.direction_to($WaterFireCenter.position) * change_speed_WF
+			if missile.global_position.distance_to($WaterFireCenter.global_position) > 30:
+				missile.global_position += missile.global_position.direction_to($WaterFireCenter.global_position) * change_speed_WF
 			else:
 				outer_rotation1 = true
 				change_rotation1 = false
 				$MissilesTimer.start()
 		elif change_rotation1 == true:
-			if missile.position.distance_to($WaterFireCenter.position) < 60:
-				missile.position -= missile.position.direction_to($WaterFireCenter.position) * change_speed_WF
+			if missile.global_position.distance_to($WaterFireCenter.global_position) < 60:
+				missile.global_position -= missile.global_position.direction_to($WaterFireCenter.global_position) * change_speed_WF
 			else:
 				outer_rotation1 = false
 				change_rotation1 = false
 				$MissilesTimer.start()
 
 func rotate_earth_wind():
-	var radius = $EarthWindCenter/WindBall.position.distance_to($EarthWindCenter.position)
+	var radius = $EarthWindCenter/WindBall.global_position.distance_to($EarthWindCenter.global_position)
 	var angle = angular_velocity/radius
 	$EarthWindCenter.rotate(-angle)
 	for missile in $EarthWindCenter.get_children():
 		missile.rotate(0.1)
 		if outer_rotation2 == false && change_rotation2 == true:
-			if missile.position.distance_to($EarthWindCenter.position) > 40:
-				missile.position += missile.position.direction_to($EarthWindCenter.position) * change_speed_EW
+			if missile.global_position.distance_to($EarthWindCenter.global_position) > 40:
+				missile.global_position += missile.global_position.direction_to($EarthWindCenter.global_position) * change_speed_EW
 			else:
 				outer_rotation2 = true
 				change_rotation2 = false
 				$EarthWindTimer.start()
 		elif change_rotation2 == true:
-			if missile.position.distance_to($EarthWindCenter.position) < 100:
-				missile.position -= missile.position.direction_to($EarthWindCenter.position) * change_speed_EW
+			if missile.global_position.distance_to($EarthWindCenter.global_position) < 100:
+				missile.global_position -= missile.global_position.direction_to($EarthWindCenter.global_position) * change_speed_EW
 			else:
 				outer_rotation2 = false
 				change_rotation2 = false
@@ -250,7 +250,7 @@ func fire():
 	elif phase == 4:
 		ball_scene =load("res://Scenes/Actors/MageBoss/SummonWindball.tscn")
 	ball_scene = ball_scene.instance()
-	ball_scene.position = self.position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
-	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).position
+	ball_scene.position = self.global_position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
+	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position
 	main.add_child(ball_scene)
 
