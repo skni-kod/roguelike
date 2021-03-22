@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Random",
+"language": "GDScript",
+"path": "res://Scenes/Levels/Random.gd"
+}, {
+"base": "Node",
+"class": "Walker",
+"language": "GDScript",
+"path": "res://Scenes/Levels/Walker.gd"
+} ]
 _global_script_class_icons={
-
+"Random": "",
+"Walker": ""
 }
 
 [application]
@@ -21,8 +32,10 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/width=1920
-window/size/height=1080
+window/size/width=1280
+window/size/height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [input]
 
