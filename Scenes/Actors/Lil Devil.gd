@@ -30,16 +30,16 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	
 	if player != null and health>0:
 		move = -global_position.direction_to(player.global_position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
 		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -0.5
 		else:
-			right = -1
-		$AnimationPlayer.play("Walk")
+			$Sprites.scale.x = 0.5
+		$BodyAnimationPlayer.play("Walk")
 	elif !attack and health>0:
-		$AnimationPlayer.play("Idle")
+		#$BodyAnimationPlayer.play("Idle")
+		$HeadAnimationPlayer.play("Idle")
 	move_and_collide(move)
 
 
@@ -66,8 +66,7 @@ func _on_Atak_body_exited(body):
 
 func _on_Timer_timeout():
 	if attack and health>0: # gdy przełącznik attack jest włączony i Lil Devil żyje, to wykonuje funkcje
-		if !$AnimationPlayer.play("Idle"):
-			$AnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
+		$HeadAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
 		shoot() # wykonanie funkcji shoot()
 
 
@@ -79,17 +78,17 @@ func shoot():
 	main.add_child(fireball) # ustawiam fireballa jako child maina
 
 
-# do opisania po reworku
 func get_dmg(dmg):
 	if health>0:
-		if player.position.x-self.position.x < 0:
-			self.position.x += 10
-		else:
-			self.position.x -= 10
+#		if player.position.x-self.position.x < 0:
+#			self.position.x += 10
+#		else:
+#			self.position.x -= 10
 			
 		hp -= dmg
 		health = hp/max_hp*100
-		$AnimationPlayer.play("Hurt")
+		$BodyAnimationPlayer.play("Hurt")
+		$HeadAnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		
