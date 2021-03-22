@@ -10,12 +10,13 @@ var up = Vector2(7,0)
 var right = Vector2(14,4)
 var left = Vector2(0,4)
 var drzwi = [true,true,true,true]
-var ilosc_enemy = 5
+var ilosc_enemy
 
 func _ready():
 	pass
 func _on_Node2D_body_entered(body):
 	if body.name == "Player":
+		ilosc_enemy = 5
 		if tilemap.get_cellv(left) == 1:
 			drzwi[0] = true
 		else:
@@ -42,6 +43,7 @@ func _on_Node2D_body_entered(body):
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-100,100)
 				add_child(enemy)
+				enemy.connect("died", self, "open")
 		id_list.append(current_id)
 	if body.name == "Slime":
 		tilemap.set_cell(6,8,28)
@@ -61,8 +63,9 @@ func _on_Node2D_body_entered(body):
 		tilemap.set_cell(0,5,18)
 		tilemap.set_cell(1,4,19)
 	
-func _on_Node2D_body_exited(body):
-	if body.name == "Slime":
+func open(body):
+	print(body)
+	if body.health == 0:
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
 		if drzwi[3]:

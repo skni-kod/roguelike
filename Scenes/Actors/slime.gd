@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.5
@@ -88,6 +90,7 @@ func get_dmg(dmg):
 #		weapon.WeaponName = drop["weapon"]
 #		weapon.position = self.position
 #		level.add_child(weapon)
+		emit_signal("died", self)
 		queue_free()
 		
 	var text = floating_dmg.instance()
