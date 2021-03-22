@@ -5,7 +5,7 @@ var look_vec = Vector2.ZERO #kierunek pocisku
 var player = null 
 var speed = 3 #predkosc pocisku
 var dps = 20 #zadawany damage przez pocisk
-onready var statusEffect = get_node("../../../UI/StatusBar")
+onready var statusEffect = get_node("../UI/StatusBar")
 
 
 func _ready():

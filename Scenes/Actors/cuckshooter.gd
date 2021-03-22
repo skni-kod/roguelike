@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var BULLET_SCENE = preload("res://Scenes/Actors/CucksBullet.tscn") #zaladowanie sceny pocisku cuckshootera
+onready var main = get_tree().get_root().find_node("Main", true, false)
 
 signal died(body)
 
@@ -67,7 +68,7 @@ func fire():
 	var bullet = BULLET_SCENE.instance() #tworzy sie instancja bulletu
 	bullet.position = get_global_position() + $Position2D.position
 	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
-	get_parent().add_child(bullet)
+	main.add_child(bullet)
 	$Timer.set_wait_time(0.5) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
 
 func _on_Timer_timeout():

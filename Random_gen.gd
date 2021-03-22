@@ -55,7 +55,6 @@ func draw(map):
 	for room in oneDoorRooms:
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
-	print(furthestRoom[0])
 	emit_signal("boss", furthestRoom[0])
 
 func generate():
