@@ -12,11 +12,12 @@ var szer = 512
 var dl = 288
 var gen = 0
 var scene = load("res://Scenes/Levels/Room.tscn")
-var room_num = []
-var a = 0
 
 func draw(map):
+	var oneDoorRooms = []
+	var furthestRoom = [Vector2.ZERO]
 	for i in range(len(map)):
+		var doors = 0
 		var room = scene.instance()
 		add_child(room)
 		var tilemap = room.get_node("TileMap")
@@ -27,24 +28,32 @@ func draw(map):
 			tilemap.set_cell(7,8,29)
 			tilemap.set_cell(8,8,30)
 			tilemap.set_cell(7,7,31)
+			doors += 1
 		if not map[i] + Vector2.UP in map:
 			tilemap.set_cell(6,0,24)
 			tilemap.set_cell(7,0,25)
 			tilemap.set_cell(8,0,26)
 			tilemap.set_cell(7,1,27)
+			doors += 1
 		if not map[i] + Vector2.RIGHT in map:
 			tilemap.set_cell(14,3,20)
 			tilemap.set_cell(14,4,21)
 			tilemap.set_cell(14,5,22)
 			tilemap.set_cell(13,4,23)
+			doors += 1
 		if not map[i] + Vector2.LEFT in map:
 			tilemap.set_cell(0,3,16)
 			tilemap.set_cell(0,4,17)
 			tilemap.set_cell(0,5,18)
 			tilemap.set_cell(1,4,19)
+			doors += 1
 		rooms.append(room)
-		room_num.append(a)
-		a += 1
+		if doors == 3:
+			oneDoorRooms.append([map[i], room])
+	for room in oneDoorRooms:
+		if abs(room[0].length()) > abs(furthestRoom[0].length()):
+			furthestRoom = room
+	
 
 func generate():
 	map.append(Vector2(0,0))
