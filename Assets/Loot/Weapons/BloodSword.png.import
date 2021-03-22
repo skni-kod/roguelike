@@ -12,6 +12,7 @@ metadata={
 source_file="res://Assets/Loot/Weapons/BloodSword.png"
 dest_files=[ "res://.import/BloodSword.png-19f9794306d6fcc6be16b61cce3c671e.stex" ]
 
+
 [params]
 
 compress/mode=0

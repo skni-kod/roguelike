@@ -14,7 +14,8 @@ export var health = 100 #ilośc punktów życia bohatera
 var base_health = 100 # bazowa ilość życia gracza
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
-var equipped = "Blade" #Aktualnie używana broń
+
+var equipped #Aktualnie używana broń
 
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
@@ -27,8 +28,8 @@ var second_weapon_stats = {}
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
-
-
+onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
+onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
 
 
 #zmienne do funkcji potionów
@@ -70,8 +71,6 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 		
 	
 
-
-
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
@@ -98,6 +97,7 @@ func _ready(): #po inicjacji bohatera
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
+	equipped = "Blade"
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -123,6 +123,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
 		movement() #wywołanie funkcji poruszania się
+	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			print(equipped)
@@ -136,7 +137,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
 			chest = null
-			
+      
 	if potion != null: #Jeżeli gracz stoi przy potionie
 		if Input.is_action_just_pressed("pick"): #jeżeli gracz naciśnie przycisk pick
 			var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
@@ -146,6 +147,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 			else:
 				potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
 				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+        
 			if "50%Potion" in potion_name:
 				potions_amount["50%Potion"]+=1 #zwieksza ilość potek 50% o 1
 			elif "100%Potion" in potion_name:
@@ -162,10 +164,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if potions_amount[potions[2]] != 0 and  potions_amount[potions[1]] == 0: #jeżeli potek z 1 slota został zużyty i jest jakiś potek na slocie 2 to:
 		change_potion_slot()  											# potek z 2 slota zostaje przeniesiony do slota 1
 		
-	
-	
-	
-	
+
 	if Input.is_action_just_pressed("use_potion"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
@@ -176,7 +175,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				level.get_node("Player").health = base_hp		#ustawia jego hp na wartość bazowego czyli 100% (zabezpieczenie żeby niedodawało wiecej hp niż bazówka)
 			else: 	#jeżeli ma mniej niż pół hp
 				level.get_node("Player").health += 0.5*base_hp #leczy o pół hp
-				
+
 			emit_signal("health_updated", health) #emituje sygnał do aktualizacji paska hp
 			potions_amount["50%Potion" ] -= 1 #odejmuje jedną potke halp hp
 		elif potions_amount["100%Potion"] > 0 and potions[1] == "100%Potion": #jeżeli gracz posiada potki full hp to:
@@ -213,7 +212,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weapons[2] != "Empty": 
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
-			print(current_weapon)
 			change_weapon_slot(current_weapon)
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
@@ -239,12 +237,16 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 func change_weapon_slot(currentSlot):
 	if currentSlot == 1:
 		equipped = weapons[2]
+		w2slot_visibility.visible = true
+		w1slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[2])+'.gd')) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = second_weapon_stats['attack']
 	if currentSlot == 2:
 		equipped = weapons[1]
+		w1slot_visibility.visible = true
+		w2slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[1])+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -256,9 +258,13 @@ func swap_weapon(slot,weaponOnGround):
 		if slot == 1:
 			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
 			first_weapon_stats = weaponOnGround.Stats
+			w1slot_visibility.visible = true
+			w2slot_visibility.visible = false
 		elif slot == 2:
 			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 			second_weapon_stats = weaponOnGround.Stats
+			w2slot_visibility.visible = true
+			w1slot_visibility.visible = false
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
@@ -276,6 +282,8 @@ func swap_weapon(slot,weaponOnGround):
 		weapons[2] = weaponOnGround.WeaponName
 		equipped = weapons[2]
 		second_weapon_stats = weaponOnGround.Stats
+		w2slot_visibility.visible = true
+		w1slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -294,6 +302,7 @@ func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 		ui_access_pslot2.texture = all_potions[potionOnGround]
 		potions[2] = potionOnGround
 		equipped_potion = potions[2]
+
 func movement(): #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -327,8 +336,6 @@ func take_dmg(dps): #otrzymanie obrażeń przez bohatera
 	if (health <= 0):
 		get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
-
-
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:
@@ -347,7 +354,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				UpdatePotions()
 			else: #jeżeli nie posiada potki 50% to musi kliknąć pick żeby podnieść
 				potion = body
-			
+
 		elif "100%Potion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if potions_amount["100%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 100%
@@ -366,6 +373,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			else: #jeżeli nie posiada potki 20 aktualna potka jest zamieniana na potke 20hp
 				potion = body
 
+
 		elif "60healthPotion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if potions_amount["60healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 60hp
@@ -374,10 +382,10 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				UpdatePotions()
 			else: #jeżeli nie posiada potki 60 aktualna potka jest zamieniana na potke 60hp
 				potion = body		
+
 			
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 	
-
 
 func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawne działanie sygnałów
 	pass
@@ -385,11 +393,4 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
-
-
-
-
-
-
-
 
