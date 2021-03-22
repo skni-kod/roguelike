@@ -77,10 +77,10 @@ func _on_Timer_timeout():
 			
 func get_dmg(dmg):
 	if health>0:
-		if player.position.x - self.position.x < 0: #knockback
-			self.position.x += 10
-		else:
-			self.position.x -= 10
+#		if player.position.x - self.position.x < 0: #knockback
+#			self.position.x += 10
+#		else:
+#			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health) 
