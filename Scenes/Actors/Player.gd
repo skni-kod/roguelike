@@ -80,7 +80,21 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
 		movement() #wywołanie funkcji poruszania się
-		
+	
+	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
+		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
+			print(equipped)
+			if equipped != weaponToTake.WeaponName:
+				if weapons[2] == "Empty":
+					swap_weapon(2,weaponToTake)
+				else:
+					if current_weapon != null:
+						swap_weapon(current_weapon,weaponToTake)
+	if chest != null: #Jeżeli gracz stoi przy skrzyni
+		if Input.is_action_just_pressed("pick"):
+			emit_signal("open") #Wyślij sygnał otwórz
+			chest = null
+	
 	if potion != null:
 		if Input.is_action_just_pressed("pick"):
 			var potion_name = potion.name
@@ -255,7 +269,7 @@ func movement(): #funkcja poruszania się
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
 func take_dmg(dps): #otrzymanie obrażeń przez bohatera
-	health = health - dps #aktualizacja ilości życia
+	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 	got_hitted = true #bohater jest uderzany
 	$AnimationPlayer.play("Hit") #włącz animację "Hit"
