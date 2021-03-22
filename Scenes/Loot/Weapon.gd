@@ -13,7 +13,6 @@ func _ready():
 	var text = file.get_as_text()
 	weapons = JSON.parse(text).result
 	Stats = weapons["Weapons"][WeaponName]
-	Stats['attack'] = float(Stats['attack'])
 	file.close()
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
 	$Sprite.texture = texture

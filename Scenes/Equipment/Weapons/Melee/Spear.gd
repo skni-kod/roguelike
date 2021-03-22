@@ -7,11 +7,10 @@ export var attack_range = 15
 var timer #Cooldown pomiędzy atakami
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
-var attack_speed=0 #Zmienna służąca do animacji 
 
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
-		timer.set_wait_time(0.01)
+		timer.set_wait_time(0.2)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/spear.png")
 		#Ustaw wartość kolizji dla broni
 		$AttackCollision.scale.x = 1
@@ -34,15 +33,12 @@ func _physics_process(delta):
 		else:
 			$WeaponSprite.scale.y = 1
 			$WeaponSprite.rotation_degrees=90 #Obróć broń przodem do przeciwnika
-			
-func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x=0.281
-	position.y=0.281
 
 func _on_Player_attacked():
-	if !attack and attack_speed==0:
+	if !attack:
 		attack = true
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
+		position += attack_vector
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.rotation_degrees = -90#-90
 		else:
@@ -51,17 +47,11 @@ func _on_Player_attacked():
 		timer.start()
 
 func _on_Timer_timeout():
-	attack_speed+=0.01
-	if attack_speed<0.1:
-		position += attack_vector*(0.01/0.1)
-	elif attack_speed<0.25:
-		position -= attack_vector*(0.01/0.15)
-	else:
-		$AttackCollision.disabled = true
-		attack = false
-		attack_speed=0		
-		timer.stop()
-		reset_pivot()
+	position -= attack_vector
+	$WeaponSprite.rotation_degrees -= 5
+	$AttackCollision.disabled = true
+	attack = false
+	timer.stop()
 
 func change_weapon(texture):
 	$WeaponSprite.texture = texture

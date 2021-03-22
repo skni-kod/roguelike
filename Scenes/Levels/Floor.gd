@@ -23,7 +23,7 @@ func _ready():
 		weapon = weapon.instance()
 		weapon.WeaponName = names[arr[j]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names 
 		j+=1
-		weapon.position = Vector2(i.x*16+50,i.y*16+8) #Przypisuje pozycję broni
+		weapon.position = Vector2(i.x*16+8,i.y*16+8) #Przypisuje pozycję broni
 		add_child(weapon) #Tworzy broń na podłodze
 
 func rand_num(from,to):

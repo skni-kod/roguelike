@@ -210,7 +210,7 @@ func _on_Healing_Lifetime_timeout():
 
 
 func _on_Healing_Healing_timeout():
-	if healing and player.health <= player.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
+	if healing:
 		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time))) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
 		$StatusContainer/Healing/Healing.start()
 
@@ -297,7 +297,7 @@ func _on_Weakness_Lifetime_timeout():
 
 
 # FUNKCJA GENERUJĄCA PRAWDĘ/FAŁSZ Z PRAWDOPODOBIEŃSTWA #
-func prawdopodobienstwo(procent_prawdopodobienstwa):
+func prawdopodobienstwo(var procent_prawdopodobienstwa):
 	randomize()
 	var percent = randf() # generator losowej liczby float/procentu
 	if (percent > procent_prawdopodobienstwa):
