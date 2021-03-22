@@ -5,11 +5,15 @@
 [ext_resource path="res://Assets/TileMap/minimap.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/UI/MiniMap.gd" type="Script" id=4]
 
-[node name="MiniMap" type="MarginContainer"]
-margin_left = -0.157486
-margin_top = -0.472466
-margin_right = 199.843
-margin_bottom = 199.528
+[node name="Map" type="MarginContainer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -510.222
+margin_top = -399.165
+margin_right = -308.564
+margin_bottom = -199.692
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
@@ -22,15 +26,15 @@ __meta__ = {
 [node name="Frame" type="NinePatchRect" parent="."]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 195.0
-margin_bottom = 195.0
+margin_right = 196.0
+margin_bottom = 194.0
 texture = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 195.0
-margin_bottom = 195.0
+margin_right = 196.0
+margin_bottom = 194.0
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
@@ -39,8 +43,8 @@ custom_constants/margin_bottom = 20
 [node name="Grid" type="TextureRect" parent="MarginContainer"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 170.0
-margin_bottom = 170.0
+margin_right = 171.0
+margin_bottom = 169.0
 rect_clip_content = true
 
 [node name="Wall" type="Sprite" parent="MarginContainer/Grid"]
@@ -50,7 +54,8 @@ scale = Vector2( 0.03, 0.03 )
 texture = ExtResource( 2 )
 
 [node name="Hero" type="Sprite" parent="MarginContainer/Grid"]
-position = Vector2( 75, 75 )
-scale = Vector2( 0.02, 0.02 )
+position = Vector2( 64.7544, 62.7817 )
+scale = Vector2( 0.0215449, 0.018882 )
 z_index = 2
 texture = ExtResource( 1 )
+centered = false

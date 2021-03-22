@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scenes/UI/StatusBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://Assets/Loot/chest.png" type="Texture" id=21]
 [ext_resource path="res://Scenes/Levels/Floor.gd" type="Script" id=22]
 [ext_resource path="res://Scenes/UI/MiniMap2.gd" type="Script" id=23]
+[ext_resource path="res://Assets/UI/Minimap/hero.png" type="Texture" id=24]
 
 [sub_resource type="TileSet" id=1]
 0/name = "floor_6.png 0"
@@ -209,7 +210,7 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 3/z_index = 0
 
 [node name="Main" type="Node2D"]
-position = Vector2( 0.629959, 0 )
+position = Vector2( 0.629959, 1.88776 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -239,15 +240,15 @@ anchor_right = 1.03
 anchor_bottom = 1.036
 margin_left = -204.0
 margin_top = -200.0
-margin_right = -37.7199
-margin_bottom = -32.8
+margin_right = -34.72
+margin_bottom = -28.8
 player = NodePath("../../Player")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="UI/MiniMap"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 192.0
-margin_bottom = 191.0
+margin_right = 195.0
+margin_bottom = 195.0
 texture = ExtResource( 17 )
 patch_margin_left = 5
 patch_margin_top = 5
@@ -257,8 +258,8 @@ patch_margin_bottom = 5
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MiniMap"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 192.0
-margin_bottom = 191.0
+margin_right = 195.0
+margin_bottom = 195.0
 custom_constants/margin_right = 17
 custom_constants/margin_top = 15
 custom_constants/margin_left = 17
@@ -268,13 +269,12 @@ custom_constants/margin_bottom = 15
 visible = false
 margin_left = 17.0
 margin_top = 15.0
-margin_right = 170.0
-margin_bottom = 171.0
+margin_right = 173.0
+margin_bottom = 175.0
 texture = ExtResource( 18 )
 stretch_mode = 2
 
 [node name="ChestMarker" type="Sprite" parent="UI/MiniMap/MarginContainer2/Grid"]
-visible = false
 position = Vector2( 284.639, -190.223 )
 texture = ExtResource( 20 )
 
@@ -284,58 +284,59 @@ texture = ExtResource( 21 )
 
 [node name="Wall" type="Sprite" parent="UI/MiniMap/MarginContainer2/Grid"]
 
-[node name="MiniMap2" parent="UI" instance=ExtResource( 12 )]
+[node name="Hero" type="Sprite" parent="UI/MiniMap/MarginContainer2/Grid"]
+texture = ExtResource( 24 )
+
+[node name="Map" parent="UI" instance=ExtResource( 12 )]
 visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -626.0
-margin_top = -413.0
-margin_right = 626.0
-margin_bottom = 413.0
+margin_left = 309.445
+margin_top = 200.801
+margin_right = 509.445
+margin_bottom = 400.801
 script = ExtResource( 23 )
 
-[node name="NinePatchRect" type="NinePatchRect" parent="UI/MiniMap2"]
+[node name="NinePatchRect" type="NinePatchRect" parent="UI/Map"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 1247.0
-margin_bottom = 821.0
+margin_right = 195.0
+margin_bottom = 195.0
 texture = ExtResource( 17 )
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
 patch_margin_bottom = 5
 
-[node name="MarginContainer2" type="MarginContainer" parent="UI/MiniMap2"]
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Map"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 1247.0
-margin_bottom = 821.0
+margin_right = 195.0
+margin_bottom = 195.0
 custom_constants/margin_right = 17
 custom_constants/margin_top = 15
 custom_constants/margin_left = 17
 custom_constants/margin_bottom = 15
 
-[node name="Grid" type="TextureRect" parent="UI/MiniMap2/MarginContainer2"]
+[node name="Grid" type="TextureRect" parent="UI/Map/MarginContainer2"]
 visible = false
 margin_left = 17.0
 margin_top = 15.0
-margin_right = 1225.0
-margin_bottom = 801.0
+margin_right = 173.0
+margin_bottom = 175.0
 texture = ExtResource( 18 )
 stretch_mode = 2
 
-[node name="ChestMarker" type="Sprite" parent="UI/MiniMap2/MarginContainer2/Grid"]
-visible = false
+[node name="ChestMarker" type="Sprite" parent="UI/Map/MarginContainer2/Grid"]
 position = Vector2( 284.639, -190.223 )
 texture = ExtResource( 20 )
 
-[node name="chest" type="Sprite" parent="UI/MiniMap2/MarginContainer2/Grid/ChestMarker"]
+[node name="chest" type="Sprite" parent="UI/Map/MarginContainer2/Grid/ChestMarker"]
 position = Vector2( -790.629, 62.5028 )
 texture = ExtResource( 21 )
 
-[node name="Wall" type="Sprite" parent="UI/MiniMap2/MarginContainer2/Grid"]
+[node name="Wall" type="Sprite" parent="UI/Map/MarginContainer2/Grid"]
+
+[node name="Hero" type="Sprite" parent="UI/Map/MarginContainer2/Grid"]
+texture = ExtResource( 24 )
 
 [node name="Coins" parent="UI" instance=ExtResource( 16 )]
 anchor_left = 0.000615194
