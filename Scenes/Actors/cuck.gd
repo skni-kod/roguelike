@@ -69,6 +69,7 @@ func get_dmg(dmg):
 		health_bar.visible = true
 	if health<=0: #jezeli cuck nie zyje
 		attack = false 
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die") #odtwarzana animacja umierana
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)

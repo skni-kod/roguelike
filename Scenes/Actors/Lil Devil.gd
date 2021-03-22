@@ -91,6 +91,7 @@ func get_dmg(dmg):
 		health_bar.visible = true
 		
 	if health<=0:
+		$CollisionShape2D.set_deferred("disabled",true)
 		$BodyAnimationPlayer.play("Die")
 		$HeadAnimationPlayer.play("Die")
 		yield($BodyAnimationPlayer,"animation_finished")

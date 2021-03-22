@@ -97,6 +97,7 @@ func get_dmg(dmg):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 	if health <=0:
+		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
