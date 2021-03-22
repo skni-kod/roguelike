@@ -52,3 +52,5 @@ rect_scale = Vector2( 2, 2 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 z_index = 2
+[node name="Chest" parent="." instance=ExtResource( 15 )]
+position = Vector2( 90.5444, 80.8976 )
