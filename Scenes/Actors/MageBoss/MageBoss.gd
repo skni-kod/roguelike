@@ -6,14 +6,14 @@ signal died(body)
 
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
-export var speed = 0.2 #Zmienna przechowująca szybkość poruszania
-export var dps = 20 #Zmienna przechowująca wartość ataku
+export var speed = 0.15 #Zmienna przechowująca szybkość poruszania
 var right = 1 #Czy MageBoss jest obrócony w prawo
-var max_hp = 500 #Zmienna definiująca ilość życia
+export var max_hp = 500 #Zmienna definiująca ilość życia
 var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
+var alive = true
 onready var main := get_tree().get_root().find_node("Main", true, false)
 onready var UI := get_tree().get_root().find_node("UI", true, false)
-var alive = true
+onready var statusEffect = get_node("../UI/StatusBar")
 
 var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":40,"maxCoins":50} #Przedział definiujący ile MageBoss może zostawić po sobie coinów
@@ -23,9 +23,9 @@ var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
-export var angular_velocity = 2.5
-export var speed_during_change1 = 0.3
-export var speed_during_change2 = 1
+export var angular_velocity = 1.0
+export var change_speed_WF = 0.3
+export var change_speed_EW = 1
 var outer_rotation1 = false
 var change_rotation1 = true
 var outer_rotation2 = false
@@ -33,6 +33,11 @@ var change_rotation2 = true
 
 var phase = 0
 var phase_active = false
+
+export var earthball_dmg = 8.0
+export var windball_dmg = 6.0
+export var fireball_dmg = 4.0
+export var waterball_dmg = 5.0
 
 func _ready():
 	health_bar = health_bar.instance()
@@ -43,9 +48,9 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	if alive:
 		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
-			if position.distance_to(player.position) < 50:
+			if position.distance_to(player.position) < 55.0:
 				move = -position.direction_to(player.position) * speed
-			elif position.distance_to(player.position) > 60.0:
+			elif position.distance_to(player.position) > 65.0:
 				move = position.direction_to(player.position) * speed
 		move_and_collide(move)
 		rotate_water_fire()
@@ -71,19 +76,22 @@ func _on_EarthWindTimer_timeout():
 	
 func _on_Fireball_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(5.0)
+		player.take_dmg(fireball_dmg)
+		statusEffect.burning = true
 
 func _on_Waterball_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(5.0)
+		player.take_dmg(waterball_dmg)
+		statusEffect.freezing = true
 		
 func _on_WindBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(5.0)
+		player.take_dmg(windball_dmg)
+		statusEffect.weakness = true
 
 func _on_EarthBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(5.0)
+		player.take_dmg(earthball_dmg)
 
 func _on_PhaseTimer_timeout():
 	if phase == 1:
@@ -106,7 +114,10 @@ func _on_PhaseTimer_timeout():
 		summon4 = summon4.instance()
 		main.add_child(summon4)
 		summon4.position = self.position
-
+		
+func _on_FireTimer_timeout():
+	fire()
+	
 func get_dmg(dmg):
 	if phase_active == false and alive:
 		var text = floating_dmg.instance()
@@ -148,14 +159,14 @@ func rotate_water_fire():
 		missile.rotate(0.1)
 		if outer_rotation1 == false && change_rotation1 == true:
 			if missile.position.distance_to($WaterFireCenter.position) > 30:
-				missile.position += missile.position.direction_to($WaterFireCenter.position) * speed_during_change1
+				missile.position += missile.position.direction_to($WaterFireCenter.position) * change_speed_WF
 			else:
 				outer_rotation1 = true
 				change_rotation1 = false
 				$MissilesTimer.start()
 		elif change_rotation1 == true:
 			if missile.position.distance_to($WaterFireCenter.position) < 60:
-				missile.position -= missile.position.direction_to($WaterFireCenter.position) * speed_during_change1
+				missile.position -= missile.position.direction_to($WaterFireCenter.position) * change_speed_WF
 			else:
 				outer_rotation1 = false
 				change_rotation1 = false
@@ -169,14 +180,14 @@ func rotate_earth_wind():
 		missile.rotate(0.1)
 		if outer_rotation2 == false && change_rotation2 == true:
 			if missile.position.distance_to($EarthWindCenter.position) > 40:
-				missile.position += missile.position.direction_to($EarthWindCenter.position) * speed_during_change2
+				missile.position += missile.position.direction_to($EarthWindCenter.position) * change_speed_EW
 			else:
 				outer_rotation2 = true
 				change_rotation2 = false
 				$EarthWindTimer.start()
 		elif change_rotation2 == true:
 			if missile.position.distance_to($EarthWindCenter.position) < 100:
-				missile.position -= missile.position.direction_to($EarthWindCenter.position) * speed_during_change2
+				missile.position -= missile.position.direction_to($EarthWindCenter.position) * change_speed_EW
 			else:
 				outer_rotation2 = false
 				change_rotation2 = false
@@ -201,21 +212,45 @@ func control_phases():
 		phase4_start()
 
 func phase1_start():
+	angular_velocity += 0.5
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
+	$FireTimer.start()
 	
 func phase2_start():
+	angular_velocity += 0.5
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
+	$FireTimer.start()
 	
 func phase3_start():
+	angular_velocity += 0.5
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
+	$FireTimer.start()
 	
 func phase4_start():
+	angular_velocity += 0.5
 	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()
+	$FireTimer.start()
+	
+func fire():
+	var ball_scene = null
+	if phase == 1:
+		ball_scene =load("res://Scenes/Actors/MageBoss/SummonFireball.tscn")
+	elif phase == 2:
+		ball_scene =load("res://Scenes/Actors/MageBoss/SummonWaterball.tscn")
+	elif phase == 3:
+		ball_scene =load("res://Scenes/Actors/MageBoss/SummonEarthball.tscn")
+	elif phase == 4:
+		ball_scene =load("res://Scenes/Actors/MageBoss/SummonWindball.tscn")
+	ball_scene = ball_scene.instance()
+	ball_scene.position = self.position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
+	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).position
+	main.add_child(ball_scene)
+

@@ -38,7 +38,7 @@ color_ramp = SubResource( 2 )
 radius = 18.563
 
 [sub_resource type="CircleShape2D" id=7]
-radius = 155.866
+radius = 241.938
 
 [sub_resource type="CircleShape2D" id=8]
 radius = 4.51876
@@ -319,7 +319,7 @@ one_shot = true
 [node name="ShieldCenter" type="Node2D" parent="."]
 
 [node name="Shield" type="Particles2D" parent="ShieldCenter"]
-position = Vector2( -19.6219, 0 )
+position = Vector2( -20, 0 )
 amount = 30
 lifetime = 0.2
 local_coords = false
@@ -335,6 +335,9 @@ anims/Die = SubResource( 21 )
 anims/Hurt = SubResource( 22 )
 anims/Idle = SubResource( 23 )
 anims/Walk = SubResource( 24 )
+
+[node name="FireTimer" type="Timer" parent="."]
+wait_time = 2.0
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
@@ -344,3 +347,4 @@ anims/Walk = SubResource( 24 )
 [connection signal="timeout" from="MissilesTimer" to="." method="_on_MissilesTimer_timeout"]
 [connection signal="timeout" from="EarthWindTimer" to="." method="_on_EarthWindTimer_timeout"]
 [connection signal="timeout" from="PhaseTimer" to="." method="_on_PhaseTimer_timeout"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
