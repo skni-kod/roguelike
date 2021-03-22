@@ -28,8 +28,8 @@ func _physics_process(delta):
 	
 	if player != null and !attack and health>0:
 		$Sprite.scale.x = right
-		move = position.direction_to(player.position) * speed
-		if player.position.x-self.position.x < 0:
+		move = global_position.direction_to(player.global_position) * speed
+		if player.global_position.x-self.global_position.x < 0:
 			right = -1
 		else:
 			right = 1
@@ -90,7 +90,7 @@ func get_dmg(dmg):
 		rng.randomize()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.position.x-10,self.position.x+10),rng.randf_range(self.position.y-10,self.position.y+10))
+			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition

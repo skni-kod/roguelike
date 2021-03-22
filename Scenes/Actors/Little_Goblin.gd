@@ -25,8 +25,8 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	if player != null and !attack and health>0:	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
 		$sprite.scale.x = right		# obrót w stronę gracza
-		move = position.direction_to(player.position) * speed	# Ustaw wektor na ruch w stronę gracza
-		if player.position.x-self.position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
+		move = global_position.direction_to(player.global_position) * speed	# Ustaw wektor na ruch w stronę gracza
+		if player.global_position.x-self.global_position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
 			right = -0.155
 		else:
 			right = 0.155
