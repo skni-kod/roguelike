@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Enemies/EarthBall.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Actors/MageBoss/MageBossSummon3.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Actors/MageBoss/SummonDeath.tscn" type="PackedScene" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 250.0
+
+[sub_resource type="ParticlesMaterial" id=2]
+emission_shape = 1
+emission_sphere_radius = 10.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 720.0
+angle_random = 1.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 14.8268
+
+[node name="MageBossSummon3" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+collision_layer = 4
+script = ExtResource( 3 )
+speed = 0.8
+
+[node name="HealthBar" parent="." instance=ExtResource( 1 )]
+margin_left = -10.0406
+margin_top = -20.6594
+margin_right = -10.0406
+margin_bottom = -20.6594
+rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="Atak" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 150
+lifetime = 0.2
+speed_scale = 3.0
+local_coords = false
+process_material = SubResource( 2 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" parent="." instance=ExtResource( 4 )]
+[connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
+[connection signal="body_exited" from="Atak" to="." method="_on_Atak_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

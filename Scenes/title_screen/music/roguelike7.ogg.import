@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/roguelike7.ogg-a4c8e68cb0d5dd49a82683fb28b5e139.oggstr"
+
+[deps]
+
+source_file="res://Scenes/title_screen/music/roguelike7.ogg"
+dest_files=[ "res://.import/roguelike7.ogg-a4c8e68cb0d5dd49a82683fb28b5e139.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
