@@ -30,6 +30,10 @@ config/name="roguelike"
 run/main_scene="res://Scenes/title_screen/TitleScreen.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+MusicController="*res://autoloads/MusicController.tscn"
+
 [display]
 
 window/size/width=1280
