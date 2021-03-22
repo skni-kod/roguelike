@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Random_gen.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/TileMap/TileMap.tres" type="TileSet" id=3]
 [ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
@@ -35,11 +34,6 @@ rect_scale = Vector2( 2, 2 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 z_index = 2
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 3 )
-cell_size = Vector2( 16, 16 )
-format = 1
 
 [node name="Random_gen" type="Node2D" parent="."]
 script = ExtResource( 1 )

@@ -19,8 +19,29 @@ func draw(map):
 	for i in range(len(map)):
 		var room = scene.instance()
 		add_child(room)
+		var tilemap = room.get_node("TileMap")
 		room.position.x = map[i].x * szer
 		room.position.y = map[i].y * dl
+		if not map[i] + Vector2.DOWN in map:
+			tilemap.set_cell(6,8,28)
+			tilemap.set_cell(7,8,29)
+			tilemap.set_cell(8,8,30)
+			tilemap.set_cell(7,7,31)
+		if not map[i] + Vector2.UP in map:
+			tilemap.set_cell(6,0,24)
+			tilemap.set_cell(7,0,25)
+			tilemap.set_cell(8,0,26)
+			tilemap.set_cell(7,1,27)
+		if not map[i] + Vector2.RIGHT in map:
+			tilemap.set_cell(14,3,20)
+			tilemap.set_cell(14,4,21)
+			tilemap.set_cell(14,5,22)
+			tilemap.set_cell(13,4,23)
+		if not map[i] + Vector2.LEFT in map:
+			tilemap.set_cell(0,3,16)
+			tilemap.set_cell(0,4,17)
+			tilemap.set_cell(0,5,18)
+			tilemap.set_cell(1,4,19)
 		rooms.append(room)
 		room_num.append(a)
 		a += 1
