@@ -77,7 +77,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
