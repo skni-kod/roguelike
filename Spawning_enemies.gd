@@ -72,7 +72,6 @@ func _on_Node2D_body_entered(body):
 			drzwi[3] = true
 		else:
 			drzwi[3] = false
-		print(drzwi)
 		current_id = get_instance_id()
 		if not current_id in id_list and not boss:
 			for i in range(0,5):
@@ -83,7 +82,6 @@ func _on_Node2D_body_entered(body):
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-80,80)
 				add_child(enemy)
-				print(enemy.get_tree())
 				enemy.connect("died", self, "open")
 		elif boss:
 			ilosc_enemy = 1
@@ -123,7 +121,6 @@ func rand_num(from,to):
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 
 func open(body):
-	print(body)
 	if body.health <= 0:
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
@@ -150,4 +147,3 @@ func open(body):
 			tilemap.set_cell(0,4,1)
 			tilemap.set_cell(0,5,2)
 			tilemap.set_cell(1,4,3)
-	print(ilosc_enemy)

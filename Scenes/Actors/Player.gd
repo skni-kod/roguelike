@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(10)}
+var first_weapon_stats = {"attack":float(20)}
 var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -126,7 +126,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			print(equipped)
 			if equipped != weaponToTake.WeaponName:
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
@@ -200,13 +199,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		#	statusEffect.healAmount = 50
 		#	statusEffect.healing = true
 		#	Potion_in_time -= 1
-		
-				
-			
-		print("Fullhp: ",potions_amount["100%Potion" ])
-		print("Halfhp: ",potions_amount["50%Potion" ])	
-		print("potek+20: ",potions_amount["20healthPotion" ])	
-		print("potek+60:",potions_amount["60healthPotion" ])		
 		UpdatePotions()
 
 	if weapons[2] != "Empty": 
@@ -268,7 +260,7 @@ func swap_weapon(slot,weaponOnGround):
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
-		weaponUsed.position = weaponOnGround.position
+		weaponUsed.position = weaponOnGround.global_position
 		level.add_child(weaponUsed)
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
