@@ -67,9 +67,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 			ui_access_pslot2.texture = null
 			potion2_amount.text = ""
 			potions[2] = "Empty"
-	
-		
-	
+
 
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
