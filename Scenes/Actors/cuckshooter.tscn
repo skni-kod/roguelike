@@ -88,14 +88,15 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CircleShape2D" id=7]
-radius = 106.78
+radius = 186.259
 
 [sub_resource type="CircleShape2D" id=8]
-radius = 76.8374
+radius = 106.692
 
 [node name="cuckshooter" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
+scale = Vector2( 1.5, 1.5 )
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 2 )
@@ -114,11 +115,11 @@ vframes = 3
 hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -0.388077, 3.0104 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.75
 autostart = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -129,6 +130,7 @@ anims/Idle = SubResource( 5 )
 anims/Walk = SubResource( 6 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.229851, 3.00339 )
 collision_mask = 2147483649
 
@@ -138,6 +140,7 @@ rotation = -0.13439
 shape = SubResource( 7 )
 
 [node name="Strzelanie" type="Area2D" parent="."]
+visible = false
 position = Vector2( 0.0834274, 3.67081 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Strzelanie"]

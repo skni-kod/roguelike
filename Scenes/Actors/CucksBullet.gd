@@ -3,8 +3,8 @@ extends KinematicBody2D
 var move = Vector2.ZERO
 var look_vec = Vector2.ZERO #kierunek pocisku
 var player = null 
-var speed = 3 #predkosc pocisku
-var dps = 20 #zadawany damage przez pocisk
+var speed = 2 #predkosc pocisku
+var dps = 5 #zadawany damage przez pocisk
 onready var statusEffect = get_node("../UI/StatusBar")
 
 
