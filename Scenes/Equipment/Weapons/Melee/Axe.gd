@@ -9,6 +9,10 @@ var damage
 var attack_speed = 0.0
 var a = 1
 
+var swing_to = 0.2
+var swing_back = 0.4
+var animation_step = 0.01
+
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
@@ -41,13 +45,13 @@ func _on_Player_attacked():
 		timer.start()
 
 func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku
-	attack_speed += 0.01
-	if attack_speed <= 0.15:
-		position += attack_vector * (0.01/0.15)
+	attack_speed += animation_step
+	if attack_speed <= swing_to:
+		position += attack_vector * (animation_step/swing_to)
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.rotation_degrees += -90 * (0.01/0.15)
+			$WeaponSprite.rotation_degrees += -90 * (animation_step/swing_to)
 		else:
-			$WeaponSprite.rotation_degrees += 90 * (0.01/0.15)
+			$WeaponSprite.rotation_degrees += 90 * (animation_step/swing_back)
 		
 	elif attack_speed > 0.3:
 		position -= attack_vector

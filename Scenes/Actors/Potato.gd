@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 signal died(body)
 
+onready var statusEffect = get_node("../../../UI/StatusBar")
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 0.5
@@ -60,6 +62,7 @@ func _on_Atak_body_exited(body):
 func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
+		statusEffect.poison = true
 		player.take_dmg(dps)
 		yield($AnimationPlayer,"animation_finished")
 

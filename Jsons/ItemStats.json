@@ -1,16 +1,16 @@
 {
     "Weapons": {
         "Blade": {
-            "attack": "10",
-            "spd": "0.5",
-            "knc": "0.2",
+            "attack": "5",
+            "spd": "1",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         },
         "Axe": {
-            "attack": "5",
+            "attack": "10",
             "spd": "0.5",
-            "knc": "0.3",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         },
@@ -23,22 +23,22 @@
         },
         "Knife": {
             "attack": "3",
-            "spd": "1",
-            "knc": "0.1",
+            "spd": "1.5",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         },
         "Hammer": {
-            "attack": "3",
-            "spd": "1",
-            "knc": "0.1",
+            "attack": "20",
+            "spd": "0.4",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         },
         "Spear": {
-            "attack": "3",
-            "spd": "1",
-            "knc": "0.1",
+            "attack": "15",
+            "spd": "0.75",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         },
@@ -50,17 +50,17 @@
             "effect": "none"
         },
          "BloodSword": {
-            "attack": "10",
-            "spd": "0.5",
-            "knc": "0.2",
+            "attack": "20",
+            "spd": "0.6",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         }
         ,
          "FMS": {
-            "attack": "10",
+            "attack": "22",
             "spd": "0.5",
-            "knc": "0.2",
+            "knc": "0",
             "range": "melee",
             "effect": "none"
         }
