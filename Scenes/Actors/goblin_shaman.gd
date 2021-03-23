@@ -49,6 +49,7 @@ func summon():		# funkcja odpowiadająca za przywoływanie goblinów
 	else:
 		spawnposition = Vector2(self.global_position.x-20,self.global_position.y)
 	goblinscene.position=spawnposition
+	goblinscene.add_to_group(name)
 	main.add_child(goblinscene)
 	
 func fire():		# funkcja odpowiadająca za tworzenie pocisków
@@ -110,6 +111,8 @@ func get_dmg(dmg):
 			coin = coin.instance()
 			coin.position = randomPosition
 			main.add_child(coin)
+		for summoners in get_tree().get_nodes_in_group(name):
+			summoners.queue_free()
 		emit_signal("died", self)
 		queue_free()
 	var text = floating_dmg.instance()
