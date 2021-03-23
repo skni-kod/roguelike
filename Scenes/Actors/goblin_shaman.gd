@@ -49,6 +49,7 @@ func summon():		# funkcja odpowiadająca za przywoływanie goblinów
 	else:
 		spawnposition = Vector2(self.global_position.x-20,self.global_position.y)
 	goblinscene.position=spawnposition
+	goblinscene.add_to_group(name)
 	main.add_child(goblinscene)
 	
 func fire():		# funkcja odpowiadająca za tworzenie pocisków
@@ -103,15 +104,45 @@ func get_dmg(dmg):
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
+		random_potion()
 		for i in range(0,coins):
 			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition
 			main.add_child(coin)
+		for summoners in get_tree().get_nodes_in_group(name):
+			summoners.queue_free()
 		emit_signal("died", self)
 		queue_free()
 	var text = floating_dmg.instance()
 	text.amount = dmg
 	text.type = "Damage"
-	add_child(text)	
+	add_child(text)
+	
+func random_potion():
+	rng.randomize()
+	var potion = int(rng.randf_range(0,3))
+	print(potion)
+	var tmp
+	
+	if potion == 0:
+		tmp = load("res://Scenes/Loot/20healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 1:
+		tmp = load("res://Scenes/Loot/50%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 2:
+		tmp = load("res://Scenes/Loot/60healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 3:
+		tmp = load("res://Scenes/Loot/100%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)

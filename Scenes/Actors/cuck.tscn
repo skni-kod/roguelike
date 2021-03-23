@@ -5,11 +5,11 @@
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 4.50836
-height = 0.0
+radius = 5.95524
+height = 1.763
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 35.3736
+radius = 64.2609
 
 [sub_resource type="CapsuleShape2D" id=3]
 radius = 8.46189
@@ -98,12 +98,12 @@ tracks/0/keys = {
 [node name="Cuck" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
+scale = Vector2( 1.5, 1.5 )
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 1 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
-visible = false
 margin_left = -10.0406
 margin_top = -5.9466
 margin_right = -10.0406
@@ -120,16 +120,18 @@ frame = 8
 region_rect = Rect2( 1, 0, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -1.11362, 2.44997 )
+position = Vector2( 0, 1.33484 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 position = Vector2( -0.44545, 0.111362 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]

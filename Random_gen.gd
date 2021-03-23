@@ -13,7 +13,10 @@ var n = 0
 var szer = 512
 var dl = 288
 var gen = 0
+var oneDoor = 0
+var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn")
+var player = load("res://Scenes/Actors/Player.tscn")
 
 func draw(map):
 	var oneDoorRooms = []
@@ -73,15 +76,35 @@ func generate():
 		if queue:
 			position = queue.pop_front()
 		else:
-			for room in rooms:
-				room.queue_free()
-				rooms = []
-				map = []
-				queue = []
-				position = Vector2.ZERO
-				n = 0
-				generate()
-	draw(map)
+			map = []
+			queue = []
+			position = Vector2.ZERO
+			n = 0
+			generate()
+	oneDoor = 0
+	for room in map:
+		if not room == Vector2.ZERO:
+			var doors = 0
+			if not room + Vector2.DOWN in map:
+				doors += 1
+			if not room + Vector2.UP in map:
+				doors += 1
+			if not room + Vector2.RIGHT in map:
+				doors += 1
+			if not room + Vector2.LEFT in map:
+				doors += 1
+			if doors == 3:
+				oneDoor += 1
+	if oneDoor > 0 and not drawn:
+		draw(map)
+		drawn = true
+	elif not drawn:
+		map = []
+		queue = []
+		position = Vector2.ZERO
+		n = 0
+		oneDoor = 0
+		generate()
 
 func step(direction):
 	var target_position = position + direction
@@ -92,6 +115,7 @@ func step(direction):
 		n -= 1
 
 func _ready():
+	MusicController.stop_music()
 	generate()
 
 #func _physics_process(delta):
