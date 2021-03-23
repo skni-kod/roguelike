@@ -4,7 +4,7 @@ signal died(body)
 
 var player = null
 var move = Vector2.ZERO
-export var speed = 3
+export var speed = 1.75
 export var dps = 10
 var right = 1
 var attack = false

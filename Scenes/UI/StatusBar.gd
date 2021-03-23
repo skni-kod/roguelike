@@ -38,7 +38,7 @@ var healingStacks = 0
 
 # maksymalne ilosci stacków dla danych efektów
 var burningMaxStacks = 10
-var freezingMaxStacks = 10
+var freezingMaxStacks = 3
 var knockbackMaxStacks = 10
 var poisonMaxStacks = 10
 var bleedingMaxStacks = 10
@@ -219,12 +219,12 @@ func _on_Healing_Healing_timeout():
 # -------------- ZAMROŻENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func freeze(var freeze):
-	if freeze and prawdopodobienstwo(0.6):
-		if freezingStacks <= freezingMaxStacks:
+	if freeze and prawdopodobienstwo(0.33):
+		if freezingStacks < freezingMaxStacks:
 			freezingStacks += 1
 		freezing = true
 		if speedMultiplier > 0:
-			speedMultiplier = (speedMultiplier-(pow(0.5, freezingStacks))) # współczynnik prędkości zostaje zmniejszony -> gracz porusza się wolniej
+			speedMultiplier = (speedMultiplier-(pow(0.42, freezingStacks))) # współczynnik prędkości zostaje zmniejszony -> gracz porusza się wolniej
 		else:
 			speedMultiplier = 0 # w razie gdy jest wystarczająco stacków, w celu uniknięcia błędu przyjmuje się speedMultiplier jako 0
 		playerBody.modulate = Color(0.4, 0.8, 1)
