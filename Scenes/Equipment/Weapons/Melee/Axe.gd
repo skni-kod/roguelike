@@ -9,6 +9,8 @@ var damage
 var attack_speed = 0.0
 var a = 1
 
+var smoothing = 1
+
 var swing_to = 0.2
 var swing_back = 0.4
 var animation_step = 0.01
@@ -25,11 +27,11 @@ func _physics_process(delta):
 	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
-			rotation = PI + mouse_position.angle() * 0.1
+			rotation = PI + mouse_position.angle() * smoothing
 		elif rotation > PI:
-			rotation = -PI + mouse_position.angle() * 0.1
+			rotation = -PI + mouse_position.angle() * smoothing
 		else:
-			rotation += mouse_position.angle() * 0.1
+			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.y = -1
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry

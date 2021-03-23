@@ -1,7 +1,7 @@
 {
     "Weapons": {
         "Blade": {
-            "attack": "5",
+            "attack": "7.5",
             "spd": "1",
             "knc": "0",
             "range": "melee",

@@ -10,6 +10,8 @@ var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var attack_speed=0 #Animacja ataku
 
+var smoothing = 1
+
 
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
@@ -25,11 +27,11 @@ func _physics_process(delta):
 		mouse_position = get_local_mouse_position()
 		
 		if rotation < -PI:
-			rotation = PI + mouse_position.angle() * 0.1
+			rotation = PI + mouse_position.angle() * smoothing
 		elif rotation > PI:
-			rotation = -PI + mouse_position.angle() * 0.1
+			rotation = -PI + mouse_position.angle() * smoothing
 		else:
-			rotation += mouse_position.angle() * 0.1
+			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.y = -1
 			$WeaponSprite.rotation_degrees=0
