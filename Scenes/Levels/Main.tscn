@@ -26,6 +26,7 @@ will_pulse = true
 [node name="StatusBar" parent="UI" instance=ExtResource( 1 )]
 anchor_left = 1.0
 anchor_right = 1.0
+rect_scale = Vector2( 2, 2 )
 
 [node name="Coins" parent="UI" instance=ExtResource( 16 )]
 anchor_left = 0.000615194

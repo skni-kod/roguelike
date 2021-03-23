@@ -9,7 +9,7 @@ var player = null
 var move = Vector2.ZERO
 export var speed = 0.5 
 var right = 1
-export var max_hp = 10
+export var max_hp = 40
 var hp:float = max_hp
 var attack = false #sluzy do informowania czy player jest w polu strzelanie (strzelanie -> colisionshape2d)
 var eyes = false #sluzy do informowania czy player jest w polu wzrok (wzrok -> collisionshape2d)
@@ -46,13 +46,14 @@ func _physics_process(delta):
 
 func _on_Area2D_body_entered(body):
 	if body != self and body.name == "Player": #jezeli player wszedl w pole strzelanie (strzelanie -> collisionshape) to:
-		speed = 0 #cuck sobie stoi
+		speed = -0.1
 		attack = true #i ciupie w playera
 
 func _on_Area2D_body_exited(body): 
 	if body != self and body.name == "Player": #jezeli player wyszedl z pola strzelanie (strzelanie -> collisionshape) to:
 		attack = false #cuck przestaje strzelac
 		speed = 0.5 #zmienia sie predkosc cucka dzieki czemu zaczyna sie poruszac
+
 		
 func _on_Wzrok_body_entered(body):  
 	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (wzrok -> collisionshape) to:
@@ -69,7 +70,7 @@ func fire():
 	bullet.position = get_global_position() + $Position2D.position
 	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
 	main.add_child(bullet)
-	$Timer.set_wait_time(0.5) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
+	$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
 
 func _on_Timer_timeout():
 	if player !=null and health>0 and attack: #jezeli player znajduje sie w polu strzelanie to:

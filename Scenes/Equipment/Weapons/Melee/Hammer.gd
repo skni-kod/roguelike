@@ -6,8 +6,15 @@ var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas a
 export var attack_range = 15 #Zasięg ataku
 var timer #Stoper
 var damage
-var attack_speed = 0.0
 var a = 1
+
+var smoothing = 1
+
+var attack_speed = 0
+var swing_to = 0.4
+var paused = 0.9
+var swing_back = 2
+var animation_step = 0.02
 
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
@@ -21,11 +28,11 @@ func _physics_process(delta):
 	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
-			rotation = PI + mouse_position.angle() * 0.1
+			rotation = PI + mouse_position.angle() * smoothing
 		elif rotation > PI:
-			rotation = -PI + mouse_position.angle() * 0.1
+			rotation = -PI + mouse_position.angle() * smoothing
 		else:
-			rotation += mouse_position.angle() * 0.1
+			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.y = -1
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
@@ -45,15 +52,16 @@ func _on_Player_attacked():
 		timer.start()
 
 func _on_Timer_timeout():#Wykonuje się kiedy zejdzie cooldown ataku
-	attack_speed += 0.01
-	if attack_speed <= 0.15:
-		position += attack_vector * (0.01/0.15)
+	attack_speed += animation_step
+	if attack_speed <= swing_to:
+		position += attack_vector * (animation_step/swing_to)
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.rotation_degrees += -90 * (0.01/0.15)
+			$WeaponSprite.rotation_degrees += -90 * (animation_step/swing_to)
 		else:
-			$WeaponSprite.rotation_degrees += 90 * (0.01/0.15)
-		
-	elif attack_speed > 0.3:
+			$WeaponSprite.rotation_degrees += 90 * (animation_step/swing_to)
+	elif attack_speed < paused:
+		pass
+	elif attack_speed > swing_back:
 		position -= attack_vector
 		$WeaponSprite.rotation_degrees = 0
 		$AttackCollision.disabled = true

@@ -8,7 +8,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
-export var speed = 2 #wartośc szybkości bohatera
+export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 var base_health = 100 # bazowa ilość życia gracza
@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(20)}
+var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -67,9 +67,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 			ui_access_pslot2.texture = null
 			potion2_amount.text = ""
 			potions[2] = "Empty"
-	
-		
-	
+
 
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
@@ -77,7 +75,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
@@ -301,7 +299,7 @@ func movement(): #funkcja poruszania się
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	).normalized() # Określenie kierunku poruszania się
 	velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
-	velocity = move_and_collide(velocity) #wywołanie poruszania się
+	velocity = move_and_slide(velocity, Vector2.UP) #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
 		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"

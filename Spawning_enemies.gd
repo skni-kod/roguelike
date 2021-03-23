@@ -73,6 +73,8 @@ func _on_Node2D_body_entered(body):
 		else:
 			drzwi[3] = false
 		current_id = get_instance_id()
+		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0:
+			id_list.append(current_id)
 		if not current_id in id_list and not boss:
 			for i in range(0,5):
 				rand.randomize()

@@ -41,6 +41,13 @@ window/size/height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[importer_defaults]
+
+ogg_vorbis={
+"loop": true,
+"loop_offset": 0
+}
+
 [input]
 
 move_up={
