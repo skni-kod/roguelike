@@ -115,6 +115,7 @@ func step(direction):
 		n -= 1
 
 func _ready():
+	MusicController.stop_music()
 	generate()
 
 #func _physics_process(delta):
