@@ -13,6 +13,8 @@ var n = 0
 var szer = 512
 var dl = 288
 var gen = 0
+var oneDoor = 0
+var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn")
 var player = load("res://Scenes/Actors/Player.tscn")
 
@@ -59,7 +61,6 @@ func draw(map):
 	emit_signal("boss", furthestRoom[0])
 
 func generate():
-	var oneDoor = 0
 	map.append(Vector2(0,0))
 	rng.randomize()
 	gen = rng.randi_range(1,4)
@@ -79,8 +80,8 @@ func generate():
 			queue = []
 			position = Vector2.ZERO
 			n = 0
-			oneDoor = 0
 			generate()
+	oneDoor = 0
 	for room in map:
 		if not room == Vector2.ZERO:
 			var doors = 0
@@ -94,9 +95,10 @@ func generate():
 				doors += 1
 			if doors == 3:
 				oneDoor += 1
-	if oneDoor > 0:
+	if oneDoor > 0 and not drawn:
 		draw(map)
-	else:
+		drawn = true
+	elif not drawn:
 		map = []
 		queue = []
 		position = Vector2.ZERO

@@ -8,7 +8,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
-export var speed = 80 #wartośc szybkości bohatera
+export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 var base_health = 100 # bazowa ilość życia gracza
