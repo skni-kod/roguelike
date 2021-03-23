@@ -4,11 +4,11 @@ signal died(body)
 
 var player = null
 var move = Vector2.ZERO
-export var speed = 3
-export var dps = 10
+export var speed = 1.7
+export var dps = 8
 var right = 1
 var attack = false
-var max_hp = 50
+var max_hp = 42
 var hp:float = max_hp
 
 export var health = 100

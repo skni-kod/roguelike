@@ -78,7 +78,7 @@ func _on_Node2D_body_entered(body):
 		if not current_id in id_list and not boss:
 			for i in range(0,5):
 				rand.randomize()
-				var enemy = all_enemies[rand.randi_range(0,8)].instance()
+				var enemy = all_enemies[rand.randi_range(6,8)].instance()
 				rand.randomize()
 				enemy.position.x = rand.randf_range(-180,180)
 				rand.randomize()

@@ -1,0 +1,23 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Testowy workflow
+
+# Controls when the action will run. 
+on:
+    issues:
+        types: [assigned]
+    issue_comment:
+        types: [created]
+    pull_request:
+        types: [closed]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  create_branch:
+    runs-on: ubuntu-latest
+    name: Create Branch
+    steps:
+        - name: Create Issue Branch
+          uses: robvanderleek/create-issue-branch@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
