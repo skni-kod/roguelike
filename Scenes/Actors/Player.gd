@@ -126,7 +126,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			print(equipped)
 			if equipped != weaponToTake.WeaponName:
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
@@ -200,13 +199,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		#	statusEffect.healAmount = 50
 		#	statusEffect.healing = true
 		#	Potion_in_time -= 1
-		
-				
-			
-		print("Fullhp: ",potions_amount["100%Potion" ])
-		print("Halfhp: ",potions_amount["50%Potion" ])	
-		print("potek+20: ",potions_amount["20healthPotion" ])	
-		print("potek+60:",potions_amount["60healthPotion" ])		
 		UpdatePotions()
 
 	if weapons[2] != "Empty": 
