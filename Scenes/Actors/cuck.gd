@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 signal died(body)
 
+onready var statusEffect = get_node("../../../UI/StatusBar")
+
 var player = null
 var move = Vector2.ZERO
 export var speed = 1.7
@@ -55,6 +57,7 @@ func _on_Atak_body_exited(body):#jezeli player wyszedl z pola ataku (atak -> col
 	
 func _on_Timer_timeout():
 	if attack and health>0:
+		statusEffect.bleeding = true
 		player.take_dmg(dps) #wywolywana jest funkcja zabierania dmg playerowi
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")

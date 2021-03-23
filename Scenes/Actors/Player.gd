@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(10)}
+var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
 
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -75,7 +75,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd"))
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	

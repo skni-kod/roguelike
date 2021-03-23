@@ -103,6 +103,7 @@ shape = SubResource( 1 )
 
 [node name="wzrok" type="Area2D" parent="."]
 position = Vector2( 0.148651, 0 )
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wzrok"]
 position = Vector2( -0.604392, 1.46573 )
@@ -110,6 +111,7 @@ shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
 position = Vector2( 1.00227, 3.45223 )
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
 position = Vector2( 0.263953, -0.852127 )
