@@ -69,7 +69,7 @@ func fire():
 	bullet.position = get_global_position() + $Position2D.position
 	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
 	main.add_child(bullet)
-	$Timer.set_wait_time(0.5) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
+	$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
 
 func _on_Timer_timeout():
 	if player !=null and health>0 and attack: #jezeli player znajduje sie w polu strzelanie to:

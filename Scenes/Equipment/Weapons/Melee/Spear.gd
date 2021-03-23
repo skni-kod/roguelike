@@ -11,8 +11,9 @@ var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 
 var attack_speed = 0 #Zmienna służąca do animacji 
-var swing_to = 0.05
-var swing_back = 0.1
+var swing_to = 0.3
+var paused = 0.4
+var swing_back = 0.5
 var animation_step = 0.02
 
 func _physics_process(delta):
@@ -60,6 +61,8 @@ func _on_Timer_timeout():
 	attack_speed+=animation_step
 	if attack_speed<swing_to:
 		position += attack_vector*(animation_step/swing_to)
+	elif attack_speed<paused:
+		pass
 	elif attack_speed<swing_back:
 		position -= attack_vector*(animation_step/swing_back)
 	else:

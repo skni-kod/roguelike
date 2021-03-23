@@ -30,11 +30,11 @@ func _physics_process(delta):
 	if !attack: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
-			rotation = PI + mouse_position.angle() * 0.1
+			rotation = PI + mouse_position.angle() * smoothing
 		elif rotation > PI:
-			rotation = -PI + mouse_position.angle() * 0.1
+			rotation = -PI + mouse_position.angle() * smoothing
 		else:
-			rotation += mouse_position.angle() * 0.1
+			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.y = -0.8
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry

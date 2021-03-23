@@ -4,15 +4,15 @@ var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
 export var attack_range = 15 #Zasięg ataku
-var attack_speed = 0
 var timer #Stoper
 var damage
 var a = 1
 
 var smoothing = 1
 
+var attack_speed = 0
 var swing_to = 0.2
-var swing_back = 0.4
+var swing_back = 0.3
 var animation_step = 0.02
 
 func _physics_process(delta):

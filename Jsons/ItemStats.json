@@ -16,7 +16,7 @@
         },
         "Katana": {
             "attack": "25",
-            "spd": "0.3",
+            "spd": "0.4",
             "knc": "0",
             "range": "melee",
             "effect": "none"
@@ -29,8 +29,8 @@
             "effect": "none"
         },
         "Hammer": {
-            "attack": "20",
-            "spd": "0.4",
+            "attack": "30",
+            "spd": "0.3",
             "knc": "0",
             "range": "melee",
             "effect": "none"

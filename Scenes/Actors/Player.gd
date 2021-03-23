@@ -84,9 +84,9 @@ func _ready(): #po inicjacji bohatera
 	all_weapons = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
-		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
+		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/FMS.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
 		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
