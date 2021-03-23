@@ -10,7 +10,75 @@ func _ready():
 	var tiles = get_used_cells_by_id(0) #Pobiera wszystkie kafelki o id 0 użyte na mapie
 	var file = File.new() #Tworzy zmienną plik
 	file.open("res://Jsons/ItemStats.json", file.READ) #Otwiera plik i go wczytuje
-	var text = file.get_as_text() #Pobiera dane z pliku
+	var text = {
+	"Weapons": {
+		"Blade": {
+			"attack": "7.5",
+			"spd": "1",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Axe": {
+			"attack": "10",
+			"spd": "0.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Katana": {
+			"attack": "25",
+			"spd": "0.4",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Knife": {
+			"attack": "3",
+			"spd": "1.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Hammer": {
+			"attack": "30",
+			"spd": "0.3",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Spear": {
+			"attack": "15",
+			"spd": "0.75",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Fire Scepter": {
+			"attack": "10",
+			"spd": "1",
+			"knc": "0",
+			"range": "magic",
+			"effect": "none"
+		},
+		 "BloodSword": {
+			"attack": "20",
+			"spd": "0.6",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		}
+		,
+		 "FMS": {
+			"attack": "22",
+			"spd": "0.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		}
+		
+	}
+}
 	weapons = JSON.parse(text).result #Dane typu json trzeba sparsować na typ właściwy dla języka
 	file.close() #Zamknięcie połączenia pliku
 	weapons = weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
