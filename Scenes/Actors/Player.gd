@@ -68,7 +68,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 			potion2_amount.text = ""
 			potions[2] = "Empty"
 
-
+#siema
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
