@@ -100,10 +100,78 @@ func weapon():
 	var weapons #Zmienna przechowująca bronie pobrane z pliku .json
 	var file = File.new() #Tworzy zmienną plik
 	file.open("res://Jsons/ItemStats.json", file.READ) #Otwiera plik i go wczytuje
-	var text = file.get_as_text() #Pobiera dane z pliku
-	weapons = JSON.parse(text).result #Dane typu json trzeba sparsować na typ właściwy dla języka
+	var text = {
+	"Weapons": {
+		"Blade": {
+			"attack": "7.5",
+			"spd": "1",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Axe": {
+			"attack": "10",
+			"spd": "0.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Katana": {
+			"attack": "25",
+			"spd": "0.4",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Knife": {
+			"attack": "3",
+			"spd": "1.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Hammer": {
+			"attack": "30",
+			"spd": "0.3",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Spear": {
+			"attack": "15",
+			"spd": "0.75",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		},
+		"Fire Scepter": {
+			"attack": "10",
+			"spd": "1",
+			"knc": "0",
+			"range": "magic",
+			"effect": "none"
+		},
+		 "BloodSword": {
+			"attack": "20",
+			"spd": "0.6",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		}
+		,
+		 "FMS": {
+			"attack": "22",
+			"spd": "0.5",
+			"knc": "0",
+			"range": "melee",
+			"effect": "none"
+		}
+		
+	}
+} #Pobiera dane z pliku
+
 	file.close() #Zamknięcie połączenia pliku
-	weapons = weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
+	weapons = text["Weapons"] #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
@@ -127,7 +195,7 @@ func open(body):
 		ilosc_enemy -= 1
 	if ilosc_enemy == 0:
 		rand.randomize()
-		if rand.randf_range(0,100) <= 33:
+		if rand.randf_range(0,100) <= 100:
 			weapon()
 		if drzwi[3]:
 			tilemap.set_cell(6,8,12)

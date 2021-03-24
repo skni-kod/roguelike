@@ -22,6 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
+var all_weapons_script
 var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
 
@@ -89,6 +90,17 @@ func _ready(): #po inicjacji bohatera
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
+	}
+	all_weapons_script = {
+		"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
+		"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
+		"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
+		"Fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
+		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
+		"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
+		"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
+		"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
+		"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
 	}
 	weapons = {
 		1 : "Blade",
@@ -230,7 +242,7 @@ func change_weapon_slot(currentSlot):
 		w2slot_visibility.visible = true
 		w1slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[2])+'.gd')) #Tylko melee poki co ;/
+		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = second_weapon_stats['attack']
 	if currentSlot == 2:
@@ -238,7 +250,7 @@ func change_weapon_slot(currentSlot):
 		w1slot_visibility.visible = true
 		w2slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/Melee/'+str(weapons[1])+'.gd'))
+		$EquippedWeapon.set_script(all_weapons_script[weapons[1]])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = first_weapon_stats['attack']
 
@@ -263,7 +275,7 @@ func swap_weapon(slot,weaponOnGround):
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
+		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 		weaponOnGround.queue_free()
@@ -275,7 +287,7 @@ func swap_weapon(slot,weaponOnGround):
 		w2slot_visibility.visible = true
 		w1slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(load('res://Scenes/Equipment/Weapons/'+weaponOnGround.Stats['range']+'/'+weaponOnGround.WeaponName+'.gd'))
+		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
 		weaponOnGround.queue_free()
