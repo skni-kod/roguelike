@@ -40,9 +40,11 @@ export var fireball_dmg = 4.0
 export var waterball_dmg = 5.0
 
 func _ready():
+	$AnimationPlayer.play("Spawn")
 	health_bar = health_bar.instance()
 	UI.add_child(health_bar)
 	health_bar.value = health
+	
 
 func _physics_process(delta):
 	move = Vector2.ZERO
