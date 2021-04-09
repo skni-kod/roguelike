@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Actors/MageBoss/Summon.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 250.0
+
+[sub_resource type="ParticlesMaterial" id=2]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 10.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 720.0
+angle_random = 1.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 15.0
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 0.981818 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+resource_local_to_scene = true
+curve = SubResource( 4 )
+
+[sub_resource type="Animation" id=6]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Particles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:lifetime")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.2, 3.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D:process_material:scale_curve")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ null, SubResource( 5 ) ]
+}
+
+[node name="Summon" type="KinematicBody2D" groups=[
+"Enemy",
+]]
+collision_layer = 4
+script = ExtResource( 3 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 1 )]
+margin_left = -10.0406
+margin_top = -20.6594
+margin_right = -10.0406
+margin_bottom = -20.6594
+rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="Wzrok" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+shape = SubResource( 1 )
+
+[node name="FireTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 150
+lifetime = 0.2
+speed_scale = 3.0
+process_material = SubResource( 2 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Die = SubResource( 6 )
+[connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
+[connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
