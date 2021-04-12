@@ -136,12 +136,12 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			if equipped != weaponToTake.WeaponName:
+			if equipped != weaponToTake.WeaponName: #do zmiany
 				if weapons[2] == "Empty":
-					swap_weapon(2,weaponToTake)
+					swap_weapon(2,weaponToTake) #jezeli gracz ma 1 bronke to podniesiona bronka jest na drugim slocie
 				else:
 					if current_weapon != null:
-						swap_weapon(current_weapon,weaponToTake)
+						swap_weapon(current_weapon,weaponToTake) #zamiana bronki lezacej z uzywanej
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
@@ -212,18 +212,18 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		UpdatePotions()
 
 	if weapons[2] != "Empty": 
-		if Input.is_action_just_pressed("change_weapon_slot"):
-			current_weapon = check_current_weapon()
+		if Input.is_action_just_pressed("change_weapon_slot"): #jezeli drugi slot nie jest pusty
+			current_weapon = check_current_weapon() #funkcja sprawdza ktora bron ma gracz w dloni
 			change_weapon_slot(current_weapon)
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
 			
-func check_current_weapon():
-	if weapons[2] == "Empty":
+func check_current_weapon(): #funkcja sprawdza aktualnie uzywana bron gracza porownujac tekstury
+	if weapons[2] == "Empty": #jezeli drugi slot jest pusty to zawsze zwracany jest slot nr 1
 		return 1
 	else:
-		if all_weapons[weapons[1]] == actualweapon_access.texture:
+		if all_weapons[weapons[1]] == actualweapon_access.texture: 
 			return 1
 		if all_weapons[weapons[2]] == actualweapon_access.texture:
 			return 2
@@ -238,8 +238,8 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 
 func change_weapon_slot(currentSlot):
 	if currentSlot == 1:
-		equipped = weapons[2]
-		w2slot_visibility.visible = true
+		equipped = weapons[2] 
+		w2slot_visibility.visible = true #zielone tlo na ui pojawia sie pod aktualnie uzywana bronka
 		w1slot_visibility.visible = false
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
@@ -256,38 +256,38 @@ func change_weapon_slot(currentSlot):
 
 
 func swap_weapon(slot,weaponOnGround):
-	if weapons[2] != "Empty":
-		if slot == 1:
-			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
-			first_weapon_stats = weaponOnGround.Stats
-			w1slot_visibility.visible = true
+	if weapons[2] != "Empty": #jezeli gracz posiada 2 bronki
+		if slot == 1: #sprawdzany jest aktualnie uzywany slot
+			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName] #tekstura broni na ui zmienia sie na teksture podniesionej broni
+			first_weapon_stats = weaponOnGround.Stats #zmienna do zmiany broni za pomoca guzika "Q"
+			w1slot_visibility.visible = true 
 			w2slot_visibility.visible = false
 		elif slot == 2:
 			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
 			w1slot_visibility.visible = false
-		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
-		weaponUsed = weaponUsed.instance()
-		weaponUsed.WeaponName = str(weapons[slot])
-		weaponUsed.position = weaponOnGround.global_position
-		level.add_child(weaponUsed)
-		weapons[slot] = weaponOnGround.WeaponName
+		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn") #wczytanie scenki bronki
+		weaponUsed = weaponUsed.instance() #stworzenie instancji, aby aktualnie uzywana bronka byla na ziemi a jej miejsce zastapila
+		weaponUsed.WeaponName = str(weapons[slot]) #przypisanie nazwy broni do instancji
+		weaponUsed.position = weaponOnGround.global_position #bronka, ktora mamy w rece i zaraz ja zamienimy pobiera pozycje bronki ktora aktualnie na ziemi lezy
+		level.add_child(weaponUsed) #"odlozenie bronki" aktualnie uzywanej
+		weapons[slot] = weaponOnGround.WeaponName #przypisanie bronki podniesionej z ziemi do aktualnie uzywanego slota
 		equipped = weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
 		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
-		$EquippedWeapon.timer = $EquippedWeapon/Timer
+		$EquippedWeapon.timer = $EquippedWeapon/Timer #przypisanie wlasciwosci bronki damage, speed itd
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 		weaponOnGround.queue_free()
 	else:
-		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
+		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName] #drugi slot jest pusty, wiec bron na ziemi wskakuje do drugiego slota
 		weapons[2] = weaponOnGround.WeaponName
-		equipped = weapons[2]
+		equipped = weapons[2] 
 		second_weapon_stats = weaponOnGround.Stats
-		w2slot_visibility.visible = true
-		w1slot_visibility.visible = false
+		w2slot_visibility.visible = true #zielone kwadraty w UI pod bronka wskazuja na aktualnie uzywana bron
+		w1slot_visibility.visible = false 
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
+		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName]) #przypisanie wlasciwosci bronki, szybkosc uderzania, dmg
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
 		weaponOnGround.queue_free()
