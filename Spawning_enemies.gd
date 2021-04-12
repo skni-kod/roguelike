@@ -3,6 +3,7 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
+onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 onready var tilemap = get_node("../TileMap")
 var rand = RandomNumberGenerator.new()
 var all_enemies = {
@@ -97,81 +98,8 @@ func _on_Node2D_body_entered(body):
 
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
-	var weapons #Zmienna przechowująca bronie pobrane z pliku .json
-	var file = File.new() #Tworzy zmienną plik
-	file.open("res://Jsons/ItemStats.json", file.READ) #Otwiera plik i go wczytuje
-	var text = {
-	"Weapons": {
-		"Blade": {
-			"attack": "7.5",
-			"spd": "1",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Axe": {
-			"attack": "10",
-			"spd": "0.5",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Katana": {
-			"attack": "25",
-			"spd": "0.4",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Knife": {
-			"attack": "3",
-			"spd": "1.5",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Hammer": {
-			"attack": "30",
-			"spd": "0.3",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Spear": {
-			"attack": "15",
-			"spd": "0.75",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		},
-		"Fire Scepter": {
-			"attack": "10",
-			"spd": "1",
-			"knc": "0",
-			"range": "magic",
-			"effect": "none"
-		},
-		 "BloodSword": {
-			"attack": "20",
-			"spd": "0.6",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		}
-		,
-		 "FMS": {
-			"attack": "22",
-			"spd": "0.5",
-			"knc": "0",
-			"range": "melee",
-			"effect": "none"
-		}
-		
-	}
-} #Pobiera dane z pliku
-
-	file.close() #Zamknięcie połączenia pliku
-	weapons = text["Weapons"] #Przypisanie wszystkich broni do zmiennej
+	var weapons #Zmienna przechowująca bronie
+	weapons = all_weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()

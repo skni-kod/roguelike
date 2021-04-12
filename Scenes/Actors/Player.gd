@@ -22,10 +22,10 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var all_weapons_script
 var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
 
+onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
@@ -90,17 +90,6 @@ func _ready(): #po inicjacji bohatera
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
-	}
-	all_weapons_script = {
-		"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
-		"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
-		"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-		"Fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
-		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
-		"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
-		"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
-		"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
-		"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
 	}
 	weapons = {
 		1 : "Blade",
