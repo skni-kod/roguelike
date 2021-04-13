@@ -4,23 +4,26 @@ extends KinematicBody2D
 const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 const SPEED = 100 # szybkość fireballa
 
-signal died(body)
+signal died(body) # sygnał, czy Lil Devil umarł
 
-var player = null # shit i atrybuty obiektu i zmienne przydatne potem
+export var speed = 0.5 # prędkość własna Lil Devila
+
+# deklaracje pomocnych zmiennych
+var player = null 
 var move = Vector2.ZERO
-export var speed = 0.5
-var right = 1
+var right = 1 # zwrot prawo/lewo sprite'a
 var attack = false
-export var max_hp = 30
+export var max_hp = 30 # wartość życia Lil Devila
 var hp:float = max_hp
 
-export var health = 100
-var drop = {"minCoins":0,"maxCoins":5}
-var rng = RandomNumberGenerator.new()
+export var health = 100 # procentowa wartość życia do healthbara
+onready var health_bar = $HealthBar # deklaracja odwołania do node $HealthBar
 
-onready var health_bar = $HealthBar
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
-var randomPosition
+var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+
+var drop = {"minCoins":0,"maxCoins":5} # zakres minimalnej i maksymalnej ilości pieniędzy
+var randomPosition # zmienna losowej pozycji dla coinsów
+var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 
  
 func _ready():
@@ -33,14 +36,13 @@ func _physics_process(delta):
 	if player != null and health>0:
 		move = -global_position.direction_to(player.global_position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
 		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
-			$Sprites.scale.x = -0.5
+			$Sprites.scale.x = -0.5 # sprite'y zostają obrócone
 		else:
-			$Sprites.scale.x = 0.5
-		$BodyAnimationPlayer.play("Walk")
+			$Sprites.scale.x = 0.5 # sprite'y zostają obrócone
+		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	elif !attack and health>0:
-		#$BodyAnimationPlayer.play("Idle")
-		$HeadAnimationPlayer.play("Idle")
-	move_and_collide(move)
+		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
+	move_and_collide(move) # poruszaj się o wektor move
 
 
 func _on_Wzrok_body_entered(body):
@@ -72,7 +74,7 @@ func _on_Timer_timeout():
 
 func shoot():
 	var fireball = FIREBALL_SCENE.instance() # stworzenie nowej instancji fireballa
-	var main = get_tree().get_root().find_node("Main", true, false) 
+	var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main  
 	fireball.position = self.global_position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
 	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # wprowadzam player_Pos do fireballa jako pozycję playera
 	main.add_child(fireball) # ustawiam fireballa jako child maina
@@ -80,6 +82,7 @@ func shoot():
 
 func get_dmg(dmg):
 	if health>0:
+		# Knockback
 #		if player.position.x-self.position.x < 0:
 #			self.position.x += 10
 #		else:
@@ -87,29 +90,33 @@ func get_dmg(dmg):
 			
 		hp -= dmg
 		health = hp/max_hp*100
+		# Animacje obrażeń zostają aktywowane na sprite Body i Head
 		$BodyAnimationPlayer.play("Hurt")
 		$HeadAnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		
 	if health<=0:
-		$CollisionShape2D.set_deferred("disabled",true)
+		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
+		# Animacje śmierci zostają aktywowane na sprite'ach
 		$BodyAnimationPlayer.play("Die")
 		$HeadAnimationPlayer.play("Die")
+		# Czekanie aż animacje zostaną zakończone
 		yield($BodyAnimationPlayer,"animation_finished")
 		yield($HeadAnimationPlayer,"animation_finished")
-		var level = get_tree().get_root().find_node("Main", true, false)
-		rng.randomize()
-		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
-		for i in range(0,coins):
-			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
-			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
-			coin = coin.instance()
-			coin.position = randomPosition
-			level.add_child(coin)
-		emit_signal("died", self)
-		queue_free()
+		var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
+		rng.randomize() # losowanie generatora liczb
+		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
+		for i in range(0,coins): # pętla tworząca monety
+			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
+			var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
+			coin = coin.instance() # coin staje się nową instacją coina
+			coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
+			level.add_child(coin) # coin jest dzieckiem level
+		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
+		queue_free() # instancja Lil Devila zostaje usunięta
 		
+	# floating_dmg zostaje stworzony poprzed dodanie nowej instancji sceny floating_dmg jako zmienna text
 	var text = floating_dmg.instance()
 	text.amount = dmg
 	text.type = "Damage"
