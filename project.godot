@@ -8,20 +8,9 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node2D",
-"class": "Random",
-"language": "GDScript",
-"path": "res://Scenes/Levels/Random.gd"
-}, {
-"base": "Node",
-"class": "Walker",
-"language": "GDScript",
-"path": "res://Scenes/Levels/Walker.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"Random": "",
-"Walker": ""
+
 }
 
 [application]
