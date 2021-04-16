@@ -26,11 +26,18 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
+var knockbackResistance = 0.5
+var weaponKnockback = 2 # knockback broni (1 - bazowy, <1 - mniejszy, >1 - większy, 2.0 maks, powyżej się buguje)
+var knockback = false
+var knockbackDirection = Vector2.ZERO
+var knockTimerSwitch = 0
+
 # pozycje do celowania i strzelania
 var hit_pos
 var target
 var laser_color = Color(1.0, 0, 0, 0.1)
 var level
+var target_pos
  
 func _ready():
 	health_bar.on_health_updated(health) # wczytuję życie do paska życia
@@ -38,10 +45,12 @@ func _ready():
 	level = get_tree().get_root().find_node("Main", true, false)
 	
 func _physics_process(delta):
+	print(knockbackDirection, knockback)
 	move = Vector2.ZERO
 	if target != null and delta == 0:
 		aim() # strzał w czasie, gdy jakiś target został wyznaczony
 	if player != null and health>0: # gdy BD żyje oraz w jego zasięgu jest gracz
+		target_pos = player.global_position
 		$Sprite.scale.x = right
 		move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
@@ -50,9 +59,12 @@ func _physics_process(delta):
 		else:
 			right = -1
 			$AnimationPlayer.play("Walk") 
+		if knockback:
+			get_knocked_back(delta)
 	elif !attack and health>0: # gdy nie atakuje, a żyje, to wykojune animację Idle
 		$AnimationPlayer.play("Idle")
-	move_and_collide(move) # ruch o Vector2D move
+	if !knockback:
+		move_and_collide(move) # ruch o Vector2D move
 	
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player":
@@ -112,11 +124,16 @@ func _on_Cooldown_timeout():
 		
 		
 func get_dmg(dmg):
+	knockback = true
+	knockbackDirection = global_position.direction_to(target_pos).normalized()
+	var knockTime = Timer.new()
+	if knockTimerSwitch:
+#		knockTimerSwitch = 1
+		knockTime.connect("timeout",self,"_on_knockTime_timeout") 
+		knockTime.wait_time = 1.0
+		add_child(knockTime)
+		knockTime.start()
 	if health>0:
-#		if player.position.x-self.position.x < 0:
-#			self.position.x += 10
-#		else:
-#			self.position.x -= 10
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")
@@ -169,6 +186,17 @@ func random_potion():
 		tmp = tmp.instance()
 		tmp.position = global_position
 		level.add_child(tmp)
-		
 
 
+func get_knocked_back(delta):
+	move_and_slide(-Vector2(knockbackDirection*(1/knockbackResistance)*SPEED*40*delta*weaponKnockback))
+	move = Vector2.ZERO
+	knockbackDirection *= weaponKnockback/2 - 0.05
+	if abs(knockbackDirection.x) < 0.05 and abs(knockbackDirection.y) < 0.05:
+		knockback = false
+
+
+func _on_knockTime_timeout():
+	knockback = false
+	knockTimerSwitch = 0
+	move_and_slide(Vector2.ZERO)
