@@ -41,7 +41,14 @@ func _physics_process(delta):
 		else:
 			$WeaponSprite.scale.y = 1
 			$WeaponSprite.rotation_degrees=90 #Obróć broń przodem do przeciwnika
-			
+
+
+	if Input.is_action_just_pressed("use_ability_1"):
+		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
+	if Input.is_action_just_pressed("use_ability_2"):
+		var palceholder20
+		
+	
 func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281
@@ -71,7 +78,7 @@ func _on_Timer_timeout():
 		attack_speed=0		
 		timer.stop()
 		reset_pivot()
-
+		
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
 
