@@ -16,56 +16,56 @@ var all_weapons = {
 		"Blade": {
 			"attack": "7.5",
 			"spd": "1",
-			"knc": "0",
+			"knc": float(0.35),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Axe": {
 			"attack": "10",
 			"spd": "0.5",
-			"knc": "0",
+			"knc": float(0.5),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Katana": {
 			"attack": "25",
 			"spd": "0.4",
-			"knc": "0",
+			"knc": float(0.1),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Knife": {
 			"attack": "3",
 			"spd": "1.5",
-			"knc": "0",
+			"knc": float(0.0),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Hammer": {
 			"attack": "30",
 			"spd": "0.3",
-			"knc": "0",
+			"knc": float(1.0),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Spear": {
 			"attack": "15",
 			"spd": "0.75",
-			"knc": "0",
+			"knc": float(0.25),
 			"range": "melee",
 			"effect": "none"
 		},
 		"Fire Scepter": {
 			"attack": "10",
 			"spd": "1",
-			"knc": "0",
+			"knc": float(0.75),
 			"range": "magic",
 			"effect": "none"
 		},
 		 "BloodSword": {
 			"attack": "20",
 			"spd": "0.6",
-			"knc": "0",
+			"knc": float(0.3),
 			"range": "melee",
 			"effect": "none"
 		}
@@ -73,7 +73,7 @@ var all_weapons = {
 		 "FMS": {
 			"attack": "22",
 			"spd": "0.5",
-			"knc": "0",
+			"knc": float(0.5),
 			"range": "melee",
 			"effect": "none"
 		}

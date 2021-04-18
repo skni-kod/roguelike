@@ -6,6 +6,7 @@ var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas a
 export var attack_range = 15 #Zasięg ataku
 var timer #Stoper
 var damage
+var weaponKnockback
 var a = 1
 
 var smoothing = 1
@@ -73,4 +74,4 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
-		body.get_dmg(damage)
+		body.get_dmg(damage, weaponKnockback)

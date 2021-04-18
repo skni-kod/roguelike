@@ -6,6 +6,7 @@ var attack_vector = Vector2.ZERO
 export var attack_range = 15
 var timer #Cooldown pomiędzy atakami
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
+var weaponKnockback
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 
 var smoothing = 1
@@ -77,4 +78,4 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
-		body.get_dmg(damage)
+		body.get_dmg(damage, weaponKnockback)

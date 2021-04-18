@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(7.5)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.35)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -78,6 +78,7 @@ func _ready(): #po inicjacji bohatera
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
 	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
+	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
@@ -234,6 +235,7 @@ func change_weapon_slot(currentSlot):
 		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = second_weapon_stats['attack']
+		$EquippedWeapon.weaponKnockback = second_weapon_stats["knc"]
 	if currentSlot == 2:
 		equipped = weapons[1]
 		w1slot_visibility.visible = true
@@ -242,6 +244,7 @@ func change_weapon_slot(currentSlot):
 		$EquippedWeapon.set_script(all_weapons_script[weapons[1]])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = first_weapon_stats['attack']
+		$EquippedWeapon.weaponKnockback = first_weapon_stats["knc"]
 
 
 func swap_weapon(slot,weaponOnGround):
@@ -267,6 +270,7 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
+		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
 	else:
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
@@ -279,6 +283,7 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
+		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats['knc'])
 		weaponOnGround.queue_free()
 
 func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów

@@ -28,7 +28,6 @@ var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losow
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
-var weaponKnockback = 1.0
 # === ===================== === #
  
 func _ready():
@@ -97,11 +96,11 @@ func shoot():
 	main.add_child(fireball) # ustawiam fireballa jako child maina
 
 
-func get_dmg(dmg):
+func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		
 		# ======= KNOCKBACK ======= #
-		knockback = -global_position.direction_to(player.global_position)*100*(weaponKnockback+1) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
