@@ -25,6 +25,11 @@ var drop = {"minCoins":0,"maxCoins":5} # zakres minimalnej i maksymalnej ilości
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 
+# === ZMIENNE DO KNOCKBACKU === #
+var knockback = Vector2.ZERO
+var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var weaponKnockback = 1.0
+# === ===================== === #
  
 func _ready():
 	health_bar.on_health_updated(health)
@@ -34,7 +39,12 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	if player != null and health>0:
-		move = -global_position.direction_to(player.global_position) * speed # poruszanie się w stronę odwrotną od playera, uciekanie od niego (dlatego -speed)
+		# === WEKTORY MOVE I KNOCKBACK === #
+		if knockback == Vector2.ZERO:
+			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		else:
+			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+		# === ======================== === #
 		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -0.5 # sprite'y zostają obrócone
 		else:
@@ -42,7 +52,14 @@ func _physics_process(delta):
 		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	elif !attack and health>0:
 		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
-	move_and_collide(move) # poruszaj się o wektor move
+	
+	# === PORUSZANIE SIĘ I KNOCKBACK === #
+	if knockback == Vector2.ZERO:
+		move_and_collide(move) # ruch o Vector2D move
+	elif knockback != Vector2.ZERO and health > 0:
+		knockback = move_and_slide(knockback)
+		knockback *= 0.95
+	# === ========================== === #
 
 
 func _on_Wzrok_body_entered(body):
@@ -82,11 +99,14 @@ func shoot():
 
 func get_dmg(dmg):
 	if health>0:
-		# Knockback
-#		if player.position.x-self.position.x < 0:
-#			self.position.x += 10
-#		else:
-#			self.position.x -= 10
+		
+		# ======= KNOCKBACK ======= #
+		knockback = -global_position.direction_to(player.global_position)*100*(weaponKnockback+1) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		if knockbackResistance != 0:
+			knockback /= knockbackResistance
+		elif knockbackResistance <= 0.6:
+			knockback /= 0.6
+		# ======= ========= ======= #
 			
 		hp -= dmg
 		health = hp/max_hp*100
