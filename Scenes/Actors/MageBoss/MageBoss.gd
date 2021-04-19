@@ -1,43 +1,36 @@
 # MageBoss.gd
 extends KinematicBody2D
-#MageBoss
+#MageBoss - glowny boss, aktualnie zywiolowa kula wokol ktorej kreca sie inne kule
 
-signal died(body)
+signal died(body)  #Deklaracja sygnalu smierci
 
-var player = null #Zmienna przechowująca węzeł gracza
-var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
-export var speed = 0.15 #Zmienna przechowująca szybkość poruszania
-var right = 1 #Czy MageBoss jest obrócony w prawo
-export var max_hp = 500 #Zmienna definiująca ilość życia
-var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
-var alive = true
-onready var main := get_tree().get_root().find_node("Main", true, false)
-onready var UI := get_tree().get_root().find_node("UI", true, false)
-onready var statusEffect = get_node("../../../UI/StatusBar")
-
-var health = 100 #Pozostałe życie w procentach
-var drop = {"minCoins":40,"maxCoins":50} #Przedział definiujący ile MageBoss może zostawić po sobie coinów
-var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
-
-var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
-var randomPosition
-
-export var angular_velocity = 1.0
-export var change_speed_WF = 0.3
-export var change_speed_EW = 1
-var outer_rotation1 = false
-var change_rotation1 = true
-var outer_rotation2 = false
-var change_rotation2 = true
-
-var phase = 0
-var phase_active = false
-
-export var earthball_dmg = 8.0
-export var windball_dmg = 6.0
-export var fireball_dmg = 4.0
-export var waterball_dmg = 5.0
+export var speed = 0.15  #Zmienna definujaca szybkosc poruszania
+export var max_hp = 500  #Zmienna definiujaca ilosc zycia
+export var angular_velocity = 1.0  #Zmienna definujaca predkosc pociskow (katowa)
+export var change_speed_WF = 0.3  #Zmienna definujaca predkosc do srodka/zewnatrz pociksu wodnego i ognistego
+export var change_speed_EW = 1  #Zmienna definujaca predkosc do srodka/zewnatrz pociksu ziemnego i powietrznego
+export var earthball_dmg = 8.0  #Zmienna definiujaca obrazenia pocisku ziemnego
+export var windball_dmg = 6.0  #Zmienna definiujaca obrazenia pocisku powietrznego
+export var fireball_dmg = 4.0  #Zmienna definiujaca obrazenia pocisku ognistego
+export var waterball_dmg = 5.0  #Zmienna definiujaca obrazenia pocisku wodnego
+var player = null  #Zmienna przechowujaca wezel gracza
+var move = Vector2.ZERO  #Zmienna inicjujaca wektor poruszania
+var hp: float = max_hp  #Zmienna przechowujaca ilosc pozostalego zycia
+var health = 100  #Pozostale zycie w procentach
+var drop = {"minCoins": 40, "maxCoins": 50}  #Przedzial definicujacy ile boos zostawia po sobie monet
+var rng = RandomNumberGenerator.new()  #Inicjalizacja obiektu losowania
+onready var main := get_tree().get_root().find_node("Main", true, false)  #Zmienna przechowujaca wezel main
+onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
+onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false)  #Zmienna przechowujaca wezel StatusBar
+var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
+var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
+var randomPosition = Vector2.ZERO  #Zmienna inicjujaca pozycje monet
+var outer_rotation_WF = false  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa na zewnetrznej orbicie
+var change_rotation_WF = true  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa w trakcie zmiany swoich orbit
+var outer_rotation_EW = false  #Zmienna przechowuje informacje o tym, czy kule ziemna i powietrzna sa na zewnetrznej orbicie
+var change_rotation_EW = true  #Zmienna przechowuje informacje o tym, czy kule ziemna i powietrzna sa w trakcie zmiany swoich orbit
+var phase = 0  #Zmienna przechowuje informacje o tym, w ktorej fazie aktualnie znajduje sie boss (lub znajdowal sie ostatnio)
+var phase_active = false  #Zmienna przechowuje informacje o tym, czy faza bossa jest jeszcze aktywna
 
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
@@ -46,13 +39,13 @@ var projectileKnockback = 1
 # === ===================== === #
 
 func _ready():
-	$AnimationPlayer.play("Spawn")
+	#Dodanie paska zycia bossa
 	health_bar = health_bar.instance()
 	UI.add_child(health_bar)
 	health_bar.value = health
-	
 
 func _physics_process(delta):
+	#Ruch bossa
 	move = Vector2.ZERO
 	if alive:
 		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
@@ -74,31 +67,30 @@ func _physics_process(delta):
 		# === ========================== === #
 		rotate_water_fire()
 		rotate_earth_wind()
-		control_phases()
-		$ShieldCenter.rotate(0.5)
-		if phase_active == false:
-			$ShieldCenter/Shield.emitting = false
+		control_phases()  #Kontroluj aktywacje faz bossa
+		if phase_active == true:  #Wykonuj animacje tarczy, jesli boss jest w trakcie fazy
+			$ShieldCenter.rotate(0.5)
 
-func _on_Wzrok_body_entered(body):
-	if body != self and body.name == "Player": #Jeśli gracz wejdzie w pole widzenia to przypisz jego węzeł do zmiennej
+func _on_Wzrok_body_entered(body):  #Jesli gracz wejdzie w pole widzenia, przypisz jego wezel do zmiennej
+	if body.name == "Player":
 		player = body
 
-func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": #Jeżeli gracz wyjdzie z pola widzenia to zmienną player ustaw na null
+func _on_Wzrok_body_exited(body):  #Jesli gracz wyjdzie z pola widzenia, ustaw zmienna na null
+	if body.name == "Player":
 		player = null
 
-func _on_MissilesTimer_timeout():
-	change_rotation1 = true
-	
-func _on_EarthWindTimer_timeout():
-	change_rotation2 = true
-	
-func _on_Fireball_body_entered(body):
+func _on_WaterFireTimer_timeout():  #Zmieniaj orbity kul wodnej i ognistej co czas
+	change_rotation_WF = true
+
+func _on_EarthWindTimer_timeout():  #Zmieniaj orbity kul ziemnej i powietrznej co czas
+	change_rotation_EW = true
+
+func _on_Fireball_body_entered(body):  #Jesli gracz wejdzie w ognista kule
 	if body.name == "Player":
 		player.take_dmg(fireball_dmg, projectileKnockback, self.global_position)
 		statusEffect.burning = true
 
-func _on_Waterball_body_entered(body):
+func _on_Waterball_body_entered(body):  #Jesli gracz wejdzie w wodna kule
 	if body.name == "Player":
 		player.take_dmg(waterball_dmg, projectileKnockback, self.global_position)
 		statusEffect.freezing = true
@@ -108,33 +100,17 @@ func _on_WindBall_body_entered(body):
 		player.take_dmg(windball_dmg, projectileKnockback, self.global_position)
 		statusEffect.weakness = true
 
-func _on_EarthBall_body_entered(body):
+func _on_EarthBall_body_entered(body):  #Jesli gracz wejdzie w ziemna kule
 	if body.name == "Player":
 		player.take_dmg(earthball_dmg, projectileKnockback, self.global_position)
 
-func _on_PhaseTimer_timeout():
-	if phase == 1:
-		var summon1 = load("res://Scenes/Actors/MageBoss/MageBossSummon1.tscn")
-		summon1 = summon1.instance()
-		main.add_child(summon1)
-		summon1.position = self.global_position
-	elif phase == 2:
-		var summon2 = load("res://Scenes/Actors/MageBoss/MageBossSummon2.tscn")
-		summon2 = summon2.instance()
-		main.add_child(summon2)
-		summon2.position = self.global_position
-	elif phase == 3:
-		var summon3 = load("res://Scenes/Actors/MageBoss/MageBossSummon3.tscn")
-		summon3 = summon3.instance()
-		main.add_child(summon3)
-		summon3.position = self.global_position
-	elif phase == 4:
-		var summon4 = load("res://Scenes/Actors/MageBoss/MageBossSummon4.tscn")
-		summon4 = summon4.instance()
-		main.add_child(summon4)
-		summon4.position = self.global_position
-		
-func _on_FireTimer_timeout():
+func _on_PhaseTimer_timeout():  #Po rozpoczeciu fazy i odpowiednim czasie stworz summona
+	var summon = load("res://Scenes/Actors/MageBoss/Summon.tscn")
+	summon = summon.instance()
+	main.add_child(summon)
+	summon.position = self.global_position
+
+func _on_FireTimer_timeout():  #Strzelaj co okreslony czas podczas fazy
 	fire()
 	
 func get_dmg(dmg, weaponKnockback):
@@ -162,122 +138,119 @@ func get_dmg(dmg, weaponKnockback):
 			alive = false
 			$WaterFireCenter.queue_free()
 			$EarthWindCenter.queue_free()
+			#Rozpocznij animacje smierci
 			$AnimationPlayer.play("Die")
-			yield($AnimationPlayer,"animation_finished")
-			#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
+			yield($AnimationPlayer, "animation_finished")
+			#Wyrzuc monety po zakonczeniu animacji
 			var level = get_tree().get_root().find_node("Main", true, false)
 			rng.randomize()
 			var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
-			for i in range(0,coins):
-				randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
+			for i in range(0, coins):
+				randomPosition = Vector2(rng.randf_range(self.global_position.x - 10, self.global_position.x + 10), rng.randf_range(self.global_position.y - 10, self.global_position.y + 10))
 				var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 				coin = coin.instance()
 				coin.position = randomPosition
 				level.add_child(coin)
-				health_bar.queue_free()
+			health_bar.queue_free()  #Usun pasek zycia bossa z UI
 			emit_signal("died", self)
-			queue_free() #Usuń węzeł MageBoss
-		
-func rotate_water_fire():
-	var radius = $WaterFireCenter/Fireball.global_position.distance_to($WaterFireCenter.global_position)
-	var angle = angular_velocity/radius
-	$WaterFireCenter.rotate(angle)
+			queue_free()  #Usun caly wezel bossa
+
+func rotate_water_fire():  #Obracaj kule wodna i ognista
+	var radius = $WaterFireCenter/Fireball.global_position.distance_to($WaterFireCenter.global_position)  #Oblicz promien orbity
+	var angle = angular_velocity / radius  #Oblicz kat o jaki bedzie obracana kula wzgledem bossa
+	$WaterFireCenter.rotate(angle)  #Obroc kule o ten kat wzgledem bossa
 	for missile in $WaterFireCenter.get_children():
-		missile.rotate(0.1)
-		if outer_rotation1 == false && change_rotation1 == true:
+		missile.rotate(0.1)  #Obroc kule wzgledem wlasnej osi
+		#Jesli kule powinny zmienic swoje orbity i sa na orbicie zewnetrznej
+		if outer_rotation_WF == true && change_rotation_WF == true:
+			#Zmieniaj ich pozycje w kierunku bossa az do 30 jednostek odleglosci od bossa
 			if missile.global_position.distance_to($WaterFireCenter.global_position) > 30:
 				missile.global_position += missile.global_position.direction_to($WaterFireCenter.global_position) * change_speed_WF
+			#W przeciwnym wypadku zakoncz zmiane pozycji
 			else:
-				outer_rotation1 = true
-				change_rotation1 = false
-				$MissilesTimer.start()
-		elif change_rotation1 == true:
+				outer_rotation_WF = false
+				change_rotation_WF = false
+				$WaterFireTimer.start()
+		#Jesli kule powinny zmienic swoje orbity i sa na orbicie wewnetrznej
+		elif change_rotation_WF == true:
+			#Zmieniaj ich pozycje w kierunku przeciwnym do bossa az do 60 jednostek odleglosci od bossa
 			if missile.global_position.distance_to($WaterFireCenter.global_position) < 60:
 				missile.global_position -= missile.global_position.direction_to($WaterFireCenter.global_position) * change_speed_WF
+			#W przeciwnym wypadku zakoncz zmiane pozycji
 			else:
-				outer_rotation1 = false
-				change_rotation1 = false
-				$MissilesTimer.start()
+				outer_rotation_WF = true
+				change_rotation_WF = false
+				$WaterFireTimer.start()
 
-func rotate_earth_wind():
-	var radius = $EarthWindCenter/WindBall.global_position.distance_to($EarthWindCenter.global_position)
-	var angle = angular_velocity/radius
-	$EarthWindCenter.rotate(-angle)
+func rotate_earth_wind():  #Obracaj kule ziemna i powietrzna
+	var radius = $EarthWindCenter/WindBall.global_position.distance_to($EarthWindCenter.global_position)  #Oblicz promien orbity
+	var angle = angular_velocity / radius  #Oblicz kat o jaki bedzie obracana kula wzgledem bossa
+	$EarthWindCenter.rotate(-angle)  #Obroc kule o ten kat wzgledem bossa
 	for missile in $EarthWindCenter.get_children():
-		missile.rotate(0.1)
-		if outer_rotation2 == false && change_rotation2 == true:
+		missile.rotate(0.1)  #Obroc kule wzgledem wlasnej osi
+		#Jesli kule powinny zmienic swoje orbity i sa na orbicie zewnetrznej
+		if outer_rotation_EW == true && change_rotation_EW == true:
+			#Zmieniaj ich pozycje w kierunku bossa az do 40 jednostek odleglosci od bossa
 			if missile.global_position.distance_to($EarthWindCenter.global_position) > 40:
 				missile.global_position += missile.global_position.direction_to($EarthWindCenter.global_position) * change_speed_EW
+			#W przeciwnym wypadku zakoncz zmiane pozycji
 			else:
-				outer_rotation2 = true
-				change_rotation2 = false
+				outer_rotation_EW = false
+				change_rotation_EW = false
 				$EarthWindTimer.start()
-		elif change_rotation2 == true:
+		#Jesli kule powinny zmienic swoje orbity i sa na orbicie wewnetrznej
+		elif change_rotation_EW == true:
+			#Zmieniaj ich pozycje w kierunku przeciwnym do bossa az do 100 jednostek odleglosci od bossa
 			if missile.global_position.distance_to($EarthWindCenter.global_position) < 100:
 				missile.global_position -= missile.global_position.direction_to($EarthWindCenter.global_position) * change_speed_EW
+			#W przeciwnym wypadku zakoncz zmiane pozycji
 			else:
-				outer_rotation2 = false
-				change_rotation2 = false
+				outer_rotation_EW = true
+				change_rotation_EW = false
 				$EarthWindTimer.start()
 
-func control_phases():
+func control_phases():  #Kontroluj fazy bossa
+	#Jesli boss ma mniej niz 80 zycia i jego ostatnia faza to 0 i zadna faza nie jest aktywna, rozpocznij 1 faze
 	if health < 80 and phase == 0 and phase_active == false:
 		phase = 1
 		phase_active = true
-		phase1_start()
+		phase_start()
+	#Jesli boss ma mniej niz 60 zycia i jego ostatnia faza to 1 i zadna faza nie jest aktywna, rozpocznij 2 faze
 	elif health < 60 and phase == 1 and phase_active == false:
 		phase = 2
 		phase_active = true
-		phase2_start()
+		phase_start()
+	#Jesli boss ma mniej niz 40 zycia i jego ostatnia faza to 2 i zadna faza nie jest aktywna, rozpocznij 3 faze
 	elif health < 40 and phase == 2 and phase_active == false:
 		phase = 3
 		phase_active = true
-		phase3_start()
+		phase_start()
+	#Jesli boss ma mniej niz 20 zycia i jego ostatnia faza to 3 i zadna faza nie jest aktywna, rozpocznij 4 faze
 	elif health < 20 and phase == 3 and phase_active == false:
 		phase = 4
 		phase_active = true
-		phase4_start()
+		phase_start()
 
-func phase1_start():
-	angular_velocity += 0.5
-	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
-	$ShieldCenter/Shield.emitting = true
-	$PhaseTimer.start()
-	$FireTimer.start()
-	
-func phase2_start():
-	angular_velocity += 0.5
-	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
-	$ShieldCenter/Shield.emitting = true
-	$PhaseTimer.start()
-	$FireTimer.start()
-	
-func phase3_start():
-	angular_velocity += 0.5
-	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
-	$ShieldCenter/Shield.emitting = true
-	$PhaseTimer.start()
-	$FireTimer.start()
-	
-func phase4_start():
-	angular_velocity += 0.5
-	$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
-	$ShieldCenter/Shield.emitting = true
-	$PhaseTimer.start()
-	$FireTimer.start()
-	
-func fire():
-	var ball_scene = null
+func phase_start():  #Rozpocznij faze bossa
+	angular_velocity += 0.5  #Przyspiesz kule
+	#Zaladuj odpowiednia teksture tarczy w zaleznosci od fazy
 	if phase == 1:
-		ball_scene =load("res://Scenes/Actors/MageBoss/SummonFireball.tscn")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif phase == 2:
-		ball_scene =load("res://Scenes/Actors/MageBoss/SummonWaterball.tscn")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WaterBall.png")
 	elif phase == 3:
-		ball_scene =load("res://Scenes/Actors/MageBoss/SummonEarthball.tscn")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
 	elif phase == 4:
-		ball_scene =load("res://Scenes/Actors/MageBoss/SummonWindball.tscn")
-	ball_scene = ball_scene.instance()
-	ball_scene.position = self.global_position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
-	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position
-	main.add_child(ball_scene)
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
+	#Wlacz emitowanie czasteczek tarczy
+	$ShieldCenter/Shield.emitting = true
+	$PhaseTimer.start()  #Uruchom timer tworzacy summona
+	$FireTimer.start()  #Uruchom timer odpowiadajacy za strzelanie
 
+func fire():  #Strzelanie przez bossa
+	var ball_scene = load("res://Scenes/Actors/MageBoss/Projectile.tscn")  #Wczytaj scene pocisku
+	ball_scene = ball_scene.instance()  #Stworz pocisk
+	#Ustaw pozycje poczatkowa pocisku na tarczy bossa
+	ball_scene.position = self.global_position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
+	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position  #Ustaw pozycje gracza
+	main.add_child(ball_scene)  #Dodaj pocisk do glownej sceny

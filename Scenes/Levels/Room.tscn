@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/TileMap/Room1.tres" type="TileSet" id=1]
-[ext_resource path="res://Spawning_enemies.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Levels/Spawning_enemies.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
