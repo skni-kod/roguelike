@@ -13,6 +13,7 @@ export var earthball_dmg = 8.0  #Zmienna definiujaca obrazenia pocisku ziemnego
 export var windball_dmg = 6.0  #Zmienna definiujaca obrazenia pocisku powietrznego
 export var fireball_dmg = 4.0  #Zmienna definiujaca obrazenia pocisku ognistego
 export var waterball_dmg = 5.0  #Zmienna definiujaca obrazenia pocisku wodnego
+var alive = true # zmienna czy boss żyje
 var player = null  #Zmienna przechowujaca wezel gracza
 var move = Vector2.ZERO  #Zmienna inicjujaca wektor poruszania
 var hp: float = max_hp  #Zmienna przechowujaca ilosc pozostalego zycia
@@ -32,6 +33,12 @@ var change_rotation_EW = true  #Zmienna przechowuje informacje o tym, czy kule z
 var phase = 0  #Zmienna przechowuje informacje o tym, w ktorej fazie aktualnie znajduje sie boss (lub znajdowal sie ostatnio)
 var phase_active = false  #Zmienna przechowuje informacje o tym, czy faza bossa jest jeszcze aktywna
 
+# === ZMIENNE DO KNOCKBACKU === #
+var knockback = Vector2.ZERO
+var knockbackResistance = 9999 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var projectileKnockback = 1
+# === ===================== === #
+
 func _ready():
 	#Dodanie paska zycia bossa
 	health_bar = health_bar.instance()
@@ -41,16 +48,24 @@ func _ready():
 func _physics_process(delta):
 	#Ruch bossa
 	move = Vector2.ZERO
-	if health > 0:
-		if player != null:  #Jezeli gracz jest w polu widzenia bossa oraz jego zycie jest wieksze od 0
-			#Jesli gracz jest blisko, odejdz
-			if global_position.distance_to(player.global_position) < 55.0:
-				move = -global_position.direction_to(player.global_position) * speed
-			#Jesli gracz jest dalek, podejdz
-			elif global_position.distance_to(player.global_position) > 65.0:
-				move = global_position.direction_to(player.global_position) * speed
-		move_and_collide(move)
-		#Obracaj kule wokol bossa
+	if alive:
+		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
+			# === WEKTORY MOVE I KNOCKBACK === #
+			if knockback == Vector2.ZERO:
+				if global_position.distance_to(player.global_position) < 55.0:
+					move = -global_position.direction_to(player.global_position) * speed
+				elif global_position.distance_to(player.global_position) > 65.0:
+					move = global_position.direction_to(player.global_position) * speed
+			else:
+				knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+			# === ======================== === #
+		# === PORUSZANIE SIĘ I KNOCKBACK === #
+		if knockback == Vector2.ZERO:
+			move_and_collide(move) # ruch o Vector2D move
+		elif knockback != Vector2.ZERO and health > 0:
+			knockback = move_and_slide(knockback)
+			knockback *= 0.95
+		# === ========================== === #
 		rotate_water_fire()
 		rotate_earth_wind()
 		control_phases()  #Kontroluj aktywacje faz bossa
@@ -73,22 +88,22 @@ func _on_EarthWindTimer_timeout():  #Zmieniaj orbity kul ziemnej i powietrznej c
 
 func _on_Fireball_body_entered(body):  #Jesli gracz wejdzie w ognista kule
 	if body.name == "Player":
-		player.take_dmg(fireball_dmg)  #Gracz otrzymuje obrazenia
-		statusEffect.burning = true  #Gracz ma szanse na zostanie podpalonym
+		player.take_dmg(fireball_dmg, projectileKnockback, self.global_position)
+		statusEffect.burning = true
 
 func _on_Waterball_body_entered(body):  #Jesli gracz wejdzie w wodna kule
 	if body.name == "Player":
-		player.take_dmg(waterball_dmg)  #Gracz otrzymuje obrazenia
-		statusEffect.freezing = true  #Gracz ma szanse na zostanie zamrozonym
-
-func _on_WindBall_body_entered(body):  #Jesli gracz wejdzie w powietrzna kule
+		player.take_dmg(waterball_dmg, projectileKnockback, self.global_position)
+		statusEffect.freezing = true
+		
+func _on_WindBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(windball_dmg)  #Gracz otrzymuje obrazenia
-		statusEffect.weakness = true  #Gracz ma szanse na zostanie zamrozonym
+		player.take_dmg(windball_dmg, projectileKnockback, self.global_position)
+		statusEffect.weakness = true
 
 func _on_EarthBall_body_entered(body):  #Jesli gracz wejdzie w ziemna kule
 	if body.name == "Player":
-		player.take_dmg(earthball_dmg)  #Gracz otrzymuje obrazenia
+		player.take_dmg(earthball_dmg, projectileKnockback, self.global_position)
 
 func _on_PhaseTimer_timeout():  #Po rozpoczeciu fazy i odpowiednim czasie stworz summona
 	var summon = load("res://Scenes/Actors/MageBoss/Summon.tscn")
@@ -98,20 +113,30 @@ func _on_PhaseTimer_timeout():  #Po rozpoczeciu fazy i odpowiednim czasie stworz
 
 func _on_FireTimer_timeout():  #Strzelaj co okreslony czas podczas fazy
 	fire()
-
-func get_dmg(dmg):
-	if phase_active == false and health > 0:  #Jesli boss nie jest w trakcie fazy i zyje
-		#Utworz tekst z obrazeniami
+	
+func get_dmg(dmg, weaponKnockback):
+	if phase_active == false and alive:
 		var text = floating_dmg.instance()
 		text.amount = dmg
 		text.type = "Damage"
-		add_child(text)
-		#Zaktualizuj zdrowie
-		hp -= dmg
-		health = hp / max_hp * 100
-		health_bar.value = health
-		if health <= 0:  #Jezeli boss nie ma juz zycia
-			#Usun latajace kule
+		add_child(text)	
+		if health>0:
+			# ======= KNOCKBACK ======= #
+			if weaponKnockback != 0:
+				knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			if knockbackResistance != 0:
+				knockback /= knockbackResistance
+			elif knockbackResistance <= 0.6:
+				knockback /= 0.6
+		# ======= ========= ======= #
+			#Ustal aktualny poziom zdrowia w procentach
+			hp -= dmg
+			health = hp/max_hp*100
+			$AnimationPlayer.play("Hurt")
+			health_bar.value = health
+		#Jeżeli poziom zdrowia spadnie do 0
+		if health<=0:
+			alive = false
 			$WaterFireCenter.queue_free()
 			$EarthWindCenter.queue_free()
 			#Rozpocznij animacje smierci

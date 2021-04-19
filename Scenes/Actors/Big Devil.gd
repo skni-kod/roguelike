@@ -26,11 +26,20 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
-# pozycje do celowania i strzelania
+# === ZMIENNE DO KNOCKBACKU === #
+var knockback = Vector2.ZERO
+var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var enemyKnockback = 0
+var enemyPos
+# === ===================== === #
+
+# === ZMIENNE DO STRZELANIA === #
 var hit_pos
 var target
 var laser_color = Color(1.0, 0, 0, 0.1)
 var level
+var target_pos
+# === ===================== === #
  
 func _ready():
 	health_bar.on_health_updated(health) # wczytuję życie do paska życia
@@ -39,21 +48,43 @@ func _ready():
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
+	enemyPos = self.global_position
+	# === CELOWANIE === #
 	if target != null and delta == 0:
 		aim() # strzał w czasie, gdy jakiś target został wyznaczony
+	# === ========= === #
+	
 	if player != null and health>0: # gdy BD żyje oraz w jego zasięgu jest gracz
 		$Sprite.scale.x = right
-		move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		
+		# === WEKTORY MOVE I KNOCKBACK === #
+		if knockback == Vector2.ZERO:
+			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		else:
+			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+		# === ======================== === #
+		
+		# === ZWROT SPRITE === #
 		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
 			right = 1
 			$AnimationPlayer.play("Walk") 
 		else:
 			right = -1
 			$AnimationPlayer.play("Walk") 
+		# === ======================= === #
 	elif !attack and health>0: # gdy nie atakuje, a żyje, to wykojune animację Idle
 		$AnimationPlayer.play("Idle")
-	move_and_collide(move) # ruch o Vector2D move
 	
+	# === PORUSZANIE SIĘ I KNOCKBACK === #
+	if knockback == Vector2.ZERO:
+		move_and_collide(move) # ruch o Vector2D move
+	elif knockback != Vector2.ZERO and health > 0:
+		knockback = move_and_slide(knockback)
+		knockback *= 0.95
+	# === ========================== === #
+	
+	
+# ========== FUNKCJE INTERSEKCJI Z NODEM WZROK ========== #
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player":
 		player = body # player zostaje przypisane jako body, które jest Playerem, gdy wejdzie w Wzrok
@@ -61,8 +92,10 @@ func _on_Wzrok_body_entered(body):
 func _on_Wzrok_body_exited(body):
 	if body != self and body.name == "Player":
 		player = null # player zostaje przypisany jako null/nic jak Player opuści Wzrok
+# ========== ================================= ========== #
 		
 		
+# ========== FUNKCJE INTERSEKCJI Z NODEM ATAK ========== #
 func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player": # gdy Player wejdzie do sfery Atak
 		target = body
@@ -76,6 +109,8 @@ func _on_Atak_body_exited(body):
 		target = null 
 		attack = false # wyłącza atak
 		$Timer.stop() # wyłącza Timer
+# ========== ================================ ========== #
+
 
 # celowanie na podstawie bool result, który określa czy ray intersectuje
 # z daną collision_mask + celuje w gracza
@@ -88,6 +123,7 @@ func aim():
 			$Laser.rotation = (target.global_position - global_position).angle() + 2 * Vector2(0.5, -0.5).angle() + 10 * (target.global_position + target.velocity) # doprecyzowanie rotacji raya
 		
 		
+# === STRZELANIE === #
 # strzelanie do target -> pozycja (Vector2) 
 func shoot(target_poz):
 	$AnimationPlayer.play("Attack")
@@ -96,32 +132,44 @@ func shoot(target_poz):
 	laser.position = self.global_position + $Position2D.position # ustawienie pozycji lasera na pozycję Position2D
 	laser.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # pozyskanie pozycji gracza
 	main.add_child(laser) # dodanie lasera do sceny
+# === ========== === #
 		
 		
+# === TIMER === #
 func _on_Timer_timeout():
 	if health>0 and attack and target: # funkcje gdy żyje
 		shoot(target.position) # strzał w stronę pozycji targetu
 		$Laser_Load.emit = false # ładowanie lasera zostaje zatrzymane
 		$Cooldown.start() # timer Cooldown zostaje aktywowany
+# === ===== === #
 		
 		
+# === COOLDOWN === #
 func _on_Cooldown_timeout():
 	if health>0 and attack and target: # gdy BD żyje, atakuje i ma cel
 		$Laser_Load.emit = true # Laser Load zostaje emitowany
 		$Timer.start() # Timer zostaje aktywowany w celu oddania strzału
+# === ======== === #
 		
 		
-func get_dmg(dmg):
+func get_dmg(dmg, weaponKnockback):
 	if health>0:
-#		if player.position.x-self.position.x < 0:
-#			self.position.x += 10
-#		else:
-#			self.position.x -= 10
+		# ======= KNOCKBACK ======= #
+		if weaponKnockback != 0:
+			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		if knockbackResistance != 0:
+			knockback /= knockbackResistance
+		elif knockbackResistance <= 0.6:
+			knockback /= 0.6
+		# ======= ========= ======= #
+		
+		# ======= USUWANIE ŻYCIA ======= #
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		# ======= ============== ======= #
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -169,6 +217,4 @@ func random_potion():
 		tmp = tmp.instance()
 		tmp.position = global_position
 		level.add_child(tmp)
-		
-
 
