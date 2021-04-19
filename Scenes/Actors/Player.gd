@@ -235,7 +235,7 @@ func change_weapon_slot(currentSlot):
 		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = second_weapon_stats['attack']
-		$EquippedWeapon.weaponKnockback = second_weapon_stats["knc"]
+		$EquippedWeapon.weaponKnockback = float(second_weapon_stats["knc"])
 	if currentSlot == 2:
 		equipped = weapons[1]
 		w1slot_visibility.visible = true
@@ -244,7 +244,7 @@ func change_weapon_slot(currentSlot):
 		$EquippedWeapon.set_script(all_weapons_script[weapons[1]])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = first_weapon_stats['attack']
-		$EquippedWeapon.weaponKnockback = first_weapon_stats["knc"]
+		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 
 
 func swap_weapon(slot,weaponOnGround):
