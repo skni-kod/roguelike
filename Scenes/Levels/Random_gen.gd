@@ -61,22 +61,22 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 	emit_signal("boss", furthestRoom[0])
 
 func generate(): #funkcja generująca poziom (położenia pokojów)
-	map.append(Vector2(0,0))
+	map.append(Vector2(0,0)) #dodanie pierwszego pokoju do mapy
 	rng.randomize()
-	gen = rng.randi_range(1,4)
-	while n < roomsNum - 1:
+	gen = rng.randi_range(1,4) #wylosowanie ilosci pokoi odchodzacych od startowego
+	while n < roomsNum - 1: #petla tworzaca reszte pokoi
 		if n != 0:
-			gen = rng.randi_range(1,2)
-		directions.shuffle()
+			gen = rng.randi_range(1,2) #wylosowanie ilosci pokoi odchodzacych od aktualnie zakolejkowanego pokoju
+		directions.shuffle() #wylosowanie kierunkow generacji pokoi
 		for i in gen:
-			step(directions[i])
+			step(directions[i]) #wywolanie generacji pokoju z wylosowaanym kierunkiem
 			n += 1
 			if n >= roomsNum - 1:
 				break
 		if queue:
-			position = queue.pop_front()
-		else:
-			map = []
+			position = queue.pop_front() #wybranie kolejnego z kolejki pokoju do generacji
+		else: #jezeli kolejka jest pusta to od nowa wygeneruj mape
+			map = [] 
 			queue = []
 			position = Vector2.ZERO
 			n = 0
@@ -95,10 +95,10 @@ func generate(): #funkcja generująca poziom (położenia pokojów)
 				doors += 1
 			if doors == 3:
 				oneDoor += 1
-	if oneDoor > 0 and not drawn:
+	if oneDoor > 0 and not drawn: #jezeli sa pokoje z 1 drzwiami i nie narysowano mapy to ja narysuj
 		draw(map)
 		drawn = true
-	elif not drawn:
+	elif not drawn: #jezeli nie ma pokoju z 1 drzwiami i nie narysowano to jeszcze raz wygeneruj mape
 		map = []
 		queue = []
 		position = Vector2.ZERO
@@ -107,24 +107,13 @@ func generate(): #funkcja generująca poziom (położenia pokojów)
 		generate()
 
 func step(direction): #funkcja, która określa w którą stronę może zostać wygenerowany pokój
-	var target_position = position + direction
-	if not target_position in map:
-		map.append(target_position)
-		queue.append(target_position)
-	else:
+	var target_position = position + direction #pozycja w ktorej chcemy dodac pokoj
+	if not target_position in map: #jezeli taki pokoj nie istnieje jeszcze w mapie
+		map.append(target_position) #dodaj go do mapy
+		queue.append(target_position) #dodaj go do kolejki generowania
+	else: #jezeli jest juz w mapie to zmniejszamy "n" poniewaz nie wygenerowalismy pokoju
 		n -= 1
 
 func _ready():
-	MusicController.stop_music()
-	generate()
-
-#func _physics_process(delta):
-#	if Input.is_action_pressed("ui_accept"):
-#		for room in rooms:
-#			room.queue_free()
-#		rooms = []
-#		map = []
-#		queue = []
-#		position = Vector2.ZERO
-#		n = 0
-#		generate()
+	MusicController.stop_music() #zapauzowanie muzyki z menu
+	generate() #generacja mapy

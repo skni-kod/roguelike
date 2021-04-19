@@ -24,14 +24,14 @@ var up = Vector2(7,0) #Pozycja górnych drzwi
 var right = Vector2(14,4) #Pozycja prawych drzwi
 var left = Vector2(0,4) #Pozycja lewych drzwi
 var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
-var ilosc_enemy
-var boss = false
-onready var generation = get_node("../../../Main")
+var ilosc_enemy #aktualna ilosc przeciwnikow
+var boss = false #czy to jest pokoj z bossem
+onready var generation = get_node("../../../Main") #pobranie maina aby podpinac do niego pokoje
 
 func _ready():
-	generation.connect("boss", self, "check_boss")
+	generation.connect("boss", self, "check_boss") #polaczenie sygnalu z generacji aby przeazac pokoj z bossem
 
-func check_boss(room):
+func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
 
@@ -73,7 +73,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		else:
 			drzwi[3] = false
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
-		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0:
+		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
@@ -84,13 +84,13 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-80,80) #pozycja y
 				add_child(enemy) #dodawanie sceny przeciwnika
-				enemy.connect("died", self, "open")
+				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss: #respienie boss'a
 			ilosc_enemy = 1
 			var bossIns = bossScene.instance()
 			add_child(bossIns) #dodawanie sceny boss'a
-			bossIns.connect("died", self, "open")
-			close_door()
+			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
+			close_door() #zamkniecie drzwi
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()

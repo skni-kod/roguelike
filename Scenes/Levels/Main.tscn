@@ -7,7 +7,6 @@
 [ext_resource path="res://Scenes/UI/Slots.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
 
-
 [node name="Main" type="Node2D"]
 position = Vector2( 0.629959, 0 )
 script = ExtResource( 3 )
