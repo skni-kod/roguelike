@@ -13,6 +13,7 @@ export var earthball_dmg = 8.0  #Zmienna definiujaca obrazenia pocisku ziemnego
 export var windball_dmg = 6.0  #Zmienna definiujaca obrazenia pocisku powietrznego
 export var fireball_dmg = 4.0  #Zmienna definiujaca obrazenia pocisku ognistego
 export var waterball_dmg = 5.0  #Zmienna definiujaca obrazenia pocisku wodnego
+var alive = true # zmienna czy boss żyje
 var player = null  #Zmienna przechowujaca wezel gracza
 var move = Vector2.ZERO  #Zmienna inicjujaca wektor poruszania
 var hp: float = max_hp  #Zmienna przechowujaca ilosc pozostalego zycia
