@@ -39,6 +39,12 @@ export var windball_dmg = 6.0
 export var fireball_dmg = 4.0
 export var waterball_dmg = 5.0
 
+# === ZMIENNE DO KNOCKBACKU === #
+var knockback = Vector2.ZERO
+var knockbackResistance = 9999 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var projectileKnockback = 1
+# === ===================== === #
+
 func _ready():
 	$AnimationPlayer.play("Spawn")
 	health_bar = health_bar.instance()
@@ -50,11 +56,22 @@ func _physics_process(delta):
 	move = Vector2.ZERO
 	if alive:
 		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
-			if global_position.distance_to(player.global_position) < 55.0:
-				move = -global_position.direction_to(player.global_position) * speed
-			elif global_position.distance_to(player.global_position) > 65.0:
-				move = global_position.direction_to(player.global_position) * speed
-		move_and_collide(move)
+			# === WEKTORY MOVE I KNOCKBACK === #
+			if knockback == Vector2.ZERO:
+				if global_position.distance_to(player.global_position) < 55.0:
+					move = -global_position.direction_to(player.global_position) * speed
+				elif global_position.distance_to(player.global_position) > 65.0:
+					move = global_position.direction_to(player.global_position) * speed
+			else:
+				knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+			# === ======================== === #
+		# === PORUSZANIE SIĘ I KNOCKBACK === #
+		if knockback == Vector2.ZERO:
+			move_and_collide(move) # ruch o Vector2D move
+		elif knockback != Vector2.ZERO and health > 0:
+			knockback = move_and_slide(knockback)
+			knockback *= 0.95
+		# === ========================== === #
 		rotate_water_fire()
 		rotate_earth_wind()
 		control_phases()
@@ -78,22 +95,22 @@ func _on_EarthWindTimer_timeout():
 	
 func _on_Fireball_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(fireball_dmg)
+		player.take_dmg(fireball_dmg, projectileKnockback, self.global_position)
 		statusEffect.burning = true
 
 func _on_Waterball_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(waterball_dmg)
+		player.take_dmg(waterball_dmg, projectileKnockback, self.global_position)
 		statusEffect.freezing = true
 		
 func _on_WindBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(windball_dmg)
+		player.take_dmg(windball_dmg, projectileKnockback, self.global_position)
 		statusEffect.weakness = true
 
 func _on_EarthBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(earthball_dmg)
+		player.take_dmg(earthball_dmg, projectileKnockback, self.global_position)
 
 func _on_PhaseTimer_timeout():
 	if phase == 1:
@@ -120,13 +137,21 @@ func _on_PhaseTimer_timeout():
 func _on_FireTimer_timeout():
 	fire()
 	
-func get_dmg(dmg):
+func get_dmg(dmg, weaponKnockback):
 	if phase_active == false and alive:
 		var text = floating_dmg.instance()
 		text.amount = dmg
 		text.type = "Damage"
 		add_child(text)	
 		if health>0:
+			# ======= KNOCKBACK ======= #
+			if weaponKnockback != 0:
+				knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			if knockbackResistance != 0:
+				knockback /= knockbackResistance
+			elif knockbackResistance <= 0.6:
+				knockback /= 0.6
+		# ======= ========= ======= #
 			#Ustal aktualny poziom zdrowia w procentach
 			hp -= dmg
 			health = hp/max_hp*100

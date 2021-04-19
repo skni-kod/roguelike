@@ -9,6 +9,8 @@ onready var origin = self.position  # miejsce startowe pocisku
 var dps = 20 # damage, który pocisk zadaje
 const goblin_ball_speed = 80 #prędkość pocisku
 
+var projectileKnockback = 0.1
+
 func _ready():
 	direction = (player_Pos - origin).normalized() # ustawiam kąt jako znormalizowany wektor pozycji gracza i strzelca
 	
@@ -19,4 +21,4 @@ func _physics_process(delta):
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
 		statusEffect.poison = true
-		body.take_dmg(dps)		# jeśli pocisk natrafi na body playera to zadaje mu damage o wartości dps
+		body.take_dmg(dps, projectileKnockback, self.global_position)		# jeśli pocisk natrafi na body playera to zadaje mu damage o wartości dps

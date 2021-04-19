@@ -16,7 +16,7 @@ var all_weapons = {
 		"Blade": {
 			"attack": "7.5",
 			"spd": "1",
-			"knc": float(0.35),
+			"knc": float(0.15),
 			"range": "melee",
 			"effect": "none"
 		},

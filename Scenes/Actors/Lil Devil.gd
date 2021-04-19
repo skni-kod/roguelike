@@ -28,6 +28,8 @@ var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losow
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var enemyKnockback = 0
+var enemyPos
 # === ===================== === #
  
 func _ready():
@@ -37,6 +39,7 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
+	enemyPos = self.global_position
 	if player != null and health>0:
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:

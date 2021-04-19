@@ -23,6 +23,7 @@ var randomPosition
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var enemyKnockback = 0.4
 # === ===================== === #
 
 func _ready():
@@ -30,7 +31,6 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	
 	if player != null and !attack and health>0: #Jeżeli gracz jest w polu widzenia i slime nie atakuje oraz życie jest większe niż 0 to
 		$Sprite.scale.x = right #Obróć slime
 		# === WEKTORY MOVE I KNOCKBACK === #
@@ -73,7 +73,7 @@ func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
-		player.take_dmg(dps)
+		player.take_dmg(dps, enemyKnockback, self.global_position)
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 			

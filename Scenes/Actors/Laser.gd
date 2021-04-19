@@ -33,7 +33,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider() # body to pierwsze ciało z którym skoliduje ray/laser
 		if body.name == "Player":
-			body.take_dmg(dmg) # jeśli body na który natrafi laser, to Player, to zadaje mu dmg
+			body.take_dmg(dmg, 0, body.global_position) # jeśli body na który natrafi laser, to Player, to zadaje mu dmg
 		
 	$Line2D.points[1] = cast_point # punkt nr 1 $Line2D zostaje ustawiony jako cast_point
 	$LaserParticles.position = cast_point * 0.5 # pozycja LaserParticles zostaje ustawiona w połowie długości do cast_point

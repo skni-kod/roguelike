@@ -24,6 +24,7 @@ var randomPosition
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+var enemyKnockback = 0.3
 # === ===================== === #
  
 func _ready():
@@ -31,7 +32,6 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	
 	if player != null and !attack and health>0:
 		$Sprite.scale.x = right
 		# === WEKTORY MOVE I KNOCKBACK === #
@@ -78,7 +78,7 @@ func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
 		statusEffect.poison = true
-		player.take_dmg(dps)
+		player.take_dmg(dps, enemyKnockback, self.global_position)
 		yield($AnimationPlayer,"animation_finished")
 
 

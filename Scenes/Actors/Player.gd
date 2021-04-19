@@ -10,7 +10,7 @@ var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
-export var health = 1000 #ilośc punktów życia bohatera
+export var health = 100 #ilośc punktów życia bohatera
 var base_health = 100 # bazowa ilość życia gracza
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
@@ -22,7 +22,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(7.5), "knc":float(0.35)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -47,6 +47,11 @@ var potion = null
 var base_hp = null  
 
 var Potion_in_time = 0
+
+# === ZMIENNE DO KNOCKBACKU === #
+var knockback = Vector2.ZERO
+var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
+# === ===================== === #
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions[2] == "Empty": #jeżeli niema potki na slocie drugim to:
@@ -118,11 +123,22 @@ func _ready(): #po inicjacji bohatera
 		"Empty" : 0
 	}
 	UpdatePotions() 
+	
+	
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
-		movement() #wywołanie funkcji poruszania się
+		# === KNOCKBACK === #
+		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+		# === ========= === #
+		# === PORUSZANIE SIĘ I KNOCKBACK === #
+		if knockback == Vector2.ZERO:
+			movement() #wywołanie funkcji poruszania się
+		elif knockback != Vector2.ZERO and health > 0:
+			knockback = move_and_slide(knockback)
+			knockback *= 0.95
+		# === ========================== === #
 	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
@@ -322,7 +338,15 @@ func movement(): #funkcja poruszania się
 			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
 			$AnimationPlayer.play("Run") #włącz animację "Run"
 
-func take_dmg(dps): #otrzymanie obrażeń przez bohatera
+func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
+	# ======= KNOCKBACK ======= #
+	if enemyKnockback != 0:
+		knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+	if knockbackResistance != 0:
+		knockback /= knockbackResistance
+	elif knockbackResistance <= 0.6:
+		knockback /= 0.6
+	# ======= ========= ======= #
 	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 	got_hitted = true #bohater jest uderzany

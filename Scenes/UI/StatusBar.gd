@@ -6,6 +6,7 @@ onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
 onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
+onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
 
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
 var burning := false setget burn
@@ -120,7 +121,7 @@ func _on_Burning_Lifetime_timeout():
 
 func _on_Burning_Damage_timeout():
 	if burning:
-		player.take_dmg(burningDMG+(burningStacks*1.1)) # zadaje damage równy ilości bazowego damage danego efektu
+		player.take_dmg(burningDMG+(burningStacks*1.1), 0, player.global_position) # zadaje damage równy ilości bazowego damage danego efektu
 		$StatusContainer/Burning/Damage.start() # startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
 
 
@@ -150,7 +151,7 @@ func _on_Poison_Lifetime_timeout():
 
 func _on_Poison_Damage_timeout():
 	if poison:
-		player.take_dmg(poisonDMG+(poisonStacks*1.2)) 
+		player.take_dmg(poisonDMG+(poisonStacks*1.2), 0, player.global_position) 
 		$StatusContainer/Poison/Damage.start()
 
 
@@ -182,7 +183,7 @@ func _on_Bleeding_Lifetime_timeout():
 
 func _on_Bleeding_Damage_timeout():
 	if bleeding:
-		player.take_dmg(bleedingDMG+(bleedingStacks*1.5))
+		player.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, player.global_position)
 		$StatusContainer/Bleeding/Damage.start()
 
 
@@ -211,7 +212,7 @@ func _on_Healing_Lifetime_timeout():
 
 func _on_Healing_Healing_timeout():
 	if healing and player.health <= player.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
-		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time))) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
+		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, player.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
 		$StatusContainer/Healing/Healing.start()
 
 
@@ -243,7 +244,7 @@ func _on_Freezing_Lifetime_timeout():
 	$StatusContainer/Freezing/FreezingSprite.frame = 0
 
 
-# -------------- ODBICIE -------------- #
+# -------------- KNOCKBACK -------------- #
 # UWAGA     WORK IN PROGRESS      UWAGA #
 # Funkcjonalność knockbacku nie jest zaimplementowana jeszcze
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
@@ -256,6 +257,7 @@ func knockback(var knocked_back):
 			knockbackMultiplier = (knockbackMultiplier+(pow(0.5, knockbackStacks)))
 		else:
 			knockbackMultiplier = 0 # brak knockbacku
+		playerKnockbackParticles.visible = true
 		$StatusContainer/Knockback.visible = true
 		$StatusContainer/Knockback/DisplayTime/Lifetime.start()
 		$StatusContainer/Knockback/DisplayTime.timer_on = true
@@ -265,6 +267,7 @@ func knockback(var knocked_back):
 func _on_Knockback_Lifetime_timeout():
 	knockback = false
 	knockbackStacks = 0
+	playerKnockbackParticles.visible= false
 	$StatusContainer/Knockback.visible = false
 	$StatusContainer/Knockback/KnockbackSprite.frame = 0
 
