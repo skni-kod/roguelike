@@ -102,7 +102,8 @@ func _ready(): #po inicjacji bohatera
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
 		"100%Potion" : preload("res://Assets/Loot/Potions/Potion100.png"),
 		"20healthPotion" : preload("res://Assets/Loot/Potions/Potion+20hp.png"),
-		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png")
+		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png"),
+		"Empty" : preload("res://Assets/Loot/Potions/Empty.png")
 	}
 	potions = { #słownik przechowujący jaki potek jest na danym slocie
 		1 : "20healthPotion",
@@ -140,7 +141,9 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"): #jeżeli gracz naciśnie przycisk pick
 			var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
 			var potion_tmp = potion.name #zmienna przechowująca rzeczywistą nazwe danego potka w scenie np 50%Potion2
-			if potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
+			if potions[1]=="Empty": #jeżeli niema potka na slocie 1 to:
+				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+			elif potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
 				swap_potion(2,potion_name) #ustawienie na slot 2 potka przy ktorym stoi gracz
 			else:
 				potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
@@ -242,9 +245,9 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
 			change_weapon_slot(current_weapon)
-#	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
-#		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
-#			change_potion_slot() #potki zamieniają się miejscami w slotach
+	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
+		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
+			change_potion_slot() #potki zamieniają się miejscami w slotach
 			
 func check_current_weapon():
 	if weapons[2] == "Empty":
