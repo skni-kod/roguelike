@@ -4,8 +4,8 @@ var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
-onready var tilemap = get_node("../TileMap")
-var rand = RandomNumberGenerator.new()
+onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
+var rand = RandomNumberGenerator.new() #Losowa generacja numeru
 var all_enemies = {
 		0 : preload("res://Scenes/Actors/Big Devil.tscn"),
 		1 : preload("res://Scenes/Actors/cuck.tscn"),
@@ -18,25 +18,25 @@ var all_enemies = {
 		8 : preload("res://Scenes/Actors/Snot.tscn")
 	}
 var bossScene = load("res://Scenes/Actors/MageBoss/MageBoss.tscn")
-var id_list = []
-var current_id
-var down = Vector2(7,8)
-var up = Vector2(7,0)
-var right = Vector2(14,4)
-var left = Vector2(0,4)
-var drzwi = [true,true,true,true]
-var ilosc_enemy
-var boss = false
-onready var generation = get_node("../../../Main")
+var id_list = [] #Lista ID pokojów, w których był już player
+var current_id #ID aktualnego pokoju
+var down = Vector2(7,8) #Pozycja dolnych drzwi
+var up = Vector2(7,0) #Pozycja górnych drzwi
+var right = Vector2(14,4) #Pozycja prawych drzwi
+var left = Vector2(0,4) #Pozycja lewych drzwi
+var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
+var ilosc_enemy #aktualna ilosc przeciwnikow
+var boss = false #czy to jest pokoj z bossem
+onready var generation = get_node("../../../Main") #pobranie maina aby podpinac do niego pokoje
 
 func _ready():
-	generation.connect("boss", self, "check_boss")
+	generation.connect("boss", self, "check_boss") #polaczenie sygnalu z generacji aby przeazac pokoj z bossem
 
-func check_boss(room):
+func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
 
-func close_door():
+func close_door(): #Podmiana tekstur na zamknięte drzwi
 	tilemap.set_cell(6,8,28)
 	tilemap.set_cell(7,8,29)
 	tilemap.set_cell(8,8,30)
@@ -54,10 +54,10 @@ func close_door():
 	tilemap.set_cell(0,5,18)
 	tilemap.set_cell(1,4,19)
 
-func _on_Node2D_body_entered(body):
-	if body.name == "Player":
+func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
+	if body.name == "Player": 
 		ilosc_enemy = 5
-		if tilemap.get_cellv(left) == 1:
+		if tilemap.get_cellv(left) == 1: #Sprawdzanie, czy drzwi są otwarte czy zamknięte
 			drzwi[0] = true
 		else:
 			drzwi[0] = false
@@ -73,27 +73,27 @@ func _on_Node2D_body_entered(body):
 			drzwi[3] = true
 		else:
 			drzwi[3] = false
-		current_id = get_instance_id()
-		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0:
-			id_list.append(current_id)
-		if not current_id in id_list and not boss:
+		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
+		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
+			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
+		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
 				rand.randomize()
-				var enemy = all_enemies[rand.randi_range(0,8)].instance()
+				var enemy = all_enemies[rand.randi_range(0,8)].instance() #rodzaj przeciwnika
 				rand.randomize()
-				enemy.position.x = rand.randf_range(-180,180)
+				enemy.position.x = rand.randf_range(-180,180) #pozycja x
 				rand.randomize()
-				enemy.position.y = rand.randf_range(-80,80)
-				add_child(enemy)
-				enemy.connect("died", self, "open")
-		elif boss:
+				enemy.position.y = rand.randf_range(-80,80) #pozycja y
+				add_child(enemy) #dodawanie sceny przeciwnika
+				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
+		elif boss: #respienie boss'a
 			ilosc_enemy = 1
 			var bossIns = bossScene.instance()
-			add_child(bossIns)
-			bossIns.connect("died", self, "open")
-			close_door()
+			add_child(bossIns) #dodawanie sceny boss'a
+			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
+			close_door() #zamkniecie drzwi
 		id_list.append(current_id)
-	if body.is_in_group("Enemy"):
+	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 
 func weapon():
@@ -118,14 +118,14 @@ func rand_num(from,to):
 		   arr.append(i)
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 
-func open(body):
-	if body.health <= 0:
-		ilosc_enemy -= 1
-	if ilosc_enemy == 0:
+func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
+	if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
+		ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
+	if ilosc_enemy == 0: #jeżeli nie ma przeciwników
 		rand.randomize()
-		if rand.randf_range(0,100) <= 100:
+		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
-		if drzwi[3]:
+		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)
 			tilemap.set_cell(8,8,14)
