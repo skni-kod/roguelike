@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Enemies/Goblin_shaman.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/goblin_shaman.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.64108, 9.84897 )
@@ -55,6 +56,11 @@ position = Vector2( -0.352448, 0.25 )
 collision_layer = 2147483652
 collision_mask = 3
 script = ExtResource( 2 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, 14.311 )
+scale = Vector2( 0.39233, 0.204505 )
+texture = ExtResource( 4 )
 
 [node name="Goblin_shaman" type="Sprite" parent="."]
 position = Vector2( 0.469467, -0.440389 )

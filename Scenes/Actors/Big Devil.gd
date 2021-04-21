@@ -66,10 +66,10 @@ func _physics_process(delta):
 		
 		# === ZWROT SPRITE === #
 		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
-			right = 1
+			right = 0.5
 			$AnimationPlayer.play("Walk") 
 		else:
-			right = -1
+			right = -0.5
 			$AnimationPlayer.play("Walk") 
 		# === ======================= === #
 	elif !attack and health>0: # gdy nie atakuje, a żyje, to wykojune animację Idle

@@ -1,18 +1,19 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 5.50819
-height = 16.8513
+radius = 6.14429
+height = 8.49784
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 82.5845
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 22.0971, 9.93699 )
+extents = Vector2( 18.7851, 11.1961 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"
@@ -32,7 +33,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "Die"
-length = 0.6
+length = 0.45
+step = 0.15
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -40,15 +42,15 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.15076, 0.299559, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 16, 17, 18, 19, 20, 21 ]
+"values": [ 12, 13, 14, 15 ]
 }
 
 [sub_resource type="Animation" id=6]
 resource_name = "Hurt"
-length = 0.4
+length = 0.2
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -60,11 +62,11 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 14, 13, 14 ]
+"values": [ 5, 1, 0 ]
 }
 
 [sub_resource type="Animation" id=7]
-length = 0.3
+length = 0.6
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -72,10 +74,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3 ]
+"values": [ 0, 1, 3, 4 ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -108,11 +110,17 @@ margin_right = -10.0406
 margin_bottom = -5.9466
 rect_scale = Vector2( 0.2, 0.2 )
 
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, 11.7659 )
+scale = Vector2( 0.621239, 0.24081 )
+texture = ExtResource( 4 )
+
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
-vframes = 3
-hframes = 8
-frame = 12
+vframes = 4
+hframes = 4
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )
@@ -130,7 +138,7 @@ shape = SubResource( 2 )
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-position = Vector2( 0.166862, 3.83767 )
+position = Vector2( 0, 4.68 )
 shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
