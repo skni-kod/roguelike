@@ -44,7 +44,7 @@ func _on_FireTimer_timeout():
 	if health > 0:  #Jesli zycie jest wieksze od 0, atakuj
 		fire()
 
-func get_dmg(dmg):
+func get_dmg(dmg, weaponKnockback):
 	#Utworz tekst z obrazeniami
 	var text = floating_dmg.instance()
 	text.amount = dmg
