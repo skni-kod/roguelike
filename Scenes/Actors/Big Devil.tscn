@@ -7,10 +7,10 @@
 [ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12.826, 8.6789 )
+extents = Vector2( 14.3154, 12.2952 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 52.6015
+radius = 68.0
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 105.357
@@ -87,12 +87,12 @@ margin_bottom = -15.566
 rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Shadow" type="Sprite" parent="."]
-position = Vector2( 0.0459061, 14.4512 )
-scale = Vector2( 0.591204, 0.248699 )
+position = Vector2( 0, 23.722 )
+scale = Vector2( 0.864347, 0.248699 )
 texture = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( -0.5, 0.5 )
+scale = Vector2( -0.75, 0.75 )
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 4
@@ -100,15 +100,14 @@ frame = 3
 
 [node name="Laser_Load" parent="." instance=ExtResource( 4 )]
 position = Vector2( -0.601517, 2.75438 )
+collision_mask = 2147483650
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, 3.455 )
+position = Vector2( 0, 6.819 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -116,7 +115,6 @@ position = Vector2( 0, 3.375 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 gravity = 0.0
 collision_layer = 0
 

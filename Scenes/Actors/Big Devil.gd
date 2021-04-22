@@ -4,6 +4,8 @@
 # BD - Big Devil
 
 extends KinematicBody2D
+
+
 const LASER_SCENE = preload("Laser.tscn") # wczytuję laser jako LASER_SCENE
 const SPEED = 100 
 
@@ -39,6 +41,7 @@ var target
 var laser_color = Color(1.0, 0, 0, 0.1)
 var level
 var target_pos
+var near = false
 # === ===================== === #
  
 func _ready():
@@ -66,10 +69,10 @@ func _physics_process(delta):
 		
 		# === ZWROT SPRITE === #
 		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
-			right = 0.5
+			right = 0.75
 			$AnimationPlayer.play("Walk") 
 		else:
-			right = -0.5
+			right = -0.75
 			$AnimationPlayer.play("Walk") 
 		# === ======================= === #
 	elif !attack and health>0: # gdy nie atakuje, a żyje, to wykojune animację Idle
@@ -156,7 +159,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -self.global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
