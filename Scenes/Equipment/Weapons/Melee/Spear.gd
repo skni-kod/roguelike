@@ -17,12 +17,13 @@ var paused = 0.4
 var swing_back = 0.5
 var animation_step = 0.02
 
+
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/spear.png")
 		#Ustaw wartość kolizji dla broni
-		$AttackCollision.scale.x = 1
+		$AttackCollision.scale.x = 1.1
 		$AttackCollision.scale.y = 0.5
 		$AttackCollision.position.x= 20
 		$AttackCollision.position.y= 0	
@@ -37,10 +38,12 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.y = -1
+			$WeaponSprite.scale.x = 1.1
+			$WeaponSprite.scale.y = -1.1
 			$WeaponSprite.rotation_degrees=-90 #Obróć broń przodem do przeciwnika
 		else:
-			$WeaponSprite.scale.y = 1
+			$WeaponSprite.scale.x = 1.1
+			$WeaponSprite.scale.y = 1.1
 			$WeaponSprite.rotation_degrees=90 #Obróć broń przodem do przeciwnika
 
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Enemies/snot.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Actors/Snot.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 7.4746
@@ -111,18 +112,21 @@ margin_right = -6.91883
 margin_bottom = -11.9944
 rect_scale = Vector2( 0.15, 0.2 )
 
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, 7.935 )
+scale = Vector2( 0.465384, 0.17411 )
+texture = ExtResource( 4 )
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 8
 frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 0.00473362 )
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 position = Vector2( 0.297302, -0.148651 )

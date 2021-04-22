@@ -18,13 +18,14 @@ var paused = 0.15
 var swing_back = 0.3
 var animation_step = 0.01
 
+
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/katana.png")
 		#Ustaw wartość kolizji dla broni
-		$AttackCollision.scale.x = 1.7
-		$AttackCollision.scale.y = 0.2
+		$AttackCollision.scale.x = 2.6
+		$AttackCollision.scale.y = 0.4
 		$AttackCollision.position.x = 15
 		$AttackCollision.position.y = 0		
 		isWeaponReady = 0
@@ -38,11 +39,13 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.y = -1
-			$WeaponSprite.rotation_degrees=0
+			$WeaponSprite.scale.x = 0.6
+			$WeaponSprite.scale.y = -0.6
+			$WeaponSprite.rotation_degrees=-45
 		else:
-			$WeaponSprite.scale.y = 1
-			$WeaponSprite.rotation_degrees=0
+			$WeaponSprite.scale.x = 0.6
+			$WeaponSprite.scale.y = 0.6
+			$WeaponSprite.rotation_degrees=-45
 
 
 	if Input.is_action_just_pressed("use_ability_1"):

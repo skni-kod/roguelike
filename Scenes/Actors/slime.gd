@@ -74,6 +74,7 @@ func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
 		player.take_dmg(dps, enemyKnockback, self.global_position)
+		yield($AnimationPlayer,"animation_finished")
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 			
