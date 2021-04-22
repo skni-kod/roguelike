@@ -186,8 +186,8 @@ local_coords = false
 process_material = SubResource( 9 )
 
 [node name="Shadow" type="Sprite" parent="."]
-position = Vector2( 0, 7.149 )
-scale = Vector2( 0.372612, 0.198521 )
+position = Vector2( 0, 13.114 )
+scale = Vector2( 0.488622, 0.198521 )
 texture = ExtResource( 6 )
 
 [node name="PlayerSprite" type="Sprite" parent="."]
@@ -236,6 +236,7 @@ process_material = SubResource( 21 )
 visible = false
 position = Vector2( 0, -13.264 )
 process_material = SubResource( 26 )
+
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]

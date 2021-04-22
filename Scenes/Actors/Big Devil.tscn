@@ -81,9 +81,9 @@ max_hp = 40
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
 visible = false
 margin_left = -10.041
-margin_top = -15.566
+margin_top = -29.109
 margin_right = -10.041
-margin_bottom = -15.566
+margin_bottom = -29.109
 rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Shadow" type="Sprite" parent="."]
@@ -94,9 +94,8 @@ texture = ExtResource( 5 )
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( -0.75, 0.75 )
 texture = ExtResource( 1 )
-vframes = 2
 hframes = 4
-frame = 3
+vframes = 2
 
 [node name="Laser_Load" parent="." instance=ExtResource( 4 )]
 position = Vector2( -0.601517, 2.75438 )
@@ -139,6 +138,7 @@ one_shot = true
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -0.589928, 2.83162 )
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
