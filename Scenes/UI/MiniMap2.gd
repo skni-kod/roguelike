@@ -9,7 +9,6 @@ onready var player_marker = $MarginContainer/Grid/Hero
 onready var wall_marker = $MarginContainer/Grid/Wall
 onready var chest_marker = $MarginContainer2/Grid/ChestMarker
 onready var icons  = {"chest": chest_marker}
-onready var chuj = $MiniMap
 var n=0 
 onready var tiles = [] #Zmienna przechowująca wszystkie kafelki ściany
 
@@ -17,7 +16,11 @@ var grid_scale
 var markers = {}
 
 func _ready():
-	player_marker.position = grid.rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
+	self.rect_position.x = 0
+	self.rect_position.y = 0
+	rect_size.x = get_viewport().size.x
+	rect_size.y = get_viewport().size.y
+	player_marker.position = rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
 	grid_scale = grid.rect_size / (get_viewport_rect().size * zoom) #Skalowanie wielkości minimapy
 	var map_objects = get_tree().get_nodes_in_group("minimap_objects") #Pobranie wszystkich kafelków ściany
 	for item in map_objects:
@@ -47,11 +50,11 @@ func _unhandled_input(event): #Funckcja mapy
 	if event is InputEventKey:
 		if n==0:
 			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = false  
+				self.visible = true 
 				n=n+1                       
 		else:
 			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = true                    
+				self.visible = false                   
 				
 				n=n-1
 			
