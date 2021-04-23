@@ -15,8 +15,6 @@ var base_health = 100 # bazowa ilość życia gracza
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
-var equipped #Aktualnie używana broń
-
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
@@ -25,13 +23,17 @@ var current_weapon
 var all_weapons_script
 var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
+var actual_slot = 1
 
-onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
-onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var ui_access_wslots = {
+	1: get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1"),
+	2: get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+}
+onready var wslots_visibility = {
+	1: get_node("../UI/Slots/Background/w1slotbg"),
+	2: get_node("../UI/Slots/Background/w2slotbg")
+}
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
-onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
-onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
-
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -106,8 +108,7 @@ func _ready(): #po inicjacji bohatera
 		1 : "Blade",
 		2 : "Empty"
 	}
-	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Blade"
+	ui_access_wslots[1].texture = all_weapons[weapons[1]]
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -136,12 +137,11 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			if equipped != weaponToTake.WeaponName:
-				if weapons[2] == "Empty":
-					swap_weapon(2,weaponToTake)
-				else:
-					if current_weapon != null:
-						swap_weapon(current_weapon,weaponToTake)
+			if weapons[2] == "Empty":
+				swap_weapon(2,weaponToTake) #jezeli gracz ma 1 bronke to podniesiona bronka jest na drugim slocie
+			else:
+				swap_weapon(actual_slot,weaponToTake) #zamiana bronki lezacej z uzywanej
+				
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
@@ -212,21 +212,21 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		UpdatePotions()
 
 	if weapons[2] != "Empty": 
-		if Input.is_action_just_pressed("change_weapon_slot"):
-			current_weapon = check_current_weapon()
-			change_weapon_slot(current_weapon)
+		if Input.is_action_just_pressed("change_weapon_slot"): #jezeli drugi slot nie jest pusty
+			change_weapon_slot(actual_slot)
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
 			
-func check_current_weapon():
-	if weapons[2] == "Empty":
+func check_current_weapon(): #funkcja sprawdza aktualnie uzywana bron gracza porownujac tekstury
+	if weapons[2] == "Empty": #jezeli drugi slot jest pusty to zawsze zwracany jest slot nr 1
 		return 1
 	else:
-		if all_weapons[weapons[1]] == actualweapon_access.texture:
+		if all_weapons[weapons[1]] == actualweapon_access.texture: 
 			return 1
-		if all_weapons[weapons[2]] == actualweapon_access.texture:
+		elif all_weapons[weapons[2]] == actualweapon_access.texture:
 			return 2
+		
 
 
 func change_potion_slot(): #funcja zamieniająca potki miejscami
@@ -237,61 +237,49 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 	
 
 func change_weapon_slot(currentSlot):
-	if currentSlot == 1:
-		equipped = weapons[2]
-		w2slot_visibility.visible = true
-		w1slot_visibility.visible = false
-		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
-		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		$EquippedWeapon.damage = second_weapon_stats['attack']
-	if currentSlot == 2:
-		equipped = weapons[1]
-		w1slot_visibility.visible = true
-		w2slot_visibility.visible = false
-		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weapons[1]])
-		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		$EquippedWeapon.damage = first_weapon_stats['attack']
+	match currentSlot:
+		1:
+			actual_slot = 2
+			wslots_visibility[2].visible = true #zielone tlo na ui pojawia sie pod aktualnie uzywana bronka
+			wslots_visibility[1].visible = false
+			$EquippedWeapon.set_script(all_weapons_script[weapons[actual_slot]]) #Tylko melee poki co ;/
+			$EquippedWeapon.damage = second_weapon_stats['attack']
+		2:
+			actual_slot = 1
+			wslots_visibility[1].visible = true
+			wslots_visibility[2].visible = false
+			$EquippedWeapon.set_script(all_weapons_script[weapons[actual_slot]]) #Tylko melee poki co ;/
+			$EquippedWeapon.damage = first_weapon_stats['attack']	
+	$EquippedWeapon.position=Vector2.ZERO
+	$EquippedWeapon.timer = $EquippedWeapon/Timer
 
 
 func swap_weapon(slot,weaponOnGround):
-	if weapons[2] != "Empty":
-		if slot == 1:
-			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
+	match slot:
+		1:
+			ui_access_wslots[1].texture = all_weapons[weaponOnGround.WeaponName]
 			first_weapon_stats = weaponOnGround.Stats
-			w1slot_visibility.visible = true
-			w2slot_visibility.visible = false
-		elif slot == 2:
-			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
+			wslots_visibility[1].visible = true
+			wslots_visibility[2].visible = false
+		2: 
+			ui_access_wslots[2].texture = all_weapons[weaponOnGround.WeaponName]
 			second_weapon_stats = weaponOnGround.Stats
-			w2slot_visibility.visible = true
-			w1slot_visibility.visible = false
-		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
-		weaponUsed = weaponUsed.instance()
-		weaponUsed.WeaponName = str(weapons[slot])
-		weaponUsed.position = weaponOnGround.global_position
-		level.add_child(weaponUsed)
-		weapons[slot] = weaponOnGround.WeaponName
-		equipped = weapons[slot]
-		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
-		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
-		weaponOnGround.queue_free()
-	else:
-		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
-		weapons[2] = weaponOnGround.WeaponName
-		equipped = weapons[2]
-		second_weapon_stats = weaponOnGround.Stats
-		w2slot_visibility.visible = true
-		w1slot_visibility.visible = false
-		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
-		$EquippedWeapon.timer = $EquippedWeapon/Timer
-		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
-		weaponOnGround.queue_free()
-
+			wslots_visibility[2].visible = true
+			wslots_visibility[1].visible = false
+	if weapons[slot] != "Empty":
+		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn") #wczytanie scenki bronki
+		weaponUsed = weaponUsed.instance() #stworzenie instancji, aby aktualnie uzywana bronka byla na ziemi a jej miejsce zastapila
+		weaponUsed.WeaponName = str(weapons[slot]) #przypisanie nazwy broni do instancji
+		weaponUsed.position = weaponOnGround.global_position #bronka, ktora mamy w rece i zaraz ja zamienimy pobiera pozycje bronki ktora aktualnie na ziemi lezy
+		level.add_child(weaponUsed) #"odlozenie bronki" aktualnie uzywanej
+	weapons[slot] = weaponOnGround.WeaponName #przypisanie bronki podniesionej z ziemi do aktualnie uzywanego slota
+	$EquippedWeapon.position=Vector2.ZERO
+	$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
+	$EquippedWeapon.timer = $EquippedWeapon/Timer #przypisanie wlasciwosci bronki damage, speed itd
+	$EquippedWeapon.damage = weaponOnGround.Stats['attack']
+	weaponOnGround.queue_free()
+	
+			
 func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 	if potions[2] !="Empty":
 		if slot == 1:
@@ -344,7 +332,6 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
-			current_weapon = check_current_weapon()
 			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
