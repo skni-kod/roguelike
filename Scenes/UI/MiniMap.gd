@@ -7,10 +7,7 @@ export var zoom = 0.5 #Zmienna określająca przybliżenie minimapy
 onready var grid = $MarginContainer/Grid
 onready var player_marker = $MarginContainer/Grid/Hero
 onready var wall_marker = $MarginContainer/Grid/Wall
-onready var chest_marker = $MarginContainer2/Grid/ChestMarker
-onready var icons  = {"chest": chest_marker}
-onready var chuj = $MiniMap
-var n=0 
+var fullscreen_map = false 
 onready var tiles = [] #Zmienna przechowująca wszystkie kafelki ściany
 
 var grid_scale
@@ -19,7 +16,8 @@ var markers = {}
 func _ready():
 	player_marker.position = grid.rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
 	grid_scale = grid.rect_size / (get_viewport_rect().size * zoom) #Skalowanie wielkości minimapy
-	var map_objects = get_tree().get_nodes_in_group("minimap_objects") #Pobranie wszystkich kafelków ściany
+	
+	var map_objects = get_tree().get_nodes_in_group("walls") #Pobranie wszystkich kafelków ściany
 	for item in map_objects:
 		tiles = item.get_used_cells() #Przypisuje pozycje wszystkich kafelków
 		for i in tiles:
@@ -27,14 +25,9 @@ func _ready():
 			grid.add_child(new_marker) #Dodaje do mapy ikonę
 			new_marker.show()
 			markers[new_marker] = Vector2(i.x*16,i.y*16) #Przypisuje pozycję na mapie kafelkom
-			
-			
-		#var news_marker = chest_marker.duplicate() #Bierze ikonę skrzyni
-		#grid.add_child(news_marker) #Dodaje
-		#news_marker.show()          #Wyświetla
 		
 		
-func _process(delta):
+func _physics_process(delta):
 	if !player: #Jeżeli nie znaleziono węzła gracza to zakończ dałanie funkcji
 		return
 	for item in markers: #Pętla ustala położenie ikon względem gracza
@@ -43,17 +36,15 @@ func _process(delta):
 		
 		
 func _unhandled_input(event): #Funckcja mapy
-	
 	if event is InputEventKey:
-		if n==0:
-			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = false  
-				n=n+1                       
-		else:
-			if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
-				self.visible = true                    
-				
-				n=n-1
+		if event.pressed and event.scancode == KEY_M:
+			match fullscreen_map:
+				true:
+					self.visible = true  
+					fullscreen_map = false                         
+				false:
+					self.visible = false                  
+					fullscreen_map = true
 			
 			
 		
