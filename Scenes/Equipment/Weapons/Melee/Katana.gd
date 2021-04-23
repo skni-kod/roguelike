@@ -41,7 +41,7 @@ func _physics_process(delta):
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.scale.x = 0.6
 			$WeaponSprite.scale.y = -0.6
-			$WeaponSprite.rotation_degrees=-45
+			$WeaponSprite.rotation_degrees=45
 		else:
 			$WeaponSprite.scale.x = 0.6
 			$WeaponSprite.scale.y = 0.6
