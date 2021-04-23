@@ -1,56 +1,87 @@
-# Lil Devil.gd
+# EnemyTemplate.gd
 extends KinematicBody2D
-# bazowane na slime.gd
-const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
-const SPEED = 100 # szybkość fireballa
 
-signal died(body) # sygnał, czy Lil Devil umarł
+# === SYGNAŁY === #
+signal died(body) # sygnał, czy przeciwnik umarł
+# === ======= === #
 
-export var speed = 0.5 # prędkość własna Lil Devila
+# === PRELOAD (SCENY ITD.) === #
+# np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
+var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+# === ==================== === #
 
-# deklaracje pomocnych zmiennych
-var player = null 
-var move = Vector2.ZERO
-var right = 1 # zwrot prawo/lewo sprite'a
-var attack = false
-export var max_hp = 30 # wartość życia Lil Devila
+# === PORUSZANIE SIĘ === #
+export var speed = 0.5 # prędkość własna
+var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
+# === ============== === #
+
+# === WIZUALNE ZMIENNE === #
+# === ================ === #
+
+# === WYKRYWANIE CELU I ATAK === #
+var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
+var attack = false # zmienna ataku (czy atakuje)
+# === ====================== === #
+
+# === HP === #
+export var max_hp = 30 # wartość życia przeciwnika
 var hp:float = max_hp
+# === == === #
 
+# === HEALTHBAR === #
 export var health = 100 # procentowa wartość życia do healthbara
 onready var health_bar = $HealthBar # deklaracja odwołania do node $HealthBar
+# === ========= === #
 
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
-
+# === COINS === #
 var drop = {"minCoins":0,"maxCoins":5} # zakres minimalnej i maksymalnej ilości pieniędzy
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
+# === ===== === #
+
+# === ZMIENNE DLA POCISKU/BRONI === #
+# np.: const SPEED = 100
+# === ========================= === #
 
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 var enemyKnockback = 0
 # === ===================== === #
- 
+
+
+# === WSTĘPNIE INICJOWANE FUNKCJE === #
+# _ready wykonuje się JEDNORAZOWO na inicjalizacji przeciwnika
 func _ready():
-	health_bar.on_health_updated(health)
-	$Timer.stop()
+	health_bar.on_health_updated(health) # wstępne przypisanie wartości życia przeciwnika do healthbara
+# === =========================== === #
 
 
+# === PHYSICS PROCESS === #
+# _physics_process wykonuje się co klatkę, delta to zmienna czasowa, definiuje klatkę
+# nie stosować _process, ponieważ działa on zależnie od prędkości sprzętu
 func _physics_process(delta):
-	move = Vector2.ZERO
-	if player != null and health>0:
+	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
+	
+	if player != null and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
+		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
 			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
+		
+		# === MODYFIKACJA SPRITE'ÓW === #
 		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
-			$Sprites.scale.x = -0.5 # sprite'y zostają obrócone
+			$Sprites.scale.x = -1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
 		else:
-			$Sprites.scale.x = 0.5 # sprite'y zostają obrócone
+			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
+		# === ===================== === #
+		
 		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
-	elif !attack and health>0:
+	
+	elif !attack and health>0: # jeśli nie atakuje i żyje
 		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
@@ -60,8 +91,10 @@ func _physics_process(delta):
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
 	# === ========================== === #
+	
+# === =============== === #
 
-
+# === POLE WIDZENIA WZROK === #
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
 		player = body
@@ -70,8 +103,10 @@ func _on_Wzrok_body_entered(body):
 func _on_Wzrok_body_exited(body):
 	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
 		player = null
+# === ================== === #
 
 
+# === POLE WIDZENIA ATAK === #
 func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
 		attack = true
@@ -81,22 +116,24 @@ func _on_Atak_body_exited(body):
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
 		attack = false
 		$Timer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
+# === ================== === #
 
 
+# === TIMEOUT NODA TIMER === #
 func _on_Timer_timeout():
 	if attack and health>0: # gdy przełącznik attack jest włączony i Lil Devil żyje, to wykonuje funkcje
 		$HeadAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
-		shoot() # wykonanie funkcji shoot()
+		attack()
+# === ================== === #
 
 
-func shoot():
-	var fireball = FIREBALL_SCENE.instance() # stworzenie nowej instancji fireballa
-	var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main  
-	fireball.position = self.global_position + $Position2D.position  # pozycja fireballa to pozycja elementu $Position2D Lil Devila ( w jego paszczy )
-	fireball.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position # wprowadzam player_Pos do fireballa jako pozycję playera
-	main.add_child(fireball) # ustawiam fireballa jako child maina
+# === FUNCKJA ATAKU === #
+func attack():
+	pass 
+# === ============= === #
 
 
+# === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
 func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		
@@ -118,27 +155,39 @@ func get_dmg(dmg, weaponKnockback):
 		
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
-		# Animacje śmierci zostają aktywowane na sprite'ach
+		# === ANIMACJE === #
 		$BodyAnimationPlayer.play("Die")
 		$HeadAnimationPlayer.play("Die")
-		# Czekanie aż animacje zostaną zakończone
+		# Czekanie na ukończenie
 		yield($BodyAnimationPlayer,"animation_finished")
 		yield($HeadAnimationPlayer,"animation_finished")
-		var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
-		rng.randomize() # losowanie generatora liczb
-		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
-		for i in range(0,coins): # pętla tworząca monety
-			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
-			var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
-			coin = coin.instance() # coin staje się nową instacją coina
-			coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
-			level.add_child(coin) # coin jest dzieckiem level
+		# === ======== === #
+		
+		# === UMIERANIE I COINSY === #
+		drop_coins()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
 		queue_free() # instancja Lil Devila zostaje usunięta
+		# === ================= === #
 		
-	# floating_dmg zostaje stworzony poprzed dodanie nowej instancji sceny floating_dmg jako zmienna text
+	# === WIZUALIZACJA ZADANEGO DMG === #
 	var text = floating_dmg.instance()
 	text.amount = dmg
 	text.type = "Damage"
 	add_child(text)	
-		
+	# === ========================= === #
+	
+# === ============================ === #
+
+
+# === FUNKCJA OPUSZCZANIA COINSÓW === #
+func drop_coins():
+	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
+	rng.randomize() # losowanie generatora liczb
+	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
+	for i in range(0,coins): # pętla tworząca monety
+		randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
+		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
+		coin = coin.instance() # coin staje się nową instacją coina
+		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
+		level.add_child(coin) # coin jest dzieckiem level
+# === =========================== === #
