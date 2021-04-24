@@ -63,7 +63,7 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
-	if player != null and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
+	if player != null and health>0 and !attack: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
@@ -78,9 +78,10 @@ func _physics_process(delta):
 		else:
 			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
 		# === ===================== === #
-		
 		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
-	
+	elif attack and health > 0:
+		yield($BodyAnimationPlayer,"animation_finished")
+		$BodyAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
 	elif !attack and health>0: # jeśli nie atakuje i żyje
 		$BodyAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
@@ -114,7 +115,6 @@ func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘ
 func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
 		attack = true
-		move = Vector2.ZERO
 		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
 
 func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
@@ -127,16 +127,13 @@ func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘG
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
 	if attack and health>0: # gdy przełącznik attack jest włączony i Lil Devil żyje, to wykonuje funkcje
-		yield($BodyAnimationPlayer,"animation_finished")
-		$BodyAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
-		yield($BodyAnimationPlayer,"animation_finished")
 		attack()
 # === ======================== === #
 
 
 # === FUNCKJA ATAKU === #
 func attack():
-	pass 
+	pass
 # === ============= === #
 
 
