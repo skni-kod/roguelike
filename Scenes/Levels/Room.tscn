@@ -6,7 +6,9 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
 
-[node name="Node2D" type="Area2D"]
+[node name="Node2D" type="Area2D" groups=[
+"walls",
+]]
 collision_layer = 2
 collision_mask = 5
 

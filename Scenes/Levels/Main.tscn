@@ -67,3 +67,5 @@ rect_scale = Vector2( 2, 2 )
 z_index = 2
 
 [node name="Weapons" parent="." instance=ExtResource( 4 )]
+
+[connection signal="map_generated" from="." to="UI/Map" method="_on_map_generated"]

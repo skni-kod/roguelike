@@ -22,7 +22,7 @@ func _ready():
 	self.rect_position.y = (get_viewport().size.y - rect_size.y)/2
 	player_marker.position = rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
 	grid_scale = grid.rect_size / (get_viewport_rect().size * zoom) #Skalowanie wielkości minimapy
-	var map_objects = get_tree().get_nodes_in_group("minimap_objects") #Pobranie wszystkich kafelków ściany
+	var map_objects = get_tree().get_nodes_in_group("walls") #Pobranie wszystkich kafelków ściany
 	for item in map_objects:
 		tiles = item.get_used_cells() #Przypisuje pozycje wszystkich kafelków
 		for i in tiles:
