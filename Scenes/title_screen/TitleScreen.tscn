@@ -12,8 +12,11 @@
 font_data = ExtResource( 5 )
 
 [node name="TitleScreen" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 1.136
+anchor_bottom = 1.166
+margin_top = -2.18921
+margin_right = -0.264038
+margin_bottom = 0.210815
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
