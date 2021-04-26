@@ -6,7 +6,6 @@
 [ext_resource path="res://Scenes/Levels/Camera.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/title_screen/music/projekt_8bit.ogg" type="AudioStream" id=5]
 
-
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.794702, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 0.359375, 0, 0, 1, 0.600586, 0, 0, 0 )
@@ -230,6 +229,7 @@ process_material = SubResource( 21 )
 visible = false
 position = Vector2( 0, -13.264 )
 process_material = SubResource( 26 )
+
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]

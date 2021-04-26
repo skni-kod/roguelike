@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/UI/StatusBar.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Actors/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Levels/Random_gen.gd" type="Script" id=3]
 [ext_resource path="res://autoloads/Weapons.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/UI/ManaBar.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/UI/Slots.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
@@ -24,6 +25,17 @@ margin_bottom = 4.749
 rect_scale = Vector2( 3, 3 )
 will_pulse = true
 
+[node name="ManaBar" parent="UI" instance=ExtResource( 13 )]
+anchor_left = 0.000615194
+anchor_right = 0.000615194
+margin_left = 3.0538
+margin_top = 35.9632
+margin_right = 3.0538
+margin_bottom = 35.9632
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 5 )
+healthy_color = Color( 0.0901961, 0.486275, 0.835294, 1 )
+
 [node name="StatusBar" parent="UI" instance=ExtResource( 1 )]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -32,10 +44,10 @@ rect_scale = Vector2( 2, 2 )
 [node name="Coins" parent="UI" instance=ExtResource( 16 )]
 anchor_left = 0.000615194
 anchor_right = 0.000615213
-margin_left = 6.12583
-margin_top = 39.112
-margin_right = 54.1258
-margin_bottom = 53.112
+margin_left = 2.32675
+margin_top = 60.4798
+margin_right = 50.3267
+margin_bottom = 74.4798
 rect_scale = Vector2( 2, 2 )
 
 [node name="Slots" parent="UI" instance=ExtResource( 14 )]
