@@ -21,11 +21,10 @@ var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
 var all_weapons_script
-var first_weapon_stats = {"attack":float(7.50)}
+var first_weapon_stats = {"attack":float(7.5)}
 var second_weapon_stats = {}
 var actual_slot = 1
 
-#zmienne do funkcji broni
 onready var ui_access_wslots = {
 	1: get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1"),
 	2: get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
@@ -34,7 +33,7 @@ onready var wslots_visibility = {
 	1: get_node("../UI/Slots/Background/w1slotbg"),
 	2: get_node("../UI/Slots/Background/w2slotbg")
 }
-
+onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -140,7 +139,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[2] == "Empty":
 				swap_weapon(2,weaponToTake) #jezeli gracz ma 1 bronke to podniesiona bronka jest na drugim slocie
-				actual_slot = 2
 			else:
 				swap_weapon(actual_slot,weaponToTake) #zamiana bronki lezacej z uzywanej
 				
@@ -219,6 +217,17 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
+			
+func check_current_weapon(): #funkcja sprawdza aktualnie uzywana bron gracza porownujac tekstury
+	if weapons[2] == "Empty": #jezeli drugi slot jest pusty to zawsze zwracany jest slot nr 1
+		return 1
+	else:
+		if all_weapons[weapons[1]] == actualweapon_access.texture: 
+			return 1
+		elif all_weapons[weapons[2]] == actualweapon_access.texture:
+			return 2
+		
+
 
 func change_potion_slot(): #funcja zamieniająca potki miejscami
 	var tmp = potions[1]
@@ -226,7 +235,8 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 	potions[2] = tmp
 	UpdatePotions()
 	
-func change_weapon_slot(currentSlot): #funkcja zmieniajaca sloty
+
+func change_weapon_slot(currentSlot):
 	match currentSlot:
 		1:
 			actual_slot = 2
@@ -244,8 +254,8 @@ func change_weapon_slot(currentSlot): #funkcja zmieniajaca sloty
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
 
 
-func swap_weapon(slot,weaponOnGround): #funkcja podnoszenia broni
-	match slot: #switchcase do ui
+func swap_weapon(slot,weaponOnGround):
+	match slot:
 		1:
 			ui_access_wslots[1].texture = all_weapons[weaponOnGround.WeaponName]
 			first_weapon_stats = weaponOnGround.Stats
@@ -269,6 +279,7 @@ func swap_weapon(slot,weaponOnGround): #funkcja podnoszenia broni
 	$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 	weaponOnGround.queue_free()
 	
+			
 func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 	if potions[2] !="Empty":
 		if slot == 1:
