@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/shieldemiss.png-62ecf2426879cb3ffa7cc2c3b6920017.stex"
+path="res://.import/ShieldEmissionMask.png-4279f3c449880521ffddda1e94d4cd84.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Projectiles/shieldemiss.png"
-dest_files=[ "res://.import/shieldemiss.png-62ecf2426879cb3ffa7cc2c3b6920017.stex" ]
+source_file="res://Assets/Projectiles/ShieldEmissionMask.png"
+dest_files=[ "res://.import/ShieldEmissionMask.png-4279f3c449880521ffddda1e94d4cd84.stex" ]
 
 [params]
 
