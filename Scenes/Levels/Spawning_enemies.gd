@@ -1,5 +1,6 @@
 extends Node
 
+
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
@@ -95,6 +96,8 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
+	
+	
 
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
