@@ -63,10 +63,10 @@ func _unhandled_input(event): #Funckcja mapy
 		if event.pressed and event.scancode == KEY_M:  #Jeżeli nacisnął przycisk mapy
 			match fullscreen_map:
 				true:
-					self.visible = false 
+#					self.visible = false # (funkcjonalność dużej mapy tymczasowo zablokowana)
 					fullscreen_map = false                       
 				false:
-					self.visible = true                   
+#					self.visible = true # (funkcjonalność dużej mapy tymczasowo zablokowana)                 
 					fullscreen_map = true
 			
 			
