@@ -107,8 +107,8 @@ texture = ExtResource( 5 )
 
 [node name="BodySprite" type="Sprite" parent="Sprites"]
 texture = ExtResource( 2 )
-hframes = 5
 vframes = 4
+hframes = 5
 frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -140,7 +140,6 @@ anims/Walk = SubResource( 8 )
 
 [node name="AttackTimer" type="Timer" parent="."]
 autostart = true
-
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]

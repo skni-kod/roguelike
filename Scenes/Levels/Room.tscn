@@ -9,7 +9,7 @@ extents = Vector2( 208, 112 )
 [node name="Node2D" type="Area2D" groups=[
 "walls",
 ]]
-collision_layer = 2
+collision_layer = 0
 collision_mask = 5
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -25,5 +25,4 @@ script = ExtResource( 2 )
 
 [node name="area" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
-
 [connection signal="body_entered" from="." to="Enemies" method="_on_Node2D_body_entered"]
