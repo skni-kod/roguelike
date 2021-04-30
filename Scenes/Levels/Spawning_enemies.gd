@@ -80,7 +80,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
 				rand.randomize()
-				var enemy = all_enemies[rand.randi_range(9,9)].instance() #rodzaj przeciwnika
+				var enemy = all_enemies[rand.randi_range(0,9)].instance() #rodzaj przeciwnika
 				rand.randomize()
 				enemy.position.x = rand.randf_range(-180,180) #pozycja x
 				rand.randomize()
