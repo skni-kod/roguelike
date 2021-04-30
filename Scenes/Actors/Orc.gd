@@ -10,6 +10,9 @@ signal died(body) # sygnał, czy przeciwnik umarł
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
 # === ==================== === #
 
+onready var statusEffect = get_node("../../../UI/StatusBar")
+var right = 0.155		#Kierunek obrócenia
+
 # === PORUSZANIE SIĘ === #
 export var speed = 0.5 # prędkość własna
 var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
@@ -26,6 +29,10 @@ var attack = false # zmienna ataku (czy atakuje)
 # === HP === #
 export var max_hp = 30 # wartość życia przeciwnika
 var hp:float = max_hp
+# === == === #
+
+# === 	DPS === #
+export var dps = 10
 # === == === #
 
 # === HEALTHBAR === #
@@ -70,8 +77,7 @@ func _physics_process(delta):
 			move = global_position.direction_to(player.global_position) * speed # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
-		# === ======================== === #
-		
+		$BodyAnimationPlayer.play("Walk")
 		# === MODYFIKACJA SPRITE'ÓW === #
 		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
@@ -114,6 +120,9 @@ func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘ
 # GRUPA COLLISION AREA2D "ATAK" -> PLAYER
 func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
+		statusEffect.bleeding = true # w trakcie kolizji z playerem, ten może krwawić
+		statusEffect.poison = true # w trakcie kolizji z playerem, ten może zostać zatruty 
+		body.take_dmg(dps, enemyKnockback, self.global_position) # jeśli przeciwnik natrafi na body playera to zadaje mu damage o wartości dmg
 		attack = true
 		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
 
@@ -133,6 +142,7 @@ func _on_AttackTimer_timeout():
 
 # === FUNCKJA ATAKU === #
 func attack():
+	player.take_dmg(dps, enemyKnockback, self.global_position)	
 	pass
 # === ============= === #
 
@@ -182,6 +192,7 @@ func get_dmg(dmg, weaponKnockback):
 	add_child(text)	
 	# === ========================= === #
 	
+
 # === ============================ === #
 
 
@@ -197,3 +208,6 @@ func drop_coins():
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
 # === =========================== === #
+
+		
+	

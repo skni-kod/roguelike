@@ -11,7 +11,7 @@ extents = Vector2( 9.92599, 9.9604 )
 [sub_resource type="CircleShape2D" id=2]
 radius = 178.681
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 15.5892, 21.8768 )
 
 [sub_resource type="Animation" id=4]
@@ -109,7 +109,7 @@ texture = ExtResource( 5 )
 texture = ExtResource( 2 )
 hframes = 5
 vframes = 4
-frame = 5
+frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 5.833 )
@@ -117,7 +117,6 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -128,8 +127,9 @@ shape = SubResource( 2 )
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+position = Vector2( -0.0662155, 0.0662155 )
 rotation = 1.5708
-shape = SubResource( 9 )
+shape = SubResource( 3 )
 
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 4 )
