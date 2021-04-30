@@ -1,7 +1,5 @@
 extends Node
 
-signal visited(list)
-
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
@@ -30,7 +28,6 @@ var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte c
 var ilosc_enemy #aktualna ilosc przeciwnikow
 var boss = false #czy to jest pokoj z bossem
 onready var generation = get_node("../../../Main") #pobranie maina aby podpinac do niego pokoje
-onready var minimap = get_node("../../../Main/UI/Map")
 
 func _ready():
 	generation.connect("boss", self, "check_boss") #polaczenie sygnalu z generacji aby przeazac pokoj z bossem
@@ -96,9 +93,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
 		id_list.append(current_id)
-		print("Before: ", minimap.activeRooms)
-		minimap.activeRooms.append(current_id)
-		print("After: ", minimap.activeRooms)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 	

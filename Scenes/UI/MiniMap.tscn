@@ -58,6 +58,6 @@ texture = SubResource( 2 )
 
 [node name="Room" type="Sprite" parent="MarginContainer/Grid"]
 visible = false
-position = Vector2( 75, 75 )
+position = Vector2( 75, 47.5 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
