@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal health_updated(health, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów życia bohatera
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
+signal player_moved(movement_vec)
 
 onready var statusEffect = get_node("../UI/StatusBar")
 
@@ -139,8 +140,9 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
 			knockback *= 0.95
+			emit_signal("player_moved", knockback)
 		# === ========================== === #
-	
+		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if equipped != weaponToTake.WeaponName:
@@ -378,6 +380,7 @@ func movement(): #funkcja poruszania się
 		elif direction.x > 0: #jeżeli idzie w prawo
 			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
 			$AnimationPlayer.play("Run") #włącz animację "Run"
+	emit_signal("player_moved", velocity)
 
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
