@@ -24,9 +24,15 @@ var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 var enemyKnockback = 0.3
 # === ===================== === #
- 
+
 func _ready():
 	health_bar.on_health_updated(health)
+	var main = get_tree().get_root().find_node("Main",true,false)
+	var cloudScene = load("res://Scenes/Actors/PoisonousCloudModule.tscn")
+	var poisonCloud = cloudScene.instance()
+	poisonCloud.parent = self
+	poisonCloud.lastPosition = self.global_position
+	main.add_child(poisonCloud)
 
 func _physics_process(delta):
 	move = Vector2.ZERO
