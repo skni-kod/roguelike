@@ -1,4 +1,4 @@
-# EnemyTemplate.gd
+# PandaBoss.gd
 extends KinematicBody2D
 
 # === SYGNAŁY === #
@@ -11,7 +11,7 @@ var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt 
 # === ==================== === #
 
 # === PORUSZANIE SIĘ === #
-export var speed = 0.5 # prędkość własna
+export var speed = 1 # prędkość własna
 var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 # === ============== === #
 
@@ -20,7 +20,14 @@ var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 
 # === WYKRYWANIE CELU I ATAK === #
 var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
+
 var attack = false # zmienna ataku (czy atakuje)
+var player_pos = Vector2.ZERO
+onready var panda_direction = Vector2.ZERO
+var is_rolling = false
+var rolling = Vector2.ZERO
+var rolling_posibility
+var rolling_collision
 # === ====================== === #
 
 # === HP === #
@@ -31,16 +38,18 @@ var hp:float = max_hp
 # === HEALTHBAR === #
 export var health = 100 # procentowa wartość życia do healthbara
 onready var health_bar = $HealthBar # deklaracja odwołania do node $HealthBar
+onready var statusEffect = get_node("../../../UI/StatusBar")
 # === ========= === #
 
 # === COINS === #
-var drop = {"minCoins":0,"maxCoins":5} # zakres minimalnej i maksymalnej ilości pieniędzy
+var drop = {"minCoins":5,"maxCoins":10} # zakres minimalnej i maksymalnej ilości pieniędzy
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 # === ===== === #
 
-# === ZMIENNE DLA POCISKU/BRONI === #
+# === ZMIENNE DLA POCISKU/BRONI I ATAKU === #
 # np.: const SPEED = 100
+export var dps = 20
 # === ========================= === #
 
 # === ZMIENNE DO KNOCKBACKU === #
@@ -66,7 +75,7 @@ func _physics_process(delta):
 	if player != null and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and rolling == Vector2.ZERO:
 			move = global_position.direction_to(player.global_position) * speed # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
@@ -82,7 +91,7 @@ func _physics_process(delta):
 		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	
 	elif !attack and health>0: # jeśli nie atakuje i żyje
-		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
+		$BodyAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO: # jeśli nie ma knockbacku
@@ -100,6 +109,7 @@ func _physics_process(delta):
 func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
 		player = body
+	
 
 
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
@@ -125,22 +135,36 @@ func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘG
 
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
-	if attack and health>0: # gdy przełącznik attack jest włączony i Lil Devil żyje, to wykonuje funkcje
-		$HeadAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
+	if attack and health>0: # gdy przełącznik attack jest włączony i Panda żyje, to wykonuje funkcje
+		#$HeadAnimationPlayer.play("Attack") # włącza animację ataku gdy animacja Idle nie jest włączona
 		attack()
 # === ======================== === #
 
 
 # === FUNCKJA ATAKU === #
 func attack():
-	pass 
+	$BodyAnimationPlayer.play("Attack")
+	statusEffect.knockback = true
+	player.take_dmg(dps,enemyKnockback, self.global_position)
+	yield($BodyAnimationPlayer,"animation_finished")
 # === ============= === #
+
+func rolling_attack():
+	is_rolling = true
+	player_pos = player.global_position
+	rolling = global_position.direction_to(player_pos) * speed * 10
+	rolling_collision  = $RollingCollisionShape2D.get_collider()
+	if rolling_collision == player.name:
+		player.take_dmg(dps, enemyKnockback, self.global_position)
+	
+
+func _on_RollingArea_body_entered(body):
+	pass # Replace with function body.
 
 
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
 func get_dmg(dmg, weaponKnockback):
 	if health>0:
-		
 		# === KNOCKBACK === #
 		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
@@ -154,7 +178,7 @@ func get_dmg(dmg, weaponKnockback):
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
 		# Animacje obrażeń zostają aktywowane na sprite Body i Head
 		$BodyAnimationPlayer.play("Hurt")
-		$HeadAnimationPlayer.play("Hurt")
+		#$HeadAnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health) # healthbar zostaje zupdateowany z nową procentową ilością hp
 		health_bar.visible = true
 		# === =============== === #
@@ -163,10 +187,10 @@ func get_dmg(dmg, weaponKnockback):
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
 		$BodyAnimationPlayer.play("Die")
-		$HeadAnimationPlayer.play("Die")
+		#$HeadAnimationPlayer.play("Die")
 		# Czekanie na ukończenie
 		yield($BodyAnimationPlayer,"animation_finished")
-		yield($HeadAnimationPlayer,"animation_finished")
+		#yield($HeadAnimationPlayer,"animation_finished")
 		# === ======== === #
 		
 		# === UMIERANIE I COINSY === #
@@ -197,3 +221,5 @@ func drop_coins():
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
 # === =========================== === #
+
+
