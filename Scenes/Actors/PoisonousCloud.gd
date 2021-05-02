@@ -11,12 +11,12 @@ func _on_TimerDuration_timeout(): # Usun chmure po danym czasie
 
 func _on_PoisonousCloud_body_entered(body): # Jesli gracz wejdzie do chmury, uruchom timer wysylajacy sygnal "tick"
 	if(body.name == "Player"):
-		$TimerDamage.start()
+		$TimerTick.start()
 
 
 func _on_PoisonousCloud_body_exited(body): # Jesli gracz wyjdzie z chmury, zatrzymaj timer wysylajacy sygnal "tick"
 	if(body.name == "Player"):
-		$TimerDamage.stop()
+		$TimerTick.stop()
 		emit_signal("quitted")
 
 
