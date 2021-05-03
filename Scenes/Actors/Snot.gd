@@ -28,8 +28,8 @@ var enemyKnockback = 0.3
 func _ready():
 	health_bar.on_health_updated(health)
 	#### Dodanie trujacej chmury ####
-	var main = get_tree().get_root().find_node("Main",true,false)
-	var cloudScene = load("res://Scenes/Actors/PoisonousCloudModule.tscn")
+	var main = get_tree().get_root().get_node("Main")
+	var cloudScene = preload("res://Scenes/Actors/PoisonousCloudModule.tscn")
 	var poisonCloud = cloudScene.instance()
 	poisonCloud.parent = self
 	poisonCloud.lastPosition = self.global_position

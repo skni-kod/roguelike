@@ -2,14 +2,21 @@
 extends Node2D
 # PoisonousCloudModule - modul odpowiadajcy za tworzenie mniejszych chmur oraz zadawanie przez nie obrazen
 
-var poisonCloud = load("res://Scenes/Actors/PoisonousCloud.tscn") # Wczytanie sceny pojedynczej chmury
-var poisonBorder = load("res://Scenes/UI/PoisonBorder.tscn") # Wczytanie sceny obramowania informujacego gracza o przebywaniu w chmurze
+var poisonCloud = preload("res://Scenes/Actors/PoisonousCloud.tscn") # Wczytanie sceny pojedynczej chmury
+var poisonBorder = preload("res://Scenes/UI/PoisonBorder.tscn") # Wczytanie sceny obramowania informujacego gracza o przebywaniu w chmurze
 var isBorder = false # Zmienna przechowuje, czy aktualnie wyswietlane jest obramowanie
 var poisonBorderInst = null # Zmienna przechowujaca obramowanie
 var parent = null # Zmienna przechowujaca wlasciciela modulu
 onready var lastPosition = parent.global_position # Zmienna przechowujaca ostatnia pozycje wlasciciela
-onready var main = get_tree().get_root().find_node("Main",true,false) # Zmienna przechowujaca wezel main
+onready var main = get_tree().get_root().get_node("Main") # Zmienna przechowujaca wezel main
 onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false) # Zmienna do status effectow
+
+#### ========================= UWAGA =========================== ####
+# Aktualnie szansa na status effect poisona jest 25%, wiec moze sprawiac
+# wrazenie dosc losowego, w przyszlosci bedzie tu prawdopodobienstwo rowne
+# 100% i wtedy bedzie git
+#### ========================= ##### =========================== ####
+
 
 func _on_TimerSpawn_timeout(): # Tworzenie mniejszych chmur
 	if(!parent): # Jesli wlasciciel modulu zginal, po czasie skasuj modul
