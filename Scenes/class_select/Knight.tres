@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://ClassStats.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/class_select/heroes/Knight.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+type = "Knight"
+health = 80
+strength = 90
+intelligence = 30
+profile = ExtResource( 2 )

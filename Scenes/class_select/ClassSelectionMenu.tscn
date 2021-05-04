@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/class_select/choice_class.tscn" type="PackedScene" id=1]
+
+[node name="ClassSelectionMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 716.0
+size_flags_vertical = 3
+
+[node name="ClassDisplay" parent="VBoxContainer/CenterContainer" instance=ExtResource( 1 )]
+margin_left = 640.0
+margin_top = 358.0
+margin_right = 640.0
+margin_bottom = 358.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 720.0
+margin_right = 1280.0
+margin_bottom = 720.0
+
+[node name="KnightButton" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+
+[node name="WizardButton" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 4.0
+
+[node name="BarbarianButton" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 8.0
+margin_right = 8.0

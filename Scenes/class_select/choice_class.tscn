@@ -40,9 +40,9 @@ margin_right = 100.0
 margin_bottom = 198.0
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/CenterContainer"]
-margin_top = 48.0
+margin_top = 49.0
 margin_right = 100.0
-margin_bottom = 148.0
+margin_bottom = 149.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_min_size = Vector2( 100, 100 )
@@ -100,7 +100,7 @@ text = "   Knight
 autowrap = true
 clip_text = true
 
-[node name="Class2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Health" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 50.0
 margin_right = 396.0
 margin_bottom = 97.0
@@ -109,7 +109,7 @@ size_flags_horizontal = 7
 size_flags_vertical = 7
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Health"]
 margin_right = 196.0
 margin_bottom = 47.0
 rect_min_size = Vector2( 3, 3 )
@@ -124,7 +124,7 @@ text = "Health
 autowrap = true
 clip_text = true
 
-[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class2"]
+[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Health"]
 margin_left = 200.0
 margin_right = 396.0
 margin_bottom = 47.0
@@ -139,7 +139,7 @@ text = "   100
 autowrap = true
 clip_text = true
 
-[node name="Class3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Strength" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 101.0
 margin_right = 396.0
 margin_bottom = 147.0
@@ -148,7 +148,7 @@ size_flags_horizontal = 7
 size_flags_vertical = 7
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class3"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Strength"]
 margin_right = 196.0
 margin_bottom = 46.0
 rect_min_size = Vector2( 3, 3 )
@@ -163,7 +163,7 @@ text = "Strength
 autowrap = true
 clip_text = true
 
-[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class3"]
+[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Strength"]
 margin_left = 200.0
 margin_right = 396.0
 margin_bottom = 46.0
@@ -178,7 +178,7 @@ text = "   100
 autowrap = true
 clip_text = true
 
-[node name="Class4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Intelligence" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 151.0
 margin_right = 396.0
 margin_bottom = 198.0
@@ -187,7 +187,7 @@ size_flags_horizontal = 7
 size_flags_vertical = 7
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class4"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Intelligence"]
 margin_right = 196.0
 margin_bottom = 47.0
 rect_min_size = Vector2( 3, 3 )
@@ -195,14 +195,14 @@ rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 1 )
-text = "Intelligance
+text = "Intelligence
 
 
 "
 autowrap = true
 clip_text = true
 
-[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Class4"]
+[node name="Data" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Intelligence"]
 margin_left = 200.0
 margin_right = 396.0
 margin_bottom = 47.0
