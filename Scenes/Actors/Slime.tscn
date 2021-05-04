@@ -28,7 +28,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 12, 13, 14, 15 ]
+"values": [ 8, 9, 10, 11 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -92,7 +92,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 8, 9, 10, 11 ]
+"values": [ 12, 13, 14, 15 ]
 }
 
 [node name="Slime" type="KinematicBody2D" groups=[
@@ -120,7 +120,7 @@ scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 hframes = 4
 vframes = 5
-frame = 11
+frame = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )
