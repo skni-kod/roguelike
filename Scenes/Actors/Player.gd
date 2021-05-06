@@ -16,6 +16,7 @@ var base_health = 100 # bazowa ilość życia gracza
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
+
 var equipped #Aktualnie używana broń
 
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
@@ -48,6 +49,10 @@ var potion = null
 var base_hp = null  
 
 var Potion_in_time = 0
+
+var skok = false
+var skok_vector = Vector2.DOWN
+var stamina = 3
 
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
@@ -135,8 +140,8 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ========= === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			movement() #wywołanie funkcji poruszania się
+		if knockback == Vector2.ZERO :
+			movement(delta) #wywołanie funkcji poruszania się
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
 			knockback *= 0.95
@@ -358,48 +363,83 @@ func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 		potions[2] = potionOnGround
 		equipped_potion = potions[2]
 
-func movement(): #funkcja poruszania się
+func movement(delta): #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	).normalized() # Określenie kierunku poruszania się
-	velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
-	velocity = move_and_slide(velocity, Vector2.UP) #wywołanie poruszania się
+	if direction != Vector2.ZERO:
+		skok_vector = direction
+	if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
+		jump() 
+		stamina = stamina - 1
+	if skok :
+		velocity = velocity.move_toward(skok_vector * speed * 2, 500 * delta)
+	else :
+		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
+	move() #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
+		if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif direction.y != 0: #jeżeli porusza się w pionie
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-			if direction.x < 0: #jeżeli idzie w lewo
-				$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			else: #jeżeli idzie w prawo
-				$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-		elif direction.x < 0: #jeżeli idzie w lewo
-			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-		elif direction.x > 0: #jeżeli idzie w prawo
-			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-	emit_signal("player_moved", velocity)
+		elif !skok:
+			$AnimationPlayer.play("Run")
+	#	elif direction.y != 0: #jeżeli porusza się w pionie
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#		if direction.x < 0: #jeżeli idzie w lewo
+	#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		else: #jeżeli idzie w prawo
+	#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#	elif direction.x < 0: #jeżeli idzie w lewo
+	#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#	elif direction.x > 0: #jeżeli idzie w prawo
+	#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
 
+func jump():
+	skok = true
+	$AnimationPlayer.play("skok")
+	$skok.start()
+	$stamina_regen.start()
+	yield($skok,"timeout")
+	skok = false
+	
+func _on_stamina_regen_timeout():
+	if stamina < 3:
+		stamina = stamina + 1
+	else :
+		$stamina_regen.stop()
+
+
+func move():
+	velocity = move_and_slide(velocity, Vector2.UP)
+	if direction.x < 0 :
+		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	elif direction.x > 0:
+		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+
+
+	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if enemyKnockback != 0:
-		knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
-	if knockbackResistance != 0:
-		knockback /= knockbackResistance
-	elif knockbackResistance <= 0.6:
-		knockback /= 0.6
-	# ======= ========= ======= #
-	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
-	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
-	got_hitted = true #bohater jest uderzany
-	$AnimationPlayer.play("Hit") #włącz animację "Hit"
-	yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
-	got_hitted = false #bohater nie jest uderzany
-	if (health <= 0):
-		get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+	if !skok:
+		if enemyKnockback != 0:
+			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		if knockbackResistance != 0:
+			knockback /= knockbackResistance
+		elif knockbackResistance <= 0.6:
+			knockback /= 0.6
+		# ======= ========= ======= #
+		health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
+		got_hitted = true #bohater jest uderzany
+		$AnimationPlayer.play("Hit") #włącz animację "Hit"
+		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
+		got_hitted = false #bohater nie jest uderzany
+		if (health <= 0):
+			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
+	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:
