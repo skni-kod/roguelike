@@ -23,7 +23,7 @@ func _on_TimerSpawn_timeout(): # Tworzenie mniejszych chmur
 		$TimerDestroy.start()
 		$TimerSpawn.stop()
 		return
-	var position = parent.global_position # Ustaw aktualna pozycje wlasciciela
+	var position = parent.global_position # Ustaw aktualna pozycje wlasciciela (poprawić)
 	if(position.distance_to(lastPosition) > 5): # Jezeli ruszyl sie na dalej niz 5 jednostek od stworzenia ostatniej chmury, stworz nowa chmure
 		lastPosition = position # Zaktualizuj ostatnia pozycje
 		# Stworz chmure
