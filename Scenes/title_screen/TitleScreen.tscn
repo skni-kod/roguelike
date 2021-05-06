@@ -76,4 +76,5 @@ By SKNI KOD"
 
 [node name="FadeIn" parent="." instance=ExtResource( 7 )]
 visible = false
+
 [connection signal="fade_finished" from="FadeIn" to="." method="_on_FadeIn_fade_finished"]
