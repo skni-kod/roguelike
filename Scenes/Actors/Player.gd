@@ -13,7 +13,8 @@ export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
-var base_health = 100 # bazowa ilość życia gracza
+var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
+var max_mana=200 #maksymalna ilość many
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
@@ -24,7 +25,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(25), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -33,7 +34,6 @@ onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weap
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
-
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -84,7 +84,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Katana.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -101,11 +101,11 @@ func _ready(): #po inicjacji bohatera
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 	}
 	weapons = {
-		1 : "Blade",
+		1 : "Katana",
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Blade"
+	equipped = "Katana"
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -185,7 +185,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_1"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[1] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
@@ -222,7 +222,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_2"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[2] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
