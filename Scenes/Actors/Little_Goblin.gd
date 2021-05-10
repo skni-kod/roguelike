@@ -71,9 +71,10 @@ func _on_Atak_body_exited(body): #Jeśli gracz nie znajduję się w polu Atak to
 
 func _on_Timer_timeout():		
 	if attack and health>0:		#Jeśli gracz znajduję się w polu Atak i goblin żyje to zadaj obrażenia
+		player.take_dmg(dps, enemyKnockback, self.global_position)
+		yield($AnimationPlayer,"animation_finished")
 		$AnimationPlayer.play("Atak")
 		yield($AnimationPlayer,"animation_finished")
-		player.take_dmg(dps, enemyKnockback, self.global_position)
 
 func get_dmg(dmg, weaponKnockback):
 	if health > 0 :
