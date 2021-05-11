@@ -15,3 +15,19 @@ func update_class_display(class_data):
 	health_label.text=str(class_data.health)
 	strength_label.text=str(class_data.strength)
 	intelligence_label.text=str(class_data.intelligence)
+
+
+func _on_KnightButton_pressed():
+	var class_data = load("res://Scenes/class_select/Knight.tres")
+	update_class_display(class_data)
+
+
+func _on_WizardButton_pressed():
+	var class_data = load("res://Scenes/class_select/Wizard.tres")
+	update_class_display(class_data)
+
+
+func _on_BarbarianButton_pressed():
+	var class_data = load("res://Scenes/class_select/Barbarian.tres")
+	update_class_display(class_data)
+	
