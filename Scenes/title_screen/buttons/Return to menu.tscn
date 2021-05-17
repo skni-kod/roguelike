@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/title_screen/buttons/MenuButton.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 40
+size = 48
 font_data = ExtResource( 1 )
 
 [node name="MenuButton" type="Button"]
@@ -23,7 +23,7 @@ custom_fonts/font = SubResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 5
-text = "Label"
+text = "Exit to menu"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
