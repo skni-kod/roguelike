@@ -14,9 +14,9 @@ font_data = ExtResource( 5 )
 [node name="TitleScreen" type="Control"]
 anchor_right = 1.136
 anchor_bottom = 1.166
-margin_top = -2.18921
+margin_top = -3.44913
 margin_right = -0.264038
-margin_bottom = 0.210815
+margin_bottom = -1.04913
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -53,7 +53,7 @@ size_flags_vertical = 3
 [node name="StartButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 2 )]
 margin_right = 699.0
 margin_bottom = 60.0
-scene_to_load = "res://Scenes/Levels/Main.tscn"
+scene_to_load = "res://Scenes/class_select/ClassSelectionMenu.tscn"
 
 [node name="OptionsButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
 margin_top = 64.0

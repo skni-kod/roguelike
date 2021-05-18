@@ -1,4 +1,5 @@
-extends ColorRect
+extends Control
+
 
 onready var profile_image=get_node("MarginContainer/HBoxContainer/CenterContainer/TextureRect")
 onready var class_label=get_node("MarginContainer/HBoxContainer/VBoxContainer/Class/Data")
@@ -9,6 +10,7 @@ func _ready():
 	var class_data = load("res://Scenes/class_select/Knight.tres")
 	update_class_display(class_data)
 	
+
 func update_class_display(class_data):
 	profile_image.texture=class_data.profile
 	class_label.text=class_data.type
@@ -22,12 +24,24 @@ func _on_KnightButton_pressed():
 	update_class_display(class_data)
 
 
+
 func _on_WizardButton_pressed():
 	var class_data = load("res://Scenes/class_select/Wizard.tres")
 	update_class_display(class_data)
+	
 
 
 func _on_BarbarianButton_pressed():
 	var class_data = load("res://Scenes/class_select/Barbarian.tres")
 	update_class_display(class_data)
 	
+func _on_Button_pressed():
+	get_tree().change_scene("res://Scenes/Levels/Main.tscn")
+	
+
+
+
+
+
+
+

@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/class_select/ClassDisplay.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/class_select/heroes/Knight.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/class_select/heroes/Barbarian.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/class_select/heroes/Mage.png" type="Texture" id=4]
+[ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+font_data = ExtResource( 5 )
 
 [node name="ClassSelectionMenu" type="Control"]
 anchor_right = 1.0
@@ -21,18 +28,58 @@ __meta__ = {
 
 [node name="Container" type="Container" parent="VBoxContainer"]
 margin_right = 1280.0
-margin_bottom = 358.0
+margin_bottom = 311.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ClassDisplay" parent="VBoxContainer/Container" instance=ExtResource( 1 )]
-margin_left = 415.0
+material = SubResource( 1 )
+use_parent_material = true
+margin_left = 390.0
 margin_top = 100.0
-margin_right = 915.0
+margin_right = 890.0
 margin_bottom = 300.0
+focus_mode = 2
+
+[node name="CenterContainer4" type="CenterContainer" parent="VBoxContainer"]
+margin_top = 315.0
+margin_right = 1280.0
+margin_bottom = 405.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="VBoxContainer/CenterContainer4"]
+margin_left = 390.0
+margin_right = 890.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 500, 90 )
+size_flags_horizontal = 7
+size_flags_vertical = 5
+expand_icon = true
+
+[node name="Label" type="Label" parent="VBoxContainer/CenterContainer4/Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = 3.5874
+margin_right = -1.0
+margin_bottom = 3.5874
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_y = 5
+text = "Play"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 362.0
+margin_top = 409.0
 margin_right = 1280.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
@@ -40,49 +87,50 @@ size_flags_vertical = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 424.0
-margin_bottom = 358.0
+margin_bottom = 311.0
 rect_min_size = Vector2( 60, 60 )
 size_flags_horizontal = 3
 
 [node name="KnightButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/CenterContainer"]
 margin_left = 167.0
-margin_top = 129.0
+margin_top = 100.0
 margin_right = 257.0
-margin_bottom = 229.0
-rect_min_size = Vector2( 90, 100 )
+margin_bottom = 210.0
+rect_min_size = Vector2( 90, 110 )
 size_flags_horizontal = 3
 texture_normal = ExtResource( 2 )
 expand = true
 
-[node name="CenterContainer2" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="CenterContainer3" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 428.0
 margin_right = 852.0
-margin_bottom = 358.0
+margin_bottom = 311.0
 size_flags_horizontal = 3
 
-[node name="WizardButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/CenterContainer2"]
+[node name="WizardButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/CenterContainer3"]
 margin_left = 167.0
-margin_top = 129.0
+margin_top = 105.0
 margin_right = 257.0
-margin_bottom = 229.0
+margin_bottom = 205.0
 rect_min_size = Vector2( 90, 100 )
 texture_normal = ExtResource( 4 )
 expand = true
 
-[node name="CenterContainer3" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="CenterContainer2" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 856.0
 margin_right = 1280.0
-margin_bottom = 358.0
+margin_bottom = 311.0
 size_flags_horizontal = 3
 
-[node name="BarbarianButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/CenterContainer3"]
+[node name="BarbarianButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/CenterContainer2"]
 margin_left = 167.0
-margin_top = 129.0
+margin_top = 105.0
 margin_right = 257.0
-margin_bottom = 229.0
+margin_bottom = 205.0
 rect_min_size = Vector2( 90, 100 )
 texture_normal = ExtResource( 3 )
 expand = true
+[connection signal="pressed" from="VBoxContainer/CenterContainer4/Button" to="VBoxContainer/Container/ClassDisplay" method="_on_Button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/KnightButton" to="VBoxContainer/Container/ClassDisplay" method="_on_KnightButton_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer2/WizardButton" to="VBoxContainer/Container/ClassDisplay" method="_on_WizardButton_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer3/BarbarianButton" to="VBoxContainer/Container/ClassDisplay" method="_on_BarbarianButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer3/WizardButton" to="VBoxContainer/Container/ClassDisplay" method="_on_WizardButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer2/BarbarianButton" to="VBoxContainer/Container/ClassDisplay" method="_on_BarbarianButton_pressed"]
