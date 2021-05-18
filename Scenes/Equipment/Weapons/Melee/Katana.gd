@@ -1,5 +1,7 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
+
 var mouse_position
 var attack = false
 var attack_vector = Vector2.ZERO
@@ -10,6 +12,7 @@ var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
 var passiveAbilityDamageMultiplier=0.25 #Pasywna umiejętność, dodatkowe obrażenia w procentach
 var passiveAbilityStacks=0 #Obecny stopień umiejętności
 var passiveAbilityMaxStacks=25 #Maksymalny stopień umiejętności
+var abilityManaCost=20
 var weaponKnockback
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
@@ -49,9 +52,10 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
-	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
 		
+		
+	if Input.is_action_just_pressed("use_ability_2"):
+		player_node.updateMana(-25)
 	
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
@@ -87,7 +91,7 @@ func _on_Timer_timeout():
 		attack = false
 		attack_speed=0
 		if isEnemyHit == 1:#passive ability revelant shit
-			print("Enemy got fucked")
+			print("Enemy got fucked")#Delet this when done
 			print(float(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier))))
 			passiveAbilityStacks+=1
 		else:
