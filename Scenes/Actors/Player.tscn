@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
@@ -102,30 +102,46 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="CircleShape2D" id=14]
+[sub_resource type="Animation" id=14]
+resource_name = "skok"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 5, 5, 5, 5, 6, 8 ]
+}
+
+[sub_resource type="CircleShape2D" id=15]
 radius = 17.4039
 
-[sub_resource type="Gradient" id=15]
+[sub_resource type="Gradient" id=16]
 colors = PoolColorArray( 1, 0, 0, 1, 1, 0.703125, 0, 1 )
 
-[sub_resource type="GradientTexture" id=16]
-gradient = SubResource( 15 )
+[sub_resource type="GradientTexture" id=17]
+gradient = SubResource( 16 )
 
-[sub_resource type="Curve" id=17]
+[sub_resource type="Curve" id=18]
 max_value = 25.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 24.4318 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=18]
-curve = SubResource( 17 )
+[sub_resource type="CurveTexture" id=19]
+curve = SubResource( 18 )
 
-[sub_resource type="Curve" id=19]
+[sub_resource type="Curve" id=20]
 min_value = -1.0
 _data = [ Vector2( 0, 0.00681829 ), 0.0, 0.0, 0, 0, Vector2( 0.247126, 0.170455 ), 0.0, 0.0, 0, 0, Vector2( 0.5, -0.175 ), 0.0, 0.0, 0, 0, Vector2( 0.747126, 0.134091 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.0113636 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=20]
-curve = SubResource( 19 )
+[sub_resource type="CurveTexture" id=21]
+curve = SubResource( 20 )
 
-[sub_resource type="ParticlesMaterial" id=21]
+[sub_resource type="ParticlesMaterial" id=22]
 lifetime_randomness = 0.11
 emission_shape = 1
 emission_sphere_radius = 4.5
@@ -139,38 +155,38 @@ angular_velocity = 100.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 20 )
-damping_curve = SubResource( 18 )
+orbit_velocity_curve = SubResource( 21 )
+damping_curve = SubResource( 19 )
 scale = 1.5
 scale_random = 1.0
-color_ramp = SubResource( 16 )
+color_ramp = SubResource( 17 )
 
-[sub_resource type="Gradient" id=22]
+[sub_resource type="Gradient" id=23]
 offsets = PoolRealArray( 0, 0.284768, 0.5, 0.735099, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=23]
-gradient = SubResource( 22 )
+[sub_resource type="GradientTexture" id=24]
+gradient = SubResource( 23 )
 
-[sub_resource type="Curve" id=24]
+[sub_resource type="Curve" id=25]
 min_value = -1.5
 max_value = 1.5
 _data = [ Vector2( 0, -0.0306818 ), 0.0, 0.0, 0, 0, Vector2( 0.241379, -0.7125 ), 0.0, 0.0, 0, 0, Vector2( 0.517241, -1.5 ), 0.0, 0.0, 0, 0, Vector2( 0.724138, -0.981818 ), 0.0, 0.0, 0, 0, Vector2( 0.994253, -0.276136 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=25]
-curve = SubResource( 24 )
+[sub_resource type="CurveTexture" id=26]
+curve = SubResource( 25 )
 
-[sub_resource type="ParticlesMaterial" id=26]
+[sub_resource type="ParticlesMaterial" id=27]
 flag_disable_z = true
 spread = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 25 )
+orbit_velocity_curve = SubResource( 26 )
 radial_accel = 10.53
 scale = 2.0
-color_ramp = SubResource( 23 )
+color_ramp = SubResource( 24 )
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -195,6 +211,7 @@ position = Vector2( 0, -4 )
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 9
+frame = 4
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 7.109 )
@@ -213,6 +230,7 @@ autoplay = true
 anims/Hit = SubResource( 11 )
 anims/Idle = SubResource( 12 )
 anims/Run = SubResource( 13 )
+anims/skok = SubResource( 14 )
 
 [node name="Pick" type="Area2D" parent="."]
 collision_layer = 0
@@ -220,23 +238,34 @@ collision_mask = 97
 
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
 position = Vector2( 0, -0.0787468 )
-shape = SubResource( 14 )
+shape = SubResource( 15 )
 
 [node name="EquippedWeapon" parent="." instance=ExtResource( 3 )]
 
 [node name="BurningParticles" type="Particles2D" parent="."]
+visible = false
 position = Vector2( 0.198425, 5.55624 )
 emitting = false
 amount = 32
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 21 )
+process_material = SubResource( 22 )
 
 [node name="KnockbackParticles" type="Particles2D" parent="."]
 visible = false
 position = Vector2( 0, -13.264 )
-process_material = SubResource( 26 )
+process_material = SubResource( 27 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="skok" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="stamina_regen" type="Timer" parent="."]
+wait_time = 3.0
 
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]
+[connection signal="timeout" from="stamina_regen" to="." method="_on_stamina_regen_timeout"]

@@ -152,6 +152,7 @@ anims/Walk = SubResource( 8 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.25
 autostart = true
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]

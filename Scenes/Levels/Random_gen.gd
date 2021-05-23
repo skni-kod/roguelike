@@ -1,10 +1,11 @@
 extends Node
 
 signal boss(bossRoom)
+signal map_generated(map)
 
 var directions = [Vector2.DOWN,Vector2.UP,Vector2.RIGHT,Vector2.LEFT]
 var position = Vector2.ZERO
-var map = [] #lista zawierająca współrzedne pokojów
+export var map = [] #lista zawierająca współrzedne pokojów
 var rooms = [] #lista pokojów
 var queue = [] #kolejka do przechowywania koordynatów do generowania pokojów
 var rng := RandomNumberGenerator.new()
@@ -59,6 +60,7 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
 	emit_signal("boss", furthestRoom[0])
+	emit_signal("map_generated", map)
 
 func generate(): #funkcja generująca poziom (położenia pokojów)
 	map.append(Vector2(0,0)) #dodanie pierwszego pokoju do mapy
