@@ -17,6 +17,7 @@ var all_enemies = {
 		7 : preload("res://Scenes/Actors/Slime.tscn"),
 		8 : preload("res://Scenes/Actors/Snot.tscn"),
 		9 : preload("res://Scenes/Actors/Orc.tscn"),
+		10 : preload("res://Scenes/Actors/Golem.tscn")
 	}
 var bossScene = load("res://Scenes/Actors/MageBoss/MageBoss.tscn")
 var id_list = [] #Lista ID pokojów, w których był już player
