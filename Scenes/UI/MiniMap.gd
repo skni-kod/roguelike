@@ -42,7 +42,7 @@ func _physics_process(delta):
 		# Przesuwanie o dostosowany do skali mapy wektor poruszania się gracza
 		markers[item] -= Vector2(playerMovement.x/16/1.7, playerMovement.y/9/5.5)/((get_viewport_rect().size)/(grid.rect_size*zoom))
 		
-		if player_marker.position.x - (abs(item.position.x)) >= -32 and player_marker.position.x - (abs(item.position.x)) <= 32 and player_marker.position.y - (abs(item.position.y)) >= -18 and player_marker.position.y - (abs(item.position.y)) <= 18 and item.get_texture() != seen_room_sprite:
+		if player_marker.position.x - item.position.x >= -32 and player_marker.position.x - (abs(item.position.x)) <= 32 and player_marker.position.y - (abs(item.position.y)) >= -18 and player_marker.position.y - (abs(item.position.y)) <= 18 and item.get_texture() != seen_room_sprite:
 			item.set_texture(seen_room_sprite)
 	# === ============================================ === #
 	
