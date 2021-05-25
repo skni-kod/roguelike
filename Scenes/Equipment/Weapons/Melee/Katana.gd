@@ -9,10 +9,11 @@ var attack_rotation=45
 export var attack_range = 5
 var timer #Cooldown pomiędzy atakami
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
-var passiveAbilityDamageMultiplier=0.25 #Pasywna umiejętność, dodatkowe obrażenia w procentach
+var passiveAbilityDamageMultiplier=0.35 #Pasywna umiejętność, dodatkowe obrażenia w procentach
 var passiveAbilityStacks=0 #Obecny stopień umiejętności
-var passiveAbilityMaxStacks=25 #Maksymalny stopień umiejętności
-var abilityManaCost=20
+var passiveAbilityMaxStacks=20 #Maksymalny stopień umiejętności
+var abilityDamage=0 #Temporary variable: Holds additional damaga inflicted by ability
+var abilityManaCost=25
 var weaponKnockback
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
@@ -49,14 +50,24 @@ func _physics_process(delta):
 			$WeaponSprite.scale.y = 1
 			$WeaponSprite.rotation_degrees=0
 
-
 	if Input.is_action_just_pressed("use_ability_1"):
-		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
-		
-		
+		#Really powerful blow - 40 bonus damage
+		if player_node.mana>=75:
+			player_node.updateMana(-75)
+			abilityDamage=45
+			_on_Player_attacked()
+		else:			
+			print("Insufficient mana, 75 required to cast ablitity")	
+				
 	if Input.is_action_just_pressed("use_ability_2"):
-		player_node.updateMana(-25)
-	
+		#Increase next attack damage by 12 costs 20 mana
+		if player_node.mana>=abilityManaCost:
+			player_node.updateMana(-abilityManaCost)
+			abilityDamage=12
+			_on_Player_attacked()
+		else:
+			print("Insufficient mana, " + String(abilityManaCost) +" required to cast ability")
+
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281
@@ -91,11 +102,9 @@ func _on_Timer_timeout():
 		attack = false
 		attack_speed=0
 		if isEnemyHit == 1:#passive ability revelant shit
-			print("Enemy got fucked")#Delet this when done
-			print(float(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier))))
 			passiveAbilityStacks+=1
 		else:
-			passiveAbilityStacks-=1
+			passiveAbilityStacks=0#Reset marksman stack on miss
 		if passiveAbilityStacks<0:#Clamp value
 			passiveAbilityStacks=0
 		if passiveAbilityStacks>passiveAbilityMaxStacks:
@@ -110,5 +119,6 @@ func change_weapon(texture):
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		isEnemyHit=1	
-		body.get_dmg(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier)), weaponKnockback)
+		body.get_dmg(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier))+abilityDamage, weaponKnockback)	
+		abilityDamage=0 #Reset ability damage
 		

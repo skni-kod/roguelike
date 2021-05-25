@@ -15,6 +15,8 @@ export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
 var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
 var max_mana=200 #maksymalna ilość many
+var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
+var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
@@ -25,7 +27,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(25), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -84,7 +86,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Katana.gd")) # Wczytanie danej broni na starcie
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -101,11 +103,11 @@ func _ready(): #po inicjacji bohatera
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 	}
 	weapons = {
-		1 : "Katana",
+		1 : "Blade",
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Katana"
+	equipped = "Blade"
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -128,6 +130,9 @@ func _ready(): #po inicjacji bohatera
 	UpdatePotions() 
 	
 	
+func _process(delta):	
+	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
+
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
@@ -265,7 +270,20 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 #	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 #		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 #			change_potion_slot() #potki zamieniają się miejscami w slotach
-			
+
+func updateMana(value):
+	level.get_node("Player").mana += value
+	if mana<0: 
+		level.get_node("Player").mana=0
+	if mana>max_mana:
+		level.get_node("Player").mana=max_mana
+	emit_signal("mana_updated", mana/max_mana*100)
+	
+
+func resetStats():#Reset player perks to default
+	manaRegenRate=statusEffect.manaRegenRate
+	
+
 func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
@@ -284,6 +302,7 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 	
 
 func change_weapon_slot(currentSlot):
+	resetStats()
 	if currentSlot == 1:
 		equipped = weapons[2]
 		w2slot_visibility.visible = true

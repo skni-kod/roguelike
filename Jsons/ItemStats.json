@@ -15,7 +15,7 @@
             "effect": "none"
         },
         "Katana": {
-            "attack": "25",
+            "attack": "12.5",
             "spd": "0.4",
             "knc": "0.1",
             "range": "melee",

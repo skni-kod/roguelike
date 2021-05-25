@@ -1,5 +1,7 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
+
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -7,9 +9,13 @@ export var attack_range = 15 #Zasięg ataku
 var timer #Stoper
 var damage = 1
 var attack_speed = 0.0
+var additionalManaRegen=1.5 #Passive ability - faster mana regen
 var a = 1
 var projectile
 var level
+
+func _ready():
+	player_node.manaRegenRate+=additionalManaRegen
 
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
