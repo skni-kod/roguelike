@@ -254,6 +254,7 @@ process_material = SubResource( 22 )
 [node name="KnockbackParticles" type="Particles2D" parent="."]
 visible = false
 position = Vector2( 0, -13.264 )
+process_material = SubResource( 26 )
 process_material = SubResource( 27 )
 
 [node name="Timer" type="Timer" parent="."]

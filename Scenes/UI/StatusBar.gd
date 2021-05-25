@@ -27,6 +27,7 @@ var poisonDMG = 2
 var speedMultiplier = 1
 var damageMultiplier = 1
 var knockbackMultiplier = 1
+var manaRegenRate=2.5
 
 # stacki efektów
 var burningStacks = 0
@@ -36,6 +37,7 @@ var poisonStacks = 0
 var bleedingStacks = 0
 var weaknessStacks = 0
 var healingStacks = 0
+var marksmanStacks = 0 #Consecutive hits scored on enemy, resets on miss
 
 # maksymalne ilosci stacków dla danych efektów
 var burningMaxStacks = 10
@@ -45,6 +47,7 @@ var poisonMaxStacks = 10
 var bleedingMaxStacks = 10
 var weaknessMaxStacks = 10
 var healingMaxStacks = 10
+var marksmanMaxStacks = 20
 
 # zmienne do różnych efektów
 var healAmount = 30

@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal health_updated(health, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów życia bohatera
+signal mana_updated(mana, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów many bohatera
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 signal player_moved(movement_vec)
@@ -12,7 +13,11 @@ var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
-var base_health = 100 # bazowa ilość życia gracza
+export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
+var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
+var max_mana=200 #maksymalna ilość many
+var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
+var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
@@ -33,7 +38,6 @@ onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weap
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
-
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -84,6 +88,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
+	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
@@ -132,6 +137,9 @@ func _ready(): #po inicjacji bohatera
 	UpdatePotions() 
 	
 	
+func _process(delta):	
+	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
+
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
@@ -192,7 +200,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_1"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[1] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
@@ -229,7 +237,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_2"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[2] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
@@ -269,10 +277,23 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
 			change_weapon_slot(current_weapon)
-	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
+      
+  if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
-			
+      
+func updateMana(value):
+	level.get_node("Player").mana += value
+	if mana<0: 
+		level.get_node("Player").mana=0
+	if mana>max_mana:
+		level.get_node("Player").mana=max_mana
+	emit_signal("mana_updated", mana/max_mana*100)
+	
+
+func resetStats():#Reset player perks to default
+	manaRegenRate=statusEffect.manaRegenRate
+
 func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
@@ -291,6 +312,7 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 	
 
 func change_weapon_slot(currentSlot):
+	resetStats()
 	if currentSlot == 1:
 		equipped = weapons[2]
 		w2slot_visibility.visible = true

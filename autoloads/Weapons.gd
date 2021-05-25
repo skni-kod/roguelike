@@ -28,7 +28,7 @@ var all_weapons = {
 			"effect": "none"
 		},
 		"Katana": {
-			"attack": "25",
+			"attack": "15",
 			"spd": "0.4",
 			"knc": float(0.1),
 			"range": "melee",
