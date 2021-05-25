@@ -24,8 +24,8 @@ func _physics_process(delta):
 		$AttackCollision.scale.y = 0.3
 		$AttackCollision.position.x = 12
 		$AttackCollision.position.y = 0
-		$WeaponSprite.scale.x = 0.8
-		$WeaponSprite.scale.y = -0.8
+		$WeaponSprite.scale.x = 1.2
+		$WeaponSprite.scale.y = -1.2
 		
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
@@ -37,10 +37,10 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.y = -0.8
+			$WeaponSprite.scale.y = -1.2
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 		else:
-			$WeaponSprite.scale.y = 0.8
+			$WeaponSprite.scale.y = 1.2
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 
 

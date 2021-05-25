@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Enemies/cuckshooterupdated.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/cuckshooter.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.44158, 4.97983 )
@@ -109,6 +110,11 @@ margin_right = -10.2437
 margin_bottom = -7.75467
 rect_scale = Vector2( 0.2, 0.2 )
 
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( -0.108393, 7.59764 )
+scale = Vector2( 0.31378, 0.156693 )
+texture = ExtResource( 4 )
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 vframes = 3
@@ -130,8 +136,8 @@ anims/Idle = SubResource( 5 )
 anims/Walk = SubResource( 6 )
 
 [node name="Wzrok" type="Area2D" parent="."]
-visible = false
 position = Vector2( -0.229851, 3.00339 )
+collision_layer = 0
 collision_mask = 2147483649
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -140,8 +146,8 @@ rotation = -0.13439
 shape = SubResource( 7 )
 
 [node name="Strzelanie" type="Area2D" parent="."]
-visible = false
 position = Vector2( 0.0834274, 3.67081 )
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Strzelanie"]
 position = Vector2( -1.31442, -1.00113 )

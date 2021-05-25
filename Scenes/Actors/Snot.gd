@@ -19,14 +19,24 @@ onready var health_bar = $HealthBar
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
 var randomPosition
 
+var poisonCloud = null
+
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 var enemyKnockback = 0.3
 # === ===================== === #
- 
+
 func _ready():
 	health_bar.on_health_updated(health)
+	#### Dodanie trujacej chmury ####
+	var main = get_tree().get_root().get_node("Main")
+	var cloudScene = preload("res://Scenes/Actors/PoisonousCloudModule.tscn")
+	poisonCloud = cloudScene.instance()
+	poisonCloud.parent = self
+	poisonCloud.lastPosition = self.global_position
+	main.add_child(poisonCloud)
+	####                         ####
 
 func _physics_process(delta):
 	move = Vector2.ZERO
@@ -122,6 +132,7 @@ func get_dmg(dmg, weaponKnockback):
 #		weapon.position = self.position
 #		level.add_child(weapon)
 		emit_signal("died", self)
+		poisonCloud.parent = null
 		queue_free()
 		
 	

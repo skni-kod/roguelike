@@ -8,15 +8,16 @@ radius = 6.97012
 height = 14.8487
 
 [node name="EquippedWeapon" type="Area2D"]
-position = Vector2( 0.280617, -0.280617 )
 script = ExtResource( 2 )
 
 [node name="WeaponSprite" type="Sprite" parent="."]
-position = Vector2( 9.82154, 0.280617 )
+position = Vector2( 13, 0 )
+scale = Vector2( 1.25, 1.25 )
 texture = ExtResource( 1 )
 
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 9.68123, 0.140308 )
+position = Vector2( 13, 0 )
+scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 1 )
 disabled = true
 

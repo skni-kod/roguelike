@@ -24,13 +24,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
-
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0.000244141, 0 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

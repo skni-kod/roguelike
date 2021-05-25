@@ -34,9 +34,11 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
+			$WeaponSprite.scale.x = 1
 			$WeaponSprite.scale.y = -1
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 		else:
+			$WeaponSprite.scale.x = 1
 			$WeaponSprite.scale.y = 1
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 

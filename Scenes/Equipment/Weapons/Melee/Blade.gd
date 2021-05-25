@@ -20,8 +20,8 @@ func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/blade.png")
-		$AttackCollision.scale.x = 1.5
-		$AttackCollision.scale.y = 0.3
+		$AttackCollision.scale.x = 2.2
+		$AttackCollision.scale.y = 0.4
 		$AttackCollision.position.x = 10
 		$AttackCollision.position.y = 0
 		a = 0
@@ -34,10 +34,12 @@ func _physics_process(delta):
 		else:
 			rotation += mouse_position.angle() * smoothing
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.y = -1
+			$WeaponSprite.scale.x = 1.2
+			$WeaponSprite.scale.y = -1.2
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 		else:
-			$WeaponSprite.scale.y = 1
+			$WeaponSprite.scale.x = 1.2
+			$WeaponSprite.scale.y = 1.2
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 
 

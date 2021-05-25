@@ -4,6 +4,7 @@ signal health_updated(health, amount) #deklaracja sygnału który będzie emitow
 signal mana_updated(mana, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów many bohatera
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
+signal player_moved(movement_vec)
 
 onready var statusEffect = get_node("../UI/StatusBar")
 
@@ -19,6 +20,7 @@ var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If
 var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
+
 
 var equipped #Aktualnie używana broń
 
@@ -52,31 +54,35 @@ var base_hp = null
 
 var Potion_in_time = 0
 
+var skok = false
+var skok_vector = Vector2.DOWN
+var stamina = 3
+
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
 
 func UpdatePotions(): #funkcja aktualizująca status potek
-	if potions[2] == "Empty": #jeżeli niema potki na slocie drugim to:
-		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
-		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
-		ui_access_pslot2.texture = null # usuniecie tekstury z slotu drugiego
-		potion2_amount.text = "" # ustawienie textu ilosci potek na nic
-	else:
+	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
+		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
+		potion1_amount.text = "" # ustawienie textu ilosci potek na nic
+		potions[1] = "Empty" #przypisanie potxe z slotu 1 nazwe Empty potrzebne do poprawnego działania
+	if potions_amount[potions[2]] == 0: #to samo co wyżej tylko dla slotu 2
+		ui_access_pslot2.texture = null
+		potion2_amount.text = ""
+		potions[2] = "Empty"
+		
+	if potions[2] != "Empty" and potions[1] != "Empty": #jeżeli niema potki na slocie pierwszy ani drugim to:
 		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
 		ui_access_pslot2.texture = all_potions[potions[2]] #przypisanie do textury slotu drugiego textury aktualnego drugiego potka
 		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 		potion2_amount.text = str(potions_amount[potions[2]]) #aktualizacja textu ilości potek w eq
+	elif potions[1] != "Empty":
+		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
+		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 		
-		if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
-			ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
-			potion1_amount.text = "" # ustawienie textu ilosci potek na nic
-			potions[1] = "Empty" #przypisanie potxe z slotu 1 nazwe Empty potrzebne do poprawnego działania
-		if potions_amount[potions[2]] == 0: #to samo co wyżej tylko dla slotu 2
-			ui_access_pslot2.texture = null
-			potion2_amount.text = ""
-			potions[2] = "Empty"
+	
 
 
 func _ready(): #po inicjacji bohatera
@@ -113,7 +119,8 @@ func _ready(): #po inicjacji bohatera
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
 		"100%Potion" : preload("res://Assets/Loot/Potions/Potion100.png"),
 		"20healthPotion" : preload("res://Assets/Loot/Potions/Potion+20hp.png"),
-		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png")
+		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png"),
+		"Empty" : preload("res://Assets/Loot/Potions/Empty.png")
 	}
 	potions = { #słownik przechowujący jaki potek jest na danym slocie
 		1 : "20healthPotion",
@@ -141,13 +148,14 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ========= === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			movement() #wywołanie funkcji poruszania się
+		if knockback == Vector2.ZERO :
+			movement(delta) #wywołanie funkcji poruszania się
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
 			knockback *= 0.95
+			emit_signal("player_moved", knockback)
 		# === ========================== === #
-	
+		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if equipped != weaponToTake.WeaponName:
@@ -165,7 +173,9 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"): #jeżeli gracz naciśnie przycisk pick
 			var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
 			var potion_tmp = potion.name #zmienna przechowująca rzeczywistą nazwe danego potka w scenie np 50%Potion2
-			if potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
+			if potions[1]=="Empty": #jeżeli niema potka na slocie 1 to:
+				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+			elif potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
 				swap_potion(2,potion_name) #ustawienie na slot 2 potka przy ktorym stoi gracz
 			else:
 				potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
@@ -267,10 +277,11 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
 			change_weapon_slot(current_weapon)
-#	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
-#		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
-#			change_potion_slot() #potki zamieniają się miejscami w slotach
-
+      
+  if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
+		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
+			change_potion_slot() #potki zamieniają się miejscami w slotach
+      
 func updateMana(value):
 	level.get_node("Player").mana += value
 	if mana<0: 
@@ -282,7 +293,6 @@ func updateMana(value):
 
 func resetStats():#Reset player perks to default
 	manaRegenRate=statusEffect.manaRegenRate
-	
 
 func check_current_weapon():
 	if weapons[2] == "Empty":
@@ -375,47 +385,83 @@ func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 		potions[2] = potionOnGround
 		equipped_potion = potions[2]
 
-func movement(): #funkcja poruszania się
+func movement(delta): #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	).normalized() # Określenie kierunku poruszania się
-	velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
-	velocity = move_and_slide(velocity, Vector2.UP) #wywołanie poruszania się
+	if direction != Vector2.ZERO:
+		skok_vector = direction
+	if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
+		jump() 
+		stamina = stamina - 1
+	if skok :
+		velocity = velocity.move_toward(skok_vector * speed * 2, 500 * delta)
+	else :
+		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
+	move() #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
+		if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif direction.y != 0: #jeżeli porusza się w pionie
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-			if direction.x < 0: #jeżeli idzie w lewo
-				$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			else: #jeżeli idzie w prawo
-				$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-		elif direction.x < 0: #jeżeli idzie w lewo
-			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-		elif direction.x > 0: #jeżeli idzie w prawo
-			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
+		elif !skok:
+			$AnimationPlayer.play("Run")
+	#	elif direction.y != 0: #jeżeli porusza się w pionie
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#		if direction.x < 0: #jeżeli idzie w lewo
+	#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		else: #jeżeli idzie w prawo
+	#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#	elif direction.x < 0: #jeżeli idzie w lewo
+	#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#	elif direction.x > 0: #jeżeli idzie w prawo
+	#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
 
+func jump():
+	skok = true
+	$AnimationPlayer.play("skok")
+	$skok.start()
+	$stamina_regen.start()
+	yield($skok,"timeout")
+	skok = false
+	
+func _on_stamina_regen_timeout():
+	if stamina < 3:
+		stamina = stamina + 1
+	else :
+		$stamina_regen.stop()
+
+
+func move():
+	velocity = move_and_slide(velocity, Vector2.UP)
+	if direction.x < 0 :
+		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	elif direction.x > 0:
+		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+
+
+	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if enemyKnockback != 0:
-		knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
-	if knockbackResistance != 0:
-		knockback /= knockbackResistance
-	elif knockbackResistance <= 0.6:
-		knockback /= 0.6
-	# ======= ========= ======= #
-	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
-	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
-	got_hitted = true #bohater jest uderzany
-	$AnimationPlayer.play("Hit") #włącz animację "Hit"
-	yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
-	got_hitted = false #bohater nie jest uderzany
-	if (health <= 0):
-		get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+	if !skok:
+		if enemyKnockback != 0:
+			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		if knockbackResistance != 0:
+			knockback /= knockbackResistance
+		elif knockbackResistance <= 0.6:
+			knockback /= 0.6
+		# ======= ========= ======= #
+		health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
+		got_hitted = true #bohater jest uderzany
+		$AnimationPlayer.play("Hit") #włącz animację "Hit"
+		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
+		got_hitted = false #bohater nie jest uderzany
+		if (health <= 0):
+			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
+	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:

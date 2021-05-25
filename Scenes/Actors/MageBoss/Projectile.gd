@@ -35,7 +35,7 @@ func _physics_process(delta):
 
 func _on_Projectile_body_entered(body):  #Jesli gracz wejdzie w pocisk
 	if body.name == "Player":
-		body.take_dmg(dps)  #Gracz otrzymuje obrazenia
+		body.take_dmg(dps, 0, self.global_position)  #Gracz otrzymuje obrazenia
 		#Szansa na podpalenie, zamrozenie lub oslabienie w zaleznosci od rodzaju kuli
 		if boss.phase == 1:
 			statusEffect.burning = true
