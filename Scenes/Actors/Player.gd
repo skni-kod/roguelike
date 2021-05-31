@@ -29,7 +29,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(75), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -277,11 +277,11 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
 			change_weapon_slot(current_weapon)
-      
-  if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
+	  
+	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
-      
+	  
 func updateMana(value):
 	level.get_node("Player").mana += value
 	if mana<0: 
@@ -336,11 +336,23 @@ func change_weapon_slot(currentSlot):
 func swap_weapon(slot,weaponOnGround):
 	if weapons[2] != "Empty":
 		if slot == 1:
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+			else:
+				ui_access_wslot1.scale.x = 2.25
+				ui_access_wslot1.scale.y = 2.25
 			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
 			first_weapon_stats = weaponOnGround.Stats
 			w1slot_visibility.visible = true
 			w2slot_visibility.visible = false
 		elif slot == 2:
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
+			else:
+				ui_access_wslot2.scale.x = 2.25
+				ui_access_wslot2.scale.y = 2.25
 			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
@@ -359,6 +371,12 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
 	else:
+		if weaponOnGround.WeaponName == "Katana":
+			ui_access_wslot2.scale.x = .8
+			ui_access_wslot2.scale.y = .8
+		else:
+			ui_access_wslot2.scale.x = 2.25
+			ui_access_wslot2.scale.y = 2.25
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
 		equipped = weapons[2]
