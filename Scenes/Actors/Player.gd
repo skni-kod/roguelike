@@ -29,7 +29,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(75), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
