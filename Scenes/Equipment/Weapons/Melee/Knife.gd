@@ -11,7 +11,8 @@ var damage
 var weaponKnockback
 var a = 1
 var skill = 0
-
+var skill1 = 1
+var skill2 = 1
 var smoothing = 1
 
 var attack_speed = 0
@@ -47,8 +48,9 @@ func _physics_process(delta):
 
 
 	if Input.is_action_just_pressed("use_ability_1"):
-		if player_node.mana > 25 and !skill:
+		if player_node.mana > 25 and !skill and skill1:
 			skill = 1
+			skill1 = 0
 			player_node.mana -= 25
 			for i in range(0,5):
 				
@@ -65,11 +67,18 @@ func _physics_process(delta):
 				yield(get_tree().create_timer(.1), "timeout")
 				timer.start()
 			skill = 0
+			yield(get_tree().create_timer(10),'timeout')
+			skill1 = 1
+			
 	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
-		
-	
-
+		if player_node.mana > 75 and skill2:
+			skill2 = 0
+			damage += 20
+			player_node.speed += 20
+			yield(get_tree().create_timer(10), "timeout")
+			damage -= 20
+			yield(get_tree().create_timer(30),'timeout')
+			skill2 = 1
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281
