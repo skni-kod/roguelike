@@ -1,5 +1,7 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
+
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -8,7 +10,9 @@ var timer #Stoper
 var damage
 var weaponKnockback
 var a = 1
-
+var skill = 0
+var skill1 = 1
+var skill2 = 1
 var smoothing = 1
 
 var attack_speed = 0
@@ -44,12 +48,37 @@ func _physics_process(delta):
 
 
 	if Input.is_action_just_pressed("use_ability_1"):
-		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
+		if player_node.mana > 25 and !skill and skill1:
+			skill = 1
+			skill1 = 0
+			player_node.mana -= 25
+			for i in range(0,5):
+				
+				if !attack and attack_speed==0:
+					attack = true
+				if i%2 == 0:rotation += .2
+				else:rotation -= .2*2
+				attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
+				if rotation < -PI/2 or rotation > PI/2:
+					$WeaponSprite.rotation_degrees = -90#-90
+				else:
+					$WeaponSprite.rotation_degrees = 90#90
+				$AttackCollision.disabled = false
+				yield(get_tree().create_timer(.1), "timeout")
+				timer.start()
+			skill = 0
+			yield(get_tree().create_timer(10),'timeout')
+			skill1 = 1
+			
 	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
-		
-	
-
+		if player_node.mana > 75 and skill2:
+			skill2 = 0
+			damage += 20
+			player_node.speed += 20
+			yield(get_tree().create_timer(10), "timeout")
+			damage -= 20
+			yield(get_tree().create_timer(30),'timeout')
+			skill2 = 1
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281
@@ -74,7 +103,8 @@ func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
 		position -= attack_vector*(animation_step/swing_back)
 	else:
 		$AttackCollision.disabled = true
-		attack = false
+		if !skill:
+			attack = false
 		attack_speed=0		
 		timer.stop()
 		reset_pivot()
