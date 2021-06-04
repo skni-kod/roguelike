@@ -1,16 +1,19 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
+
 var mouse_position
 var attack = false
 var attack_vector = Vector2.ZERO
 export var attack_range = 15
 var timer #Cooldown pomiędzy atakami
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
+var ability1ManaCost=1
+var ability2ManaCost=1
+var SR=0 #Stab rotation, potrzebne do ability 1
 var weaponKnockback
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
-
 var smoothing = 1
-
 var attack_speed = 0 #Zmienna służąca do animacji 
 var swing_to = 0.3
 var paused = 0.4
@@ -46,6 +49,22 @@ func _physics_process(delta):
 			$WeaponSprite.scale.y = 1.1
 			$WeaponSprite.rotation_degrees=90 #Obróć broń przodem do przeciwnika
 
+	if Input.is_action_just_pressed("use_ability_1"):
+		#Really powerful blow - 40 bonus damage
+		if player_node.mana>=ability1ManaCost:
+			player_node.updateMana(-ability1ManaCost)
+			ability1()
+		else:
+			print("Insufficient mana, " + String(ability1ManaCost) +" required to cast ability")
+	
+	if Input.is_action_just_pressed("use_ability_2"):
+		#Increase next attack damage by 12 costs 20 mana
+		if player_node.mana>=ability2ManaCost:
+			player_node.updateMana(-ability2ManaCost)
+			ability2()
+		else:
+			print("Insufficient mana, " + String(ability2ManaCost) +" required to cast ability")
+
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
@@ -60,11 +79,11 @@ func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń 
 func _on_Player_attacked():
 	if !attack and attack_speed==0:
 		attack = true
-		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
+		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation)+SR)
 		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.rotation_degrees = -90#-90
+			$WeaponSprite.rotation_degrees = -90-SR#-90
 		else:
-			$WeaponSprite.rotation_degrees = 90#90
+			$WeaponSprite.rotation_degrees = 90+SR#90
 		$AttackCollision.disabled = false
 		timer.start()
 
@@ -89,3 +108,25 @@ func change_weapon(texture):
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage, weaponKnockback)
+
+func ability1():
+	swing_to = 0.1
+	paused = 0.1
+	swing_back = 0.1
+	
+	var ticks = 30
+	for n in ticks:
+		var rng = RandomNumberGenerator.new() ##
+		rng.randomize() ##
+		SR = rng.randi_range(-10, 10) ##
+		_on_Player_attacked()
+		yield(get_tree().create_timer(0.1), "timeout")
+	
+	swing_to = 0.3
+	paused = 0.4 
+	swing_back = 0.5
+	SR=0
+
+
+func ability2():
+	print("xd")
