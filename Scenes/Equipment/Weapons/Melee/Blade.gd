@@ -16,6 +16,18 @@ var swing_to = 0.2
 var swing_back = 0.3
 var animation_step = 0.02
 
+var active_ability2 = 0
+var active_ability1 = 0
+#zmienne do wirka miecza
+var wirek_range = 25
+var wirek_smoothing = 0.01
+var wirek_speed = 0.2
+var wirek_time = 100
+
+#zmienne do um2
+var hits_amount = 3
+var hits_speed = 0.05
+
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
@@ -26,29 +38,84 @@ func _physics_process(delta):
 		$AttackCollision.position.y = 0
 		a = 0
 	if !attack: #Jeżeli nie atakuje to się porusza
-		mouse_position = get_local_mouse_position()
-		if rotation < -PI:
-			rotation = PI + mouse_position.angle() * smoothing
-		elif rotation > PI:
-			rotation = -PI + mouse_position.angle() * smoothing
-		else:
-			rotation += mouse_position.angle() * smoothing
-		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.scale.x = 1.2
-			$WeaponSprite.scale.y = -1.2
-			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
-		else:
-			$WeaponSprite.scale.x = 1.2
-			$WeaponSprite.scale.y = 1.2
-			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+		if active_ability1!=1:
+			mouse_position = get_local_mouse_position()
+			if rotation < -PI:
+				rotation = PI + mouse_position.angle() * smoothing
+			elif rotation > PI:
+				rotation = -PI + mouse_position.angle() * smoothing
+			else:
+				rotation += mouse_position.angle() * smoothing
+			if rotation < -PI/2 or rotation > PI/2:
+				$WeaponSprite.scale.x = 1.2
+				$WeaponSprite.scale.y = -1.2
+				$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+			else:
+				$WeaponSprite.scale.x = 1.2
+				$WeaponSprite.scale.y = 1.2
+				$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 
-
-	if Input.is_action_just_pressed("use_ability_1"):
-		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
-	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
-		
 	
+	
+	if Input.is_action_just_pressed("use_ability_1"):
+		if active_ability1!=1 and active_ability2!=1:
+			active_ability1 = 1;
+			
+			$AttackCollision.disabled = false
+			$WeaponSprite.position.x=wirek_range
+			for o in range(wirek_time):
+												#----------------------
+				var t = Timer.new()   			# Timer do wirka
+				t.set_wait_time(wirek_smoothing)#
+				t.set_one_shot(true)			#
+				self.add_child(t)				#
+				t.start()						#
+				yield(t, "timeout")				#
+												#----------------------
+				rotation += wirek_speed
+				
+				if rotation < -PI/2 or rotation > PI/2:
+					$WeaponSprite.scale.x = 1.2
+					$WeaponSprite.scale.y = -1.2
+					$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+				else:
+					$WeaponSprite.scale.x = 1.2
+					$WeaponSprite.scale.y = 1.2
+					$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+			
+			
+			
+			$WeaponSprite.position.x=13
+			$WeaponSprite.position.y=0
+			$AttackCollision.disabled = true
+			active_ability1 = 0;
+			
+	if Input.is_action_just_pressed("use_ability_2"):
+		if active_ability1!=1 and active_ability2!=1:
+			active_ability2 = 1;
+			swing_to = hits_speed
+			swing_back = hits_speed
+			animation_step = 0.01
+			timer.set_wait_time(animation_step)
+			
+			
+			for o in range(hits_amount):
+				_on_Player_attacked()
+				var t = Timer.new() 
+				t.set_wait_time(0.25)
+				t.set_one_shot(true)
+				self.add_child(t)
+				t.start()
+				yield(t, "timeout")	
+				
+			
+			swing_to = 0.2
+			swing_back = 0.3
+			animation_step = 0.02
+			timer.set_wait_time(animation_step)
+			active_ability2 = 0;
+		
+
 
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
@@ -56,7 +123,7 @@ func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń
 
 
 func _on_Player_attacked():
-	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
+	if !attack and active_ability1!=1:#Sprawdza czy broń nie jest w trakcie ataku
 		attack = true
 		$AttackCollision.disabled = false
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
