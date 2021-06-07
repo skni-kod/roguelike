@@ -17,6 +17,13 @@ var paused = 0.9
 var swing_back = 2
 var animation_step = 0.02
 
+#do um 1
+var active_ability1 = 0
+var damage_multipler = 3
+var knockback_multipler = 15
+var range_x = 3
+var range_y = 6
+
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
@@ -26,7 +33,7 @@ func _physics_process(delta):
 		$AttackCollision.position.x = 23
 		$AttackCollision.position.y = 0
 		a = 0
-	if !attack: #Jeżeli nie atakuje to się porusza
+	if !attack and active_ability1!=1: #Jeżeli nie atakuje to się porusza
 		mouse_position = get_local_mouse_position()
 		if rotation < -PI:
 			rotation = PI + mouse_position.angle() * smoothing
@@ -45,7 +52,53 @@ func _physics_process(delta):
 
 
 	if Input.is_action_just_pressed("use_ability_1"):
-		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
+		active_ability1 = 1
+		
+		var player_node := get_tree().get_root().find_node("Player", true, false)
+		var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
+		
+		var tmp = {
+			'position_x' : $AttackCollision.position.x,
+			'position_y' : $AttackCollision.position.y,
+			'scale_x' : $AttackCollision.scale.x,
+			'scale_y' : $AttackCollision.scale.y,
+			'damage' : equipped_weapon.damage,
+			'weaponKnockback' : equipped_weapon.weaponKnockback,
+		}
+		player_node.jump()
+		
+		var t = Timer.new()
+		t.set_wait_time(0.75) #recznie ustawiony wait time taki sam jak na timerze 'skok' w playerze
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+		
+		$AttackCollision.disabled = false
+		$AttackCollision.position.x = 0
+		$AttackCollision.position.y = 0
+		$AttackCollision.scale.x = range_x
+		$AttackCollision.scale.y = range_y
+		equipped_weapon.damage *= damage_multipler
+		equipped_weapon.weaponKnockback *= knockback_multipler
+		
+		t = Timer.new()
+		t.set_wait_time(0.1) 
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+	
+		$AttackCollision.disabled = true
+		$AttackCollision.position.x = tmp['position_x']
+		$AttackCollision.position.y = tmp['position_y']
+		$AttackCollision.scale.x = tmp['scale_x']
+		$AttackCollision.scale.y = tmp['scale_y']
+		equipped_weapon.damage = tmp['damage']
+		equipped_weapon.weaponKnockback = tmp['weaponKnockback']
+		
+		active_ability1 = 0
+		
 	if Input.is_action_just_pressed("use_ability_2"):
 		var palceholder20
 		

@@ -21,7 +21,7 @@ var active_ability1 = 0
 #zmienne do wirka miecza
 var wirek_range = 25
 var wirek_smoothing = 0.01
-var wirek_speed = 0.2
+var wirek_speed = 0.3
 var wirek_time = 100
 
 #zmienne do um2

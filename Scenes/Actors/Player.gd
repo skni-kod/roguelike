@@ -35,7 +35,10 @@ var second_weapon_stats = {}
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+
+#onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
+
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
 
@@ -62,6 +65,7 @@ var stamina = 3
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
+
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
@@ -92,7 +96,7 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Hammer.gd")) # Wczytanie danej broni na starcie
 	$EquippedWeapon.damage = first_weapon_stats["attack"]
 	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 	$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -109,11 +113,11 @@ func _ready(): #po inicjacji bohatera
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 	}
 	weapons = {
-		1 : "Blade",
+		1 : "Hammer",
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Blade"
+	equipped = "Hammer"
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -141,6 +145,8 @@ func _process(delta):
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
+	
+		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
