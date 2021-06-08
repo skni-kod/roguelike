@@ -19,7 +19,7 @@ var swing_to = 0.3
 var paused = 0.4
 var swing_back = 0.5
 var animation_step = 0.02
-
+var ability = 0
 
 func _physics_process(delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
@@ -51,7 +51,7 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		#Really powerful blow - 40 bonus damage
-		if player_node.mana>=ability1ManaCost:
+		if player_node.mana>=ability1ManaCost and !ability:
 			player_node.updateMana(-ability1ManaCost)
 			ability1()
 		else:
@@ -59,7 +59,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("use_ability_2"):
 		#Increase next attack damage by 12 costs 20 mana
-		if player_node.mana>=ability2ManaCost:
+		if player_node.mana>=ability2ManaCost and !ability:
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
 		else:
@@ -110,7 +110,7 @@ func _on_EquippedWeapon_body_entered(body):
 		body.get_dmg(damage, weaponKnockback)
 
 func ability1(): #obraca wokoło siebie włucznią i odpycha przeciników
-	
+	ability = 1
 	attack = true
 	weaponKnockback += 3 #zwiększamy odżut
 	$AttackCollision.scale.x = 3 #zwiększamy hitboxy żeby były tak długie jak włucznia przy pełym oddaleniu
@@ -126,9 +126,11 @@ func ability1(): #obraca wokoło siebie włucznią i odpycha przeciników
 	$AttackCollision.disabled = true
 	attack = false
 	reset_pivot()
+	ability = 0
 
 func ability2(): #seria szybkich nieprecyzyjnych ataków w stożku
 	
+	ability = 1
 	swing_to = 0.1 #zmieniamy zmienne od ataku żeby były szybsze
 	paused = 0.1 
 	swing_back = 0.1 
@@ -145,6 +147,6 @@ func ability2(): #seria szybkich nieprecyzyjnych ataków w stożku
 	paused = 0.4 
 	swing_back = 0.5
 	SR=0 #resetujemy stab rotation bo atak by został na zawsze z rotacja ostatniego z serii
-
+	ability = 0
 
 
