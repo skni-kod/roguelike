@@ -77,6 +77,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
+	$"/root/GameManager".get_player(self)
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
