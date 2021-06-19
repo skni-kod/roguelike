@@ -60,7 +60,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if active_ability1!=1 and active_ability2!=1:
 			active_ability1 = 1;
-			
+			$WeaponSprite/WirMiecza.emitting = true
 			$AttackCollision.disabled = false
 			$WeaponSprite.position.x=wirek_range
 			for o in range(wirek_time):
@@ -84,7 +84,7 @@ func _physics_process(delta):
 					$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 			
 			
-			
+			$WeaponSprite/WirMiecza.emitting = false
 			$WeaponSprite.position.x=13
 			$WeaponSprite.position.y=0
 			$AttackCollision.disabled = true
@@ -133,6 +133,7 @@ func _on_Player_attacked():
 func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
 	attack_speed += animation_step
 	if attack_speed <= swing_to:
+		if active_ability2 == 1: $WeaponSprite/TrzystronneCiecie.emitting = true
 		position += attack_vector * (animation_step/swing_to)
 		if rotation < -PI/2 or rotation > PI/2:
 			$WeaponSprite.rotation_degrees += -90 * (animation_step/swing_to)
@@ -140,6 +141,7 @@ func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
 			$WeaponSprite.rotation_degrees += 90 * (animation_step/swing_to)
 		
 	elif attack_speed > swing_back:
+		if active_ability2 == 1: $WeaponSprite/TrzystronneCiecie.emitting = false
 		position -= attack_vector
 		$WeaponSprite.rotation_degrees = 0
 		$AttackCollision.disabled = true
