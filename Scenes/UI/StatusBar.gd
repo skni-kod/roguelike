@@ -1,6 +1,8 @@
 # StatusBar.gd
 extends Control
 
+signal burner()
+
 # wczytanie potrzebnych node'ów w celu modyfikacji efektów statusu lub efektów wizualnych
 onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
