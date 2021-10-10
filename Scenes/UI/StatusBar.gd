@@ -1,14 +1,22 @@
 # StatusBar.gd
 extends Control
 
-signal burner()
-
 # wczytanie potrzebnych node'ów w celu modyfikacji efektów statusu lub efektów wizualnych
 onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
 onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
 onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
+
+# sygnały wszystkich efektów statusu ze wszystkimi ich parametrami
+signal burn(giver, reciever, lvl, prob, time)
+signal bleed(giver, reciever, lvl, prob, time)
+signal poison(giver, reciever, lvl, prob, time)
+
+signal freeze(giver, reciever, lvl, prob, time)
+signal knockback(giver, reciever, lvl, prob, time) 
+signal weakness(giver, reciever, lvl, prob, time)
+signal healing(giver, reciever, lvl, prob, time)
 
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
 var burning := false setget burn
@@ -99,6 +107,10 @@ func _physics_process(delta):
 
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
+
+func _on_bleed(giver, reciever, lvl, prob, time):
+	print("Burned")
+
 func burn(var fire):
 	if fire and prawdopodobienstwo(0.5):
 		if burningStacks <= burningMaxStacks: # ograniczam stacki do maksymalnej wartości stacków dla danego efektu
@@ -314,15 +326,5 @@ func prawdopodobienstwo(procent_prawdopodobienstwa):
 		return true
 	else:
 		return false
-
-
-
-
-
-
-
-
-
-
 
 

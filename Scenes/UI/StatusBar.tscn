@@ -474,6 +474,7 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[connection signal="bleed" from="." to="." method="_on_bleed"]
 [connection signal="timeout" from="StatusContainer/Burning/DisplayTime/Lifetime" to="." method="_on_Burning_Lifetime_timeout"]
 [connection signal="timeout" from="StatusContainer/Burning/Damage" to="." method="_on_Burning_Damage_timeout"]
 [connection signal="timeout" from="StatusContainer/Poison/DisplayTime/Lifetime" to="." method="_on_Poison_Lifetime_timeout"]
