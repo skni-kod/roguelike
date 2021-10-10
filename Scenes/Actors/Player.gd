@@ -453,6 +453,7 @@ func _on_stamina_regen_timeout():
 
 func move():
 	velocity = move_and_slide(velocity, Vector2.UP)
+	emit_signal("player_moved", velocity)
 	if direction.x < 0 :
 		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
 	elif direction.x > 0:
