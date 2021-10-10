@@ -125,7 +125,9 @@ func _on_Burning_Lifetime_timeout():
 func _on_Burning_Damage_timeout():
 	if burning:
 		player.take_dmg(burningDMG+(burningStacks*1.1), 0, player.global_position) # zadaje damage równy ilości bazowego damage danego efektu
-		$StatusContainer/Burning/Damage.start() # startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
+		# startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, 
+		# "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
+		$StatusContainer/Burning/Damage.start() 
 
 
 # -------------- ZATRUCIE -------------- #
@@ -306,7 +308,7 @@ func _on_Weakness_Lifetime_timeout():
 func prawdopodobienstwo(procent_prawdopodobienstwa):
 	randomize()
 	var percent = randf() # generator losowej liczby float/procentu
-	if (percent > procent_prawdopodobienstwa):
+	if (percent < procent_prawdopodobienstwa):
 		return true
 	else:
 		return false
