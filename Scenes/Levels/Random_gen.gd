@@ -119,3 +119,4 @@ func step(direction): #funkcja, która określa w którą stronę może zostać 
 func _ready():
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	generate() #generacja mapy
+
