@@ -109,7 +109,7 @@ func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage, weaponKnockback)
 
-func ability1(): #obraca wokoło siebie włucznią i odpycha przeciników
+func ability1(): #"obraca wokoło siebie włucznią i odpycha przeciników
 	ability = 1
 	attack = true
 	weaponKnockback += 3 #zwiększamy odżut
