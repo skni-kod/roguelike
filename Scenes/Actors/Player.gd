@@ -67,6 +67,8 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 # === ===================== === #
 
 
+var immortal = 0 #jezeli rowne 1 to niesmiertelny
+
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
 		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
@@ -468,7 +470,7 @@ func move():
 	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok:
+	if !skok and !immortal:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:

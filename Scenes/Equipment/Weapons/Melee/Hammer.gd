@@ -17,6 +17,8 @@ var paused = 0.9
 var swing_back = 2
 var animation_step = 0.02
 
+var t #do timera
+
 #do um 1
 var active_ability1 = 0
 var damage_multipler = 3
@@ -24,6 +26,9 @@ var knockback_multipler = 15
 var range_x = 3
 var range_y = 6
 
+#do um 2
+var immortal_time = 5 #czas niesmiertelnosci w sekundach
+var immortal_knockback = 20
 func _physics_process(delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
@@ -67,7 +72,7 @@ func _physics_process(delta):
 		}
 		player_node.jump()
 		
-		var t = Timer.new()
+		t = Timer.new()
 		t.set_wait_time(0.75) #recznie ustawiony wait time taki sam jak na timerze 'skok' w playerze
 		t.set_one_shot(true)
 		self.add_child(t)
@@ -100,8 +105,51 @@ func _physics_process(delta):
 		active_ability1 = 0
 		
 	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
 		
+		
+		var player_node := get_tree().get_root().find_node("Player", true, false)
+		var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
+		
+		var tmp = {
+			'position_x' : $AttackCollision.position.x,
+			'position_y' : $AttackCollision.position.y,
+			'scale_x' : $AttackCollision.scale.x,
+			'scale_y' : $AttackCollision.scale.y,
+			'damage' : equipped_weapon.damage,
+			'weaponKnockback' : equipped_weapon.weaponKnockback,
+		}
+		
+		$AttackCollision.disabled = false
+		$AttackCollision.position.x = 0
+		$AttackCollision.position.y = 0
+		$AttackCollision.scale.x = range_x
+		$AttackCollision.scale.y = range_y
+		equipped_weapon.damage = 0
+		equipped_weapon.weaponKnockback *= immortal_knockback
+		
+		t = Timer.new()
+		t.set_wait_time(0.1) 
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+	
+		$AttackCollision.disabled = true
+		$AttackCollision.position.x = tmp['position_x']
+		$AttackCollision.position.y = tmp['position_y']
+		$AttackCollision.scale.x = tmp['scale_x']
+		$AttackCollision.scale.y = tmp['scale_y']
+		equipped_weapon.damage = tmp['damage']
+		equipped_weapon.weaponKnockback = tmp['weaponKnockback']
+		
+		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		level.get_node("Player").immortal = 1 
+		t.set_wait_time(immortal_time) 
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+		level.get_node("Player").immortal = 0
 	
 func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
