@@ -40,4 +40,5 @@ amount = 10
 lifetime = 0.2
 local_coords = false
 process_material = SubResource( 4 )
+
 [connection signal="body_entered" from="." to="." method="_on_Projectile_body_entered"]

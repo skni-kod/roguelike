@@ -105,4 +105,5 @@ process_material = SubResource( 9 )
 
 [node name="Lifetime" type="Timer" parent="."]
 one_shot = true
+
 [connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]

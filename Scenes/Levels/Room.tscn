@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/TileMap/Room1.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Levels/Spawning_enemies.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+closed = false
+polygon = PoolVector2Array( -256, -144, 256, -144, 256, 144, -256, 144, -256, -144 )
 
 [node name="Node2D" type="Area2D" groups=[
 "walls",
@@ -25,5 +29,8 @@ script = ExtResource( 2 )
 
 [node name="area" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 2 )
 
 [connection signal="body_entered" from="." to="Enemies" method="_on_Node2D_body_entered"]

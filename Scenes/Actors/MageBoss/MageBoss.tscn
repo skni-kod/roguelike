@@ -1,6 +1,7 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/WaterBall.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Enemies/WindBall.png" type="Texture" id=6]
@@ -251,6 +252,10 @@ process_material = SubResource( 11 )
 [node name="Sprite" type="Sprite" parent="WaterFireCenter/Fireball"]
 texture = ExtResource( 4 )
 
+[node name="Light2D" parent="WaterFireCenter/Fireball" instance=ExtResource( 2 )]
+scale = Vector2( 0.2, 0.2 )
+color = Color( 1, 0.866667, 0, 1 )
+
 [node name="Waterball" type="Area2D" parent="WaterFireCenter"]
 position = Vector2( 40, 0 )
 collision_layer = 8
@@ -330,6 +335,7 @@ anims/Die = SubResource( 21 )
 
 [node name="FireTimer" type="Timer" parent="."]
 wait_time = 2.0
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]
