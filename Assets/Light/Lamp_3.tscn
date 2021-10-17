@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Light/Lamp.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Light/Lamp_3.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 10, 12 )
+
+[node name="Lamp_3" type="StaticBody2D"]
+scale = Vector2( 1.5, 1.5 )
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
+z_index = 1
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 51, 0, 20, 24 )
+
+[node name="Light2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, 8 )
+color = Color( 1, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
