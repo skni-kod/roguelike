@@ -18,8 +18,8 @@ func _ready():
 		add_child(p)
 	#małe struktury
 	#kryształy
-	var i = 1
-	while (rand.randi_range(0,i) == 0): #z każdą generacją maleje szansa na kolejną
+	var i = 4
+	while (rand.randi_range(0,i) <= 3): #z każdą generacją maleje szansa na kolejną
 		i += 1
 		var k = krysztal.instance()
 		k.colour = randi() % 6 #losujemy kolor
