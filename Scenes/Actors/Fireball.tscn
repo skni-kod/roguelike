@@ -67,5 +67,6 @@ process_material = SubResource( 5 )
 scale = Vector2( 0.32, 0.32 )
 color = Color( 1, 0.796078, 0, 1 )
 shadow_color = Color( 1, 0.843137, 0, 0 )
+shadow_item_cull_mask = 3
 
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
