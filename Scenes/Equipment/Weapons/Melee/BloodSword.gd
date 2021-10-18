@@ -18,14 +18,16 @@ var swing_to = 0.3
 var swing_back = 0.6
 var animation_step = 0.02
 var ability = 0
+var life_steal=0.1
+
 
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/bloodsword.png")
-		$AttackCollision.scale.x = 1.5
+		$AttackCollision.scale.x = 2
 		$AttackCollision.scale.y = 0.3
-		$AttackCollision.position.x = 12
+		$AttackCollision.position.x = 16
 		$AttackCollision.position.y = 0
 		$WeaponSprite.scale.x = 1.2
 		$WeaponSprite.scale.y = -1.2
@@ -48,7 +50,6 @@ func _physics_process(delta):
 
 
 	if Input.is_action_just_pressed("use_ability_1"):
-		#Really powerful blow - 40 bonus damage
 		if player_node.mana>=ability1ManaCost and !ability:
 			player_node.updateMana(-ability1ManaCost)
 			ability1()
@@ -56,7 +57,6 @@ func _physics_process(delta):
 			print("Insufficient mana, " + String(ability1ManaCost) +" required to cast ability")
 	
 	if Input.is_action_just_pressed("use_ability_2"):
-		#Increase next attack damage by 12 costs 20 mana
 		if player_node.mana>=ability2ManaCost and !ability:
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
@@ -100,42 +100,46 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		########PASSIVE######## 
+		player_node.health += (life_steal*damage)
+		if player_node.health > player_node.max_health:
+			player_node.health = player_node.max_health
+		player_node.emit_signal("health_updated", player_node.health)
+		#######################
 		body.get_dmg(damage, weaponKnockback)
 
-func ability1(): #obraca wokoło siebie włucznią i odpycha przeciników
+
+
+func ability1(): # "Thirst" 
 	ability = 1
-	attack = true
-	weaponKnockback += 3 #zwiększamy odżut
-	$AttackCollision.scale.x = 3 #zwiększamy hitboxy żeby były tak długie jak włucznia przy pełym oddaleniu
-	$AttackCollision.disabled = false
-	var s = 30 #ilość kroków w obrocie
-	for i in 4: #ilość obrotów
-		for n in s:
-			rotation_degrees = n*(360/s) #ustawiamy pozycję co odpowiedni krok
-			$WeaponSprite.rotation_degrees = n*(360/s) #sprawia że broń robi SPINNNNNNNNN
-			yield(get_tree().create_timer(0.001), "timeout") #czas pomiedzy krokiem żeby wszystko nie stało się w sekundę
-	weaponKnockback -= 3 #wracamy do bazowego odżutu
-	$AttackCollision.scale.x = 1.1 #wracamy do bazowej kolizji
-	$AttackCollision.disabled = true
-	attack = false
-	reset_pivot()
+	swing_to = 0.1 
+	swing_back = 0.1
+	life_steal = 0.5
+	yield(get_tree().create_timer(2), "timeout")
+	swing_to = 0.3
+	swing_back = 0.6
+	life_steal = 0.1
 	ability = 0
 
 func ability2(): #seria szybkich nieprecyzyjnych ataków w stożku
 	
 	ability = 1
-	swing_to = 0.1 #zmieniamy zmienne od ataku żeby były szybsze
+	swing_to = 0.1 
 	swing_back = 0.1 
 	
-	var ticks = 30 #ilość ataków
+	var ticks = 4
 	for n in ticks:
-		var rng = RandomNumberGenerator.new() #generujemy randomowy numer
-		rng.randomize() 
+		$AttackCollision.scale.x = 1.5+n*0.5
+		$AttackCollision.scale.y = (1.5+n*0.5)/2
+		damage *= n+2
 		_on_Player_attacked() #używamy zwykłego ataku
-		yield(get_tree().create_timer(0.1), "timeout") #przerwy bo wszystko by się stało na raz
+		yield(get_tree().create_timer(1), "timeout")
+		damage /= n+2
+		player_node.health -= damage
+		player_node.emit_signal("health_updated", player_node.health)
 	
-	swing_to = 0.3 #wracamy do bazowych zmiennych ataku
-	swing_back = 0.5
+	swing_to = 0.3
+	swing_back = 0.6
 	ability = 0
 
 

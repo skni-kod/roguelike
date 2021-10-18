@@ -91,17 +91,17 @@ func _on_Timer_timeout():
 	else:
 		$AttackCollision.disabled = true
 		attack = false
-		attack_speed=0		
+		attack_speed=0
 		timer.stop()
 		reset_pivot()
-		##########PASSIVE####### po każdym ataku można wykonać doskok
+		########PASSIVE######## "finesse" po każdym ataku można wykonać doskok
 		player_node.skok_vector=Vector2.ZERO #sprawia że nie skaczesz jak się nie poruszasz
 		player_node.speed=70 #zmniejsza prędkość żeby skok był krótszy od zwykłego
 		player_node.jump() #skok ten sam co normalny
 		yield(get_tree().create_timer(0.5), "timeout") #czas po którym speed gracza ma wrócić do normalnej wartości
 		player_node.speed=100 #wracamy do bazowej prędkości gracza
 		player_node.skok_vector=player_node.direction #wracamy do normalnej wartości by gracz mógł skakać stojąc w miejscu
-		########################
+		#######################
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
 
@@ -109,7 +109,7 @@ func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		body.get_dmg(damage, weaponKnockback)
 
-func ability1(): #"obraca wokoło siebie włucznią i odpycha przeciników
+func ability1(): # "repel" obraca wokoło siebie włucznią i odpycha przeciników
 	ability = 1
 	attack = true
 	weaponKnockback += 3 #zwiększamy odżut
@@ -128,7 +128,7 @@ func ability1(): #"obraca wokoło siebie włucznią i odpycha przeciników
 	reset_pivot()
 	ability = 0
 
-func ability2(): #seria szybkich nieprecyzyjnych ataków w stożku
+func ability2(): # "reckless flurry" seria szybkich nieprecyzyjnych ataków w stożku
 	
 	ability = 1
 	swing_to = 0.1 #zmieniamy zmienne od ataku żeby były szybsze
