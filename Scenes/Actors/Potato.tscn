@@ -5,6 +5,9 @@
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
+[sub_resource type="OccluderPolygon2D" id=9]
+polygon = PoolVector2Array( -3, 0, 4, 0, 4, 4, -3, 4 )
+
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.32997
 height = 2.61305
@@ -95,9 +98,6 @@ tracks/0/keys = {
 "values": [ 2, 3, 4, 5, 6, 7, 8, 9 ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=9]
-polygon = PoolVector2Array( -3, 0, 4, 0, 4, 4, -3, 4 )
-
 [node name="potato" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
@@ -127,6 +127,11 @@ light_mask = 2
 position = Vector2( 2.18268, -4.7622 )
 texture = ExtResource( 1 )
 hframes = 16
+frame = 9
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
+position = Vector2( -3, 3 )
+occluder = SubResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 0.00473362 )
@@ -156,9 +161,6 @@ anims/Walk = SubResource( 8 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.25
 autostart = true
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource( 9 )
 
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
