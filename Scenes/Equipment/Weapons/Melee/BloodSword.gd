@@ -17,8 +17,8 @@ var smoothing = 1
 var swing_to = 0.3
 var swing_back = 0.6
 var animation_step = 0.02
-var ability = 0
-var life_steal=0.1
+var ability = 0 
+var life_steal=0.1 #Potrzebna do pasywy, będzie mnożona przez damage
 
 
 func _physics_process(delta):
@@ -100,46 +100,44 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
-		########PASSIVE######## 
-		player_node.health += (life_steal*damage)
-		if player_node.health > player_node.max_health:
+		########PASSIVE######## "Transfusion" każdy atak leczy za % obrażeń
+		player_node.health += (life_steal*damage) #dodajemy życie zgodnie z ilością obrażeń przemnożoną przez współczynik lifestealu
+		if player_node.health > player_node.max_health: #jeśli przekroczymy max życia to ustawiamy max
 			player_node.health = player_node.max_health
-		player_node.emit_signal("health_updated", player_node.health)
+		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował
 		#######################
 		body.get_dmg(damage, weaponKnockback)
 
 
 
-func ability1(): # "Thirst" 
-	ability = 1
-	swing_to = 0.1 
+func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
+	ability = 1 
+	swing_to = 0.1 #zmieniamy zmienne by zwiększyć statystyki
 	swing_back = 0.1
 	life_steal = 0.5
-	yield(get_tree().create_timer(2), "timeout")
-	swing_to = 0.3
+	yield(get_tree().create_timer(2), "timeout") #czas trwania umiejętności
+	swing_to = 0.3 #wracamy do poprzednich zmiennych
 	swing_back = 0.6
 	life_steal = 0.1
 	ability = 0
 
-func ability2(): #seria szybkich nieprecyzyjnych ataków w stożku
+func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
 	
 	ability = 1
-	swing_to = 0.1 
-	swing_back = 0.1 
+	swing_to = 0.1 #zmieniamy zmienne by przyśpieszyć atak
+	swing_back = 0.6 
 	
-	var ticks = 4
+	var ticks = 4 #ilość ataków
 	for n in ticks:
-		$AttackCollision.scale.x = 1.5+n*0.5
-		$AttackCollision.scale.y = (1.5+n*0.5)/2
-		damage *= n+2
+		$AttackCollision.scale.x = 2+n*0.5 #wielkość ataków zależna od numeru ataku
+		$AttackCollision.scale.y = (2+n*0.5)/2 #dzielimy przez 2 bo wtedy tworzy się mniej więcej koło
+		damage *= n+2 #zwiększamy obrażenia zależnie od numeru ataku
 		_on_Player_attacked() #używamy zwykłego ataku
-		yield(get_tree().create_timer(1), "timeout")
-		damage /= n+2
-		player_node.health -= damage
-		player_node.emit_signal("health_updated", player_node.health)
+		yield(get_tree().create_timer(1), "timeout") #czas pomiędzy atakami
+		damage /= n+2 #zmniejszamy obrażenia bo byśmy je wymnożyli do za dużych wartości, i żeby wszystkie ataki kosztowały tyle samo życia
+		player_node.health -= (((n+1)*damage)/2.2) #odbieramy życie za każdy atak, można zmienić ile
+		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował
 	
-	swing_to = 0.3
+	swing_to = 0.3 #wracamy do poprzednich zmiennych
 	swing_back = 0.6
 	ability = 0
-
-
