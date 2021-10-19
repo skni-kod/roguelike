@@ -1,5 +1,7 @@
 extends Node2D
 
+const KREW = preload("Blood_particles.tscn")
+
 var player_node = get_tree().get_root().find_node("Player", true, false)
 
 var mouse_position #Pozycja kursora
@@ -94,6 +96,7 @@ func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
 		attack_speed = 0
 		timer.stop()
 		reset_pivot()
+		
 
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
@@ -127,17 +130,26 @@ func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia
 	swing_to = 0.1 #zmieniamy zmienne by przyśpieszyć atak
 	swing_back = 0.6 
 	
+	var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main
 	var ticks = 4 #ilość ataków
 	for n in ticks:
 		$AttackCollision.scale.x = 2+n*0.5 #wielkość ataków zależna od numeru ataku
 		$AttackCollision.scale.y = (2+n*0.5)/2 #dzielimy przez 2 bo wtedy tworzy się mniej więcej koło
 		damage *= n+2 #zwiększamy obrażenia zależnie od numeru ataku
 		_on_Player_attacked() #używamy zwykłego ataku
+		
 		yield(get_tree().create_timer(1), "timeout") #czas pomiędzy atakami
 		damage /= n+2 #zmniejszamy obrażenia bo byśmy je wymnożyli do za dużych wartości, i żeby wszystkie ataki kosztowały tyle samo życia
 		player_node.health -= (((n+1)*damage)/2.2) #odbieramy życie za każdy atak, można zmienić ile
 		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował
-	
+		
+		var Krew = KREW.instance()  
+		Krew.position = get_tree().get_root().find_node("Player", true, false).global_position
+		main.add_child(Krew)
+		Krew.scale = n*Krew.scale 
+		
+		
+		
 	swing_to = 0.3 #wracamy do poprzednich zmiennych
 	swing_back = 0.6
 	ability = 0
