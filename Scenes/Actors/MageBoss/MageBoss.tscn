@@ -254,7 +254,7 @@ texture = ExtResource( 4 )
 
 [node name="Light2D" parent="WaterFireCenter/Fireball" instance=ExtResource( 2 )]
 scale = Vector2( 0.2, 0.2 )
-color = Color( 1, 0.866667, 0, 1 )
+color = Color( 0.968627, 0.541176, 0.00392157, 1 )
 
 [node name="Waterball" type="Area2D" parent="WaterFireCenter"]
 position = Vector2( 40, 0 )
@@ -271,6 +271,10 @@ process_material = SubResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="WaterFireCenter/Waterball"]
 texture = ExtResource( 5 )
+
+[node name="Light2D2" parent="WaterFireCenter/Waterball" instance=ExtResource( 2 )]
+scale = Vector2( 0.2, 0.2 )
+color = Color( 0, 0.317647, 0.843137, 1 )
 
 [node name="EarthWindCenter" type="Node2D" parent="."]
 
@@ -290,6 +294,10 @@ process_material = SubResource( 16 )
 [node name="Sprite" type="Sprite" parent="EarthWindCenter/WindBall"]
 texture = ExtResource( 6 )
 
+[node name="Light2D3" parent="EarthWindCenter/WindBall" instance=ExtResource( 2 )]
+scale = Vector2( 0.2, 0.2 )
+color = Color( 0.623529, 0.792157, 0.870588, 1 )
+
 [node name="EarthBall" type="Area2D" parent="EarthWindCenter"]
 position = Vector2( 0, 60 )
 collision_layer = 8
@@ -306,6 +314,10 @@ process_material = SubResource( 17 )
 
 [node name="Sprite" type="Sprite" parent="EarthWindCenter/EarthBall"]
 texture = ExtResource( 7 )
+
+[node name="Light2D4" parent="EarthWindCenter/EarthBall" instance=ExtResource( 2 )]
+scale = Vector2( 0.2, 0.2 )
+color = Color( 1, 0.152941, 0, 1 )
 
 [node name="WaterFireTimer" type="Timer" parent="."]
 wait_time = 3.0

@@ -271,12 +271,13 @@ one_shot = true
 wait_time = 3.0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-light_mask = 2
+light_mask = 4
 occluder = SubResource( 28 )
-light_mask = 2
+light_mask = 4
 
 [node name="Light2D" parent="." instance=ExtResource( 7 )]
 color = Color( 1, 0.964706, 0.686275, 1 )
+shadow_item_cull_mask = 1
 
 [connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]

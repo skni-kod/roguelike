@@ -14,18 +14,22 @@ func _ready():
 	direction = (player_Pos - origin).normalized()  #Ustawienie kata jako znormalizowany wektor pozycji gracza i przeciwnika
 	#Wczytanie odpowiedniej tekstury pocisku, koloru czastek oraz obrazen w zaleznosci od fazy bossa
 	if boss.phase == 1:
+		$Light2D.color = Color("f78a01")
 		$Sprite.texture = load("res://Assets/Enemies/fireball_new.png")
 		$Particles2D.process_material.set_color(Color("f78a01"))
 		dps = 4.0
 	elif boss.phase == 2:
+		$Light2D.color = Color("0051d7")
 		$Sprite.texture = load("res://Assets/Enemies/WaterBall.png")
 		$Particles2D.process_material.set_color(Color("0051d7"))
 		dps = 5.0
 	elif boss.phase == 3:
+		$Light2D.color = Color("ff2700")
 		$Sprite.texture = load("res://Assets/Enemies/EarthBall.png")
 		$Particles2D.process_material.set_color(Color("312523"))
 		dps = 8.0
 	elif boss.phase == 4:
+		$Light2D.color = Color("9fcade")
 		$Sprite.texture = load("res://Assets/Enemies/WindBall.png")
 		$Particles2D.process_material.set_color(Color("9fcade"))
 		dps = 6.0

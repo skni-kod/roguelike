@@ -8,6 +8,7 @@
 extents = Vector2( 10, 12 )
 
 [node name="Lamp_3" type="StaticBody2D"]
+light_mask = 5
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
 
@@ -21,7 +22,6 @@ region_rect = Rect2( 51, 0, 20, 24 )
 [node name="Light2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, 8 )
 color = Color( 1, 0, 0, 1 )
-shadow_item_cull_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

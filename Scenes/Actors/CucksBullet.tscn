@@ -36,6 +36,5 @@ shape = SubResource( 1 )
 scale = Vector2( 0.5, 0.5 )
 color = Color( 0, 0.505882, 1, 1 )
 energy = 0.4
-shadow_item_cull_mask = 3
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

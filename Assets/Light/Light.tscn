@@ -6,3 +6,4 @@
 texture = ExtResource( 1 )
 range_item_cull_mask = 3
 shadow_enabled = true
+shadow_item_cull_mask = 5
