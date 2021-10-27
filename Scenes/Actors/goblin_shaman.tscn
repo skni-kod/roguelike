@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Enemies/Goblin_shaman.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/goblin_shaman.gd" type="Script" id=2]
@@ -50,6 +50,9 @@ tracks/0/keys = {
 "values": [ 3, 4, 5, 6, 7, 3, 4, 5, 6, 7 ]
 }
 
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( -3, 0, 5, 0, 5, 14, -3, 14 )
+
 [node name="goblin_shaman" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
@@ -71,6 +74,7 @@ scale = Vector2( 0.39233, 0.204505 )
 texture = ExtResource( 4 )
 
 [node name="Goblin_shaman" type="Sprite" parent="."]
+light_mask = 2
 position = Vector2( 0.469467, -0.440389 )
 scale = Vector2( 0.17, 0.207 )
 texture = ExtResource( 1 )
@@ -107,6 +111,9 @@ autostart = true
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 5.21859, 6.14258 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 8 )
 
 [connection signal="body_entered" from="wzrok" to="." method="_on_wzrok_body_entered"]
 [connection signal="body_exited" from="wzrok" to="." method="_on_wzrok_body_exited"]

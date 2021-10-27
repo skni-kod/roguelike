@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/Orc.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Orc.png" type="Texture" id=2]
@@ -83,6 +83,9 @@ tracks/0/keys = {
 "values": [ 10, 11, 12, 13 ]
 }
 
+[sub_resource type="OccluderPolygon2D" id=9]
+polygon = PoolVector2Array( -8, 0, 7, 0, 7, 15, -8, 15 )
+
 [node name="Orc" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
@@ -106,9 +109,10 @@ scale = Vector2( 0.863229, 0.374102 )
 texture = ExtResource( 5 )
 
 [node name="BodySprite" type="Sprite" parent="Sprites"]
+light_mask = 2
 texture = ExtResource( 2 )
-vframes = 4
 hframes = 5
+vframes = 4
 frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -140,6 +144,10 @@ anims/Walk = SubResource( 8 )
 
 [node name="AttackTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 9 )
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]

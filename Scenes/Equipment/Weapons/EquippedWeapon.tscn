@@ -11,6 +11,7 @@ height = 14.8487
 script = ExtResource( 2 )
 
 [node name="WeaponSprite" type="Sprite" parent="."]
+light_mask = 2
 position = Vector2( 13, 0 )
 scale = Vector2( 1.25, 1.25 )
 texture = ExtResource( 1 )
@@ -23,5 +24,6 @@ disabled = true
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.01
+
 [connection signal="body_entered" from="." to="." method="_on_EquippedWeapon_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

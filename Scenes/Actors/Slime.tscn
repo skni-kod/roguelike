@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
@@ -94,6 +94,21 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 12, 13, 14, 15 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("LightOccluder2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.201, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, -7 ), Vector2( 0, -6 ), Vector2( 0, -2 ) ]
+}
+
+[sub_resource type="OccluderPolygon2D" id=9]
+polygon = PoolVector2Array( -7, 5, 7, 5, 7, 10, -7, 10 )
 
 [node name="Slime" type="KinematicBody2D" groups=[
 "Enemy",
@@ -116,11 +131,12 @@ scale = Vector2( 0.621239, 0.24081 )
 texture = ExtResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 hframes = 4
 vframes = 5
-frame = 12
+frame = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )
@@ -152,6 +168,10 @@ anims/Walk = SubResource( 8 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 0, -2 )
+occluder = SubResource( 9 )
 
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]

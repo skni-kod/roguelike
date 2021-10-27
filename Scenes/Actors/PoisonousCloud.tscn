@@ -52,6 +52,7 @@ autostart = true
 
 [node name="TimerTick" type="Timer" parent="."]
 wait_time = 0.1
+
 [connection signal="body_entered" from="." to="." method="_on_PoisonousCloud_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_PoisonousCloud_body_exited"]
 [connection signal="timeout" from="TimerDuration" to="." method="_on_TimerDuration_timeout"]
