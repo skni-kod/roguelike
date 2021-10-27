@@ -1,6 +1,8 @@
 extends Node2D
 
-const KREW = preload("Blood_particles.tscn")
+const K1 = preload("Blood_particles_1.tscn") #pobieramy particle do umiejek
+const K2 = preload("Blood_particles_2.tscn")
+var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
 
@@ -21,7 +23,7 @@ var swing_back = 0.6
 var animation_step = 0.02
 var ability = 0 
 var life_steal=0.1 #Potrzebna do pasywy, będzie mnożona przez damage
-
+var krew_vector #potrzebne żeby krew leciała w dobrym kierunku
 
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
@@ -103,13 +105,22 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		body.get_dmg(damage, weaponKnockback)
 		########PASSIVE######## "Transfusion" każdy atak leczy za % obrażeń
 		player_node.health += (life_steal*damage) #dodajemy życie zgodnie z ilością obrażeń przemnożoną przez współczynik lifestealu
 		if player_node.health > player_node.max_health: #jeśli przekroczymy max życia to ustawiamy max
 			player_node.health = player_node.max_health
 		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował
+		
+		var Krew = K2.instance() #towrzymy jedną instancję animacji krwi
+		Krew.position = (get_tree().get_root().find_node("Player", true, false).global_position + (attack_vector*2)) #ustawiamy jej pozycję jako pozycja gracza + wektor kierunku broni
+		Krew.rotation_degrees = rotation_degrees #krew idzie po tej samej lini co miecz
+		main.add_child(Krew) #dodajemy krew do sceny
+		Krew.scale = 1.5*Krew.scale #dostosowujemy wielkość krwi
+		yield(get_tree().create_timer(0.3), "timeout") #czas stania krwi
+		Krew.queue_free() #usuwamy krew
 		#######################
-		body.get_dmg(damage, weaponKnockback)
+		
 
 
 
@@ -130,7 +141,6 @@ func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia
 	swing_to = 0.1 #zmieniamy zmienne by przyśpieszyć atak
 	swing_back = 0.6 
 	
-	var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main
 	var ticks = 4 #ilość ataków
 	for n in ticks:
 		$AttackCollision.scale.x = 2+n*0.5 #wielkość ataków zależna od numeru ataku
@@ -138,17 +148,17 @@ func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia
 		damage *= n+2 #zwiększamy obrażenia zależnie od numeru ataku
 		_on_Player_attacked() #używamy zwykłego ataku
 		
+		var Krew = K1.instance() #towrzymy jedną instancję animacji krwi
+		Krew.position = (get_tree().get_root().find_node("Player", true, false).global_position + (attack_vector*2)) #ustawiamy jej pozycję jako pozycja gracza + wektor kierunku broni
+		main.add_child(Krew) #dodajemy krew do sceny
+		Krew.scale = (0.7+n*0.3)*Krew.scale #dostosowujemy wielkość krwi, używamy iteracji by była ona takiej samej wielkości co hitboxy
+		
 		yield(get_tree().create_timer(1), "timeout") #czas pomiędzy atakami
 		damage /= n+2 #zmniejszamy obrażenia bo byśmy je wymnożyli do za dużych wartości, i żeby wszystkie ataki kosztowały tyle samo życia
 		player_node.health -= (((n+1)*damage)/2.2) #odbieramy życie za każdy atak, można zmienić ile
 		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował
 		
-		var Krew = KREW.instance()  
-		Krew.position = get_tree().get_root().find_node("Player", true, false).global_position
-		main.add_child(Krew)
-		Krew.scale = n*Krew.scale 
-		
-		
+		Krew.queue_free()
 		
 	swing_to = 0.3 #wracamy do poprzednich zmiennych
 	swing_back = 0.6
