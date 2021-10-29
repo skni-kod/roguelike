@@ -1,18 +1,59 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Actors/OctoBoss/OctoBoss.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Actors/OctoBoss/octo3.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Actors/OctoBoss/octo2.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 43, 50 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "mrug"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.25, 0.4, 0.55, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ) ]
+}
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -38, 1, 32, 1, 32, 7, -38, 7 )
 
 [node name="OctoBoss" type="StaticBody2D"]
+scale = Vector2( 1.5, 1.5 )
+z_index = 2
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 3, 13 )
+shape = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/mrug = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( -0.666412, 34.3197 )
+occluder = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 5.2
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
