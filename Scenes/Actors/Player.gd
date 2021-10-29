@@ -35,7 +35,10 @@ var second_weapon_stats = {}
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+
+#onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
+
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
 
@@ -62,6 +65,9 @@ var stamina = 3
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
+
+
+var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
@@ -141,6 +147,8 @@ func _process(delta):
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
+	
+		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -463,7 +471,7 @@ func move():
 	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok:
+	if !skok and !immortal:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
