@@ -83,10 +83,3 @@ z_index = 2
 [node name="Weapons" parent="." instance=ExtResource( 4 )]
 
 [connection signal="map_generated" from="." to="UI/Map" method="_on_map_generated"]
-[connection signal="bleed" from="StatusNode" to="StatusNode" method="_on_bleed"]
-[connection signal="burn" from="StatusNode" to="StatusNode" method="_on_burn"]
-[connection signal="freeze" from="StatusNode" to="StatusNode" method="_on_freeze"]
-[connection signal="healing" from="StatusNode" to="StatusNode" method="_on_healing"]
-[connection signal="knockback" from="StatusNode" to="StatusNode" method="_on_knockback"]
-[connection signal="poison" from="StatusNode" to="StatusNode" method="_on_poison"]
-[connection signal="weakness" from="StatusNode" to="StatusNode" method="_on_weakness"]

@@ -8,16 +8,6 @@ onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
 onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
 
-# sygnały wszystkich efektów statusu ze wszystkimi ich parametrami
-signal burn(giver, reciever, lvl, prob, time)
-signal bleed(giver, reciever, lvl, prob, time)
-signal poison(giver, reciever, lvl, prob, time)
-
-signal freeze(giver, reciever, lvl, prob, time)
-signal knockback(giver, reciever, lvl, prob, time) 
-signal weakness(giver, reciever, lvl, prob, time)
-signal healing(giver, reciever, lvl, prob, time)
-
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
 var burning := false setget burn
 var bleeding := false setget bleeding
@@ -107,9 +97,6 @@ func _physics_process(delta):
 
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
-
-func _on_bleed(giver, reciever, lvl, prob, time):
-	print("Burned")
 
 func burn(var fire):
 	if fire and prawdopodobienstwo(0.5):
