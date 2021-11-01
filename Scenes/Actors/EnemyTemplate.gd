@@ -43,6 +43,10 @@ var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losow
 # np.: const SPEED = 100
 # === ========================= === #
 
+# === STATUS EFFECT VARIABLES === #
+var ownStatusEffects = {}
+# === ======================= === #
+
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują

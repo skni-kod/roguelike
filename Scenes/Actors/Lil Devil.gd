@@ -25,6 +25,10 @@ var drop = {"minCoins":0,"maxCoins":5} # zakres minimalnej i maksymalnej ilości
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 
+# === STATUS EFFECT VARIABLES === #
+var ownStatusEffects = {}
+# === ======================= === #
+
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują

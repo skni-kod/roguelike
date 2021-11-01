@@ -39,24 +39,49 @@ func _on_give_effect(reciever, effect, duration, stack, probability):
 			match effect:
 				"bleeding":
 					bleed(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"burning":
-					burn(reciever, duration, stack, probability)		
+					burn(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"freezing":
 					freeze(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"healing":
 					healing(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"knockback":
 					knockback(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"poison":
 					poison(reciever, duration, stack, probability)
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 				"weakness":
 					weakness(reciever, duration, stack, probability)
-
+					if(reciever.ownStatusEffects.count(effect) == 0):
+						reciever.ownStatusEffects.append(effect)
 
 
 func bleed(reciever, duration, stack, probability):
-	pass
-
+	var bleed_timer = get_tree().create_timer(duration)
+	var damage = 0
+	bleed_timer.set_one_shot(true)
+	while(bleed_timer.get_time_left()):
+		var bleed_damage_timer = get_tree().create_timer(0.2)
+		bleed_damage_timer.set_one_shot(true)
+		if(bleed_damage_timer.get_time_left()):
+			match stack:
+				1:
+					damage += 2
+				_:
+					damage += 1.5 * stack
+		if(bleed_damage_timer.time_left == 0):
+			reciever.get_dmg(damage, 0)
 
 func burn(reciever, duration, stack, probability):
 	pass 
