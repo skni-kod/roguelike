@@ -1,17 +1,17 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 200.0
+radius = 300.0
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 49.9034, 47.8513 )
+[sub_resource type="CircleShape2D" id=2]
+radius = 64.0
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 46.6632, 46.9076 )
+extents = Vector2( 120, 120 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"
@@ -24,16 +24,28 @@ length = 0.2
 resource_name = "Hurt"
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprites/BodySprite:region_rect")
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4 ),
+"times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Rect2( 0, 112, 46, 56 ), Rect2( 0, 112, 46, 56 ) ]
+"values": [ 16, 16 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/BodySprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ) ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -41,37 +53,250 @@ length = 0.6
 loop = true
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprites/BodySprite:region_rect")
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.3, 0.6 ),
+"times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Rect2( 0, 0, 46, 56 ), Rect2( 0, 56, 46, 56 ) ]
+"values": [ 0, 8 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -20, -56, 20, -56, 20, -20, 49, 3, 34, 56, -34, 57, -49, 3, -20, -20 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprites/BodySprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=8]
 resource_name = "Idle2"
 length = 0.6
 loop = true
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprites/BodySprite:region_rect")
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.3, 0.6 ),
+"times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Rect2( 46, 0, 46, 56 ), Rect2( 46, 56, 46, 56 ) ]
+"values": [ 1, 9 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -20, -56, 20, -56, 20, -20, 49, 3, 34, 56, -34, 57, -49, 3, -20, -20 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprites/BodySprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
+resource_name = "RollB"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 18, 23 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/BodySprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ), Vector2( 2, 2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CollisionPolygon2D:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 18, 23 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/BodySprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -2, -2 ), Vector2( -2, -2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CollisionPolygon2D:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -23, -33, 24, -33, 24, 26, -23, 26 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "RollL"
+length = 0.38
+loop = true
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4, 5, 6, 7, 10, 11 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/BodySprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.38 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ), Vector2( 2, 2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CollisionPolygon2D:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "RollR"
+length = 0.38
+loop = true
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4, 5, 6, 7, 10, 11 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/BodySprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.38 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -2, 2 ), Vector2( -2, 2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CollisionPolygon2D:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 ) ]
+}
+
+[sub_resource type="Animation" id=12]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -87,7 +312,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=9]
+[sub_resource type="OccluderPolygon2D" id=13]
 polygon = PoolVector2Array( -20, 5, 20, 5, 20, 53, -20, 53 )
 
 [node name="PandaBoss" type="KinematicBody2D" groups=[
@@ -109,10 +334,12 @@ texture = ExtResource( 5 )
 
 [node name="BodySprite" type="Sprite" parent="Sprites"]
 light_mask = 2
-scale = Vector2( 2, 2 )
+scale = Vector2( -2, 2 )
 texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 112, 46, 56 )
+hframes = 8
+vframes = 3
+frame = 6
+region_rect = Rect2( 46, 56, 46, 56 )
 
 [node name="Wzrok" type="Area2D" parent="."]
 visible = false
@@ -129,7 +356,6 @@ rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
-visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
@@ -140,16 +366,20 @@ anims/Attack = SubResource( 4 )
 anims/Die = SubResource( 5 )
 anims/Hurt = SubResource( 6 )
 anims/Idle = SubResource( 7 )
-anims/Idle2 = SubResource( 10 )
-anims/Walk = SubResource( 8 )
+anims/Idle2 = SubResource( 8 )
+anims/RollB = SubResource( 9 )
+anims/RollF = SubResource( 10 )
+anims/RollL = SubResource( 11 )
+anims/RollR = SubResource( 14 )
+anims/Walk = SubResource( 12 )
 
 [node name="AttackTimer" type="Timer" parent="."]
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource( 9 )
+occluder = SubResource( 13 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -20, -56, 20, -56, 20, -20, 49, 3, 34, 56, -34, 57, -49, 3, -20, -20 )
+polygon = PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 )
 
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]

@@ -8,6 +8,8 @@ signal died(body) # sygnał, czy przeciwnik umarł
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+var portal = preload("res://Scenes/Levels/Portal.tscn")
+onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
 
 # === PORUSZANIE SIĘ === #
@@ -65,7 +67,7 @@ var enemyKnockback = 0
 # === WSTĘPNIE INICJOWANE FUNKCJE === #
 # _ready wykonuje się JEDNORAZOWO na inicjalizacji przeciwnika
 func _ready():
-	get_node("../UI").add_child(health_bar) # dodanie paska życia do UI
+	UI.add_child(health_bar) # dodanie paska życia do UI
 	# === zmiana teksturek paska życia ===
 	health_bar.texture_progress = load("res://Scenes/Actors/PandoBoss/HP1.png")
 	health_bar.texture_under = load("res://Scenes/Actors/PandoBoss/HP0.png")
@@ -150,7 +152,7 @@ func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘG
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
 	if attack and health>0: # gdy przełącznik attack jest włączony i Panda żyje, to wykonuje funkcje
-		attack()
+		rolling_attack()
 # === ======================== === #
 
 
@@ -163,16 +165,22 @@ func attack():
 # === ============= === #
 
 func rolling_attack():
+	if !tylem:
+		$BodyAnimationPlayer.play("RollF")
+	else:
+		$BodyAnimationPlayer.play("RollB")
 	is_rolling = true
 	player_pos = player.global_position
-	rolling = global_position.direction_to(player_pos) * speed * 10
-	rolling_collision  = $RollingCollisionShape2D.get_collider()
-	if rolling_collision == player.name:
-		player.take_dmg(dps, enemyKnockback, self.global_position)
-	
+	move = global_position.direction_to(player_pos) * speed * 10
+	rolling_collision = move_and_collide(rolling)
+	if rolling_collision:
+		if rolling_collision.get_collider().name == player.name:
+			statusEffect.knockback = true
+			player.take_dmg(dps, enemyKnockback, self.global_position)
 
-func _on_RollingArea_body_entered(body):
-	pass # Replace with function body.
+#func _on_RollingArea_body_entered(body):
+	#if is_rolling and body.name == player.name:
+		#player.take_dmg(dps, enemyKnockback, self.global_position)
 
 
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
@@ -219,7 +227,7 @@ func get_dmg(dmg, weaponKnockback):
 # === ============================ === #
 
 
-# === FUNKCJA OPUSZCZANIA COINSÓW === #
+# === FUNKCJA OPUSZCZANIA COINSÓW I PORTALU === #
 func drop_coins():
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 	rng.randomize() # losowanie generatora liczb
@@ -230,4 +238,7 @@ func drop_coins():
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
+	var p = portal.instance()
+	p.global_position = self.global_position
+	level.add_child(p)
 # === =========================== === #

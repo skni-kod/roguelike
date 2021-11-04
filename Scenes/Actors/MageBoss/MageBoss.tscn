@@ -330,6 +330,7 @@ anims/Die = SubResource( 21 )
 
 [node name="FireTimer" type="Timer" parent="."]
 wait_time = 2.0
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="WaterFireCenter/Fireball" to="." method="_on_Fireball_body_entered"]

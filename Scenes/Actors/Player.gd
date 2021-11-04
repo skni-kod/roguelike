@@ -77,6 +77,9 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
+	if Bufor.coins:
+		coins = Bufor.coins #przenoszenie monetek między scenami
+		Bufor.coins = null
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
@@ -426,4 +429,3 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
-
