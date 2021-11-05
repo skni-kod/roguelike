@@ -154,7 +154,7 @@ func get_dmg(dmg, weaponKnockback):
 				coin.position = randomPosition
 				level.add_child(coin)
 			var p = portal.instance()
-			p.global_position = self.global_position
+			p.global_position = get_node("../..").global_position
 			level.add_child(p) #Tworzy portal
 			health_bar.queue_free()  #Usun pasek zycia bossa z UI
 			emit_signal("died", self)

@@ -7,6 +7,7 @@
 extents = Vector2( 48, 31 )
 
 [node name="Portal" type="Area2D"]
+position = Vector2( 0, -26 )
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 1 )
 
@@ -19,3 +20,4 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 2 )
 
 [connection signal="body_entered" from="." to="." method="_on_Portal_body_entered"]
+[connection signal="body_shape_exited" from="." to="." method="_on_Portal_body_shape_exited"]

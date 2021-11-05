@@ -43,7 +43,7 @@ var hp:float = max_hp
 # === HEALTHBAR === #
 export var health = 100 # procentowa wartość życia do healthbara
 var health_bar = preload("res://Scenes/UI/BossHealthBar.tscn").instance() # użycie paska życia bossa z folderu UI
-onready var statusEffect = get_node("../UI/StatusBar") # get_node("../../../UI/StatusBar")
+onready var statusEffect = UI.get_node("StatusBar") # get_node("../../../UI/StatusBar")
 # === ========= === #
 
 # === COINS === #
@@ -165,13 +165,18 @@ func attack():
 # === ============= === #
 
 func rolling_attack():
-	if !tylem:
-		$BodyAnimationPlayer.play("RollF")
-	else:
-		$BodyAnimationPlayer.play("RollB")
 	is_rolling = true
 	player_pos = player.global_position
 	move = global_position.direction_to(player_pos) * speed * 10
+	var angle = (move.angle()/PI)
+	if angle > 0 and angle < 0.5:
+		$BodyAnimationPlayer.play("RollF")
+	elif angle > 0.5:
+		$BodyAnimationPlayer.play("RollR")
+	elif angle < 0 and angle > -0.5:
+		$BodyAnimationPlayer.play("RollL")
+	else:
+		$BodyAnimationPlayer.play("RollB")
 	rolling_collision = move_and_collide(rolling)
 	if rolling_collision:
 		if rolling_collision.get_collider().name == player.name:
@@ -239,6 +244,6 @@ func drop_coins():
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
 	var p = portal.instance()
-	p.global_position = self.global_position
+	p.global_position = get_node("../..").global_position
 	level.add_child(p)
 # === =========================== === #

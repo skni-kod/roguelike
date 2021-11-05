@@ -105,6 +105,12 @@ func _ready(): #po inicjacji bohatera
 		1 : "Blade",
 		2 : "Empty"
 	}
+	
+	if Bufor.weapons: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		weapons = Bufor.weapons
+		first_weapon_stats = Bufor.first_weapon_stats
+		second_weapon_stats = Bufor.second_weapon_stats
 	ui_access_wslots[1].texture = all_weapons[weapons[1]]
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
@@ -125,6 +131,10 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 	}
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
 	UpdatePotions() 
 	
 	

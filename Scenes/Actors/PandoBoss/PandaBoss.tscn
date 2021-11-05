@@ -49,6 +49,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=7]
+resource_name = "Idle1"
 length = 0.6
 loop = true
 step = 0.05
@@ -185,7 +186,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 18, 23 ]
+"values": [ 23, 18 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprites/BodySprite:scale")
@@ -197,7 +198,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -2, -2 ), Vector2( -2, -2 ) ]
+"values": [ Vector2( 2, 2 ), Vector2( 2, 2 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("CollisionPolygon2D:polygon")
@@ -254,7 +255,7 @@ tracks/2/keys = {
 "values": [ PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=12]
 resource_name = "RollR"
 length = 0.38
 loop = true
@@ -296,7 +297,7 @@ tracks/2/keys = {
 "values": [ PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -312,7 +313,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=13]
+[sub_resource type="OccluderPolygon2D" id=14]
 polygon = PoolVector2Array( -20, 5, 20, 5, 20, 53, -20, 53 )
 
 [node name="PandaBoss" type="KinematicBody2D" groups=[
@@ -338,7 +339,7 @@ scale = Vector2( -2, 2 )
 texture = ExtResource( 1 )
 hframes = 8
 vframes = 3
-frame = 6
+frame = 4
 region_rect = Rect2( 46, 56, 46, 56 )
 
 [node name="Wzrok" type="Area2D" parent="."]
@@ -365,18 +366,18 @@ shape = SubResource( 3 )
 anims/Attack = SubResource( 4 )
 anims/Die = SubResource( 5 )
 anims/Hurt = SubResource( 6 )
-anims/Idle = SubResource( 7 )
+anims/Idle1 = SubResource( 7 )
 anims/Idle2 = SubResource( 8 )
 anims/RollB = SubResource( 9 )
 anims/RollF = SubResource( 10 )
 anims/RollL = SubResource( 11 )
-anims/RollR = SubResource( 14 )
-anims/Walk = SubResource( 12 )
+anims/RollR = SubResource( 12 )
+anims/Walk = SubResource( 13 )
 
 [node name="AttackTimer" type="Timer" parent="."]
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource( 13 )
+occluder = SubResource( 14 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -23, -20, 24, -20, 24, 35, -23, 35 )
