@@ -12,7 +12,7 @@ var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
-export var health = 1000 #ilośc punktów życia bohatera
+export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
 var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
 var max_mana=200 #maksymalna ilość many
@@ -29,7 +29,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(70.5), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -121,7 +121,6 @@ func _ready(): #po inicjacji bohatera
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	equipped = "Blade"
 	
-	
 	if Bufor.weapons: # jeśli bufor nie jest pusty
 		# bronie są ładowane z bufora
 		weapons = Bufor.weapons
@@ -130,6 +129,12 @@ func _ready(): #po inicjacji bohatera
 			second_weapon_stats = Bufor.second_weapon_stats
 			ui_access_wslot2.texture = all_weapons[weapons[2]]
 		ui_access_wslot1.texture = all_weapons[weapons[1]]
+		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+		if weapons[2] == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),

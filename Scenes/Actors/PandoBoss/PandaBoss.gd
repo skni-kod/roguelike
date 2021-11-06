@@ -61,7 +61,7 @@ export var dps = 20
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
-var enemyKnockback = 0
+var enemyKnockback = 2
 # === ===================== === #
 
 # === WSTĘPNIE INICJOWANE FUNKCJE === #
