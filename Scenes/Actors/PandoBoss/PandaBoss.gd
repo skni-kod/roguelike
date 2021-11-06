@@ -8,35 +8,36 @@ signal died(body) # sygnał, czy przeciwnik umarł
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
-var portal = preload("res://Scenes/Levels/Portal.tscn")
+var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
 
 # === PORUSZANIE SIĘ === #
-export var speed = 3 # prędkość własna
+export var speed = 4 # prędkość własna
 var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
+var poruszaSie = 0 # po uderzeniu w gracza boss przez chwile nie moze sie poruszac
 # === ============== === #
 
 # === WIZUALNE ZMIENNE === #
 const przod = Rect2(Vector2(0, 0),Vector2(46, 56)) # patrzy do przodu
 const tyl = Rect2(Vector2(46,0),Vector2(46, 56)) # patrzy do tylu
 var tylem = false # określenie czy panda stoi tyłem pozwala wyświetlić poprawną animację
+var animHurt = false # żeby animacje Idle nie przerywały animacji Hurt
 # === ================ === #
 
 # === WYKRYWANIE CELU I ATAK === #
 var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
-
 var attack = false # zmienna ataku (czy atakuje)
-var player_pos = Vector2.ZERO
+var player_pos = Vector2.ZERO # pozycja gracza
 onready var panda_direction = Vector2.ZERO
-var is_rolling = false
+var is_rolling = false # czy się toczy
 var rolling = Vector2.ZERO
-var rolling_posibility
-var rolling_collision
+var kombo = 0 # jeżeli gracz uderzy maxKombo ilość razy, bez bycia uderzonym, może chwilowo zablokować bossa
+var maxKombo = 4
 # === ====================== === #
 
 # === HP === #
-export var max_hp = 300 # wartość życia przeciwnika
+export var max_hp = 720 # wartość życia przeciwnika
 var hp:float = max_hp
 # === == === #
 
@@ -63,7 +64,6 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 var enemyKnockback = 0
 # === ===================== === #
 
-
 # === WSTĘPNIE INICJOWANE FUNKCJE === #
 # _ready wykonuje się JEDNORAZOWO na inicjalizacji przeciwnika
 func _ready():
@@ -75,7 +75,6 @@ func _ready():
 	health_bar.value = health # wstępne przypisanie wartości życia przeciwnika do healthbara
 # === =========================== === #
 
-
 # === PHYSICS PROCESS === #
 # _physics_process wykonuje się co klatkę, delta to zmienna czasowa, definiuje klatkę
 # nie stosować _process, ponieważ działa on zależnie od prędkości sprzętu
@@ -86,23 +85,36 @@ func _physics_process(delta):
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO and rolling == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed # poruszanie się w stronę gracza 
+			move = global_position.direction_to(player.global_position) * speed  * poruszaSie # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
 		
 		# === MODYFIKACJA SPRITE'ÓW === #
-		if player.global_position.y - self.global_position.y > 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
-			if(!$BodyAnimationPlayer.is_playing()): # wymagane do poprawnego odtwarzania animacji
-				get_node("Sprites/BodySprite").region_rect = przod # odwraca się do przodu
-			tylem = false # wymagane do poprawnego odtwarzania animacji
+		if is_rolling and poruszaSie:
+			var angle = (move.angle()/PI)
+			if abs(angle) >= 0.75:
+				$BodyAnimationPlayer.play("RollL")
+			elif abs(angle) <= 0.25:
+				$BodyAnimationPlayer.play("RollR")
+			elif angle > -0.25 and angle < -0.75:
+				$BodyAnimationPlayer.play("RollF")
+			else:
+				$BodyAnimationPlayer.play("RollB")
 		else:
-			if(!$BodyAnimationPlayer.is_playing()): # wymagane do poprawnego odtwarzania animacji
-				get_node("Sprites/BodySprite").region_rect = tyl # odwraca się do tyłu
-			tylem = true # wymagane do poprawnego odtwarzania animacji
+			if player.global_position.y - self.global_position.y > 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+				if(!$BodyAnimationPlayer.is_playing()): # wymagane do poprawnego odtwarzania animacji
+					get_node("Sprites/BodySprite").region_rect = przod # odwraca się do przodu
+				tylem = false # wymagane do poprawnego odtwarzania animacji
+			else:
+				if(!$BodyAnimationPlayer.is_playing()): # wymagane do poprawnego odtwarzania animacji
+					get_node("Sprites/BodySprite").region_rect = tyl # odwraca się do tyłu
+				tylem = true # wymagane do poprawnego odtwarzania animacji
+			if not tylem and not animHurt:
+				$BodyAnimationPlayer.play("Idle1") # Animacja Idle zostaje aktywowana
+			elif not animHurt:
+				$BodyAnimationPlayer.play("Idle2") # Animacja Idle zostaje aktywowana
 		# === ===================== === #
-		
-		#$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	
 	elif !attack and health>0: # jeśli nie atakuje i żyje
 		if (!tylem):
@@ -127,70 +139,46 @@ func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASI
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
 		player = body
 
-
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
 		player = null
 # === ================== === #
 
-
-# === POLE WIDZENIA ATAK === #
-# GRUPA LAYER AREA2D "ATAK" -> ENEMY
-# GRUPA COLLISION AREA2D "ATAK" -> PLAYER
-func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
-		attack = true
-		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
-
-func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
-	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
-		attack = false
-		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
-# === ================== === #
-
-
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
-	if attack and health>0: # gdy przełącznik attack jest włączony i Panda żyje, to wykonuje funkcje
+	attack = true
+	if player and health>0: # gdy gracz jest w polu widzenia i Panda żyje, to wykonuje funkcje
 		rolling_attack()
+		poruszaSie = 1
 # === ======================== === #
 
-
-# === FUNCKJA ATAKU === #
-func attack():
-	#$BodyAnimationPlayer.play("Attack")
-	statusEffect.knockback = true
-	player.take_dmg(dps,enemyKnockback, self.global_position)
-	#yield($BodyAnimationPlayer,"animation_finished")
-# === ============= === #
-
+# === FUNKCJA ATAKU === #
 func rolling_attack():
 	is_rolling = true
 	player_pos = player.global_position
-	move = global_position.direction_to(player_pos) * speed * 10
-	var angle = (move.angle()/PI)
-	if angle > 0 and angle < 0.5:
-		$BodyAnimationPlayer.play("RollF")
-	elif angle > 0.5:
-		$BodyAnimationPlayer.play("RollR")
-	elif angle < 0 and angle > -0.5:
-		$BodyAnimationPlayer.play("RollL")
-	else:
-		$BodyAnimationPlayer.play("RollB")
-	rolling_collision = move_and_collide(rolling)
-	if rolling_collision:
-		if rolling_collision.get_collider().name == player.name:
+# === ============= === #
+
+func _on_RollingArea_body_entered(body): # jeśli tocząc się trafi w gracza
+	if player:
+		if is_rolling and body.name == player.name:
+			kombo = 0
 			statusEffect.knockback = true
+			poruszaSie = 0
+			is_rolling = false
+			attack = false
+			$AttackTimer.start()
 			player.take_dmg(dps, enemyKnockback, self.global_position)
-
-#func _on_RollingArea_body_entered(body):
-	#if is_rolling and body.name == player.name:
-		#player.take_dmg(dps, enemyKnockback, self.global_position)
-
 
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
 func get_dmg(dmg, weaponKnockback):
 	if health>0:
+		kombo += 1
+		if (kombo >= maxKombo and is_rolling and attack):
+			poruszaSie = 0
+			is_rolling = false
+			attack = false
+			$AttackTimer.start()
+			kombo = 0
 		# === KNOCKBACK === #
 		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
@@ -203,14 +191,17 @@ func get_dmg(dmg, weaponKnockback):
 		hp -= dmg # zmniejszanie hp o otrzymany dmg
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
 		# Animacje obrażeń zostają aktywowane na sprite Body
-		$BodyAnimationPlayer.play("Hurt")
+		if not is_rolling:
+			$BodyAnimationPlayer.play("Hurt")
+			animHurt = true
+			$animHurtTimer.start()
 		health_bar.value = health # healthbar zostaje zupdateowany z nową procentową ilością hp
 		# === =============== === #
-		
+	
 	if health<=0:
 		$CollisionPolygon2D.set_deferred("disabled", true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
-		$BodyAnimationPlayer.play("Die")
+		$BodyAnimationPlayer.play("Die") # do dodania
 		# Czekanie na ukończenie
 		yield($BodyAnimationPlayer,"animation_finished")
 		# === ======== === #
@@ -231,6 +222,12 @@ func get_dmg(dmg, weaponKnockback):
 	
 # === ============================ === #
 
+# === KONIEC ANIMACJI HURT === #
+# animacje Idle można odgrywać tylko wtedy,
+# kiedy nie gra Hurt
+func _on_animHurtTimer_timeout():
+	animHurt = false
+# === ==================== === #
 
 # === FUNKCJA OPUSZCZANIA COINSÓW I PORTALU === #
 func drop_coins():
@@ -244,6 +241,6 @@ func drop_coins():
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
 	var p = portal.instance()
-	p.global_position = get_node("../..").global_position
+	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
 	level.add_child(p)
 # === =========================== === #
