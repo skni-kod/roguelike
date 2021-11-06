@@ -12,7 +12,7 @@ var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
-export var health = 100 #ilośc punktów życia bohatera
+export var health = 1000 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
 var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
 var max_mana=200 #maksymalna ilość many
@@ -29,7 +29,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon
-var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(70.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
@@ -92,9 +92,6 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
-	if Bufor.coins:
-		coins = Bufor.coins #przenoszenie monetek między scenami
-		Bufor.coins = null
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
@@ -121,6 +118,9 @@ func _ready(): #po inicjacji bohatera
 		1 : "Blade",
 		2 : "Empty"
 	}
+	ui_access_wslot1.texture = all_weapons[weapons[1]]
+	equipped = "Blade"
+	
 	
 	if Bufor.weapons: # jeśli bufor nie jest pusty
 		# bronie są ładowane z bufora
@@ -128,8 +128,8 @@ func _ready(): #po inicjacji bohatera
 		first_weapon_stats = Bufor.first_weapon_stats
 		if weapons[2] != "Empty":
 			second_weapon_stats = Bufor.second_weapon_stats
-			ui_access_wslots[2].texture = all_weapons[weapons[2]]
-	ui_access_wslots[1].texture = all_weapons[weapons[1]]
+			ui_access_wslot2.texture = all_weapons[weapons[2]]
+		ui_access_wslot1.texture = all_weapons[weapons[1]]
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -180,11 +180,12 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			if weapons[2] == "Empty":
-				swap_weapon(2,weaponToTake) #jezeli gracz ma 1 bronke to podniesiona bronka jest na drugim slocie
-				actual_slot = 2
-			else:
-				swap_weapon(actual_slot,weaponToTake) #zamiana bronki lezacej z uzywanej
+			if equipped != weaponToTake.WeaponName:
+				if weapons[2] == "Empty":
+					swap_weapon(2,weaponToTake)
+				else:
+					if current_weapon != null:
+						swap_weapon(current_weapon,weaponToTake)
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
 			emit_signal("open") #Wyślij sygnał otwórz
@@ -508,6 +509,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
+			current_weapon = check_current_weapon()
 			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
