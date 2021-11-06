@@ -11,6 +11,7 @@ func _on_Portal_body_entered(body):
 	if body.name == "Player":
 		player = body
 		wPortalu = true
+		$E.visible = true
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pick") and wPortalu:
@@ -26,5 +27,6 @@ func _process(_delta):
 
 func _on_Portal_body_shape_exited(body_id, body, body_shape, local_shape):
 	if body.name == "Player":
+		$E.visible = false
 		wPortalu = false # jeśli gracz wyszedł z portalu
 		# nacisniecie E nie spowoduje teleportacji

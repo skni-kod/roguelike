@@ -110,8 +110,9 @@ func _ready(): #po inicjacji bohatera
 		# bronie są ładowane z bufora
 		weapons = Bufor.weapons
 		first_weapon_stats = Bufor.first_weapon_stats
-		second_weapon_stats = Bufor.second_weapon_stats
-		ui_access_wslots[2].texture = all_weapons[weapons[2]]
+		if weapons[2] != "Empty":
+			second_weapon_stats = Bufor.second_weapon_stats
+			ui_access_wslots[2].texture = all_weapons[weapons[2]]
 	ui_access_wslots[1].texture = all_weapons[weapons[1]]
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
