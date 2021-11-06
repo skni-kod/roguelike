@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/UI/HealthBar/Frame.png" type="Texture" id=3]
 [ext_resource path="res://Assets/UI/HealthBar/Filling.png" type="Texture" id=4]
 
-[node name="HealthBar" type="Control"]
+[node name="ManaBar" type="Control"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

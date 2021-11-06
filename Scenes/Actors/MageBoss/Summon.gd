@@ -17,12 +17,16 @@ func _ready():
 	health_bar.on_health_updated(health)  #Zaktualizowanie paska zycia
 	#Wczytanie odpowiedniej do fazy bossa tekstury
 	if boss.phase == 1:
+		$FireL.visible = true #włącza odpowiednie światło
 		$Particles2D.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif boss.phase == 2:
+		$WaterL.visible = true #włącza odpowiednie światło
 		$Particles2D.texture = load("res://Assets/Enemies/WaterBall.png")
 	elif boss.phase == 3:
+		$EarthL.visible = true
 		$Particles2D.texture = load("res://Assets/Enemies/EarthBall.png")
 	elif boss.phase == 4:
+		$WindL.visible = true #włącza odpowiednie światło
 		$Particles2D.texture = load("res://Assets/Enemies/WindBall.png")
 
 func _physics_process(delta):

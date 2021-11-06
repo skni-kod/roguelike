@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Enemies/cuckbulletupdated.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/CucksBullet.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7.56197, 8.01626 )
@@ -30,4 +31,10 @@ collision_mask = 2147483651
 position = Vector2( 0.291691, -0.0815954 )
 scale = Vector2( 0.5, 0.5 )
 shape = SubResource( 1 )
+
+[node name="Light2D" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 0.5, 0.5 )
+color = Color( 0, 0.505882, 1, 1 )
+energy = 0.4
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

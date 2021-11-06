@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Enemies/Goblin_shaman.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/goblin_shaman.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6.64108, 9.84897 )
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 6.14429
+height = 8.49784
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 110.395
@@ -49,13 +50,23 @@ tracks/0/keys = {
 "values": [ 3, 4, 5, 6, 7, 3, 4, 5, 6, 7 ]
 }
 
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( -3, 0, 5, 0, 5, 14, -3, 14 )
+
 [node name="goblin_shaman" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
-position = Vector2( -0.352448, 0.25 )
-collision_layer = 2147483652
+collision_layer = 4
 collision_mask = 3
 script = ExtResource( 2 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 3 )]
+visible = false
+margin_left = -10.0406
+margin_top = -5.9466
+margin_right = -10.0406
+margin_bottom = -5.9466
+rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Shadow" type="Sprite" parent="."]
 position = Vector2( 0, 14.311 )
@@ -63,21 +74,14 @@ scale = Vector2( 0.39233, 0.204505 )
 texture = ExtResource( 4 )
 
 [node name="Goblin_shaman" type="Sprite" parent="."]
+light_mask = 2
 position = Vector2( 0.469467, -0.440389 )
 scale = Vector2( 0.17, 0.207 )
 texture = ExtResource( 1 )
 hframes = 8
 
-[node name="HealthBar" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_left = -3.41208
-margin_top = -15.6985
-margin_right = -2.71208
-margin_bottom = -15.5475
-rect_scale = Vector2( 0.11, 0.2 )
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 1.79698, 4.79272 )
+position = Vector2( 0.595276, 5.60315 )
 shape = SubResource( 1 )
 
 [node name="wzrok" type="Area2D" parent="."]
@@ -101,14 +105,16 @@ anims/Die = SubResource( 5 )
 anims/Idle = SubResource( 6 )
 anims/Walk = SubResource( 7 )
 
-[node name="Timer" type="Timer" parent="." groups=[
-"Enemy",
-]]
+[node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 5.21859, 6.14258 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 8 )
+
 [connection signal="body_entered" from="wzrok" to="." method="_on_wzrok_body_entered"]
 [connection signal="body_exited" from="wzrok" to="." method="_on_wzrok_body_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
