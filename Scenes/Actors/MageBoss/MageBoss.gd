@@ -25,6 +25,7 @@ onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna p
 onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false)  #Zmienna przechowujaca wezel StatusBar
 var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
+var portal = preload("res://Scenes/Levels/Portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
 var randomPosition = Vector2.ZERO  #Zmienna inicjujaca pozycje monet
 var outer_rotation_WF = false  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa na zewnetrznej orbicie
 var change_rotation_WF = true  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa w trakcie zmiany swoich orbit
@@ -152,6 +153,9 @@ func get_dmg(dmg, weaponKnockback):
 				coin = coin.instance()
 				coin.position = randomPosition
 				level.add_child(coin)
+			var p = portal.instance()
+			p.global_position = get_node("../..").global_position
+			level.add_child(p) #Tworzy portal
 			health_bar.queue_free()  #Usun pasek zycia bossa z UI
 			emit_signal("died", self)
 			queue_free()  #Usun caly wezel bossa

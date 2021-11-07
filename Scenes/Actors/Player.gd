@@ -121,6 +121,21 @@ func _ready(): #po inicjacji bohatera
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	equipped = "Blade"
 	
+	if Bufor.weapons: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		weapons = Bufor.weapons
+		first_weapon_stats = Bufor.first_weapon_stats
+		if weapons[2] != "Empty":
+			second_weapon_stats = Bufor.second_weapon_stats
+			ui_access_wslot2.texture = all_weapons[weapons[2]]
+		ui_access_wslot1.texture = all_weapons[weapons[1]]
+		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+		if weapons[2] == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
+	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
 		"100%Potion" : preload("res://Assets/Loot/Potions/Potion100.png"),
@@ -140,6 +155,10 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 	}
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
 	UpdatePotions() 
 	
 	
@@ -546,4 +565,3 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
-
