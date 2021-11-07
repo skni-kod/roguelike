@@ -95,6 +95,8 @@ func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
+	if Bufor.coins:
+		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
