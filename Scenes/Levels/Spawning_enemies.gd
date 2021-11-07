@@ -94,6 +94,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			if (!Bufor.i):
 				bossIns = bossScene1.instance()
 			else:
+				Bufor.i = -1
 				bossIns = bossScene2.instance()
 			add_child(bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
