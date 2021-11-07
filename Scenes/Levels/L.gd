@@ -1,17 +1,26 @@
 #nazwa węzła/skryptu do zmiany
 extends Node2D #generacja terenu/dekoracji 
 
+var boss = false
 var totem = preload("res://Assets/Light/Lamp_1.tscn")
 var krysztal = preload("res://Assets/Light/Lamp_2.tscn")
 var pomnik = preload("res://Assets/Light/Lamp_3.tscn")
 var rand = RandomNumberGenerator.new()
+onready var generation = get_node("../../../Main")
+
+func check_boss(room): #sprawdzanie, czy w to pokój bossa
+	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
+		boss = true
 
 func _ready():
+	generation.connect("boss", self, "check_boss")
 	rand.randomize()
 	#"duża struktura" - tylko jedna
-	if (randi() % 10 == 0): #szansa generacji totemu 10%
+	#"duże struktury" nie mogą się pojawiać w pokoju bossa
+	#(wystawałyby z portalu)
+	if (randi() % 10 == 0 and !boss): #szansa generacji totemu 10%
 		add_child(totem.instance())
-	elif (randi() % 4 == 0): #szansa generacji pomników 25%
+	elif (randi() % 4 == 0 and !boss): #szansa generacji pomników 25%
 		var p = pomnik.instance()
 		if (randi() % 2 == 0):
 			p.Cuckshooter = true
