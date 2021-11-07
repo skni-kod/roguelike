@@ -1,4 +1,3 @@
-#nazwa węzła/skryptu do zmiany
 extends Node2D #generacja terenu/dekoracji 
 
 var totem = preload("res://Assets/Light/Lamp_1.tscn")
