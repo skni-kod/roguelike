@@ -1,5 +1,6 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -58,8 +59,9 @@ func _physics_process(delta):
 	
 	
 	if Input.is_action_just_pressed("use_ability_1"):
-		if active_ability1!=1 and active_ability2!=1:
+		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=25:
 			active_ability1 = 1;
+			player_node.updateMana(-25)
 			$WeaponSprite/WirMiecza.emitting = true
 			$AttackCollision.disabled = false
 			$WeaponSprite.position.x=wirek_range
