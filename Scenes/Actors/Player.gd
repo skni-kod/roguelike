@@ -28,13 +28,14 @@ var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
-var current_weapon
+var current_weapon = 1;
 var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
 
 #onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
@@ -92,6 +93,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
+	$EquippedWeapon.connect("skill_used", self, "on_skill_used") #połaczenie sygnałów
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
@@ -177,6 +179,25 @@ func _process(delta):
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	
+	if ($CoolDownS1.get_time_left()):
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = 'R'
+	
+	if ($CoolDownS2.get_time_left()):
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = str(round($CoolDownS2.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = 'F'
+		
+	if ($CoolDownS3.get_time_left()):
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = str(round($CoolDownS3.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = 'R'
+		
+	if ($CoolDownS4.get_time_left()):
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
 		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
@@ -575,3 +596,16 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
+
+func on_skill_used(ability,mana_used):
+	updateMana(-mana_used)
+	if(current_weapon == 1):
+		if(ability==1):
+			$CoolDownS1.start(25)
+		else:
+			$CoolDownS2.start(50)
+	else:
+		if(ability==1):
+			$CoolDownS3.start(25)
+		else:
+			$CoolDownS4.start(50)
