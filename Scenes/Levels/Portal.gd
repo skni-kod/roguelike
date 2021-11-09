@@ -21,6 +21,7 @@ func _process(_delta):
 		Bufor.weapons = player.weapons
 		Bufor.first_weapon_stats = player.first_weapon_stats
 		Bufor.second_weapon_stats = player.second_weapon_stats
+		Bufor.equipped = player.equipped
 		Bufor.i += 1
 		get_tree().change_scene("res://Scenes/Levels/Main.tscn")
 
