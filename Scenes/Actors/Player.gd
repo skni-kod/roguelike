@@ -35,7 +35,10 @@ var second_weapon_stats = {}
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+
+#onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
+
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
 
@@ -63,6 +66,9 @@ var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
 
+
+var immortal = 0 #jezeli rowne 1 to niesmiertelny
+
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
 		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
@@ -89,13 +95,22 @@ func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
+	if Bufor.coins:
+		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
-	$EquippedWeapon.damage = first_weapon_stats["attack"]
-	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
-	$EquippedWeapon.timer = $EquippedWeapon/Timer
+	if !Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+		$EquippedWeapon.damage = first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
+	
+	if Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/" + Bufor.weapons[1] + ".gd"))
+		$EquippedWeapon.damage = Bufor.first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(Bufor.first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
@@ -114,6 +129,22 @@ func _ready(): #po inicjacji bohatera
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	equipped = "Blade"
+	
+	if Bufor.weapons: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		weapons = Bufor.weapons
+		first_weapon_stats = Bufor.first_weapon_stats
+		equipped = Bufor.equipped
+		if weapons[2] != "Empty":
+			second_weapon_stats = Bufor.second_weapon_stats
+			ui_access_wslot2.texture = all_weapons[weapons[2]]
+		ui_access_wslot1.texture = all_weapons[weapons[1]]
+		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+		if weapons[2] == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -134,6 +165,10 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 	}
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
 	UpdatePotions() 
 	
 	
@@ -141,6 +176,8 @@ func _process(delta):
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
+	
+		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -463,7 +500,7 @@ func move():
 	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok:
+	if !skok and !immortal:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
@@ -538,4 +575,3 @@ func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawn
 func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
-
