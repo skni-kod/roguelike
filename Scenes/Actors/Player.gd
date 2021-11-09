@@ -100,10 +100,17 @@ func _ready(): #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
-	$EquippedWeapon.damage = first_weapon_stats["attack"]
-	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
-	$EquippedWeapon.timer = $EquippedWeapon/Timer
+	if !Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+		$EquippedWeapon.damage = first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
+	
+	if Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/" + Bufor.weapons[1] + ".gd"))
+		$EquippedWeapon.damage = Bufor.first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(Bufor.first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
@@ -127,6 +134,7 @@ func _ready(): #po inicjacji bohatera
 		# bronie są ładowane z bufora
 		weapons = Bufor.weapons
 		first_weapon_stats = Bufor.first_weapon_stats
+		equipped = Bufor.equipped
 		if weapons[2] != "Empty":
 			second_weapon_stats = Bufor.second_weapon_stats
 			ui_access_wslot2.texture = all_weapons[weapons[2]]
