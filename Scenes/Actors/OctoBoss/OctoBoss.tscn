@@ -42,11 +42,11 @@ position = Vector2( -0.666412, 34.3197 )
 occluder = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 0.9
 autostart = true
 
 [node name="Timer2" type="Timer" parent="."]
-wait_time = 5.2
+wait_time = 1.1
 autostart = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -59,6 +59,10 @@ polygon = PoolVector2Array( -48, 35, -34, 35, -34, 16, -38, 10, -33, 2, -26, -17
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
 shape = SubResource( 3 )
 
+[node name="miniTimer" type="Timer" parent="."]
+wait_time = 0.3
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
+[connection signal="timeout" from="miniTimer" to="." method="_on_miniTimer_timeout"]
