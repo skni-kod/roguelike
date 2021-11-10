@@ -20,16 +20,15 @@ tracks/0/keys = {
 "values": [ Rect2( 0, 0, 48, 48 ), Rect2( 48, 0, 48, 48 ), Rect2( 96, 0, 48, 48 ), Rect2( 96, 0, 48, 48 ), Rect2( 48, 0, 48, 48 ), Rect2( 0, 0, 48, 48 ), Rect2( 0, 0, 48, 48 ) ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=3]
+[sub_resource type="OccluderPolygon2D" id=2]
 polygon = PoolVector2Array( -6, -6, 6, -6, 6, 6, -6, 6 )
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=3]
 radius = 60.0
 
 [node name="KinematicBody2D" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
-scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -43,7 +42,7 @@ anims/idle = SubResource( 1 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 position = Vector2( 5, 14 )
-occluder = SubResource( 3 )
+occluder = SubResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -10, -23, -10, -16, -5, -11, 10, -4, 16, 6, 16, 14, 23, 16, 23, 20, 16, 23, -16, 23, -23, 19, -23, 17, -19, 14, -6, 14, -4, 4, -20, -9, -17, -18 )
@@ -51,11 +50,17 @@ polygon = PoolVector2Array( -10, -23, -10, -16, -5, -11, 10, -4, 16, 6, 16, 14, 
 [node name="Zasieg" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Zasieg"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
+
+[node name="AtakGD" type="Sprite" parent="."]
+visible = false
+
+[node name="AtakLP" type="Sprite" parent="."]
+visible = false
 
 [connection signal="body_entered" from="Zasieg" to="." method="_on_Zasieg_body_entered"]
 [connection signal="body_exited" from="Zasieg" to="." method="_on_Zasieg_body_exited"]
