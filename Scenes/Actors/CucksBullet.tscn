@@ -9,7 +9,6 @@ extents = Vector2( 7.56197, 8.01626 )
 
 [node name="CucksBullet" type="KinematicBody2D"]
 position = Vector2( 0, 0.46875 )
-scale = Vector2( 1.25, 1.25 )
 collision_layer = 12
 collision_mask = 2147483651
 script = ExtResource( 2 )
