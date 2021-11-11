@@ -38,7 +38,7 @@ texture = ExtResource( 2 )
 anims/mrug = SubResource( 1 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2( -0.666412, 34.3197 )
+position = Vector2( -1, 35 )
 occluder = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
