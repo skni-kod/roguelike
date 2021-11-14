@@ -48,7 +48,7 @@ onready var statusEffect = UI.get_node("StatusBar") # get_node("../../../UI/Stat
 # === ========= === #
 
 # === COINS === #
-var drop = {"minCoins":5,"maxCoins":10} # zakres minimalnej i maksymalnej ilości pieniędzy
+var drop = {"minCoins":90,"maxCoins":120} # zakres minimalnej i maksymalnej ilości pieniędzy
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 # === ===== === #
