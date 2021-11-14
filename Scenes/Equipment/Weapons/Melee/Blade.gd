@@ -1,5 +1,6 @@
 extends Node2D
 
+var player_node = get_tree().get_root().find_node("Player", true, false)
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -58,30 +59,32 @@ func _physics_process(delta):
 	
 	
 	if Input.is_action_just_pressed("use_ability_1"):
-		if active_ability1!=1 and active_ability2!=1:
-			active_ability1 = 1;
-			$WeaponSprite/WirMiecza.emitting = true
-			$AttackCollision.disabled = false
-			$WeaponSprite.position.x=wirek_range
-			for o in range(wirek_time):
-												#----------------------
-				var t = Timer.new()   			# Timer do wirka
-				t.set_wait_time(wirek_smoothing)#
-				t.set_one_shot(true)			#
-				self.add_child(t)				#
-				t.start()						#
-				yield(t, "timeout")				#
-												#----------------------
-				rotation += wirek_speed
-				
-				if rotation < -PI/2 or rotation > PI/2:
-					$WeaponSprite.scale.x = 1.2
-					$WeaponSprite.scale.y = -1.2
-					$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
-				else:
-					$WeaponSprite.scale.x = 1.2
-					$WeaponSprite.scale.y = 1.2
-					$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=25:
+			if (player_node.current_weapon==1 and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.current_weapon==2 and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				active_ability1 = 1;
+				$WeaponSprite/WirMiecza.emitting = true
+				$AttackCollision.disabled = false
+				$WeaponSprite.position.x=wirek_range
+				for o in range(wirek_time):
+													#----------------------
+					var t = Timer.new()   			# Timer do wirka
+					t.set_wait_time(wirek_smoothing)#
+					t.set_one_shot(true)			#
+					self.add_child(t)				#
+					t.start()						#
+					yield(t, "timeout")				#
+													#----------------------
+					rotation += wirek_speed
+					
+					if rotation < -PI/2 or rotation > PI/2:
+						$WeaponSprite.scale.x = 1.2
+						$WeaponSprite.scale.y = -1.2
+						$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+					else:
+						$WeaponSprite.scale.x = 1.2
+						$WeaponSprite.scale.y = 1.2
+						$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 			
 			
 			$WeaponSprite/WirMiecza.emitting = false
@@ -91,29 +94,31 @@ func _physics_process(delta):
 			active_ability1 = 0;
 			
 	if Input.is_action_just_pressed("use_ability_2"):
-		if active_ability1!=1 and active_ability2!=1:
-			active_ability2 = 1;
-			swing_to = hits_speed
-			swing_back = hits_speed
-			animation_step = 0.01
-			timer.set_wait_time(animation_step)
-			
-			
-			for o in range(hits_amount):
-				_on_Player_attacked()
-				var t = Timer.new() 
-				t.set_wait_time(0.25)
-				t.set_one_shot(true)
-				self.add_child(t)
-				t.start()
-				yield(t, "timeout")	
+		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=50:
+			if (player_node.current_weapon==1 and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.current_weapon==2 and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				active_ability2 = 1;
+				swing_to = hits_speed
+				swing_back = hits_speed
+				animation_step = 0.01
+				timer.set_wait_time(animation_step)
 				
-			
-			swing_to = 0.2
-			swing_back = 0.3
-			animation_step = 0.02
-			timer.set_wait_time(animation_step)
-			active_ability2 = 0;
+				
+				for o in range(hits_amount):
+					_on_Player_attacked()
+					var t = Timer.new() 
+					t.set_wait_time(0.25)
+					t.set_one_shot(true)
+					self.add_child(t)
+					t.start()
+					yield(t, "timeout")	
+					
+				
+				swing_to = 0.2
+				swing_back = 0.3
+				animation_step = 0.02
+				timer.set_wait_time(animation_step)
+				active_ability2 = 0;
 		
 
 

@@ -145,6 +145,9 @@ func get_dmg(dmg, weaponKnockback):
 			yield($AnimationPlayer, "animation_finished")
 			#Wyrzuc monety po zakonczeniu animacji
 			var level = get_tree().get_root().find_node("Main", true, false)
+			var p = portal.instance()
+			p.global_position = get_node("../..").global_position
+			level.add_child(p) #Tworzy portal
 			rng.randomize()
 			var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 			for i in range(0, coins):
@@ -153,9 +156,6 @@ func get_dmg(dmg, weaponKnockback):
 				coin = coin.instance()
 				coin.position = randomPosition
 				level.add_child(coin)
-			var p = portal.instance()
-			p.global_position = get_node("../..").global_position
-			level.add_child(p) #Tworzy portal
 			health_bar.queue_free()  #Usun pasek zycia bossa z UI
 			emit_signal("died", self)
 			queue_free()  #Usun caly wezel bossa
