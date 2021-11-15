@@ -10,6 +10,7 @@ onready var map = [] # Lista przechowująca pozycje gridowe pokoi z generacji ma
 onready var grid = $MarginContainer/Grid # Siatka na której wyświetlane są elementy
 var markers = {} # Słownik przechowujący element oraz jego pozycję na minimapie
 export var zoom = 0.5 # Zmienna określająca przybliżenie minimapy
+var room_pos
 #var fullscreen_map = false 
 # === ================ === #
 
@@ -33,16 +34,15 @@ func mapping():
 		new_marker.show() # Pokazanie wszystkich pokoi na mapie
 		markers[new_marker] = Vector2(item.x*16*4,item.y*9*4) # Ustalenie nowych pozycji znaczników pokoi w skali mapy
 # === =========================================== === #
-	
-	
+
 func _physics_process(delta):
 	# === USTAWIANIE POZYCJI I TEKSTURY POKOI NA MAPIE === #
 	for item in markers:
 		item.position = (grid.rect_size/2 + markers[item]) # Ustawienie pozycji pokoju
 		# Przesuwanie o dostosowany do skali mapy wektor poruszania się gracza
-		markers[item] -= Vector2(playerMovement.x/16/1.7, playerMovement.y/9/5.5)/((get_viewport_rect().size)/(grid.rect_size*zoom))
+		markers[item] -= Vector2(playerMovement.x/16/1.75, playerMovement.y/9/5.6)/((get_viewport_rect().size)/(grid.rect_size*zoom))
 		
-		if player_marker.position.x - (abs(item.position.x)) >= -32 and player_marker.position.x - (abs(item.position.x)) <= 32 and player_marker.position.y - (abs(item.position.y)) >= -18 and player_marker.position.y - (abs(item.position.y)) <= 18 and item.get_texture() != seen_room_sprite:
+		if abs(player_marker.position.x - item.position.x) <= 32 and abs(player_marker.position.y - item.position.y) <= 18 and item.get_texture() != seen_room_sprite:
 			item.set_texture(seen_room_sprite)
 	# === ============================================ === #
 	

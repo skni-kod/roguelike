@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal health_updated(health, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów życia bohatera
+signal mana_updated(mana, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów many bohatera
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 signal player_moved(movement_vec)
@@ -12,9 +13,14 @@ var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
-var base_health = 100 # bazowa ilość życia gracza
+export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
+var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
+var max_mana=200 #maksymalna ilość many
+var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
+var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
+
 
 var equipped #Aktualnie używana broń
 
@@ -22,17 +28,20 @@ var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
-var current_weapon
+var current_weapon = 1;
 var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
+
+#onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
+
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
-
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -49,10 +58,17 @@ var base_hp = null
 
 var Potion_in_time = 0
 
+var skok = false
+var skok_vector = Vector2.DOWN
+var stamina = 3
+
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
+
+
+var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
@@ -77,15 +93,26 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
+	$EquippedWeapon.connect("skill_used", self, "on_skill_used") #połaczenie sygnałów
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
+	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
+	if Bufor.coins:
+		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
-	$EquippedWeapon.damage = first_weapon_stats["attack"]
-	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
-	$EquippedWeapon.timer = $EquippedWeapon/Timer
+	if !Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+		$EquippedWeapon.damage = first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
+	
+	if Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/" + Bufor.weapons[1] + ".gd"))
+		$EquippedWeapon.damage = Bufor.first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(Bufor.first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
@@ -104,6 +131,22 @@ func _ready(): #po inicjacji bohatera
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	equipped = "Blade"
+	
+	if Bufor.weapons: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		weapons = Bufor.weapons
+		first_weapon_stats = Bufor.first_weapon_stats
+		equipped = Bufor.equipped
+		if weapons[2] != "Empty":
+			second_weapon_stats = Bufor.second_weapon_stats
+			ui_access_wslot2.texture = all_weapons[weapons[2]]
+		ui_access_wslot1.texture = all_weapons[weapons[1]]
+		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+		if weapons[2] == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -124,10 +167,38 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 	}
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
 	UpdatePotions() 
 	
 	
+func _process(delta):	
+	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
+
 func _physics_process(delta): #funkcja wywoływana co klatkę
+	
+	if ($CoolDownS1.get_time_left()):
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = 'R'
+	
+	if ($CoolDownS2.get_time_left()):
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = str(round($CoolDownS2.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = 'F'
+		
+	if ($CoolDownS3.get_time_left()):
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = str(round($CoolDownS3.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = 'R'
+		
+	if ($CoolDownS4.get_time_left()):
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
+		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -135,8 +206,8 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ========= === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			movement() #wywołanie funkcji poruszania się
+		if knockback == Vector2.ZERO :
+			movement(delta) #wywołanie funkcji poruszania się
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
 			knockback *= 0.95
@@ -187,7 +258,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_1"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[1] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
@@ -224,7 +295,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if Input.is_action_just_pressed("use_potion_2"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		base_hp = level.get_node("Player").base_health #pobranie bazowego hp gracza
+		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
 		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[2] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
@@ -264,10 +335,23 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			current_weapon = check_current_weapon()
 			change_weapon_slot(current_weapon)
+	  
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
-			
+	  
+func updateMana(value):
+	level.get_node("Player").mana += value
+	if mana<0: 
+		level.get_node("Player").mana=0
+	if mana>max_mana:
+		level.get_node("Player").mana=max_mana
+	emit_signal("mana_updated", mana/max_mana*100)
+	
+
+func resetStats():#Reset player perks to default
+	manaRegenRate=statusEffect.manaRegenRate
+
 func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
@@ -286,6 +370,7 @@ func change_potion_slot(): #funcja zamieniająca potki miejscami
 	
 
 func change_weapon_slot(currentSlot):
+	resetStats()
 	if currentSlot == 1:
 		equipped = weapons[2]
 		w2slot_visibility.visible = true
@@ -309,11 +394,23 @@ func change_weapon_slot(currentSlot):
 func swap_weapon(slot,weaponOnGround):
 	if weapons[2] != "Empty":
 		if slot == 1:
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+			else:
+				ui_access_wslot1.scale.x = 2.25
+				ui_access_wslot1.scale.y = 2.25
 			ui_access_wslot1.texture = all_weapons[weaponOnGround.WeaponName]
 			first_weapon_stats = weaponOnGround.Stats
 			w1slot_visibility.visible = true
 			w2slot_visibility.visible = false
 		elif slot == 2:
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
+			else:
+				ui_access_wslot2.scale.x = 2.25
+				ui_access_wslot2.scale.y = 2.25
 			ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
@@ -332,6 +429,12 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
 	else:
+		if weaponOnGround.WeaponName == "Katana":
+			ui_access_wslot2.scale.x = .8
+			ui_access_wslot2.scale.y = .8
+		else:
+			ui_access_wslot2.scale.x = 2.25
+			ui_access_wslot2.scale.y = 2.25
 		ui_access_wslot2.texture = all_weapons[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
 		equipped = weapons[2]
@@ -358,48 +461,84 @@ func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 		potions[2] = potionOnGround
 		equipped_potion = potions[2]
 
-func movement(): #funkcja poruszania się
+func movement(delta): #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	).normalized() # Określenie kierunku poruszania się
-	velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
-	velocity = move_and_slide(velocity, Vector2.UP) #wywołanie poruszania się
+	if direction != Vector2.ZERO:
+		skok_vector = direction
+	if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
+		jump() 
+		stamina = stamina - 1
+	if skok :
+		velocity = velocity.move_toward(skok_vector * speed * 2, 500 * delta)
+	else :
+		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
+	move() #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
+		if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif direction.y != 0: #jeżeli porusza się w pionie
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-			if direction.x < 0: #jeżeli idzie w lewo
-				$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			else: #jeżeli idzie w prawo
-				$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-		elif direction.x < 0: #jeżeli idzie w lewo
-			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-		elif direction.x > 0: #jeżeli idzie w prawo
-			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-			$AnimationPlayer.play("Run") #włącz animację "Run"
-	emit_signal("player_moved", velocity)
+		elif !skok:
+			$AnimationPlayer.play("Run")
+	#	elif direction.y != 0: #jeżeli porusza się w pionie
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#		if direction.x < 0: #jeżeli idzie w lewo
+	#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		else: #jeżeli idzie w prawo
+	#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#	elif direction.x < 0: #jeżeli idzie w lewo
+	#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	#	elif direction.x > 0: #jeżeli idzie w prawo
+	#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+	#		$AnimationPlayer.play("Run") #włącz animację "Run"
 
+func jump():
+	skok = true
+	$AnimationPlayer.play("skok")
+	$skok.start()
+	$stamina_regen.start()
+	yield($skok,"timeout")
+	skok = false
+	
+func _on_stamina_regen_timeout():
+	if stamina < 3:
+		stamina = stamina + 1
+	else :
+		$stamina_regen.stop()
+
+
+func move():
+	velocity = move_and_slide(velocity, Vector2.UP)
+	emit_signal("player_moved", velocity)
+	if direction.x < 0 :
+		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+	elif direction.x > 0:
+		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+
+
+	
 func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if enemyKnockback != 0:
-		knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
-	if knockbackResistance != 0:
-		knockback /= knockbackResistance
-	elif knockbackResistance <= 0.6:
-		knockback /= 0.6
-	# ======= ========= ======= #
-	health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
-	emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
-	got_hitted = true #bohater jest uderzany
-	$AnimationPlayer.play("Hit") #włącz animację "Hit"
-	yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
-	got_hitted = false #bohater nie jest uderzany
-	if (health <= 0):
-		get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+	if !skok and !immortal:
+		if enemyKnockback != 0:
+			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		if knockbackResistance != 0:
+			knockback /= knockbackResistance
+		elif knockbackResistance <= 0.6:
+			knockback /= 0.6
+		# ======= ========= ======= #
+		health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
+		got_hitted = true #bohater jest uderzany
+		$AnimationPlayer.play("Hit") #włącz animację "Hit"
+		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
+		got_hitted = false #bohater nie jest uderzany
+		if (health <= 0):
+			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
+	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:
@@ -458,3 +597,16 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 
+func on_skill_used(ability,mana_used):
+	updateMana(-mana_used)
+	print(equipped)
+	if(equipped == weapons[1]):
+		if(ability==1):
+			$CoolDownS1.start(25)
+		else:
+			$CoolDownS2.start(50)
+	else:
+		if(ability==1):
+			$CoolDownS3.start(25)
+		else:
+			$CoolDownS4.start(50)

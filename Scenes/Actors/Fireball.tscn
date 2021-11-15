@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Actors/fireball.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.28021
@@ -43,6 +44,7 @@ __meta__ = {
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 1, 1, 0, 1 )
 self_modulate = Color( 1, 1, 0, 1 )
+light_mask = 2
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -60,4 +62,10 @@ amount = 32
 lifetime = 0.1
 local_coords = false
 process_material = SubResource( 5 )
+
+[node name="Light2D" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 0.32, 0.32 )
+color = Color( 1, 0.796078, 0, 1 )
+shadow_color = Color( 1, 0.843137, 0, 0 )
+
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]

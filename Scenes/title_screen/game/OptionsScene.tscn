@@ -47,7 +47,8 @@ __meta__ = {
 margin_top = 51.0
 margin_right = 414.0
 margin_bottom = 67.0
-min_value = -30.0
-max_value = 10.0
-value = -10.0
+min_value = -50.0
+max_value = -5.0
+value = -20.0
+
 [connection signal="value_changed" from="VBoxContainer2/HSlider" to="." method="_on_HSlider_value_changed"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/title_screen/game/NewGame.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/title_screen/buttons/ExitButton.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 38
@@ -55,4 +56,8 @@ margin_bottom = 104.0
 custom_fonts/font = SubResource( 3 )
 text = "Quit"
 script = ExtResource( 3 )
+
+[node name="FadeIn" parent="." index="2" instance=ExtResource( 4 )]
+visible = false
+
 [connection signal="button_up" from="VBoxContainer2/ButtonQuit" to="VBoxContainer2/ButtonQuit" method="_on_ButtonQuit_button_up"]

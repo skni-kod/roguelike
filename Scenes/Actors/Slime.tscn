@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
@@ -25,15 +25,15 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 8, 9, 10, 11, 12 ]
+"values": [ 8, 9, 10, 11 ]
 }
 
 [sub_resource type="Animation" id=5]
 resource_name = "Die"
-length = 0.45
+length = 0.6
 step = 0.15
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -42,10 +42,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.15076, 0.299559, 0.45 ),
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 12, 13, 14, 15 ]
+"values": [ 16, 17, 18, 19 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -59,14 +59,14 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 5, 1, 0 ]
+"values": [ 4, 5 ]
 }
 
 [sub_resource type="Animation" id=7]
-length = 0.6
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -74,14 +74,14 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 3, 4 ]
+"values": [ 0, 1, 2, 3 ]
 }
 
 [sub_resource type="Animation" id=8]
-length = 0.3
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -89,11 +89,26 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 3, 4, 5 ]
+"values": [ 12, 13, 14, 15 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("LightOccluder2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.201, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, -7 ), Vector2( 0, -6 ), Vector2( 0, -2 ) ]
+}
+
+[sub_resource type="OccluderPolygon2D" id=9]
+polygon = PoolVector2Array( -7, 5, 7, 5, 7, 10, -7, 10 )
 
 [node name="Slime" type="KinematicBody2D" groups=[
 "Enemy",
@@ -116,11 +131,12 @@ scale = Vector2( 0.621239, 0.24081 )
 texture = ExtResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
-vframes = 4
 hframes = 4
-frame = 8
+vframes = 5
+frame = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 6 )
@@ -128,6 +144,7 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Wzrok" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
@@ -135,6 +152,7 @@ position = Vector2( -0.117981, 4.09191 )
 shape = SubResource( 2 )
 
 [node name="Atak" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
@@ -150,6 +168,11 @@ anims/Walk = SubResource( 8 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 0, -2 )
+occluder = SubResource( 9 )
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]

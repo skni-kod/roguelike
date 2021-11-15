@@ -13,5 +13,11 @@ func set_is_emitting(var emit):
 	var emitter = emit
 	if emitter:
 		$Particles2D.emitting = true # jeśli emit jest prawdą, Particles2D zaczyna emitować
+		#podświetlenie
+		$Light2D.visible = true
+		get_parent().get_node("LightOccluder2D").visible = false
 	else:
 		$Particles2D.emitting = false # jeśli emit jest prawdą, Particles2D zaczyna emitować
+		#podświetlenie
+		$Light2D.visible = false
+		get_parent().get_node("LightOccluder2D").visible = true

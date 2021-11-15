@@ -10,13 +10,18 @@ func _ready():
 	Stats = all_weapons["Weapons"][WeaponName]
 	Stats['attack'] = float(Stats['attack'])
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
+	if WeaponName == "Katana":
+		$Sprite.scale.x = .5
+		$Sprite.scale.y = .5
+	else:
+		$Sprite.scale.x = 1
+		$Sprite.scale.y = 1
 	$Sprite.texture = texture
 	if (WeaponName == null):
 		queue_free()
 #test
 func take_dmg(a):
 	pass
-
 func _on_PopUp_body_entered(body):
 	 #Przypisuje zmienne i tworzy okienko statystyk broni
 	if body.name == "Player":
