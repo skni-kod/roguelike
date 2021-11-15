@@ -1,18 +1,19 @@
 [gd_scene load_steps=5 format=2]
 
 [sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0.296443, 1 )
-colors = PoolColorArray( 0.618652, 0.0507488, 0.0507488, 1, 0.188965, 0.00590515, 0.00590515, 1 )
+offsets = PoolRealArray( 0, 0.886667 )
+colors = PoolColorArray( 0.933594, 0.878891, 0.878891, 1, 0.152588, 0.189304, 0.488281, 1 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
 
 [sub_resource type="ParticlesMaterial" id=3]
-emission_shape = 1
-emission_sphere_radius = 20.0
 flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 52.1
 gravity = Vector3( 0, 0.2, 0 )
-orbit_velocity = 0.01
+initial_velocity = 0.1
+orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 linear_accel = 1.0
 angle_random = 1.0
@@ -37,9 +38,9 @@ func _ready() -> void:
 [node name="Node2D" type="Node2D"]
 
 [node name="Particles2D" type="Particles2D" parent="."]
-position = Vector2( 0.0026319, 0.00236297 )
-amount = 140
-lifetime = 3.0
-speed_scale = 20.0
+position = Vector2( 0.135067, 0.00236297 )
+amount = 150
+lifetime = 9.0
+speed_scale = 5.17
 process_material = SubResource( 3 )
 script = SubResource( 4 )
