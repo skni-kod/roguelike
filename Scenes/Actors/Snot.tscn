@@ -96,9 +96,7 @@ tracks/0/keys = {
 [sub_resource type="OccluderPolygon2D" id=9]
 polygon = PoolVector2Array( -5, 4, 5, 4, 5, 8, -5, 8 )
 
-[node name="snot" type="KinematicBody2D" groups=[
-"Enemy",
-]]
+[node name="snot" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 3 )

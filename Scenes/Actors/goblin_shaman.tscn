@@ -53,19 +53,17 @@ tracks/0/keys = {
 [sub_resource type="OccluderPolygon2D" id=8]
 polygon = PoolVector2Array( -3, 0, 5, 0, 5, 14, -3, 14 )
 
-[node name="goblin_shaman" type="KinematicBody2D" groups=[
-"Enemy",
-]]
+[node name="goblin_shaman" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
 visible = false
-margin_left = -10.0406
-margin_top = -5.9466
-margin_right = -10.0406
-margin_bottom = -5.9466
+margin_left = -8.84871
+margin_top = -15.0845
+margin_right = -8.84871
+margin_bottom = -15.0845
 rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Shadow" type="Sprite" parent="."]
@@ -105,8 +103,11 @@ anims/Die = SubResource( 5 )
 anims/Idle = SubResource( 6 )
 anims/Walk = SubResource( 7 )
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+[node name="summon" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[node name="attack" type="Timer" parent="."]
 autostart = true
 
 [node name="Position2D" type="Position2D" parent="."]
@@ -119,4 +120,5 @@ occluder = SubResource( 8 )
 [connection signal="body_exited" from="wzrok" to="." method="_on_wzrok_body_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="summon" to="." method="_on_summon_timeout"]
+[connection signal="timeout" from="attack" to="." method="_on_attack_timeout"]
