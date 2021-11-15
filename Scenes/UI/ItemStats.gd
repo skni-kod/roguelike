@@ -5,6 +5,7 @@ var itemAttack
 var itemSpd
 var itemKnc
 var itemDescription
+var itemPrice
 var sizeX
 
 func _ready():

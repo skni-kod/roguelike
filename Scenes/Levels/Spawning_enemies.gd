@@ -34,6 +34,7 @@ var boss = false #czy to jest pokoj z bossem
 var is_sklep = false #czy to pokoj ze sklepem
 var odwiedzony = false #czy sklep byl odwiedzony
 var item
+var popups = {}
 
 onready var main := get_tree().get_root().find_node("Main", true, false)
 
@@ -111,18 +112,26 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			else:
 				Bufor.i = -1
 				bossIns = bossScene2.instance()
-			#add_child(bossIns) #dodawanie sceny boss'a
+			add_child(bossIns) #dodawanie sceny boss'a
 			print("boss")
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
-			#close_door() #zamkniecie drzwi
+			close_door() #zamkniecie drzwi
 		elif is_sklep:
 			if odwiedzony == false:
 				weapon()
 				potion()
+				var popup = load("res://Scenes/UI/Sklep_ceny.tscn")
+				popup = popup.instance()
+				popup.rect_scale.x = 0.5
+				popup.rect_scale.y = 0.5
+				add_child(popup)
+				popups[body] = popup
 				odwiedzony = true
 			Bufor.in_sklep = true
 			print("XD")
 		elif is_sklep == false:
+			if body in popups:
+				popups[body].queue_free()
 			Bufor.in_sklep = false
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju

@@ -10,7 +10,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
-export var speed = 500 #wartośc szybkości bohatera
+export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
@@ -18,7 +18,7 @@ var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona 
 var max_mana=200 #maksymalna ilość many
 var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
 var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
-var coins = 100 #ilośc coinsów bohatera
+var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
 
@@ -212,31 +212,50 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if potion != null: #Jeżeli gracz stoi przy potionie
 		if Input.is_action_just_pressed("pick"): #jeżeli gracz naciśnie przycisk pick
 			if Bufor.in_sklep:
-				coins-=20
-				level.get_node("UI/Coins").text = "Coins:"+str(coins)
-			var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
-			var potion_tmp = potion.name #zmienna przechowująca rzeczywistą nazwe danego potka w scenie np 50%Potion2
-			if potions[1]=="Empty": #jeżeli niema potka na slocie 1 to:
-				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
-			elif potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
-				swap_potion(2,potion_name) #ustawienie na slot 2 potka przy ktorym stoi gracz
+				if coins > 20:
+					coins-=20
+					level.get_node("UI/Coins").text = "Coins:"+str(coins)
+					var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
+					var potion_tmp = potion.name #zmienna przechowująca rzeczywistą nazwe danego potka w scenie np 50%Potion2
+					if potions[1]=="Empty": #jeżeli niema potka na slocie 1 to:
+						swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+					elif potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
+						swap_potion(2,potion_name) #ustawienie na slot 2 potka przy ktorym stoi gracz
+					else:
+						potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
+						swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+					if "50%Potion" in potion_name:
+						potions_amount["50%Potion"]+=1 #zwieksza ilość potek 50% o 1
+					elif "100%Potion" in potion_name:
+						potions_amount["100%Potion"]+=1#zwieksza ilość potek 100% o 1
+					elif "20healthPotion" in potion_name:
+						potions_amount["20healthPotion"]+=1 #zwieksza ilość potek 20hp o 1
+					elif "60healthPotion" in potion_name:
+						potions_amount["60healthPotion"]+=1 #zwieksza ilość potek 60hp o 1
+					potion = null #wyzerowanie zmiennej potion, czyli gracz niestoi już przy potku
+					level.get_node(potion_tmp).queue_free() #usuniecie podniesionego potka z sceny
+					UpdatePotions()
 			else:
-				potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
-				swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
-		
-			if "50%Potion" in potion_name:
-				potions_amount["50%Potion"]+=1 #zwieksza ilość potek 50% o 1
-			elif "100%Potion" in potion_name:
-				potions_amount["100%Potion"]+=1#zwieksza ilość potek 100% o 1
-			elif "20healthPotion" in potion_name:
-				potions_amount["20healthPotion"]+=1 #zwieksza ilość potek 20hp o 1
-			elif "60healthPotion" in potion_name:
-				potions_amount["60healthPotion"]+=1 #zwieksza ilość potek 60hp o 1
-			potion = null #wyzerowanie zmiennej potion, czyli gracz niestoi już przy potku
-			
-			level.get_node(potion_tmp).queue_free() #usuniecie podniesionego potka z sceny
-			UpdatePotions()
-
+				var potion_name = potion.get_node("PotionNameHolder").text #zmienna przechowująca nazwe potka bez oznaczenia kopii np 50%Potion
+				var potion_tmp = potion.name #zmienna przechowująca rzeczywistą nazwe danego potka w scenie np 50%Potion2
+				if potions[1]=="Empty": #jeżeli niema potka na slocie 1 to:
+					swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+				elif potions[2]=="Empty": #jeżeli niema potka na slocie 2 to:
+					swap_potion(2,potion_name) #ustawienie na slot 2 potka przy ktorym stoi gracz
+				else:
+					potions_amount[potions[1]] = 0 #wyzerowanie ilości potków aktualnego potka na miejscu 1
+					swap_potion(1,potion_name) #ustawienie na slot 1 potka przy ktorym stoi gracz
+				if "50%Potion" in potion_name:
+					potions_amount["50%Potion"]+=1 #zwieksza ilość potek 50% o 1
+				elif "100%Potion" in potion_name:
+					potions_amount["100%Potion"]+=1#zwieksza ilość potek 100% o 1
+				elif "20healthPotion" in potion_name:
+					potions_amount["20healthPotion"]+=1 #zwieksza ilość potek 20hp o 1
+				elif "60healthPotion" in potion_name:
+					potions_amount["60healthPotion"]+=1 #zwieksza ilość potek 60hp o 1
+				potion = null #wyzerowanie zmiennej potion, czyli gracz niestoi już przy potku
+				level.get_node(potion_tmp).queue_free() #usuniecie podniesionego potka z sceny
+				UpdatePotions()
 	
 	if potions_amount[potions[2]] != 0 and  potions_amount[potions[1]] == 0: #jeżeli potek z 1 slota został zużyty i jest jakiś potek na slocie 2 to:
 		change_potion_slot()  											# potek z 2 slota zostaje przeniesiony do slota 1
@@ -594,7 +613,4 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 	
-func if_sklep():
-	in_sklep = true
-	print("XDDD")
 	
