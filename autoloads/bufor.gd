@@ -10,3 +10,4 @@ var first_weapon_stats = null
 var second_weapon_stats = null
 var potions = null
 var potions_amount = null
+var in_sklep = false
