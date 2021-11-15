@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/BloodSword.png-19f9794306d6fcc6be16b61cce3c671e.stex"
+path="res://.import/octo3.png-5b65ed3e6763d763076c2d510eb58b27.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/BloodSword.png"
-dest_files=[ "res://.import/BloodSword.png-19f9794306d6fcc6be16b61cce3c671e.stex" ]
+source_file="res://Scenes/Actors/OctoBoss/octo3.png"
+dest_files=[ "res://.import/octo3.png-5b65ed3e6763d763076c2d510eb58b27.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

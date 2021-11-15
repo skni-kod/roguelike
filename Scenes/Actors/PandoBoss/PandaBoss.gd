@@ -48,7 +48,7 @@ onready var statusEffect = UI.get_node("StatusBar") # get_node("../../../UI/Stat
 # === ========= === #
 
 # === COINS === #
-var drop = {"minCoins":5,"maxCoins":10} # zakres minimalnej i maksymalnej ilości pieniędzy
+var drop = {"minCoins":90,"maxCoins":120} # zakres minimalnej i maksymalnej ilości pieniędzy
 var randomPosition # zmienna losowej pozycji dla coinsów
 var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losowej liczby
 # === ===== === #
@@ -232,6 +232,9 @@ func _on_animHurtTimer_timeout():
 # === FUNKCJA OPUSZCZANIA COINSÓW I PORTALU === #
 func drop_coins():
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
+	level.add_child(p)
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
 	for i in range(0,coins): # pętla tworząca monety
@@ -240,7 +243,4 @@ func drop_coins():
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
 # === =========================== === #
