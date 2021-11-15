@@ -16,6 +16,10 @@ var swing_to = 0.2
 var swing_back = 0.8
 var animation_step = 0.02
 
+var mc = 0
+var ph = 0
+var player_node:= get_tree().get_root().find_node("Player", true, false)
+
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
@@ -41,7 +45,15 @@ func _physics_process(delta):
 			$WeaponSprite.scale.x = 1.0
 			$WeaponSprite.scale.y = 1.0
 			$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
+	player_node.connect("attacked", self, "_on_Player_attacked")
 
+func _on_enemy_death():
+	mc += 1
+	if mc == 5:
+		match ph:
+			0:
+				ph+1
+				damage*5
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
