@@ -28,8 +28,29 @@ var knockbackResistance = 2 # rezystancja knockbacku zakres -> (0.6-nieskończon
 var enemyKnockback = 0.3
 var enemyPos
 # === ===================== === #
+# === ZMIENNE DO ELITY === #
+var is_elite = false
+
+func elite():
+	rng.randomize()
+	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
+	var elite = rng.randf_range(1,100)	# zakres losowania szansy na stworzenie elity
+	if elite <=25 :		# w jakim zakresie musi być wylosowana liczba 
+		is_elite = true		
+		if rgb == 1 :	#rodzaj zielony więcej hp wolniejszy
+			$Sprite.modulate = Color(0, 1, 0, 1 )
+			max_hp = max_hp * 1.5	# zwiększenie zdrowia o 1.5 razy
+			hp = max_hp
+			health = 100
+			speed -= 0.1
+		if rgb == 2 :	# rodzaj niebieski szybciej atakuje i szybciej biega
+			$Sprite.modulate = Color( 0, 0, 1, 1 )
+			speed += 0.3
+			$Timer.set_wait_time(0.70)
+# === ===================== === #
 
 func _ready():
+	elite()
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):
@@ -90,7 +111,7 @@ func fire():
 	bullet.position = get_global_position() + $Position2D.position
 	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
 	main.add_child(bullet)
-	$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
+	#$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
 
 func _on_Timer_timeout():
 	if player !=null and health>0 and attack: #jezeli player znajduje sie w polu strzelanie to:
@@ -117,6 +138,8 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished") 
 		var level = get_tree().get_root().find_node("Main",true,false)
+		if is_elite == true:
+			random_potion()
 		rng.randomize() #zmienna sluzaca do losowania coinsow
 		var coins = rng.randf_range(drop["minCoins"], drop["maxCoins"])
 		for i in range(0,coins):
@@ -131,3 +154,21 @@ func get_dmg(dmg, weaponKnockback):
 	text.amount = dmg
 	text.type = "Damage"
 	add_child(text)		
+
+func random_potion():
+	rng.randomize()
+	var potion
+	potion = int(rng.randi_range(1,2))
+	print(potion)
+	var tmp
+	
+	if potion == 1:
+		tmp = load("res://Scenes/Loot/50%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 2:
+		tmp = load("res://Scenes/Loot/60healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
