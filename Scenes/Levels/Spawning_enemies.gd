@@ -110,7 +110,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			var bossIns
 			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()
 			add_child(bossIns) #dodawanie sceny boss'a
-			print("boss")
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
 		elif is_sklep:
@@ -125,7 +124,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				popups[body] = popup
 				odwiedzony = true
 			Bufor.in_sklep = true
-			print("XD")
 		elif is_sklep == false:
 			if body in popups:
 				popups[body].queue_free()
@@ -139,7 +137,6 @@ func potion():
 		ptn = load("res://Scenes/Loot/60healthPotion.tscn")
 		ptn = ptn.instance()
 		ptn.position = self.global_position + Vector2(-60,60)
-		print("XDD")
 		main.add_child(ptn)
 		
 func weapon():

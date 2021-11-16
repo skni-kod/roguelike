@@ -12,10 +12,10 @@ var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
 export var speed = 300 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
-export var health = 10000 #ilośc punktów życia bohatera
+export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
 var max_health = 100 #maksymalna ilość życia gracza, może zostać zmieniona w trakcie rozgrywki
-var max_mana=200 #maksymalna ilość many
+var max_mana = 200 #maksymalna ilość many
 var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
 var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
@@ -71,7 +71,7 @@ var in_sklep = false
 var skl_odw = false
 
 
-var immortal = 1 #jezeli rowne 1 to niesmiertelny
+var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
