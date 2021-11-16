@@ -3,9 +3,9 @@ extends Node
 var all_weapons_script = {
 		"axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
 		"blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
-		"bloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
+		"bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
 		"fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
-		"fMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
+		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
 		"hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
 		"katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
 		"knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
@@ -55,7 +55,7 @@ var all_weapons = {
 			"range": "melee",
 			"effect": "none"
 		},
-		"Fire Scepter": {
+		"fire Scepter": {
 			"attack": "10",
 			"spd": "1",
 			"knc": float(0.75),

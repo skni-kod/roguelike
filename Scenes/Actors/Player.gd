@@ -456,7 +456,7 @@ func swap_weapon(slot,weaponOnGround):
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
-		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
+		$EquaippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
