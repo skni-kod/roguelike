@@ -215,6 +215,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
+				self.speed = 100
 				current_weapon = check_current_weapon()
 				if Bufor.in_sklep and skl_odw == false:
 					if coins >= 50:
