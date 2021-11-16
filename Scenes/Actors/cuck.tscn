@@ -152,7 +152,7 @@ anims/Idle = SubResource( 7 )
 anims/Walk = SubResource( 8 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.6
+wait_time = 0.7
 autostart = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]

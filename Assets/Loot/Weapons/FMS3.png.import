@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex"
+path="res://.import/FMS3.png-ad82bea65bd9fdd122b9eaffa68cced2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/PandoBoss/PandaBoss.png"
-dest_files=[ "res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex" ]
+source_file="res://Assets/Loot/Weapons/FMS3.png"
+dest_files=[ "res://.import/FMS3.png-ad82bea65bd9fdd122b9eaffa68cced2.stex" ]
 
 [params]
 
@@ -28,8 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
-process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

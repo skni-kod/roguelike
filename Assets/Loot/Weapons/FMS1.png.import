@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Drzwi.png-c6c5a48cb02f58be8f6df07c40f2c92d.stex"
+path="res://.import/FMS1.png-a84a18730add9db172d599a062e88e21.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/Drzwi.png"
-dest_files=[ "res://.import/Drzwi.png-c6c5a48cb02f58be8f6df07c40f2c92d.stex" ]
+source_file="res://Assets/Loot/Weapons/FMS1.png"
+dest_files=[ "res://.import/FMS1.png-a84a18730add9db172d599a062e88e21.stex" ]
 
 [params]
 

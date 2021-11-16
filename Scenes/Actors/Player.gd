@@ -119,7 +119,7 @@ func _ready(): #po inicjacji bohatera
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/FMS5.png"),
 		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -356,9 +356,11 @@ func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
 	else:
-		if all_weapons[weapons[1]] == actualweapon_access.texture:
+		if weapons[1] == $EquippedWeapon.weaponName:
+			print('ee')
 			return 1
-		if all_weapons[weapons[2]] == actualweapon_access.texture:
+		if weapons[2] == $EquippedWeapon.weaponName:
+			print('e')
 			return 2
 
 
@@ -599,7 +601,7 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 
 func on_skill_used(ability,mana_used):
 	updateMana(-mana_used)
-	if(current_weapon == 1):
+	if(equipped == weapons[1]):
 		if(ability==1):
 			$CoolDownS1.start(25)
 		else:

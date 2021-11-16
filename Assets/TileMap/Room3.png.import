@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex"
+path="res://.import/Room3.png-7098df99a710ede0566e0d87d4d5dbd3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/PandoBoss/PandaBoss.png"
-dest_files=[ "res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex" ]
+source_file="res://Assets/TileMap/Room3.png"
+dest_files=[ "res://.import/Room3.png-7098df99a710ede0566e0d87d4d5dbd3.stex" ]
 
 [params]
 
@@ -28,7 +28,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
-process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

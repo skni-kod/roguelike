@@ -27,7 +27,30 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 var enemyKnockback = 0.5
 # === ===================== === #
 
+# === ZMIENNE DO ELITY === #
+var is_elite = false
+onready var main := get_tree().get_root().find_node("Main", true, false)
+
+func elite():
+	rng.randomize()
+	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
+	var elite = rng.randf_range(1,100)	# zakres losowania szansy na stworzenie elity
+	if elite <=25 :		# w jakim zakresie musi być wylosowana liczba 
+		is_elite = true		# może się przydać później 
+		if rgb == 1 :	#rodzaj zielony więcej hp wolniejszy
+			$Sprite.modulate = Color(0, 1, 0, 1 )
+			max_hp = max_hp * 1.5	# zwiększenie zdrowia o 1.5 razy
+			hp = max_hp
+			health = 100
+			speed -= 0.1
+		if rgb == 2 :	# rodzaj niebieski szybciej atakuje i szybciej biega
+			$Sprite.modulate = Color( 0, 0, 1, 1 )
+			speed += 0.3
+			$Timer.set_wait_time(0.50)
+# === ===================== === #
+
 func _ready():
+	elite()
 	health_bar.on_health_updated(health)
 	
 func _physics_process(delta):
@@ -101,6 +124,8 @@ func get_dmg(dmg, weaponKnockback):
 		yield($AnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main",true,false)
 		rng.randomize()
+		if is_elite == true:
+			random_potion()
 		var coins = rng.randf_range(drop["minCoins"], drop["maxCoins"])
 		for i in range(0,coins): #losowane ilosc coinsow ktore wypadna po zabiciu
 			randomPosition= Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
@@ -114,3 +139,20 @@ func get_dmg(dmg, weaponKnockback):
 	text.amount = dmg
 	text.type = "Damage"
 	add_child(text)		
+
+func random_potion():
+	rng.randomize()
+	var potion = int(rng.randi_range(0,1))
+	print(potion)
+	var tmp
+	
+	if potion == 0:
+		tmp = load("res://Scenes/Loot/20healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 1:
+		tmp = load("res://Scenes/Loot/50%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
