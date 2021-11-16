@@ -44,7 +44,30 @@ var target_pos
 var near = false
 # === ===================== === #
  
+# === ZMIENNE DO ELITY === #
+var is_elite = false
+
+func elite():
+	rng.randomize()
+	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
+	var elite = rng.randf_range(1,100)	# zakres losowania szansy na stworzenie elity
+	if elite <=25 :		# w jakim zakresie musi być wylosowana liczba 
+		is_elite = true	
+		if rgb == 1 :	#rodzaj zielony więcej hp wolniejszy
+			$Sprite.modulate = Color(0, 1, 0, 1 )
+			max_hp = max_hp * 1.5	# zwiększenie zdrowia o 1.5 razy
+			hp = max_hp
+			health = 100
+			speed -= 0.1
+		if rgb == 2 :	# rodzaj niebieski szybciej atakuje i szybciej biega
+			$Sprite.modulate = Color( 0, 0, 1, 1 )
+			speed += 0.3
+			$Timer.set_wait_time(1.5)
+			$Cooldown.set_wait_time(1.25)
+# === ===================== === #
+
 func _ready():
+	elite()
 	health_bar.on_health_updated(health) # wczytuję życie do paska życia
 	$Laser_Load.emit = false
 	level = get_tree().get_root().find_node("Main", true, false)
@@ -150,6 +173,7 @@ func _on_Timer_timeout():
 # === COOLDOWN === #
 func _on_Cooldown_timeout():
 	if health>0 and attack and target: # gdy BD żyje, atakuje i ma cel
+		
 		$Laser_Load.emit = true # Laser Load zostaje emitowany
 		$Timer.start() # Timer zostaje aktywowany w celu oddania strzału
 # === ======== === #
@@ -196,7 +220,11 @@ func get_dmg(dmg, weaponKnockback):
 	
 func random_potion():
 	rng.randomize()
-	var potion = int(rng.randf_range(0,3))
+	var potion 
+	if is_elite == true:
+		potion = int(rng.randi_range(2,3))
+	else:
+		potion = int(rng.randi_range(0,2))
 	print(potion)
 	var tmp
 	

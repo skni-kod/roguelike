@@ -36,3 +36,4 @@ occluder = SubResource( 2 )
 script = ExtResource( 3 )
 
 [connection signal="body_entered" from="." to="Enemies" method="_on_Node2D_body_entered"]
+[connection signal="body_entered" from="." to="Lights" method="_on_Node2D_body_entered"]

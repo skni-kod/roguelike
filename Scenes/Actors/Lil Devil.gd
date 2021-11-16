@@ -30,8 +30,33 @@ var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 var enemyKnockback = 0
 # === ===================== === #
- 
+
+# === ZMIENNE DO ELITY === #
+var is_elite = false
+onready var main := get_tree().get_root().find_node("Main", true, false)
+
+func elite():
+	rng.randomize()
+	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
+	var elite = rng.randf_range(1,100)	# zakres losowania szansy na stworzenie elity
+	if elite <=25 :		# w jakim zakresie musi być wylosowana liczba 
+		is_elite = true
+		if rgb == 1 :	#rodzaj zielony więcej hp wolniejszy
+			$Sprites/BodySprite.modulate = Color(0, 1, 0, 1 )	#Zmiana koloru sprite (czerwony , zielony , niebieski, przezroczystość )
+			$Sprites/HeadSprite.modulate = Color(0, 1, 0, 1 )
+			max_hp = max_hp * 1.5	# zwiększenie zdrowia o 1.5 razy
+			hp = max_hp
+			health = 100
+			speed -= 0.1
+		if rgb == 2 :	# rodzaj niebieski szybciej biega
+			$Sprites/BodySprite.modulate = Color(0, 0, 1, 1 )	#Zmiana koloru sprite (czerwony , zielony , niebieski, przezroczystość )
+			$Sprites/HeadSprite.modulate = Color(0, 0, 1, 1 )
+			speed += 0.5
+			$Timer.set_wait_time(0.75)
+# === ===================== === # 
+
 func _ready():
+	elite()
 	health_bar.on_health_updated(health)
 	$Timer.stop()
 
@@ -126,6 +151,8 @@ func get_dmg(dmg, weaponKnockback):
 		yield($HeadAnimationPlayer,"animation_finished")
 		var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 		rng.randomize() # losowanie generatora liczb
+		if is_elite == true:
+			random_potion()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
 		for i in range(0,coins): # pętla tworząca monety
 			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
@@ -142,3 +169,20 @@ func get_dmg(dmg, weaponKnockback):
 	text.type = "Damage"
 	add_child(text)	
 		
+
+func random_potion():
+	rng.randomize()
+	var potion
+	potion = int(rng.randi_range(0,1))
+	print(potion)
+	var tmp
+	if potion == 0:
+		tmp = load("res://Scenes/Loot/20healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 1:
+		tmp = load("res://Scenes/Loot/50%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)

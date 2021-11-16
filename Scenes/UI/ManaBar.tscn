@@ -17,7 +17,6 @@ margin_bottom = 10.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 4 )
 tint_under = Color( 0.101961, 0.12549, 0.643137, 1 )
-tint_progress = Color( 1, 0.337255, 0.337255, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

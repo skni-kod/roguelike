@@ -1,15 +1,15 @@
 extends Node
 
 var all_weapons_script = {
-		"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
-		"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
-		"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-		"Fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
-		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
-		"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
-		"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
-		"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
-		"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
+		"axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
+		"blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
+		"bloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
+		"fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
+		"fMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
+		"hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
+		"katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
+		"knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
+		"spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
 	}
 var all_weapons = {
 	"Weapons": {

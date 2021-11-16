@@ -52,6 +52,9 @@ var marksmanMaxStacks = 20
 # zmienne do różnych efektów
 var healAmount = 30
 
+
+export var immune = false #do umiejetnosci 2 axe, odporność na efekty
+
 # funkcja ready nie wymaga żadnych operacji w tym przypadku
 func _ready():
 	pass
@@ -98,7 +101,7 @@ func _physics_process(delta):
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
 func burn(var fire):
-	if fire and prawdopodobienstwo(0.5):
+	if fire and prawdopodobienstwo(0.5) and immune == false:
 		if burningStacks <= burningMaxStacks: # ograniczam stacki do maksymalnej wartości stacków dla danego efektu
 			burningStacks += 1 # dodaję stack
 		burning = true # ustawiam na true, ponieważ sprawdzając w ln. 35 zmienna setterowa/getterowa zostaje przywrócona do wartości domyślnej
@@ -133,7 +136,7 @@ func _on_Burning_Damage_timeout():
 # -------------- ZATRUCIE -------------- #
 # tak samo jak w funkcji burn(), ewentualne zmiany opisane w komentarzach
 func poisoning(var poisoned):
-	if poisoned and prawdopodobienstwo(0.75):
+	if poisoned and prawdopodobienstwo(0.75) and immune == false:
 		if poisonStacks <= poisonMaxStacks:
 			poisonStacks += 1
 		poison = true
@@ -163,7 +166,7 @@ func _on_Poison_Damage_timeout():
 # -------------- KRWAWIENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func bleeding(var bleed):
-	if bleed and prawdopodobienstwo(0.9):
+	if bleed and prawdopodobienstwo(0.9) and immune == false:
 		if bleedingStacks <= bleedingMaxStacks:
 			bleedingStacks += 1
 		bleeding = true
@@ -225,7 +228,7 @@ func _on_Healing_Healing_timeout():
 # -------------- ZAMROŻENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func freeze(var freeze):
-	if freeze and prawdopodobienstwo(0.6):
+	if freeze and prawdopodobienstwo(0.6) and immune == false:
 		if freezingStacks <= freezingMaxStacks:
 			freezingStacks += 1
 		freezing = true
@@ -254,7 +257,7 @@ func _on_Freezing_Lifetime_timeout():
 # Funkcjonalność knockbacku nie jest zaimplementowana jeszcze
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func knockback(var knocked_back):
-	if knocked_back and prawdopodobienstwo(0.5):
+	if knocked_back and prawdopodobienstwo(0.5) and immune == false:
 		if knockbackStacks <= knockbackMaxStacks:
 			knockbackStacks += 1
 		knockback = true
@@ -280,7 +283,7 @@ func _on_Knockback_Lifetime_timeout():
 # -------------- OSŁABIENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func weakness(var weak):
-	if weak and prawdopodobienstwo(0.4):
+	if weak and prawdopodobienstwo(0.4) and immune == false:
 		if weaknessStacks <= weaknessMaxStacks:
 			weaknessStacks += 1
 		weakness = true

@@ -19,6 +19,14 @@ var oneDoor = 0
 var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn") #wczytywanie sceny pokoju
 var player = load("res://Scenes/Actors/Player.tscn") #wczytywanie sceny playera
+var random_room_nr = RandomNumberGenerator.new()
+var room_variations = {
+	1 : load("res://Assets/TileMap/Room2.tres"),
+	2 : load("res://Assets/TileMap/Room3.tres"),
+	3 : load("res://Assets/TileMap/Room4.tres"),
+	4 : load("res://Assets/TileMap/Room1.tres")
+}
+var current_room_type
 
 var los_skl
 var prob = 1
@@ -33,6 +41,7 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 		var room = scene.instance()
 		add_child(room) #dodawanie sceny pokoju
 		var tilemap = room.get_node("TileMap")
+		tilemap.tile_set = room_variations[current_room_type]
 		room.position.x = map[i].x * szer #przypisywanie pozycji x pokoju 
 		room.position.y = map[i].y * dl #przypisywanie pozycji y pokoju
 		if not map[i] + Vector2.DOWN in map: #jeżeli nie ma pokoju pod pokojem, zamknij drzwi
@@ -137,5 +146,15 @@ func step(direction): #funkcja, która określa w którą stronę może zostać 
 		n -= 1
 
 func _ready():
+	match Bufor.poziom:
+		0:
+			current_room_type = 1
+		1:
+			current_room_type = 2
+		2:
+			current_room_type = 3
+		_:
+			current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	generate() #generacja mapy
