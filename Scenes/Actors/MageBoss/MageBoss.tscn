@@ -4,8 +4,9 @@
 [ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/WaterBall.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Enemies/WindBall.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Enemies/EarthBall.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Enemies/windball.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Enemies/earthball.png" type="Texture" id=7]
+
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.244444, 0.525926, 0.777778, 1 )
