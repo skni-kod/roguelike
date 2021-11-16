@@ -13,56 +13,56 @@ var all_weapons_script = {
 	}
 var all_weapons = {
 	"Weapons": {
-		"Blade": {
+		"blade": {
 			"attack": "7.5",
 			"spd": "1",
 			"knc": float(0.15),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Axe": {
+		"axe": {
 			"attack": "10",
 			"spd": "0.5",
 			"knc": float(0.5),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Katana": {
+		"katana": {
 			"attack": "15",
 			"spd": "0.4",
 			"knc": float(0.1),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Knife": {
+		"knife": {
 			"attack": "3",
 			"spd": "1.5",
 			"knc": float(0.0),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Hammer": {
+		"hammer": {
 			"attack": "30",
 			"spd": "0.3",
 			"knc": float(1.0),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Spear": {
+		"spear": {
 			"attack": "15",
 			"spd": "0.75",
 			"knc": float(0.25),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Fire Scepter": {
+		"fire Scepter": {
 			"attack": "10",
 			"spd": "1",
 			"knc": float(0.75),
 			"range": "magic",
 			"effect": "none"
 		},
-		 "BloodSword": {
+		 "bloodsword": {
 			"attack": "20",
 			"spd": "0.6",
 			"knc": float(0.3),
