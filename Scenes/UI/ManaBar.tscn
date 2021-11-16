@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/UI/ManaBar.gd" type="Script" id=1]
+[ext_resource path="res://Assets/UI/HealthBar/Background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/HealthBar/Frame.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/HealthBar/Filling.png" type="Texture" id=4]
+
+[node name="ManaBar" type="Control"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthUnder" type="TextureProgress" parent="."]
+margin_right = 100.0
+margin_bottom = 10.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 4 )
+tint_under = Color( 0.101961, 0.12549, 0.643137, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthOver" type="TextureProgress" parent="."]
+margin_right = 100.0
+margin_bottom = 10.0
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UpdateTween" type="Tween" parent="."]
+
+[node name="PulseTween" type="Tween" parent="."]
+
+[node name="FlashTween" type="Tween" parent="."]

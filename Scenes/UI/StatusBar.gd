@@ -6,6 +6,7 @@ onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
 onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
+onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
 
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
 var burning := false setget burn
@@ -26,6 +27,7 @@ var poisonDMG = 2
 var speedMultiplier = 1
 var damageMultiplier = 1
 var knockbackMultiplier = 1
+var manaRegenRate=2.5
 
 # stacki efektów
 var burningStacks = 0
@@ -35,6 +37,7 @@ var poisonStacks = 0
 var bleedingStacks = 0
 var weaknessStacks = 0
 var healingStacks = 0
+var marksmanStacks = 0 #Consecutive hits scored on enemy, resets on miss
 
 # maksymalne ilosci stacków dla danych efektów
 var burningMaxStacks = 10
@@ -44,9 +47,13 @@ var poisonMaxStacks = 10
 var bleedingMaxStacks = 10
 var weaknessMaxStacks = 10
 var healingMaxStacks = 10
+var marksmanMaxStacks = 20
 
 # zmienne do różnych efektów
 var healAmount = 30
+
+
+export var immune = false #do umiejetnosci 2 axe, odporność na efekty
 
 # funkcja ready nie wymaga żadnych operacji w tym przypadku
 func _ready():
@@ -94,7 +101,7 @@ func _physics_process(delta):
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
 func burn(var fire):
-	if fire and prawdopodobienstwo(0.5):
+	if fire and prawdopodobienstwo(0.5) and immune == false:
 		if burningStacks <= burningMaxStacks: # ograniczam stacki do maksymalnej wartości stacków dla danego efektu
 			burningStacks += 1 # dodaję stack
 		burning = true # ustawiam na true, ponieważ sprawdzając w ln. 35 zmienna setterowa/getterowa zostaje przywrócona do wartości domyślnej
@@ -120,14 +127,16 @@ func _on_Burning_Lifetime_timeout():
 
 func _on_Burning_Damage_timeout():
 	if burning:
-		player.take_dmg(burningDMG+(burningStacks*1.1)) # zadaje damage równy ilości bazowego damage danego efektu
-		$StatusContainer/Burning/Damage.start() # startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
+		player.take_dmg(burningDMG+(burningStacks*1.1), 0, player.global_position) # zadaje damage równy ilości bazowego damage danego efektu
+		# startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, 
+		# "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
+		$StatusContainer/Burning/Damage.start() 
 
 
 # -------------- ZATRUCIE -------------- #
 # tak samo jak w funkcji burn(), ewentualne zmiany opisane w komentarzach
 func poisoning(var poisoned):
-	if poisoned and prawdopodobienstwo(0.75):
+	if poisoned and prawdopodobienstwo(0.75) and immune == false:
 		if poisonStacks <= poisonMaxStacks:
 			poisonStacks += 1
 		poison = true
@@ -150,14 +159,14 @@ func _on_Poison_Lifetime_timeout():
 
 func _on_Poison_Damage_timeout():
 	if poison:
-		player.take_dmg(poisonDMG+(poisonStacks*1.2)) 
+		player.take_dmg(poisonDMG+(poisonStacks*1.2), 0, player.global_position) 
 		$StatusContainer/Poison/Damage.start()
 
 
 # -------------- KRWAWIENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func bleeding(var bleed):
-	if bleed and prawdopodobienstwo(0.9):
+	if bleed and prawdopodobienstwo(0.9) and immune == false:
 		if bleedingStacks <= bleedingMaxStacks:
 			bleedingStacks += 1
 		bleeding = true
@@ -182,7 +191,7 @@ func _on_Bleeding_Lifetime_timeout():
 
 func _on_Bleeding_Damage_timeout():
 	if bleeding:
-		player.take_dmg(bleedingDMG+(bleedingStacks*1.5))
+		player.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, player.global_position)
 		$StatusContainer/Bleeding/Damage.start()
 
 
@@ -211,7 +220,7 @@ func _on_Healing_Lifetime_timeout():
 
 func _on_Healing_Healing_timeout():
 	if healing and player.health <= player.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
-		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time))) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
+		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, player.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
 		$StatusContainer/Healing/Healing.start()
 
 
@@ -219,7 +228,7 @@ func _on_Healing_Healing_timeout():
 # -------------- ZAMROŻENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func freeze(var freeze):
-	if freeze and prawdopodobienstwo(0.6):
+	if freeze and prawdopodobienstwo(0.6) and immune == false:
 		if freezingStacks <= freezingMaxStacks:
 			freezingStacks += 1
 		freezing = true
@@ -243,12 +252,12 @@ func _on_Freezing_Lifetime_timeout():
 	$StatusContainer/Freezing/FreezingSprite.frame = 0
 
 
-# -------------- ODBICIE -------------- #
+# -------------- KNOCKBACK -------------- #
 # UWAGA     WORK IN PROGRESS      UWAGA #
 # Funkcjonalność knockbacku nie jest zaimplementowana jeszcze
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func knockback(var knocked_back):
-	if knocked_back and prawdopodobienstwo(0.5):
+	if knocked_back and prawdopodobienstwo(0.5) and immune == false:
 		if knockbackStacks <= knockbackMaxStacks:
 			knockbackStacks += 1
 		knockback = true
@@ -256,6 +265,7 @@ func knockback(var knocked_back):
 			knockbackMultiplier = (knockbackMultiplier+(pow(0.5, knockbackStacks)))
 		else:
 			knockbackMultiplier = 0 # brak knockbacku
+		playerKnockbackParticles.visible = true
 		$StatusContainer/Knockback.visible = true
 		$StatusContainer/Knockback/DisplayTime/Lifetime.start()
 		$StatusContainer/Knockback/DisplayTime.timer_on = true
@@ -265,6 +275,7 @@ func knockback(var knocked_back):
 func _on_Knockback_Lifetime_timeout():
 	knockback = false
 	knockbackStacks = 0
+	playerKnockbackParticles.visible= false
 	$StatusContainer/Knockback.visible = false
 	$StatusContainer/Knockback/KnockbackSprite.frame = 0
 
@@ -272,7 +283,7 @@ func _on_Knockback_Lifetime_timeout():
 # -------------- OSŁABIENIE -------------- #
 # tak samo jak w funkcji burn(), zmiany opisane w komentarzach
 func weakness(var weak):
-	if weak and prawdopodobienstwo(0.4):
+	if weak and prawdopodobienstwo(0.4) and immune == false:
 		if weaknessStacks <= weaknessMaxStacks:
 			weaknessStacks += 1
 		weakness = true
@@ -300,7 +311,7 @@ func _on_Weakness_Lifetime_timeout():
 func prawdopodobienstwo(procent_prawdopodobienstwa):
 	randomize()
 	var percent = randf() # generator losowej liczby float/procentu
-	if (percent > procent_prawdopodobienstwa):
+	if (percent < procent_prawdopodobienstwa):
 		return true
 	else:
 		return false

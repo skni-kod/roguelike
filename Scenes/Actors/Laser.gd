@@ -14,11 +14,11 @@ var attack = false
 
 func _ready():
 	set_physics_process(false)
-	$Line2D.points[1] = Vector2.ZERO
-	$Lifetime.start()
-	self.is_casting = true
+	$Line2D.points[1] = Vector2.ZERO # punkt o indeksie 1 zostaje ustawiony jako zerowy wektor tymczasowo
+	$Lifetime.start() # czas życia zostaje aktywowany
+	self.is_casting = true # jest emitowany
 
-	rotation = (player_Pos - origin).normalized().angle()
+	rotation = (player_Pos - origin).normalized().angle() # rotacja zostaje ustawiona jako znormalizowany kąt między pozycją gracza, a pozycją startową lasera
 
 func _physics_process(delta):
 	var cast_point := cast_to # przypisanie z typem cast_point do miejsca do którego powinien zostać wyemitowany laser
@@ -33,7 +33,7 @@ func _physics_process(delta):
 		
 		body = self.get_collider() # body to pierwsze ciało z którym skoliduje ray/laser
 		if body.name == "Player":
-			body.take_dmg(dmg)
+			body.take_dmg(dmg, 0, body.global_position) # jeśli body na który natrafi laser, to Player, to zadaje mu dmg
 		
 	$Line2D.points[1] = cast_point # punkt nr 1 $Line2D zostaje ustawiony jako cast_point
 	$LaserParticles.position = cast_point * 0.5 # pozycja LaserParticles zostaje ustawiona w połowie długości do cast_point
@@ -68,4 +68,4 @@ func disappear():
 
 
 func _on_Lifetime_timeout():
-	disappear()
+	disappear() # znika gdy czas życia minie

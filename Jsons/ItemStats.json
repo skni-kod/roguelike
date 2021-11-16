@@ -3,7 +3,7 @@
         "Blade": {
             "attack": "7.5",
             "spd": "1",
-            "knc": "0",
+            "knc": "0.35",
             "range": "melee",
             "effect": "none"
         },
@@ -15,9 +15,9 @@
             "effect": "none"
         },
         "Katana": {
-            "attack": "25",
+            "attack": "12.5",
             "spd": "0.4",
-            "knc": "0",
+            "knc": "0.1",
             "range": "melee",
             "effect": "none"
         },
@@ -31,28 +31,28 @@
         "Hammer": {
             "attack": "30",
             "spd": "0.3",
-            "knc": "0",
+            "knc": "1",
             "range": "melee",
             "effect": "none"
         },
         "Spear": {
             "attack": "15",
             "spd": "0.75",
-            "knc": "0",
+            "knc": "0.25",
             "range": "melee",
             "effect": "none"
         },
         "Fire Scepter": {
             "attack": "10",
             "spd": "1",
-            "knc": "0",
+            "knc": "0.75",
             "range": "magic",
             "effect": "none"
         },
          "BloodSword": {
             "attack": "20",
             "spd": "0.6",
-            "knc": "0",
+            "knc": "0.3",
             "range": "melee",
             "effect": "none"
         }
@@ -60,7 +60,7 @@
          "FMS": {
             "attack": "22",
             "spd": "0.5",
-            "knc": "0",
+            "knc": "0.5",
             "range": "melee",
             "effect": "none"
         }

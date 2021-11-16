@@ -1,23 +1,26 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Assets/Enemies/Little_goblin.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Little_Goblin.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Enemies/little_goblin.png" type="Texture" id=4]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4.34477, 5.42954 )
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 4.72469
+height = 0.0
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 91.7685
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 5.71849, 5.35515 )
+[sub_resource type="CircleShape2D" id=3]
+radius = 6.24329
 
 [sub_resource type="Animation" id=4]
 resource_name = "Atak"
 length = 0.7
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -33,7 +36,7 @@ tracks/0/keys = {
 resource_name = "Die"
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -47,7 +50,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=6]
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -61,7 +64,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=7]
 tracks/0/type = "value"
-tracks/0/path = NodePath("sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -73,32 +76,37 @@ tracks/0/keys = {
 "values": [ 1, 4, 5, 6, 0, 4, 5, 6, 0, 0 ]
 }
 
-[node name="Little_Goblin" type="KinematicBody2D" groups=[
-"Enemy",
-]]
-position = Vector2( -0.352448, 0.25 )
-collision_layer = 2147483652
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( -3, 1, 4, 1, 4, 7, -3, 7 )
+
+[node name="Little_Goblin" type="KinematicBody2D" groups=["Enemy"]]
+collision_layer = 4
 collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
 visible = false
-margin_left = -4.12946
-margin_top = -5.89921
-margin_right = -4.12946
-margin_bottom = -5.89921
-rect_scale = Vector2( 0.11, 0.2 )
+margin_left = -10.0406
+margin_top = -5.9466
+margin_right = -10.0406
+margin_bottom = -5.9466
+rect_scale = Vector2( 0.2, 0.2 )
 
-[node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0.367855, -0.133215 )
-scale = Vector2( 0.152728, 0.161172 )
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, 7.449 )
+scale = Vector2( 0.309466, 0.0995439 )
 texture = ExtResource( 1 )
-vframes = 2
+
+[node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
+scale = Vector2( 0.152728, 0.161172 )
+texture = ExtResource( 4 )
 hframes = 8
+vframes = 2
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 1.0278, 2.14408 )
+position = Vector2( 0.735786, 3.58242 )
 shape = SubResource( 1 )
 
 [node name="wzrok" type="Area2D" parent="."]
@@ -114,7 +122,7 @@ position = Vector2( 1.00227, 3.45223 )
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-position = Vector2( 0.263953, -0.852127 )
+position = Vector2( -0.292855, 0.150135 )
 shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -126,6 +134,10 @@ anims/Walk = SubResource( 7 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
 autostart = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 8 )
+
 [connection signal="body_entered" from="wzrok" to="." method="_on_wzrok_body_entered"]
 [connection signal="body_exited" from="wzrok" to="." method="_on_wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
