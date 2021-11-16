@@ -12,6 +12,7 @@ var ability1ManaCost=1 #koszt do zmiany w balansie
 var ability2ManaCost=1 #koszt do zmiany w balansie
 var SR=0 #Stab rotation, potrzebne do ability 2
 var weaponKnockback
+var weaponName = "Spear"
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 var attack_speed = 0 #Zmienna służąca do animacji 
@@ -51,19 +52,17 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		#Really powerful blow - 40 bonus damage
-		if player_node.mana>=ability1ManaCost and !ability:
-			player_node.updateMana(-ability1ManaCost)
-			ability1()
-		else:
-			print("Insufficient mana, " + String(ability1ManaCost) +" required to cast ability")
+		if !ability and player_node.mana>=25:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				ability1()
 	
 	if Input.is_action_just_pressed("use_ability_2"):
 		#Increase next attack damage by 12 costs 20 mana
-		if player_node.mana>=ability2ManaCost and !ability:
-			player_node.updateMana(-ability2ManaCost)
-			ability2()
-		else:
-			print("Insufficient mana, " + String(ability2ManaCost) +" required to cast ability")
+		if !ability and player_node.mana>=50:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				ability2()
 
 func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281

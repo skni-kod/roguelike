@@ -9,4 +9,7 @@ branches:
   - label: documentation
     name: develop
     prefix: documentation/
+  - label: bug
+    name: develop
+    prefix: bug/
 openDraftPR: true

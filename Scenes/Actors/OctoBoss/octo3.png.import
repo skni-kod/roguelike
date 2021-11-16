@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Drzwi.png-c6c5a48cb02f58be8f6df07c40f2c92d.stex"
+path="res://.import/octo3.png-5b65ed3e6763d763076c2d510eb58b27.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/Drzwi.png"
-dest_files=[ "res://.import/Drzwi.png-c6c5a48cb02f58be8f6df07c40f2c92d.stex" ]
+source_file="res://Scenes/Actors/OctoBoss/octo3.png"
+dest_files=[ "res://.import/octo3.png-5b65ed3e6763d763076c2d510eb58b27.stex" ]
 
 [params]
 
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=false
+detect_3d=true
 svg/scale=1.0

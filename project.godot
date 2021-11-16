@@ -10,7 +10,6 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
@@ -23,6 +22,7 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 MusicController="*res://autoloads/MusicController.tscn"
+Bufor="*res://autoloads/bufor.gd"
 Pause="*res://autoloads/Pause.tscn"
 
 [display]

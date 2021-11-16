@@ -28,13 +28,14 @@ var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
-var current_weapon
+var current_weapon = 1;
 var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
 
 #onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
@@ -92,23 +93,33 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 
 
 func _ready(): #po inicjacji bohatera
+	$EquippedWeapon.connect("skill_used", self, "on_skill_used") #połaczenie sygnałów
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
+	if Bufor.coins:
+		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
-	$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
-	$EquippedWeapon.damage = first_weapon_stats["attack"]
-	$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
-	$EquippedWeapon.timer = $EquippedWeapon/Timer
+	if !Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
+		$EquippedWeapon.damage = first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
+	
+	if Bufor.weapons:
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/" + Bufor.weapons[1] + ".gd"))
+		$EquippedWeapon.damage = Bufor.first_weapon_stats["attack"]
+		$EquippedWeapon.weaponKnockback = float(Bufor.first_weapon_stats["knc"])
+		$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/FMS5.png"),
 		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -120,6 +131,22 @@ func _ready(): #po inicjacji bohatera
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
 	equipped = "Blade"
+	
+	if Bufor.weapons: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		weapons = Bufor.weapons
+		first_weapon_stats = Bufor.first_weapon_stats
+		equipped = Bufor.equipped
+		if weapons[2] != "Empty":
+			second_weapon_stats = Bufor.second_weapon_stats
+			ui_access_wslot2.texture = all_weapons[weapons[2]]
+		ui_access_wslot1.texture = all_weapons[weapons[1]]
+		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+		if weapons[2] == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -140,6 +167,10 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 	}
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
 	UpdatePotions() 
 	
 	
@@ -148,6 +179,25 @@ func _process(delta):
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	
+	if ($CoolDownS1.get_time_left()):
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = 'R'
+	
+	if ($CoolDownS2.get_time_left()):
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = str(round($CoolDownS2.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = 'F'
+		
+	if ($CoolDownS3.get_time_left()):
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = str(round($CoolDownS3.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = 'R'
+		
+	if ($CoolDownS4.get_time_left()):
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
+	else:
+		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
 		
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
@@ -306,9 +356,11 @@ func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
 	else:
-		if all_weapons[weapons[1]] == actualweapon_access.texture:
+		if weapons[1] == $EquippedWeapon.weaponName:
+			print('ee')
 			return 1
-		if all_weapons[weapons[2]] == actualweapon_access.texture:
+		if weapons[2] == $EquippedWeapon.weaponName:
+			print('e')
 			return 2
 
 
@@ -547,3 +599,15 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 
+func on_skill_used(ability,mana_used):
+	updateMana(-mana_used)
+	if(equipped == weapons[1]):
+		if(ability==1):
+			$CoolDownS1.start(25)
+		else:
+			$CoolDownS2.start(50)
+	else:
+		if(ability==1):
+			$CoolDownS3.start(25)
+		else:
+			$CoolDownS4.start(50)

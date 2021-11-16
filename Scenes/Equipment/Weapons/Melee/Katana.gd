@@ -15,6 +15,7 @@ var passiveAbilityMaxStacks=20 #Maksymalny stopień umiejętności
 var abilityDamage=0 #Temporary variable: Holds additional damaga inflicted by ability
 var abilityManaCost=25
 var weaponKnockback
+var weaponName = 'Katana'
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 var attack_speed=0 #Animacja ataku
@@ -55,21 +56,18 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("use_ability_1"):
 		#Really powerful blow - 40 bonus damage
-		if player_node.mana>=75:
-			player_node.updateMana(-75)
-			abilityDamage=45
-			_on_Player_attacked()
-		else:			
-			print("Insufficient mana, 75 required to cast ablitity")	
+		if player_node.mana>=25:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				abilityDamage=12
+				_on_Player_attacked()
 				
 	if Input.is_action_just_pressed("use_ability_2"):
-		#Increase next attack damage by 12 costs 20 mana
-		if player_node.mana>=abilityManaCost:
-			player_node.updateMana(-abilityManaCost)
-			abilityDamage=12
-			_on_Player_attacked()
-		else:
-			print("Insufficient mana, " + String(abilityManaCost) +" required to cast ability")
+		if player_node.mana>=50:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				abilityDamage=45
+				_on_Player_attacked()
 
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/TileMap/Room1.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Levels/Spawning_enemies.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Levels/L.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Levels/Lights.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
@@ -34,7 +34,8 @@ shape = SubResource( 1 )
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 2 )
 
-[node name="L" type="Node2D" parent="."]
+[node name="Lights" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
 [connection signal="body_entered" from="." to="Enemies" method="_on_Node2D_body_entered"]
+[connection signal="body_entered" from="." to="Lights" method="_on_Node2D_body_entered"]
