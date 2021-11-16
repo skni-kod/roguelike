@@ -18,6 +18,12 @@ var weaponKnockback
 var weaponName = 'Katana'
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+
 var attack_speed=0 #Animacja ataku
 var swing_to = 0.1
 var paused = 0.15
@@ -120,6 +126,14 @@ func change_weapon(texture):
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		isEnemyHit=1	
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier))+abilityDamage, weaponKnockback)	
+		if crit:
+			damage /= crit_damage
 		abilityDamage=0 #Reset ability damage
 		
