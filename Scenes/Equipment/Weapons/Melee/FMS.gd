@@ -94,12 +94,6 @@ func _physics_process(delta):
 			5:
 				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS5.png")
 				damage = basedmg*2
-
-
-	if Input.is_action_just_pressed("use_ability_1"):
-		var placeholder5 #kilkanie przycisku działa abilitki trza zrobić
-	if Input.is_action_just_pressed("use_ability_2"):
-		var palceholder20
 		
 	
 

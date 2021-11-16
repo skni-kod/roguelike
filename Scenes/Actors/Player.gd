@@ -357,10 +357,8 @@ func check_current_weapon():
 		return 1
 	else:
 		if weapons[1] == $EquippedWeapon.weaponName:
-			print('ee')
 			return 1
 		if weapons[2] == $EquippedWeapon.weaponName:
-			print('e')
 			return 2
 
 

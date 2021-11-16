@@ -82,7 +82,7 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.current_weapon==2 and !player_node.get_node("CoolDownS4").get_time_left()):
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
 				player_node.on_skill_used(2,50)
 				StatusBar_node.immune = true
 				tmpspeed = player_node.speed
