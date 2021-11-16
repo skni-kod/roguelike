@@ -9,7 +9,7 @@ height = 10.729
 [sub_resource type="CircleShape2D" id=2]
 radius = 19.0189
 
-[node name="Weapon" type="StaticBody2D" groups=["Pickable"]]
+[node name="Weapon" type="StaticBody2D" groups=["PickableWeapon"]]
 z_index = 1
 collision_layer = 32
 collision_mask = 2

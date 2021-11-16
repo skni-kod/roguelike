@@ -580,8 +580,6 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 		if "GoldCoin" in body.name:
 			coins += 10
 			body.queue_free()
-		if "Weapon" in body.name:
-			weaponToTake = body
 		if "Chest" in body.name:
 			chest = body
 		if "50%Potion" in body.name: #jeżeli player wejdzie w potka
@@ -631,8 +629,9 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 					UpdatePotions()
 				else: #jeżeli nie posiada potki 60 aktualna potka jest zamieniana na potke 60hp
 					potion = body
-
-			
+	if body.is_in_group("PickableWeapon"): 
+		if "Weapon" in body.name:
+			weaponToTake = body		
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 	
 
