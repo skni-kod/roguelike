@@ -55,7 +55,7 @@ var all_weapons = {
 			"range": "melee",
 			"effect": "none"
 		},
-		"fire Scepter": {
+		"Fire Scepter": {
 			"attack": "10",
 			"spd": "1",
 			"knc": float(0.75),
