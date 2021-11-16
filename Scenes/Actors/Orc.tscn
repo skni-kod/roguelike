@@ -1,9 +1,10 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/Orc.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Enemies/Orc.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Enemies/orc.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=5]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.92599, 9.9604 )
