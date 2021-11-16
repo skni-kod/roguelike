@@ -21,7 +21,6 @@ var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
-
 var equipped #Aktualnie używana broń
 
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
@@ -578,7 +577,7 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "GoldCoin" in body.name:
-			coins += 10
+			coins += 3
 			body.queue_free()
 		if "Chest" in body.name:
 			chest = body
