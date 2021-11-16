@@ -580,11 +580,11 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 		if "GoldCoin" in body.name:
 			coins += 10
 			body.queue_free()
-		elif "Weapon" in body.name:
+		if "Weapon" in body.name:
 			weaponToTake = body
-		elif "Chest" in body.name:
+		if "Chest" in body.name:
 			chest = body
-		elif "50%Potion" in body.name: #jeżeli player wejdzie w potka
+		if "50%Potion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if Bufor.in_sklep:
 				potion = body
@@ -596,7 +596,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				else: #jeżeli nie posiada potki 50% to musi kliknąć pick żeby podnieść
 					potion = body
 
-		elif "100%Potion" in body.name: #jeżeli player wejdzie w potka
+		if "100%Potion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if Bufor.in_sklep:
 				potion = body
@@ -608,7 +608,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				else: #jeżeli nie posiada potki 100% to musi kliknąć pick żeby podnieść
 					potion = body
 
-		elif "20healthPotion" in body.name: #jeżeli player wejdzie w potka
+		if "20healthPotion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if Bufor.in_sklep:
 				potion = body
@@ -620,7 +620,7 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				else: #jeżeli nie posiada potki 20 aktualna potka jest zamieniana na potke 20hp
 					potion = body
 
-		elif "60healthPotion" in body.name: #jeżeli player wejdzie w potka
+		if "60healthPotion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 			if Bufor.in_sklep:
 				potion = body
