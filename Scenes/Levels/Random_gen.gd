@@ -22,7 +22,8 @@ var random_room_nr = RandomNumberGenerator.new()
 var room_variations = {
 	1 : load("res://Assets/TileMap/Room2.tres"),
 	2 : load("res://Assets/TileMap/Room3.tres"),
-	3 : load("res://Assets/TileMap/Room1.tres")
+	3 : load("res://Assets/TileMap/Room4.tres"),
+	4 : load("res://Assets/TileMap/Room1.tres")
 }
 var current_room_type
 
