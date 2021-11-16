@@ -599,7 +599,6 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 
 func on_skill_used(ability,mana_used):
 	updateMana(-mana_used)
-	print(equipped)
 	if(equipped == weapons[1]):
 		if(ability==1):
 			$CoolDownS1.start(25)
