@@ -3,7 +3,8 @@
 [ext_resource path="res://Assets/Enemies/cuckshooterupdated.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/cuckshooter.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=4]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.44158, 4.97983 )

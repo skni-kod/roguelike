@@ -1,9 +1,10 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/Slime.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Enemies/Slime.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Enemies/slime.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=4]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.14429
