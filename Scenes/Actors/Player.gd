@@ -366,8 +366,9 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 
 	if weapons[2] != "Empty": 
 		if Input.is_action_just_pressed("change_weapon_slot"):
-			current_weapon = check_current_weapon()
-			change_weapon_slot(current_weapon)
+			if (!$EquippedWeapon.spell):
+				current_weapon = check_current_weapon()
+				change_weapon_slot(current_weapon)
 	  
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu

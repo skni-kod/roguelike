@@ -9,6 +9,7 @@ var timer #Stoper
 var damage
 var weaponKnockback
 var a = 1
+var spell = 0
 var weaponName = "blade"
 var smoothing = 1
 
@@ -67,6 +68,7 @@ func _physics_process(delta):
 		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				active_ability1 = 1;
 				$WeaponSprite/WirMiecza.emitting = true
 				$AttackCollision.disabled = false
@@ -96,12 +98,14 @@ func _physics_process(delta):
 			$WeaponSprite.position.x=13
 			$WeaponSprite.position.y=0
 			$AttackCollision.disabled = true
-			active_ability1 = 0;
+			active_ability1 = 0
+			spell = 0
 			
 	if Input.is_action_just_pressed("use_ability_2"):
 		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				active_ability2 = 1;
 				swing_to = hits_speed
 				swing_back = hits_speed
@@ -123,7 +127,8 @@ func _physics_process(delta):
 				swing_back = 0.3
 				animation_step = 0.02
 				timer.set_wait_time(animation_step)
-				active_ability2 = 0;
+				active_ability2 = 0
+				spell = 0
 		
 
 
