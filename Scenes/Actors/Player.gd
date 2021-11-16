@@ -103,7 +103,7 @@ func _ready(): #po inicjacji bohatera
 	
 	#Rozwiązanie tymczasowe związane z wyświetlaniem aktualnej broni gracza
 	if !Bufor.weapons:
-		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Axe.gd")) # Wczytanie danej broni na starcie
+		$EquippedWeapon.set_script(load("res://Scenes/Equipment/Weapons/Melee/Blade.gd")) # Wczytanie danej broni na starcie
 		$EquippedWeapon.damage = first_weapon_stats["attack"]
 		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
@@ -126,11 +126,11 @@ func _ready(): #po inicjacji bohatera
 		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 	}
 	weapons = {
-		1 : "Axe",
+		1 : "Blade",
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Axe"
+	equipped = "Blade"
 	
 	if Bufor.weapons: # jeśli bufor nie jest pusty
 		# bronie są ładowane z bufora

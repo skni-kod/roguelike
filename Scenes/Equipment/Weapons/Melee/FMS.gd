@@ -15,6 +15,7 @@ var ability2ManaCost=1 #koszt do zmiany w balansie
 var damage
 var weaponKnockback
 var a = 1
+var weaponName = "FMS"
 
 var smoothing = 1
 
@@ -140,37 +141,43 @@ func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z pr
 		body.get_dmg(damage, weaponKnockback)
 
 func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
-	basespd = player_node.speed
-	player_node.speed += 100
-	yield(get_tree().create_timer(10), "timeout")
-	player_node.speed = basespd
+		if player_node.mana>=25:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				basespd = player_node.speed
+				player_node.speed += 100
+				yield(get_tree().create_timer(10), "timeout")
+				player_node.speed = basespd
 func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
-	ability = 1
-	$AttackCollision.disabled = false
-	var Beam = M.instance() #towrzymy jedną instancję animacji krwi
-	Beam.position = (get_tree().get_root().find_node("Player", true, false).global_position + Vector2(0,-70)) #ustawiamy jej pozycję jako pozycja gracza + wektor kierunku broni
-	main.add_child(Beam) #dodajemy krew do sceny
-	Beam.scale = 2*Beam.scale  #dostosowujemy wielkość krwi, używamy iteracji by była ona takiej samej wielkości co hitboxy
-	$AttackCollision.scale.x = 6
-	$AttackCollision.scale.y = 3
-	$AttackCollision.position.x = 0
-	$AttackCollision.position.y = -1
-	damage = damage*3
-	weaponKnockback = weaponKnockback*3
-	basespd = player_node.speed
-	player_node.speed -= player_node.speed
-	player_node.knockbackResistance = 10
-	player_node.immortal = 1
-	yield(get_tree().create_timer(10), "timeout") #czas pomiędzy atakami
-	Beam.queue_free()
-	$AttackCollision.scale.x = 1.8
-	$AttackCollision.scale.y = 0.3
-	$AttackCollision.position.x = 13
-	$AttackCollision.position.y = 0
-	damage = damage/3
-	weaponKnockback = weaponKnockback/3
-	player_node.speed = basespd
-	player_node.knockbackResistance = 1
-	player_node.immortal = 0
-	$AttackCollision.disabled = true
-	ability = 0
+	if !ability and player_node.mana>=50:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				ability = 1
+				$AttackCollision.disabled = false
+				var Beam = M.instance() #towrzymy jedną instancję animacji krwi
+				Beam.position = (get_tree().get_root().find_node("Player", true, false).global_position + Vector2(0,-70)) #ustawiamy jej pozycję jako pozycja gracza + wektor kierunku broni
+				main.add_child(Beam) #dodajemy krew do sceny
+				Beam.scale = 2*Beam.scale  #dostosowujemy wielkość krwi, używamy iteracji by była ona takiej samej wielkości co hitboxy
+				$AttackCollision.scale.x = 6
+				$AttackCollision.scale.y = 3
+				$AttackCollision.position.x = 0
+				$AttackCollision.position.y = -1
+				damage = damage*3
+				weaponKnockback = weaponKnockback*3
+				basespd = player_node.speed
+				player_node.speed -= player_node.speed
+				player_node.knockbackResistance = 10
+				player_node.immortal = 1
+				yield(get_tree().create_timer(10), "timeout") #czas pomiędzy atakami
+				Beam.queue_free()
+				$AttackCollision.scale.x = 1.8
+				$AttackCollision.scale.y = 0.3
+				$AttackCollision.position.x = 13
+				$AttackCollision.position.y = 0
+				damage = damage/3
+				weaponKnockback = weaponKnockback/3
+				player_node.speed = basespd
+				player_node.knockbackResistance = 1
+				player_node.immortal = 0
+				$AttackCollision.disabled = true
+				ability = 0
