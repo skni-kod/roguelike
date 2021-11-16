@@ -75,15 +75,11 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
 	if issklep == false:
-		print(len(oneDoorRooms),"odr")
 		for room in oneDoorRooms: #szukanie pokoju ze sklepem
 			los_skl = rng.randi_range(prob,len(oneDoorRooms)) #losowanie czy w pokoju ma sie znajdować sklep
-			print(los_skl,"los")
-			print(prob,"prob")
 			if los_skl == len(oneDoorRooms) and room != furthestRoom:
 				skl_room = room
 				issklep = true
-				print("Lmao")
 				break
 			else:
 				prob=prob+1

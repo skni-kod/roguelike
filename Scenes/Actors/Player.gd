@@ -10,7 +10,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 
 var velocity = Vector2.ZERO #wektor prędkości bohatera
 var got_hitted = false #czy bohater jest aktualnie uderzany
-export var speed = 300 #wartośc szybkości bohatera
+export var speed = 100 #wartośc szybkości bohatera
 var direction = Vector2() #wektor kierunku bohatera
 export var health = 100 #ilośc punktów życia bohatera
 export var mana = 100 #ilość many (1pkt many ~= 1 użycie umki)
@@ -29,7 +29,7 @@ var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
 var current_weapon = 1;
-var first_weapon_stats = {"attack":float(700.5), "knc":float(0.15)}
+var first_weapon_stats = {"attack":float(7.5), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
