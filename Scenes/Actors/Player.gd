@@ -21,8 +21,6 @@ var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
 
-var equipped #Aktualnie używana broń
-
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
@@ -395,6 +393,7 @@ func check_current_weapon():
 			return 1
 		if weapons[2] == $EquippedWeapon.weaponName:
 			return 2
+		
 
 
 func change_potion_slot(): #funcja zamieniająca potki miejscami
