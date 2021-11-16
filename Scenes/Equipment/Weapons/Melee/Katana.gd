@@ -15,7 +15,7 @@ var passiveAbilityMaxStacks=20 #Maksymalny stopień umiejętności
 var abilityDamage=0 #Temporary variable: Holds additional damaga inflicted by ability
 var abilityManaCost=25
 var weaponKnockback
-var weaponName = 'Katana'
+var weaponName = 'katana'
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 

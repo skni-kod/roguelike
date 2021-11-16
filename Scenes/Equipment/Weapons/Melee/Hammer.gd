@@ -10,7 +10,7 @@ var weaponKnockback
 var a = 1
 var player_node := get_tree().get_root().find_node("Player", true, false)
 var smoothing = 1
-var weaponName = 'Hammer'
+var weaponName = 'hammer'
 
 var rng = RandomNumberGenerator.new()
 var crit_chance = rng.randi_range(0,10)

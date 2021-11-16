@@ -22,7 +22,7 @@ var ability1ManaCost=25 #koszt do zmiany w balansie
 var ability2ManaCost=50 #koszt do zmiany w balansie
 var weaponKnockback
 var a = 1
-var weaponName = "BloodSword" #potrzebne do sprawdzenia na którym miejscu jest wyekwipowane
+var weaponName = "bloodsword" #potrzebne do sprawdzenia na którym miejscu jest wyekwipowane
 var smoothing = 1
 var swing_to = 0.3
 var swing_back = 0.6

@@ -37,7 +37,7 @@ var basespd
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
-		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS0.png")
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
 		$AttackCollision.scale.x = 1.8
 		$AttackCollision.scale.y = 0.3
 		$AttackCollision.position.x = 13
@@ -81,22 +81,22 @@ func _physics_process(delta):
 		if ph == 6: ph=0
 		match ph:
 			0:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS0.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
 			1:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS1.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms1.png")
 				basedmg = damage
 				damage = damage*1.2
 			2:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS2.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms2.png")
 				damage = basedmg*1.4
 			3:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS3.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms3.png")
 				damage = basedmg*1.6
 			4:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS4.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms4.png")
 				damage = basedmg*1.8
 			5:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS5.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms5.png")
 				damage = basedmg*2
 		
 	

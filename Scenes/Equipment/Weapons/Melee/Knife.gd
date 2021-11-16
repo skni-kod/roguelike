@@ -14,7 +14,7 @@ var skill = 0
 var skill1 = 1
 var skill2 = 1
 var smoothing = 1
-var weaponName = 'Knife'
+var weaponName = 'knife'
 
 var rng = RandomNumberGenerator.new()
 var crit_chance = rng.randi_range(0,10)

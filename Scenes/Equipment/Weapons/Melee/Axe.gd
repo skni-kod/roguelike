@@ -10,7 +10,7 @@ var timer #Stoper
 var damage
 var weaponKnockback
 var a = 1
-var weaponName = "Axe"
+var weaponName = "axe"
 var smoothing = 1
 
 var rng = RandomNumberGenerator.new()

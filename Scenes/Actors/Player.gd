@@ -114,22 +114,22 @@ func _ready(): #po inicjacji bohatera
 		$EquippedWeapon.timer = $EquippedWeapon/Timer
 	
 	all_weapons = {
-		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
-		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
-		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
+		"axe" : preload("res://Assets/Loot/Weapons/axe.png"),
+		"blade" : preload("res://Assets/Loot/Weapons/blade.png"),
+		"bloodsword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/FMS5.png"),
-		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
-		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
-		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
-		"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/fms5.png"),
+		"hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
+		"katana" : preload("res://Assets/Loot/Weapons/katana.png"),
+		"knife" : preload("res://Assets/Loot/Weapons/knife.png"),
+		"spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 	}
 	weapons = {
-		1 : "Blade",
+		1 : "blade",
 		2 : "Empty"
 	}
 	ui_access_wslot1.texture = all_weapons[weapons[1]]
-	equipped = "Blade"
+	equipped = "blade"
 	
 	if Bufor.weapons: # jeśli bufor nie jest pusty
 		# bronie są ładowane z bufora
@@ -140,10 +140,10 @@ func _ready(): #po inicjacji bohatera
 			second_weapon_stats = Bufor.second_weapon_stats
 			ui_access_wslot2.texture = all_weapons[weapons[2]]
 		ui_access_wslot1.texture = all_weapons[weapons[1]]
-		if weapons[1] == "Katana": # naprawia błąd wielkiej katany w interfejsie
+		if weapons[1] == "katana": # naprawia błąd wielkiej katany w interfejsie
 				ui_access_wslot1.scale.x = .8
 				ui_access_wslot1.scale.y = .8
-		if weapons[2] == "Katana":
+		if weapons[2] == "katana":
 				ui_access_wslot2.scale.x = .8
 				ui_access_wslot2.scale.y = .8
 	
@@ -427,7 +427,7 @@ func change_weapon_slot(currentSlot):
 func swap_weapon(slot,weaponOnGround):
 	if weapons[2] != "Empty":
 		if slot == 1:
-			if weaponOnGround.WeaponName == "Katana":
+			if weaponOnGround.WeaponName == "katana":
 				ui_access_wslot1.scale.x = .8
 				ui_access_wslot1.scale.y = .8
 			else:
@@ -438,7 +438,7 @@ func swap_weapon(slot,weaponOnGround):
 			w1slot_visibility.visible = true
 			w2slot_visibility.visible = false
 		elif slot == 2:
-			if weaponOnGround.WeaponName == "Katana":
+			if weaponOnGround.WeaponName == "katana":
 				ui_access_wslot2.scale.x = .8
 				ui_access_wslot2.scale.y = .8
 			else:
@@ -462,7 +462,7 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
 	else:
-		if weaponOnGround.WeaponName == "Katana":
+		if weaponOnGround.WeaponName == "katana":
 			ui_access_wslot2.scale.x = .8
 			ui_access_wslot2.scale.y = .8
 		else:
