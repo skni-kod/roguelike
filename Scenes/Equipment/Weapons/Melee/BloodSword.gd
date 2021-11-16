@@ -6,6 +6,11 @@ var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do 
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
 
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -104,9 +109,17 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
 		########PASSIVE######## "Transfusion" każdy atak leczy za % obrażeń
 		player_node.health += (life_steal*damage) #dodajemy życie zgodnie z ilością obrażeń przemnożoną przez współczynik lifestealu
+		if crit:
+			damage /= crit_damage
 		if player_node.health > player_node.max_health: #jeśli przekroczymy max życia to ustawiamy max
 			player_node.health = player_node.max_health
 		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował

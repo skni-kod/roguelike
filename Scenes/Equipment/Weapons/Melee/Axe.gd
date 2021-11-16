@@ -11,8 +11,12 @@ var damage
 var weaponKnockback
 var a = 1
 var weaponName = "Axe"
-
 var smoothing = 1
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
 
 var attack_speed = 0
 var swing_to = 0.2
@@ -82,7 +86,7 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.current_weapon==2 and !player_node.get_node("CoolDownS4").get_time_left()):
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
 				player_node.on_skill_used(2,50)
 				StatusBar_node.immune = true
 				tmpspeed = player_node.speed
@@ -148,4 +152,12 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage

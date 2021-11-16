@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Enemies/Shadow.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=5]
+
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 300.0

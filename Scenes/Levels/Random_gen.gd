@@ -2,6 +2,7 @@ extends Node
 
 signal boss(bossRoom)
 signal map_generated(map)
+signal skl(skl_room)
 
 var directions = [Vector2.DOWN,Vector2.UP,Vector2.RIGHT,Vector2.LEFT]
 var position = Vector2.ZERO
@@ -26,6 +27,11 @@ var room_variations = {
 	4 : load("res://Assets/TileMap/Room1.tres")
 }
 var current_room_type
+
+var los_skl
+var prob = 1
+var issklep = false
+var skl_room = [Vector2.ZERO]
 
 func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów pokojów
 	var oneDoorRooms = [] #lista pokojów z jednymi otwartymi drzwiami
@@ -68,9 +74,23 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 	for room in oneDoorRooms: #szukanie najdalszego pokoju
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
+	if issklep == false:
+		print(len(oneDoorRooms),"odr")
+		for room in oneDoorRooms: #szukanie pokoju ze sklepem
+			los_skl = rng.randi_range(prob,len(oneDoorRooms)) #losowanie czy w pokoju ma sie znajdować sklep
+			print(los_skl,"los")
+			print(prob,"prob")
+			if los_skl == len(oneDoorRooms) and room != furthestRoom:
+				skl_room = room
+				issklep = true
+				print("Lmao")
+				break
+			else:
+				prob=prob+1
 	emit_signal("boss", furthestRoom[0])
 	emit_signal("map_generated", map)
-
+	emit_signal("skl", skl_room[0])
+	
 func generate(): #funkcja generująca poziom (położenia pokojów)
 	map.append(Vector2(0,0)) #dodanie pierwszego pokoju do mapy
 	rng.randomize()
