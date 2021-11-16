@@ -14,6 +14,7 @@ var skill = 0
 var skill1 = 1
 var skill2 = 1
 var smoothing = 1
+var weaponName = 'Knife'
 
 var attack_speed = 0
 var swing_to = 0.05
@@ -48,37 +49,41 @@ func _physics_process(delta):
 
 
 	if Input.is_action_just_pressed("use_ability_1"):
-		if player_node.mana > 25 and !skill and skill1:
-			skill = 1
-			skill1 = 0
-			player_node.mana -= 25
-			for i in range(0,5):
-				
-				if !attack and attack_speed==0:
-					attack = true
-				if i%2 == 0:rotation += .2
-				else:rotation -= .2*2
-				attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-				if rotation < -PI/2 or rotation > PI/2:
-					$WeaponSprite.rotation_degrees = -90#-90
-				else:
-					$WeaponSprite.rotation_degrees = 90#90
-				$AttackCollision.disabled = false
-				yield(get_tree().create_timer(.1), "timeout")
-				timer.start()
-			skill = 0
-			yield(get_tree().create_timer(10),'timeout')
-			skill1 = 1
+		if skill1 and skill2 and !skill and player_node.mana>=25:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				skill = 1
+				skill1 = 0
+				player_node.mana -= 25
+				for i in range(0,5):
+					
+					if !attack and attack_speed==0:
+						attack = true
+					if i%2 == 0:rotation += .2
+					else:rotation -= .2*2
+					attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
+					if rotation < -PI/2 or rotation > PI/2:
+						$WeaponSprite.rotation_degrees = -90#-90
+					else:
+						$WeaponSprite.rotation_degrees = 90#90
+					$AttackCollision.disabled = false
+					yield(get_tree().create_timer(.1), "timeout")
+					timer.start()
+				skill = 0
+				yield(get_tree().create_timer(10),'timeout')
+				skill1 = 1
 			
 	if Input.is_action_just_pressed("use_ability_2"):
-		if player_node.mana > 75 and skill2:
-			skill2 = 0
-			damage += 20
-			player_node.speed += 20
-			yield(get_tree().create_timer(10), "timeout")
-			damage -= 20
-			yield(get_tree().create_timer(30),'timeout')
-			skill2 = 1
+		if skill1 and skill2 and !skill and player_node.mana>=50:
+			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				skill2 = 0
+				damage += 20
+				player_node.speed += 20
+				yield(get_tree().create_timer(10), "timeout")
+				damage -= 20
+				yield(get_tree().create_timer(30),'timeout')
+				skill2 = 1
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281

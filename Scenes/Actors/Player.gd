@@ -119,7 +119,7 @@ func _ready(): #po inicjacji bohatera
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+		"FMS" : preload("res://Assets/Loot/Weapons/FMS5.png"),
 		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -599,7 +599,6 @@ func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
 
 func on_skill_used(ability,mana_used):
 	updateMana(-mana_used)
-	print(equipped)
 	if(equipped == weapons[1]):
 		if(ability==1):
 			$CoolDownS1.start(25)
