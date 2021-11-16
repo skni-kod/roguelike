@@ -56,10 +56,39 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 var enemyKnockback = 0
 # === ===================== === #
 
+ 
+# === ZMIENNE DO ELITY === #
+var is_elite = false
+onready var main := get_tree().get_root().find_node("Main", true, false)
+
+func elite():
+	rng.randomize()
+	var rgb = rng.randi_range(0,2) 	# od 1 do 3 rodzaj elity 
+	var elite = rng.randf_range(1,100)	# zakres losowania szansy na stworzenie elity
+	if elite <=25 :		# w jakim zakresie musi być wylosowana liczba 
+		is_elite = true		# może się przydać później 
+		if rgb == 0 :	# rodzaj czerwony mocniej biję 
+			$Sprites/BodySprite.modulate = Color(1, 0, 0, 1 )	#Zmiana koloru sprite (czerwony , zielony , niebieski, przezroczystość )
+			dps = dps * 2
+		if rgb == 1 :	#rodzaj zielony więcej hp wolniejszy
+			$Sprites/BodySprite.modulate = Color(0, 1, 0, 1 )
+			max_hp = max_hp * 1.5	# zwiększenie zdrowia o x razy
+			hp = max_hp
+			health = 100
+			speed -= 0.1
+		if rgb == 2 :	# rodzaj niebieski szybciej atakuje i szybciej biega mniej życia
+			$Sprites/BodySprite.modulate = Color( 0, 0, 1, 1 )
+			speed += 0.3
+			max_hp = max_hp * 0.9	# zmiana zdrowia o x razy
+			hp = max_hp
+			health = 100
+			$AttackTimer.set_wait_time(0.7)
+# === ===================== === #
 
 # === WSTĘPNIE INICJOWANE FUNKCJE === #
 # _ready wykonuje się JEDNORAZOWO na inicjalizacji przeciwnika
 func _ready():
+	elite()
 	health_bar.on_health_updated(health) # wstępne przypisanie wartości życia przeciwnika do healthbara
 # === =========================== === #
 
@@ -124,8 +153,8 @@ func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASI�
 		statusEffect.poison = true # w trakcie kolizji z playerem, ten może zostać zatruty 
 		body.take_dmg(dps, enemyKnockback, self.global_position) # jeśli przeciwnik natrafi na body playera to zadaje mu damage o wartości dmg
 		attack = true
-		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
-
+		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer 
+		
 func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
 		attack = false
@@ -179,7 +208,8 @@ func get_dmg(dmg, weaponKnockback):
 		
 		# === ======== === #
 		
-		# === UMIERANIE I COINSY === #
+		# === UMIERANIE I COINSY (I POTION JESLI JEST ELITA) === #
+		random_potion()
 		drop_coins()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
 		queue_free() # instancja Lil Devila zostaje usunięta
@@ -210,4 +240,34 @@ func drop_coins():
 # === =========================== === #
 
 		
-	
+func random_potion():
+	rng.randomize()
+	var potion
+	if is_elite == true:
+		potion = int(rng.randi_range(2,3))
+	else:
+		potion = int(rng.randi_range(0,3))
+	print(potion)
+	var tmp
+	if potion == 0:
+		tmp = load("res://Scenes/Loot/20healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 1:
+		tmp = load("res://Scenes/Loot/50%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 2:
+		tmp = load("res://Scenes/Loot/60healthPotion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+	elif potion == 3:
+		tmp = load("res://Scenes/Loot/100%Potion.tscn")
+		tmp = tmp.instance()
+		tmp.position = global_position
+		main.add_child(tmp)
+
+
