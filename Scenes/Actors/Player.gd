@@ -356,9 +356,11 @@ func check_current_weapon():
 	if weapons[2] == "Empty":
 		return 1
 	else:
-		if all_weapons[weapons[1]] == actualweapon_access.texture:
+		if weapons[1] == $EquippedWeapon.weaponName:
+			print('ee')
 			return 1
-		if all_weapons[weapons[2]] == actualweapon_access.texture:
+		if weapons[2] == $EquippedWeapon.weaponName:
+			print('e')
 			return 2
 
 
