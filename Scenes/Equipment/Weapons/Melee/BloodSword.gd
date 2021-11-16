@@ -10,6 +10,7 @@ var rng = RandomNumberGenerator.new()
 var crit_chance = rng.randi_range(0,10)
 var crit = false
 var crit_damage = 2
+var spell = 0;
 
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
@@ -63,13 +64,17 @@ func _physics_process(delta):
 		if player_node.mana>=ability1ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,ability1ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability1()
+				spell = 0
 	
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=ability2ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,ability2ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability2()
+				spell = 0
 
 	
 

@@ -4,7 +4,7 @@ const M = preload("Moon_particles.tscn") #pobieramy particle do umiejek
 var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
-
+var spell = 0
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -63,17 +63,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if player_node.mana>=ability1ManaCost and !ability:
 			player_node.updateMana(-ability1ManaCost)
+			
 			ability1()
-		else:
-			print("Insufficient mana, " + String(ability1ManaCost) +" required to cast ability")
-	
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=ability2ManaCost and !ability:
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
-		else:
-			print("Insufficient mana, " + String(ability2ManaCost) +" required to cast ability")
-
 
 	if mc == 20:
 		ph+=1
@@ -150,14 +145,17 @@ func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifeste
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				basespd = player_node.speed
 				player_node.speed += 100
 				yield(get_tree().create_timer(10), "timeout")
 				player_node.speed = basespd
+				spell = 0
 func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
 	if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability = 1
 				$AttackCollision.disabled = false
 				var Beam = M.instance() #towrzymy jedną instancję animacji krwi
@@ -187,3 +185,4 @@ func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia
 				player_node.immortal = 0
 				$AttackCollision.disabled = true
 				ability = 0
+				spell = 0

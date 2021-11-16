@@ -4,7 +4,6 @@ var all_weapons_script = {
 		"axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
 		"blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
 		"bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-		"fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
 		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
 		"hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
 		"katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
@@ -53,13 +52,6 @@ var all_weapons = {
 			"spd": "0.75",
 			"knc": float(0.25),
 			"range": "melee",
-			"effect": "none"
-		},
-		"fire Scepter": {
-			"attack": "10",
-			"spd": "1",
-			"knc": float(0.75),
-			"range": "magic",
 			"effect": "none"
 		},
 		 "bloodsword": {

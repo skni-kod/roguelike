@@ -1,7 +1,7 @@
 extends Node2D
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
-
+var spell = 0
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -57,6 +57,7 @@ func _physics_process(delta):
 		if skill1 and skill2 and !skill and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				skill = 1
 				skill1 = 0
 				player_node.mana -= 25
@@ -77,17 +78,19 @@ func _physics_process(delta):
 				skill = 0
 				yield(get_tree().create_timer(10),'timeout')
 				skill1 = 1
-			
+				spell = 0
 	if Input.is_action_just_pressed("use_ability_2"):
 		if skill1 and skill2 and !skill and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				skill2 = 0
 				damage += 20
 				player_node.speed += 20
 				yield(get_tree().create_timer(10), "timeout")
 				damage -= 20
 				yield(get_tree().create_timer(30),'timeout')
+				spell = 0
 				skill2 = 1
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281

@@ -215,6 +215,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if equipped != weaponToTake.WeaponName:
+				current_weapon = check_current_weapon()
 				if Bufor.in_sklep and skl_odw == false:
 					if coins >= 50:
 						coins -= 50
@@ -579,7 +580,6 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			coins += 10
 			body.queue_free()
 		elif "Weapon" in body.name:
-			current_weapon = check_current_weapon()
 			weaponToTake = body
 		elif "Chest" in body.name:
 			chest = body
