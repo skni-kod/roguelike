@@ -13,7 +13,7 @@ var all_weapons_script = {
 var all_weapons = {
 	"Weapons": {
 		"blade": {
-			"attack": "7.5",
+			"attack": "12",
 			"spd": "1",
 			"knc": float(0.15),
 			"range": "melee",
