@@ -71,22 +71,21 @@ __meta__ = {
 }
 
 [node name="OctoBossShadow" type="AnimatedSprite" parent="Background Decorations"]
-modulate = Color( 0.160784, 0.12549, 0.12549, 0.27451 )
+modulate = Color( 0.160784, 0.12549, 0.12549, 0.588235 )
 position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
-frame = 3
 playing = true
 flip_h = true
 
 [node name="PandoBossShadow" type="AnimatedSprite" parent="Background Decorations"]
-modulate = Color( 0.160784, 0.12549, 0.12549, 0.27451 )
+modulate = Color( 0.160784, 0.12549, 0.12549, 0.588235 )
 position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 6
+frame = 11
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -139,7 +138,7 @@ margin_top = 640.0
 margin_right = 699.0
 margin_bottom = 685.0
 custom_fonts/font = SubResource( 1 )
-text = "Version v0.2.0
+text = "Version v0.2.1
 By SKNI KOD"
 
 [node name="FadeIn" parent="." instance=ExtResource( 7 )]
@@ -202,6 +201,20 @@ energy = 1.5
 [node name="TorchLight4" type="Light2D" parent="Lights"]
 position = Vector2( 885.434, 116.722 )
 scale = Vector2( 0.665103, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="TorchLight5" type="Light2D" parent="Lights"]
+position = Vector2( 187.109, 644.005 )
+scale = Vector2( 1.41656, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="TorchLight6" type="Light2D" parent="Lights"]
+position = Vector2( 1186.86, 545.101 )
+scale = Vector2( 0.958852, 1.36646 )
 texture = ExtResource( 8 )
 color = Color( 0.752941, 0.494118, 0.129412, 1 )
 energy = 1.5
