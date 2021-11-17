@@ -6,6 +6,12 @@ var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do 
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
 
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+var spell = 0;
+
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -17,7 +23,7 @@ var ability1ManaCost=25 #koszt do zmiany w balansie
 var ability2ManaCost=50 #koszt do zmiany w balansie
 var weaponKnockback
 var a = 1
-var weaponName = "BloodSword" #potrzebne do sprawdzenia na którym miejscu jest wyekwipowane
+var weaponName = "bloodsword" #potrzebne do sprawdzenia na którym miejscu jest wyekwipowane
 var smoothing = 1
 var swing_to = 0.3
 var swing_back = 0.6
@@ -58,13 +64,17 @@ func _physics_process(delta):
 		if player_node.mana>=ability1ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,ability1ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability1()
+				spell = 0
 	
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=ability2ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,ability2ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability2()
+				spell = 0
 
 	
 
@@ -104,9 +114,17 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
 		########PASSIVE######## "Transfusion" każdy atak leczy za % obrażeń
 		player_node.health += (life_steal*damage) #dodajemy życie zgodnie z ilością obrażeń przemnożoną przez współczynik lifestealu
+		if crit:
+			damage /= crit_damage
 		if player_node.health > player_node.max_health: #jeśli przekroczymy max życia to ustawiamy max
 			player_node.health = player_node.max_health
 		player_node.emit_signal("health_updated", player_node.health) #emitujemy sygnał żeby pasek życia się zaktualizował

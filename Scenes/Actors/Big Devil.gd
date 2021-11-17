@@ -12,6 +12,7 @@ const SPEED = 100
 signal died(body)
 
 var player = null
+var player_close = false
 var move = Vector2.ZERO
 export var speed = 0.25
 export var dps = 1
@@ -85,7 +86,10 @@ func _physics_process(delta):
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+			if player_close:
+				move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+			else:
+				move = global_position.direction_to(player.global_position) * speed # zbliżanie się od gracza, gdy jest za daleko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
@@ -113,9 +117,22 @@ func _physics_process(delta):
 # ========== FUNKCJE INTERSEKCJI Z NODEM WZROK ========== #
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player":
+		player_close = true
 		player = body # player zostaje przypisane jako body, które jest Playerem, gdy wejdzie w Wzrok
 		
 func _on_Wzrok_body_exited(body):
+	if body != self and body.name == "Player":
+		player_close = false
+		player = null # player zostaje przypisany jako null/nic jak Player opuści Wzrok
+# ========== ================================= ========== #
+		
+		
+# ========== FUNKCJE INTERSEKCJI Z NODEM WZROK2 ========== #
+func _on_Wzrok2_body_entered(body):
+	if body != self and body.name == "Player":
+		player = body # player zostaje przypisane jako body, które jest Playerem, gdy wejdzie w Wzrok
+		
+func _on_Wzrok2_body_exited(body):
 	if body != self and body.name == "Player":
 		player = null # player zostaje przypisany jako null/nic jak Player opuści Wzrok
 # ========== ================================= ========== #

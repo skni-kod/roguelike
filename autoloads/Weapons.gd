@@ -1,68 +1,60 @@
 extends Node
 
 var all_weapons_script = {
-		"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
-		"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
-		"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-		"Fire Scepter" :preload("res://Scenes/Equipment/Weapons/Magic/Fire Scepter.gd"),
+		"axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
+		"blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
+		"bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
 		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
-		"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
-		"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
-		"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
-		"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
+		"hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
+		"katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
+		"knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
+		"spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
 	}
 var all_weapons = {
 	"Weapons": {
-		"Blade": {
-			"attack": "7.5",
+		"blade": {
+			"attack": "12",
 			"spd": "1",
 			"knc": float(0.15),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Axe": {
+		"axe": {
 			"attack": "10",
 			"spd": "0.5",
 			"knc": float(0.5),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Katana": {
+		"katana": {
 			"attack": "15",
 			"spd": "0.4",
 			"knc": float(0.1),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Knife": {
+		"knife": {
 			"attack": "3",
 			"spd": "1.5",
 			"knc": float(0.0),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Hammer": {
+		"hammer": {
 			"attack": "30",
 			"spd": "0.3",
 			"knc": float(1.0),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Spear": {
+		"spear": {
 			"attack": "15",
 			"spd": "0.75",
 			"knc": float(0.25),
 			"range": "melee",
 			"effect": "none"
 		},
-		"Fire Scepter": {
-			"attack": "10",
-			"spd": "1",
-			"knc": float(0.75),
-			"range": "magic",
-			"effect": "none"
-		},
-		 "BloodSword": {
+		 "bloodsword": {
 			"attack": "20",
 			"spd": "0.6",
 			"knc": float(0.3),

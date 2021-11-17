@@ -4,7 +4,7 @@ const M = preload("Moon_particles.tscn") #pobieramy particle do umiejek
 var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
-
+var spell = 0
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
@@ -16,8 +16,12 @@ var damage
 var weaponKnockback
 var a = 1
 var weaponName = "FMS"
-
 var smoothing = 1
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
 
 var attack_speed = 0
 var swing_to = 0.2
@@ -33,7 +37,7 @@ var basespd
 func _physics_process(delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
-		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS0.png")
+		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
 		$AttackCollision.scale.x = 1.8
 		$AttackCollision.scale.y = 0.3
 		$AttackCollision.position.x = 13
@@ -59,17 +63,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if player_node.mana>=ability1ManaCost and !ability:
 			player_node.updateMana(-ability1ManaCost)
+			
 			ability1()
-		else:
-			print("Insufficient mana, " + String(ability1ManaCost) +" required to cast ability")
-	
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=ability2ManaCost and !ability:
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
-		else:
-			print("Insufficient mana, " + String(ability2ManaCost) +" required to cast ability")
-
 
 	if mc == 20:
 		ph+=1
@@ -77,22 +76,22 @@ func _physics_process(delta):
 		if ph == 6: ph=0
 		match ph:
 			0:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS0.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
 			1:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS1.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms1.png")
 				basedmg = damage
 				damage = damage*1.2
 			2:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS2.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms2.png")
 				damage = basedmg*1.4
 			3:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS3.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms3.png")
 				damage = basedmg*1.6
 			4:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS4.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms4.png")
 				damage = basedmg*1.8
 			5:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/FMS5.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms5.png")
 				damage = basedmg*2
 		
 	
@@ -132,20 +131,31 @@ func change_weapon(texture):
 func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
 		mc+=1
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage
 
 func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				basespd = player_node.speed
 				player_node.speed += 100
 				yield(get_tree().create_timer(10), "timeout")
 				player_node.speed = basespd
+				spell = 0
 func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
 	if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability = 1
 				$AttackCollision.disabled = false
 				var Beam = M.instance() #towrzymy jedną instancję animacji krwi
@@ -175,3 +185,4 @@ func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia
 				player_node.immortal = 0
 				$AttackCollision.disabled = true
 				ability = 0
+				spell = 0

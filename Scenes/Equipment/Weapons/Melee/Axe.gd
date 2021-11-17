@@ -10,9 +10,14 @@ var timer #Stoper
 var damage
 var weaponKnockback
 var a = 1
-var weaponName = "Axe"
-
+var weaponName = "axe"
 var smoothing = 1
+var spell = 0
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
 
 var attack_speed = 0
 var swing_to = 0.2
@@ -69,6 +74,7 @@ func _physics_process(delta):
 		if active_ability1==false and active_ability2==false and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				attack = true
 				active_ability1 = true
 				$AttackCollision.disabled = false
@@ -78,12 +84,14 @@ func _physics_process(delta):
 				tmpknockback = weaponKnockback
 				weaponKnockback = 0
 				timer.start()
+				spell = 0
 		
 		
 	if Input.is_action_just_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
 				player_node.on_skill_used(2,50)
+				spell = 1
 				StatusBar_node.immune = true
 				tmpspeed = player_node.speed
 				player_node.speed *= speedmultipler
@@ -103,6 +111,7 @@ func _physics_process(delta):
 				damage = tmpdmg
 				attack_speed = tmpattack_speed
 				StatusBar_node.immune = false
+				spell = 0
 		
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
@@ -148,4 +157,12 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage

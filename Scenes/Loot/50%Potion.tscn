@@ -10,9 +10,8 @@ height = 12.1804
 radius = 4.42828
 height = 8.78851
 
-[node name="50%Potion" type="StaticBody2D" groups=[
-"Pickable",
-]]
+[node name="50%Potion" type="StaticBody2D" groups=["Pickable"]]
+collision_layer = 32
 collision_mask = 0
 
 [node name="PotionNameHolder" type="Label" parent="."]

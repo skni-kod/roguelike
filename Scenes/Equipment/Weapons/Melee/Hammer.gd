@@ -10,7 +10,13 @@ var weaponKnockback
 var a = 1
 var player_node := get_tree().get_root().find_node("Player", true, false)
 var smoothing = 1
-var weaponName = 'Hammer'
+var weaponName = 'hammer'
+
+var spell = 0
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
 
 var attack_speed = 0
 var swing_to = 0.4
@@ -61,6 +67,7 @@ func _physics_process(delta):
 		if active_ability1!=1 and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				active_ability1 = 1
 		
 				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
@@ -104,7 +111,7 @@ func _physics_process(delta):
 				$AttackCollision.scale.y = tmp['scale_y']
 				equipped_weapon.damage = tmp['damage']
 				equipped_weapon.weaponKnockback = tmp['weaponKnockback']
-				
+				spell = 0
 				active_ability1 = 0
 		
 	if Input.is_action_just_pressed("use_ability_2"):
@@ -112,6 +119,7 @@ func _physics_process(delta):
 		if active_ability1!=1 and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				var player_node := get_tree().get_root().find_node("Player", true, false)
 				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
 				
@@ -155,6 +163,7 @@ func _physics_process(delta):
 				t.start()
 				yield(t, "timeout")
 				level.get_node("Player").immortal = 0
+				spell =0
 	
 func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
@@ -191,4 +200,12 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage

@@ -15,9 +15,16 @@ var passiveAbilityMaxStacks=20 #Maksymalny stopień umiejętności
 var abilityDamage=0 #Temporary variable: Holds additional damaga inflicted by ability
 var abilityManaCost=25
 var weaponKnockback
-var weaponName = 'Katana'
+var spell = 0
+var weaponName = 'katana'
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+
 var attack_speed=0 #Animacja ataku
 var swing_to = 0.1
 var paused = 0.15
@@ -59,16 +66,19 @@ func _physics_process(delta):
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				abilityDamage=12
 				_on_Player_attacked()
+				spell = 0
 				
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				abilityDamage=45
 				_on_Player_attacked()
-
+				spell = 0
 func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
 	position.y=0.281
@@ -120,6 +130,14 @@ func change_weapon(texture):
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
 		isEnemyHit=1	
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage*(1+(float(passiveAbilityStacks)/passiveAbilityMaxStacks*passiveAbilityDamageMultiplier))+abilityDamage, weaponKnockback)	
+		if crit:
+			damage /= crit_damage
 		abilityDamage=0 #Reset ability damage
 		

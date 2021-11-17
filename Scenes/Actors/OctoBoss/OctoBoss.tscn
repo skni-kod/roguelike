@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Actors/OctoBoss/OctoBoss.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo3.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo2.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Light/Light_texture.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 step = 0.05
@@ -29,10 +30,6 @@ extents = Vector2( 144, 80 )
 [node name="OctoBoss" type="YSort"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="."]
-light_mask = 2
-texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/mrug = SubResource( 1 )
@@ -61,6 +58,14 @@ shape = SubResource( 3 )
 
 [node name="miniTimer" type="Timer" parent="."]
 wait_time = 0.3
+
+[node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
+texture = ExtResource( 2 )
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 5 )
+color = Color( 0, 0.601563, 1, 1 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

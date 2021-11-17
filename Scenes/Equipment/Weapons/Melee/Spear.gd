@@ -4,6 +4,7 @@ var player_node = get_tree().get_root().find_node("Player", true, false)
 
 var mouse_position
 var attack = false
+var spell = 0
 var attack_vector = Vector2.ZERO
 export var attack_range = 15
 var timer #Cooldown pomiędzy atakami
@@ -12,9 +13,15 @@ var ability1ManaCost=1 #koszt do zmiany w balansie
 var ability2ManaCost=1 #koszt do zmiany w balansie
 var SR=0 #Stab rotation, potrzebne do ability 2
 var weaponKnockback
-var weaponName = "Spear"
+var weaponName = "spear"
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+
 var attack_speed = 0 #Zmienna służąca do animacji 
 var swing_to = 0.3
 var paused = 0.4
@@ -55,14 +62,18 @@ func _physics_process(delta):
 		if !ability and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability1()
-	
+				spell = 0
+				
 	if Input.is_action_just_pressed("use_ability_2"):
 		#Increase next attack damage by 12 costs 20 mana
 		if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				spell = 1
 				ability2()
+				spell = 0
 
 func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
 	position.x=0.281
@@ -106,7 +117,15 @@ func change_weapon(texture):
 
 func _on_EquippedWeapon_body_entered(body):
 	if body.is_in_group("Enemy"):
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
 		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage
 
 func ability1(): # "repel" obraca wokoło siebie włucznią i odpycha przeciników
 	ability = 1

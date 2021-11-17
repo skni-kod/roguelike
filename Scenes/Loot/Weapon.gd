@@ -10,7 +10,7 @@ func _ready():
 	Stats = all_weapons["Weapons"][WeaponName]
 	Stats['attack'] = float(Stats['attack'])
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
-	if WeaponName == "Katana":
+	if WeaponName == "katana":
 		$Sprite.scale.x = .5
 		$Sprite.scale.y = .5
 	else:

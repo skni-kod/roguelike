@@ -11,9 +11,7 @@ extents = Vector2( 208, 112 )
 closed = false
 polygon = PoolVector2Array( -256, -144, 256, -144, 256, 144, -256, 144, -256, -144 )
 
-[node name="Node2D" type="Area2D" groups=[
-"walls",
-]]
+[node name="Node2D" type="Area2D" groups=["walls"]]
 collision_layer = 0
 collision_mask = 5
 
