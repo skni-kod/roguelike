@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scenes/title_screen/banner.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/title_screen/buttons/StartButton.tscn" type="PackedScene" id=2]
@@ -7,6 +7,41 @@
 [ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scenes/title_screen/title_screen.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Light/Light_texture.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/Actors/OctoBoss/octo2.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Light/Lamp_2.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/Actors/OctoBoss/octo.png" type="Texture" id=12]
+[ext_resource path="res://Scenes/Actors/OctoBoss/octo3.png" type="Texture" id=13]
+[ext_resource path="res://Scenes/title_screen/MenuLights.gd" type="Script" id=14]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 12 ), ExtResource( 9 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "octoboss_menu",
+"speed": 2.0
+} ]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 46, 56 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 56, 46, 56 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 112, 46, 56 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 3 ), SubResource( 4 ), SubResource( 4 ), SubResource( 4 ), SubResource( 3 ), SubResource( 4 ), SubResource( 3 ), SubResource( 5 ), SubResource( 3 ), SubResource( 3 ), SubResource( 3 ), SubResource( 3 ) ],
+"loop": true,
+"name": "pandoboss_menu",
+"speed": 2.0
+} ]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 5 )
@@ -18,6 +53,41 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Background Decorations" type="Control" parent="."]
+margin_right = 1283.0
+margin_bottom = 722.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Background Decorations"]
+light_mask = 0
+margin_right = 1283.0
+margin_bottom = 723.0
+color = Color( 0.257957, 0.0623627, 0.261719, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OctoBossShadow" type="AnimatedSprite" parent="Background Decorations"]
+modulate = Color( 0.160784, 0.12549, 0.12549, 0.27451 )
+position = Vector2( 226.176, 732.406 )
+scale = Vector2( 5.22092, 5.22092 )
+frames = SubResource( 2 )
+animation = "octoboss_menu"
+frame = 3
+playing = true
+flip_h = true
+
+[node name="PandoBossShadow" type="AnimatedSprite" parent="Background Decorations"]
+modulate = Color( 0.160784, 0.12549, 0.12549, 0.27451 )
+position = Vector2( 1198.72, 619.51 )
+scale = Vector2( 9.61799, 9.61799 )
+frames = SubResource( 6 )
+animation = "pandoboss_menu"
+frame = 6
+playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
 margin_left = 310.0
@@ -74,5 +144,80 @@ By SKNI KOD"
 
 [node name="FadeIn" parent="." instance=ExtResource( 7 )]
 visible = false
+
+[node name="Lights" type="Node2D" parent="."]
+script = ExtResource( 14 )
+
+[node name="CursorLight" type="Light2D" parent="Lights"]
+position = Vector2( 286.599, 288.977 )
+texture = ExtResource( 8 )
+texture_scale = 0.5
+
+[node name="RoguelikeLight" type="Light2D" parent="Lights"]
+position = Vector2( 648.574, 158.58 )
+scale = Vector2( 1.68209, 0.464069 )
+texture = ExtResource( 8 )
+
+[node name="StartLight" type="Light2D" parent="Lights"]
+position = Vector2( 654.938, 472.964 )
+scale = Vector2( 1.68209, 0.464069 )
+texture = ExtResource( 8 )
+
+[node name="OptionsLight" type="Light2D" parent="Lights"]
+position = Vector2( 653.527, 538.615 )
+scale = Vector2( 1.68209, 0.464069 )
+texture = ExtResource( 8 )
+
+[node name="ExitLight" type="Light2D" parent="Lights"]
+position = Vector2( 657.06, 600.946 )
+scale = Vector2( 1.68209, 0.464069 )
+texture = ExtResource( 8 )
+
+[node name="VersionLight" type="Light2D" parent="Lights"]
+position = Vector2( 373.635, 659.764 )
+scale = Vector2( 1.15534, 0.34116 )
+texture = ExtResource( 8 )
+
+[node name="TorchLight1" type="Light2D" parent="Lights"]
+position = Vector2( 405.886, 119.695 )
+scale = Vector2( 0.665103, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="TorchLight2" type="Light2D" parent="Lights"]
+position = Vector2( 569.7, 43.5862 )
+scale = Vector2( 0.665103, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="TorchLight3" type="Light2D" parent="Lights"]
+position = Vector2( 731.729, 43.2889 )
+scale = Vector2( 0.665103, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="TorchLight4" type="Light2D" parent="Lights"]
+position = Vector2( 885.434, 116.722 )
+scale = Vector2( 0.665103, 0.603622 )
+texture = ExtResource( 8 )
+color = Color( 0.752941, 0.494118, 0.129412, 1 )
+energy = 1.5
+
+[node name="MageLight" type="Light2D" parent="Lights"]
+position = Vector2( 712.058, 106.674 )
+scale = Vector2( 0.305728, 0.249951 )
+texture = ExtResource( 8 )
+color = Color( 0.678431, 0.141176, 0.807843, 1 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Lights"]
+color = Color( 0.364706, 0.231373, 0.513726, 1 )
+
+[node name="Lamp_2" parent="Lights" instance=ExtResource( 10 )]
+position = Vector2( 649.631, 193.124 )
+rotation = 3.14159
+region_rect = Rect2( 32, 42, 19, 14 )
 
 [connection signal="fade_finished" from="FadeIn" to="." method="_on_FadeIn_fade_finished"]
