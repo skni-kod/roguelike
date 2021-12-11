@@ -4,7 +4,7 @@ var all_weapons_script = {
 		"axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
 		"blade" : preload("res://Scenes/Equipment/Weapons/Melee/Blade.gd"),
 		"bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-		"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
+		"fms" : preload("res://Scenes/Equipment/Weapons/Melee/fms.gd"),
 		"hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
 		"katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
 		"knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
@@ -62,7 +62,7 @@ var all_weapons = {
 			"effect": "none"
 		}
 		,
-		 "FMS": {
+		 "fms": {
 			"attack": "22",
 			"spd": "0.5",
 			"knc": float(0.5),

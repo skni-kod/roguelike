@@ -15,7 +15,7 @@ var ability2ManaCost=1 #koszt do zmiany w balansie
 var damage
 var weaponKnockback
 var a = 1
-var weaponName = "FMS"
+var weaponName = "fms"
 var smoothing = 1
 
 var rng = RandomNumberGenerator.new()
@@ -70,7 +70,7 @@ func _physics_process(delta):
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
 
-	if mc == 20:
+	if mc == 10:
 		ph+=1
 		mc = 0
 		if ph == 6: ph=0
@@ -91,7 +91,7 @@ func _physics_process(delta):
 				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms4.png")
 				damage = basedmg*1.8
 			5:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms5.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms.png")
 				damage = basedmg*2
 		
 	
