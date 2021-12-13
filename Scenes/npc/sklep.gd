@@ -4,6 +4,7 @@ var gracz
 var k = 0
 
 func _ready():
+	$AnimationPlayer.play("idle")
 	set_process(false)
 
 func _on_Area2D_body_entered(body):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/npc/sklep.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Levels/Portal2.png" type="Texture" id=2]
@@ -28,18 +28,38 @@ radius = 20.0
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 47, 34 )
 
+[sub_resource type="Animation" id=6]
+resource_name = "idle"
+length = 5.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.2, 4.3, 4.4, 4.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 0, 0, 1, 2 ]
+}
+
 [node name="StaticBody2D" type="StaticBody2D"]
+scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
+hframes = 3
 
 [node name="E" type="AnimatedSprite" parent="."]
 visible = false
 position = Vector2( 0, -66 )
 z_index = 2
 frames = SubResource( 3 )
+frame = 1
 playing = true
 
 [node name="Area2D2" type="Area2D" parent="."]
@@ -64,6 +84,9 @@ texture = ExtResource( 4 )
 [node name="Sprite3" type="Sprite" parent="."]
 position = Vector2( 24, 40 )
 texture = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 6 )
 
 [connection signal="body_entered" from="Area2D2" to="." method="_on_Area2D2_body_entered"]
 [connection signal="body_exited" from="Area2D2" to="." method="_on_Area2D2_body_exited"]
