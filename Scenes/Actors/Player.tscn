@@ -8,7 +8,6 @@
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=7]
 
-
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.794702, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 0.359375, 0, 0, 1, 0.600586, 0, 0, 0 )
@@ -193,9 +192,7 @@ color_ramp = SubResource( 24 )
 [sub_resource type="OccluderPolygon2D" id=28]
 polygon = PoolVector2Array( -5, -4, 5, -4, 5, 9, -5, 9 )
 
-[node name="Player" type="KinematicBody2D" groups=[
-"Player",
-]]
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 collision_mask = 6
 script = ExtResource( 2 )
 

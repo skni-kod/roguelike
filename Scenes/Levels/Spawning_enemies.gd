@@ -103,7 +103,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				enemy.position.x = rand.randf_range(-180,180) #pozycja x
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-80,80) #pozycja y
-				add_child(enemy) #dodawanie sceny przeciwnika
+				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss: #respienie boss'a
 			ilosc_enemy = 1
@@ -126,7 +126,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			Bufor.in_sklep = true
 		elif is_sklep == false:
 			if body in popups:
-				popups[body].queue_free()
+				popups[body].call_deferred('free')
 			Bufor.in_sklep = false
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
