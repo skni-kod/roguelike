@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/TileMap/Room1.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Levels/Spawning_enemies.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Levels/Lights.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/npc/sklep.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
@@ -11,7 +12,9 @@ extents = Vector2( 208, 112 )
 closed = false
 polygon = PoolVector2Array( -256, -144, 256, -144, 256, 144, -256, 144, -256, -144 )
 
-[node name="Node2D" type="Area2D" groups=["walls"]]
+[node name="Node2D" type="Area2D" groups=[
+"walls",
+]]
 collision_layer = 0
 collision_mask = 5
 
@@ -31,6 +34,9 @@ shape = SubResource( 1 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 2 )
+
+[node name="sklep" parent="." instance=ExtResource( 4 )]
+position = Vector2( 128, -36 )
 
 [node name="Lights" type="Node2D" parent="."]
 script = ExtResource( 3 )
