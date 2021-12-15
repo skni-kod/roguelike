@@ -10,22 +10,6 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 128.0
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 16, 17 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 16, 0, 16, 17 )
-
-[sub_resource type="SpriteFrames" id=4]
-animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ) ],
-"loop": true,
-"name": "default",
-"speed": 2.0
-} ]
-
 [sub_resource type="CircleShape2D" id=5]
 radius = 20.0
 
@@ -78,7 +62,7 @@ tracks/1/keys = {
 "values": [ Vector2( 24, 40 ), Vector2( 24, 39 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("cennik:rect_position")
+tracks/2/path = NodePath("ui/cennik:rect_position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -89,6 +73,22 @@ tracks/2/keys = {
 "update": 1,
 "values": [ Vector2( -38, -128 ), Vector2( -38, -129 ) ]
 }
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 17 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 17 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 2.0
+} ]
 
 [node name="StaticBody2D" type="StaticBody2D"]
 position = Vector2( -24, 40 )
@@ -104,14 +104,6 @@ light_mask = 2
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 3
-
-[node name="E" type="AnimatedSprite" parent="."]
-visible = false
-position = Vector2( 0, -66 )
-z_index = 2
-frames = SubResource( 4 )
-frame = 1
-playing = true
 
 [node name="Area2D2" type="Area2D" parent="."]
 position = Vector2( 24, 40 )
@@ -144,16 +136,28 @@ anims/idle = SubResource( 7 )
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 8 )
 
-[node name="cennik" parent="." instance=ExtResource( 6 )]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 9 )
+
+[node name="ui" type="Node2D" parent="."]
+light_mask = 0
+z_index = 3
+
+[node name="E" type="AnimatedSprite" parent="ui"]
+visible = false
+light_mask = 0
+position = Vector2( 0, -66 )
+z_index = 2
+frames = SubResource( 4 )
+playing = true
+
+[node name="cennik" parent="ui" instance=ExtResource( 6 )]
 visible = false
 margin_left = -38.0
 margin_top = -129.0
 margin_right = 112.0
 margin_bottom = 21.0
 rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 9 )
 
 [connection signal="body_entered" from="Area2D3" to="." method="_on_Area2D3_body_entered"]
 [connection signal="body_exited" from="Area2D3" to="." method="_on_Area2D3_body_exited"]

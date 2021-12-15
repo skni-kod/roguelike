@@ -14,27 +14,27 @@ func _ready():
 
 func _on_Area2D_body_entered(body): # gracz znajduje w zasięgu ikonki mikstury
 	if body.name == "Player":
-		get_node("E").visible = true # pokazuje wskazówkę wizualną
+		get_node("ui/E").visible = true # pokazuje wskazówkę wizualną
 		gracz = body
 		set_process(true) # _process obsługuje naciśnięcie klawisza E
 		k = 1
 
 func _on_Area2D2_body_entered(body): # gracz znajduje w zasięgu ikonki mikstury
 	if body.name == "Player":
-		get_node("E").visible = true # pokazuje wskazówkę wizualną
+		get_node("ui/E").visible = true # pokazuje wskazówkę wizualną
 		gracz = body
 		set_process(true) # _process obsługuje naciśnięcie klawisza E
 		k = 2
 
 func _on_Area2D2_body_exited(body):  # gracz znajduje się poza zasięgiem
 	if body.name == "Player":
-		get_node("E").visible = false
+		get_node("ui/E").visible = false
 		gracz = null
 		set_process(false) # sklep nie rejestruje naciśnięć E
 
 func _on_Area2D_body_exited(body): # gracz znajduje się poza zasięgiem
 	if body.name == "Player":
-		get_node("E").visible = false
+		get_node("ui/E").visible = false
 		set_process(false) # sklep nie rejestruje naciśnięć E
 
 func _process(_delta): # _process obsługuje naciśnięcia klawisza E
@@ -43,12 +43,12 @@ func _process(_delta): # _process obsługuje naciśnięcia klawisza E
 			if gracz.coins >= 20:
 				gracz.coins -= 20
 				gracz.level.get_node("UI/Coins").text = "Coins:" + str(gracz.coins) # aktualizacja licznika monet
-				if not gracz.potions[1] == "Empty": # jeżeli gracz posiada miksturę dostaje +1 sztukę posiadanej mikstury
+				if not gracz.potions[1] == "Empty" and not gracz.potions_amount[gracz.potions[1]] == 0: # jeżeli gracz posiada miksturę dostaje +1 sztukę posiadanej mikstury
 					gracz.potions_amount[gracz.potions[1]] += 1
 				else: # jeżeli nie, dostaje 1 miksturę na 20HP
 					gracz.potions[1] = "20healthPotion"
 					gracz.potions_amount[gracz.potions[1]] = 1
-				if not gracz.potions[2] == "Empty": # jeżeli gracz posiada miksturę dostaje +1 sztukę posiadanej mikstury
+				if not gracz.potions[2] == "Empty" and not gracz.potions_amount[gracz.potions[2]] == 0: # jeżeli gracz posiada miksturę dostaje +1 sztukę posiadanej mikstury
 					gracz.potions_amount[gracz.potions[2]] += 1
 				else: # jeżeli nie, dostaje 1 miksturę na 20HP
 					gracz.potions[2] = "20healthPotion"
@@ -61,11 +61,16 @@ func _process(_delta): # _process obsługuje naciśnięcia klawisza E
 				get_node("../Enemies").weapon()
 				# kupiona broń do podniesienia jest generowana w ten
 				# sam sposób, co broń otrzymana po przejściu poziomu
+				var x = 0
+				for i in get_node("../Enemies").get_children():
+					if "Weapon" in i.name:
+						i.position.x = 60 - 45*x
+						x += 1
 
 func _on_Area2D3_body_entered(body):
 	if body.name == "Player":
-		get_node("cennik").visible = true
+		get_node("ui/cennik").visible = true
 
 func _on_Area2D3_body_exited(body):
 	if body.name == "Player":
-		get_node("cennik").visible = false
+		get_node("ui/cennik").visible = false
