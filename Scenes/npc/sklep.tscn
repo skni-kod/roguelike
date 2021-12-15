@@ -109,12 +109,14 @@ hframes = 3
 position = Vector2( 24, 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+scale = Vector2( 0.6, 0.75 )
 shape = SubResource( 5 )
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -24, 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2( 0.6, 0.75 )
 shape = SubResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
