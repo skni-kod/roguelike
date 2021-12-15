@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-var gracz
+var gracz # zmienna przechowująca gracza, aby móc dodać mikstury do jego ekwipunku
 var k = 0 # k = 1 - naciśnięcie E powoduje zakup mikstury
 # k = 2 - naciśnięcie E powoduje zakup broni
 
@@ -9,18 +9,19 @@ func _ready():
 		# ale przy wczytywaniu gry z większości z nich jest usuwany
 		queue_free()
 	$AnimationPlayer.play("idle")
+	$AnimationPlayer2.play("idle")
 	set_process(false)
 
 func _on_Area2D_body_entered(body): # gracz znajduje w zasięgu ikonki mikstury
 	if body.name == "Player":
-		get_node("E").visible = true
+		get_node("E").visible = true # pokazuje wskazówkę wizualną
 		gracz = body
 		set_process(true) # _process obsługuje naciśnięcie klawisza E
 		k = 1
 
 func _on_Area2D2_body_entered(body): # gracz znajduje w zasięgu ikonki mikstury
 	if body.name == "Player":
-		get_node("E").visible = true
+		get_node("E").visible = true # pokazuje wskazówkę wizualną
 		gracz = body
 		set_process(true) # _process obsługuje naciśnięcie klawisza E
 		k = 2
@@ -60,3 +61,11 @@ func _process(_delta): # _process obsługuje naciśnięcia klawisza E
 				get_node("../Enemies").weapon()
 				# kupiona broń do podniesienia jest generowana w ten
 				# sam sposób, co broń otrzymana po przejściu poziomu
+
+func _on_Area2D3_body_entered(body):
+	if body.name == "Player":
+		get_node("cennik").visible = true
+
+func _on_Area2D3_body_exited(body):
+	if body.name == "Player":
+		get_node("cennik").visible = false

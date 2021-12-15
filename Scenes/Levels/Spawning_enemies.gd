@@ -3,8 +3,6 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
-signal into_sklep()
-
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
@@ -32,8 +30,6 @@ var left = Vector2(0,4) #Pozycja lewych drzwi
 var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
 var ilosc_enemy #aktualna ilosc przeciwnikow
 var boss = false #czy to jest pokoj z bossem
-var is_sklep = false #czy to pokoj ze sklepem
-var odwiedzony = false #czy sklep byl odwiedzony
 var item
 var popups = {}
 
@@ -43,17 +39,10 @@ onready var generation = get_node("../../../Main") #pobranie maina aby podpinac 
 
 func _ready():
 	generation.connect("boss", self, "check_boss") #polaczenie sygnalu z generacji aby przekazac pokoj z bossem
-	generation.connect("skl", self, "check_sklep") #polaczenie sygnalu z generacji aby przekazac pokoj ze sklepem
 	
 func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
-
-func check_sklep(room): #sprawdza czy pokój jest pokojem ze sklepem
-	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
-		is_sklep = true
-	else:
-		 is_sklep = false
 
 func close_door(): #Podmiana tekstur na zamknięte drzwi
 	tilemap.set_cell(6,8,28)
@@ -95,7 +84,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
-		if not current_id in id_list and not boss and not is_sklep: #losowanie przeciwników do poziomu
+		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
 				rand.randomize()
 				var enemy = all_enemies[rand.randi_range(0,9)].instance() #rodzaj przeciwnika
@@ -112,22 +101,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			add_child(bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
-		elif is_sklep:
-			if odwiedzony == false:
-				weapon()
-				potion()
-				var popup = load("res://Scenes/UI/Sklep_ceny.tscn")
-				popup = popup.instance()
-				popup.rect_scale.x = 0.5
-				popup.rect_scale.y = 0.5
-				add_child(popup)
-				popups[body] = popup
-				odwiedzony = true
-			Bufor.in_sklep = true
-		elif is_sklep == false:
-			if body in popups:
-				popups[body].queue_free()
-			Bufor.in_sklep = false
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()

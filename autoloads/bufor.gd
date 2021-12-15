@@ -11,4 +11,3 @@ var second_weapon_stats = null
 var equipped = null
 var potions = null
 var potions_amount = null
-var in_sklep = false

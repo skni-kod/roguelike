@@ -64,10 +64,6 @@ var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
 
-var in_sklep = false
-var skl_odw = false
-
-
 var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 func UpdatePotions(): #funkcja aktualizująca status potek
@@ -546,51 +542,39 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 			chest = body
 		if "50%Potion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if Bufor.in_sklep:
+			if potions_amount["50%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 50%
+				potions_amount["50%Potion" ] += 1 #jeżeli ma to ilosc potek 50% zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				UpdatePotions()
+			else: #jeżeli nie posiada potki 50% to musi kliknąć pick żeby podnieść
 				potion = body
-			else:
-				if potions_amount["50%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 50%
-					potions_amount["50%Potion" ] += 1 #jeżeli ma to ilosc potek 50% zwieksza się o 1
-					body.queue_free() #powoduje znikniecie potka z mapy
-					UpdatePotions()
-				else: #jeżeli nie posiada potki 50% to musi kliknąć pick żeby podnieść
-					potion = body
 
 		if "100%Potion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if Bufor.in_sklep:
+			if potions_amount["100%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 100%
+				potions_amount["100%Potion" ] += 1 #jeżeli ma to ilosc potek 100% zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				UpdatePotions()
+			else: #jeżeli nie posiada potki 100% to musi kliknąć pick żeby podnieść
 				potion = body
-			else:
-				if potions_amount["100%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 100%
-					potions_amount["100%Potion" ] += 1 #jeżeli ma to ilosc potek 100% zwieksza się o 1
-					body.queue_free() #powoduje znikniecie potka z mapy
-					UpdatePotions()
-				else: #jeżeli nie posiada potki 100% to musi kliknąć pick żeby podnieść
-					potion = body
 
 		if "20healthPotion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if Bufor.in_sklep:
+			if potions_amount["20healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 20hp
+				potions_amount["20healthPotion" ] += 1 #jeżeli ma to ilosc potek 20hp zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				UpdatePotions()
+			else: #jeżeli nie posiada potki 20 aktualna potka jest zamieniana na potke 20hp
 				potion = body
-			else:
-				if potions_amount["20healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 20hp
-					potions_amount["20healthPotion" ] += 1 #jeżeli ma to ilosc potek 20hp zwieksza się o 1
-					body.queue_free() #powoduje znikniecie potka z mapy
-					UpdatePotions()
-				else: #jeżeli nie posiada potki 20 aktualna potka jest zamieniana na potke 20hp
-					potion = body
 
 		if "60healthPotion" in body.name: #jeżeli player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if Bufor.in_sklep:
+			if potions_amount["60healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 60hp
+				potions_amount["60healthPotion" ] += 1 #jeżeli ma to ilosc potek 60hp zwieksza się o 1
+				body.queue_free() #powoduje znikniecie potka z mapy
+				UpdatePotions()
+			else: #jeżeli nie posiada potki 60 aktualna potka jest zamieniana na potke 60hp
 				potion = body
-			else:
-				if potions_amount["60healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 60hp
-					potions_amount["60healthPotion" ] += 1 #jeżeli ma to ilosc potek 60hp zwieksza się o 1
-					body.queue_free() #powoduje znikniecie potka z mapy
-					UpdatePotions()
-				else: #jeżeli nie posiada potki 60 aktualna potka jest zamieniana na potke 60hp
-					potion = body
 	if body.is_in_group("PickableWeapon"): 
 		if "Weapon" in body.name:
 			weaponToTake = body		
