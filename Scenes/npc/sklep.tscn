@@ -147,7 +147,7 @@ z_index = 3
 
 [node name="E" type="AnimatedSprite" parent="ui"]
 visible = false
-light_mask = 0
+light_mask = 512
 position = Vector2( 0, -66 )
 z_index = 2
 frames = SubResource( 4 )
@@ -155,6 +155,7 @@ playing = true
 
 [node name="cennik" parent="ui" instance=ExtResource( 6 )]
 visible = false
+light_mask = 512
 margin_left = -38.0
 margin_top = -129.0
 margin_right = 112.0
