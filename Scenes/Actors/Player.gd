@@ -115,7 +115,7 @@ func _ready(): #po inicjacji bohatera
 		"blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"bloodsword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/fms5.png"),
+		"fms" : preload("res://Assets/Loot/Weapons/fms.png"),
 		"hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"knife" : preload("res://Assets/Loot/Weapons/knife.png"),

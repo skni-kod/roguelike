@@ -57,7 +57,7 @@
             "effect": "none"
         }
         ,
-         "FMS": {
+         "fms": {
             "attack": "22",
             "spd": "0.5",
             "knc": "0.5",
