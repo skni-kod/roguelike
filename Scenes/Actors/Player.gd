@@ -151,22 +151,23 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png"),
 		"Empty" : preload("res://Assets/Loot/Potions/Empty.png")
 	}
-	potions = { #słownik przechowujący jaki potek jest na danym slocie
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
+	else:
+		potions = { #słownik przechowujący jaki potek jest na danym slocie
 		1 : "20healthPotion",
 		2 : "Empty"
-	}
-	
-	potions_amount = { #słownik przechowujący ilość danych potek
+		}
+		
+		potions_amount = { #słownik przechowujący ilość danych potek
 		"50%Potion" : 0,
 		"100%Potion" : 0,
 		"20healthPotion" : 1,
 		"60healthPotion" : 0,
 		"Empty" : 0
-	}
-	if Bufor.potions: # jeżeli w buforze są dane
-		# mikstury są ładowane z bufora
-		potions = Bufor.potions
-		potions_amount = Bufor.potions_amount
+		}
 	UpdatePotions() 
 
 	
