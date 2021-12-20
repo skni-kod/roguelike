@@ -92,15 +92,31 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				enemy.position.x = rand.randf_range(-180,180) #pozycja x
 				rand.randomize()
 				enemy.position.y = rand.randf_range(-80,80) #pozycja y
-				add_child(enemy) #dodawanie sceny przeciwnika
+				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss: #respienie boss'a
 			ilosc_enemy = 1
 			var bossIns
 			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()
-			add_child(bossIns) #dodawanie sceny boss'a
+			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
+		elif is_sklep:
+			if odwiedzony == false:
+				weapon()
+				potion()
+				var popup = load("res://Scenes/UI/Sklep_ceny.tscn")
+				popup = popup.instance()
+				popup.rect_scale.x = 0.5
+				popup.rect_scale.y = 0.5
+				call_deferred("add_child", popup)
+				popups[body] = popup
+				odwiedzony = true
+			Bufor.in_sklep = true
+		elif is_sklep == false:
+			if body in popups:
+				popups[body].call_deferred('free')
+			Bufor.in_sklep = false
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
@@ -110,7 +126,7 @@ func potion():
 		ptn = load("res://Scenes/Loot/60healthPotion.tscn")
 		ptn = ptn.instance()
 		ptn.position = self.global_position + Vector2(-60,60)
-		main.add_child(ptn)
+		main.call_deferred("add_child", ptn)
 		
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
@@ -126,7 +142,7 @@ func weapon():
 	if weapon.WeaponName == "Fire Scepter":
 		weapon.WeaponName = names[arr[1]]
 	weapon.position = Vector2(60,60) #Przypisuje pozycję broni
-	add_child(weapon) #Tworzy broń na podłodze
+	call_deferred('add_child', weapon) #Tworzy broń na podłodze
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych

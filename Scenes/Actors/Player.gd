@@ -111,7 +111,7 @@ func _ready(): #po inicjacji bohatera
 		"blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"bloodsword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"FMS" : preload("res://Assets/Loot/Weapons/fms5.png"),
+		"fms" : preload("res://Assets/Loot/Weapons/fms.png"),
 		"hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -147,22 +147,23 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png"),
 		"Empty" : preload("res://Assets/Loot/Potions/Empty.png")
 	}
-	potions = { #słownik przechowujący jaki potek jest na danym slocie
+	if Bufor.potions: # jeżeli w buforze są dane
+		# mikstury są ładowane z bufora
+		potions = Bufor.potions
+		potions_amount = Bufor.potions_amount
+	else:
+		potions = { #słownik przechowujący jaki potek jest na danym slocie
 		1 : "20healthPotion",
 		2 : "Empty"
-	}
-	
-	potions_amount = { #słownik przechowujący ilość danych potek
+		}
+		
+		potions_amount = { #słownik przechowujący ilość danych potek
 		"50%Potion" : 0,
 		"100%Potion" : 0,
 		"20healthPotion" : 1,
 		"60healthPotion" : 0,
 		"Empty" : 0
-	}
-	if Bufor.potions: # jeżeli w buforze są dane
-		# mikstury są ładowane z bufora
-		potions = Bufor.potions
-		potions_amount = Bufor.potions_amount
+		}
 	UpdatePotions() 
 
 	
