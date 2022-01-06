@@ -30,6 +30,7 @@ var first_weapon_stats = {"attack":float(12), "knc":float(0.15)}
 var second_weapon_stats = {}
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
+onready var all_weapons_p = get_node("../Weapons").all_weapons_p #do broni+
 onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
 onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
@@ -208,7 +209,16 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
+			if weapons[1] == weaponToTake.WeaponName:
+				self.speed = 100
+				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
+				current_weapon = check_current_weapon()
+				swap_weapon(current_weapon,weaponToTake)
+			elif weapons[2] == weaponToTake.WeaponName:
+				self.speed = 100
+				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
+				swap_weapon(2,weaponToTake)
+			elif weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
 				self.speed = 100
 				current_weapon = check_current_weapon()
 				if weapons[2] == "Empty":
