@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cuckbullet.png-8ed069e9326440ae47c60007c1c1ca8a.stex"
+path="res://.import/cuckbullet.png-a80522fc27453a5477765da8eb0fa9d0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/cuckbullet.png"
-dest_files=[ "res://.import/cuckbullet.png-8ed069e9326440ae47c60007c1c1ca8a.stex" ]
+source_file="res://assets/enemies/cuckbullet.png"
+dest_files=[ "res://.import/cuckbullet.png-a80522fc27453a5477765da8eb0fa9d0.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

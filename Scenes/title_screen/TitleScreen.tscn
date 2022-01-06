@@ -4,12 +4,12 @@
 [ext_resource path="res://Scenes/title_screen/buttons/StartButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/title_screen/buttons/OptionsButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/title_screen/buttons/ExitButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://assets/fonts/montserrat-extrabold.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scenes/title_screen/title_screen.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Assets/Light/Light_texture.png" type="Texture" id=8]
+[ext_resource path="res://assets/light/light_texture.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo2.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Light/Lamp_2.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/light/lamp_2.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Actors/PandoBoss/PandaBoss.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo.png" type="Texture" id=12]
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo3.png" type="Texture" id=13]
@@ -76,7 +76,6 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
-frame = 5
 playing = true
 flip_h = true
 
@@ -86,7 +85,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 2
+frame = 4
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -120,7 +119,6 @@ size_flags_vertical = 3
 [node name="StartButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 2 )]
 margin_right = 699.0
 margin_bottom = 60.0
-scene_to_load = "res://Scenes/Levels/Main.tscn"
 
 [node name="OptionsButton" parent="Menu/CenterRow/Buttons" instance=ExtResource( 3 )]
 margin_top = 64.0

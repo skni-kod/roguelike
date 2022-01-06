@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/weaponslot.png-5085470747d02e50a2030f37354206cc.stex"
+path="res://.import/weaponslot.png-62b9506b5385ade617c73744ea8a6785.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/Slots/weaponslot.png"
-dest_files=[ "res://.import/weaponslot.png-5085470747d02e50a2030f37354206cc.stex" ]
+source_file="res://assets/ui/slots/weaponslot.png"
+dest_files=[ "res://.import/weaponslot.png-62b9506b5385ade617c73744ea8a6785.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

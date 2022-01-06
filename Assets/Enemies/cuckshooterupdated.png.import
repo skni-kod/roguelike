@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cuckshooterupdated.png-c7dab1ec056eeb600bdc9f634839db30.stex"
+path="res://.import/cuckshooterupdated.png-67f417d96c3e03e8de163df7bcd5ee6a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/cuckshooterupdated.png"
-dest_files=[ "res://.import/cuckshooterupdated.png-c7dab1ec056eeb600bdc9f634839db30.stex" ]
+source_file="res://assets/enemies/cuckshooterupdated.png"
+dest_files=[ "res://.import/cuckshooterupdated.png-67f417d96c3e03e8de163df7bcd5ee6a.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

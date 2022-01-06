@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/windball.png-0ab715aeeb7343cca4d74cb1985748be.stex"
+path="res://.import/windball.png-53fe696f37c556bb57411dfa5be0f9aa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/windball.png"
-dest_files=[ "res://.import/windball.png-0ab715aeeb7343cca4d74cb1985748be.stex" ]
+source_file="res://assets/enemies/windball.png"
+dest_files=[ "res://.import/windball.png-53fe696f37c556bb57411dfa5be0f9aa.stex" ]
 
 [params]
 

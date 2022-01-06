@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/StatusEffects.png-9c1ebb6e0a3141f5309373890887207b.stex"
+path="res://.import/statuseffects.png-3d9e8142b30d0142eb2d1293024e3ef9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/StatusEffects/StatusEffects.png"
-dest_files=[ "res://.import/StatusEffects.png-9c1ebb6e0a3141f5309373890887207b.stex" ]
+source_file="res://assets/ui/statuseffects/statuseffects.png"
+dest_files=[ "res://.import/statuseffects.png-3d9e8142b30d0142eb2d1293024e3ef9.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

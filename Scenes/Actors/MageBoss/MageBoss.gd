@@ -23,9 +23,9 @@ var rng = RandomNumberGenerator.new()  #Inicjalizacja obiektu losowania
 onready var main := get_tree().get_root().find_node("Main", true, false)  #Zmienna przechowujaca wezel main
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false)  #Zmienna przechowujaca wezel StatusBar
-var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
-var portal = preload("res://Scenes/Levels/Portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
+var health_bar = load("res://scenes/ui/ui_scenes/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
+var floating_dmg = preload("res://Scenes/ui/ui_scenes/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
+var portal = preload("res://Scenes/levels/levels_scenes/Portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
 var randomPosition = Vector2.ZERO  #Zmienna inicjujaca pozycje monet
 var outer_rotation_WF = false  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa na zewnetrznej orbicie
 var change_rotation_WF = true  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa w trakcie zmiany swoich orbit
@@ -152,7 +152,7 @@ func get_dmg(dmg, weaponKnockback):
 			var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 			for i in range(0, coins):
 				randomPosition = Vector2(rng.randf_range(self.global_position.x - 10, self.global_position.x + 10), rng.randf_range(self.global_position.y - 10, self.global_position.y + 10))
-				var coin = load("res://Scenes/Loot/GoldCoin.tscn")
+				var coin = load("res://scenes/loot/objects/objects_scenes/GoldCoin.tscn")
 				coin = coin.instance()
 				coin.position = randomPosition
 				level.add_child(coin)
@@ -242,11 +242,11 @@ func phase_start():  #Rozpocznij faze bossa
 	if phase == 1:
 		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif phase == 2:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WaterBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
 	elif phase == 3:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/earthball.png")
 	elif phase == 4:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/windball.png")
 	#Wlacz emitowanie czasteczek tarczy
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()  #Uruchom timer tworzacy summona

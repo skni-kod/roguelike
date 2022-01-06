@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/chest.png-aa3fd014a0fc69141c34c71c1ec15bf7.stex"
+path="res://.import/chest.png-89d392f11a860ad7a084d92ffa5fe109.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/chest.png"
-dest_files=[ "res://.import/chest.png-aa3fd014a0fc69141c34c71c1ec15bf7.stex" ]
+source_file="res://assets/loot/chest.png"
+dest_files=[ "res://.import/chest.png-89d392f11a860ad7a084d92ffa5fe109.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

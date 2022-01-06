@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fms2.png-5ee0562a527a5e978e742df90d58c892.stex"
+path="res://.import/fms2.png-b317a0f261bdbde78e01c1700fbe7877.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/fms2.png"
-dest_files=[ "res://.import/fms2.png-5ee0562a527a5e978e742df90d58c892.stex" ]
+source_file="res://assets/loot/weapons/fms2.png"
+dest_files=[ "res://.import/fms2.png-b317a0f261bdbde78e01c1700fbe7877.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Bleeding.png-95b995f06ee2a7673c86a856b58184bb.stex"
+path="res://.import/bleeding.png-2c44bfc781c2fa28a80c08acecb08cae.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/StatusEffects/Bleeding.png"
-dest_files=[ "res://.import/Bleeding.png-95b995f06ee2a7673c86a856b58184bb.stex" ]
+source_file="res://assets/ui/statuseffects/bleeding.png"
+dest_files=[ "res://.import/bleeding.png-2c44bfc781c2fa28a80c08acecb08cae.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/little_goblin.png-8f807615484797a5c88eef8651e8d963.stex"
+path="res://.import/little_goblin.png-2f4b449f68361cbbdd5b3b3f726b6c5c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/little_goblin.png"
-dest_files=[ "res://.import/little_goblin.png-8f807615484797a5c88eef8651e8d963.stex" ]
+source_file="res://assets/enemies/little_goblin.png"
+dest_files=[ "res://.import/little_goblin.png-2f4b449f68361cbbdd5b3b3f726b6c5c.stex" ]
 
 [params]
 

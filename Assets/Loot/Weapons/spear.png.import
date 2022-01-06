@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spear.png-108b73e8d44770acfa9bd72276a31aab.stex"
+path="res://.import/spear.png-9ad33848cf988320d8b979497520bd84.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/spear.png"
-dest_files=[ "res://.import/spear.png-108b73e8d44770acfa9bd72276a31aab.stex" ]
+source_file="res://assets/loot/weapons/spear.png"
+dest_files=[ "res://.import/spear.png-9ad33848cf988320d8b979497520bd84.stex" ]
 
 [params]
 

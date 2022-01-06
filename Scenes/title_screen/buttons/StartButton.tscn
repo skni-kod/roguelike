@@ -3,6 +3,7 @@
 [ext_resource path="res://Scenes/title_screen/buttons/MenuButton.tscn" type="PackedScene" id=1]
 
 [node name="StartButton" instance=ExtResource( 1 )]
+scene_to_load = "res://Scenes/levels/levels_scenes/Main.tscn"
 
 [node name="Label" parent="." index="0"]
 text = "Start"

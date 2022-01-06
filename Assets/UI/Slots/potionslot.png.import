@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/potionslot.png-8e9baa3f5460a38ddc44c7141c1e8de7.stex"
+path="res://.import/potionslot.png-3eaef4a67a9062ee03cf0af16beed3c0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/Slots/potionslot.png"
-dest_files=[ "res://.import/potionslot.png-8e9baa3f5460a38ddc44c7141c1e8de7.stex" ]
+source_file="res://assets/ui/slots/potionslot.png"
+dest_files=[ "res://.import/potionslot.png-3eaef4a67a9062ee03cf0af16beed3c0.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HP1.png-412cc1baf54ccfbdbe03982b48a6c168.stex"
+path="res://.import/HP1.png-e856572f768211c7fc76096c1b29feb3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/PandoBoss/HP1.png"
-dest_files=[ "res://.import/HP1.png-412cc1baf54ccfbdbe03982b48a6c168.stex" ]
+source_file="res://scenes/Actors/PandoBoss/HP1.png"
+dest_files=[ "res://.import/HP1.png-e856572f768211c7fc76096c1b29feb3.stex" ]
 
 [params]
 

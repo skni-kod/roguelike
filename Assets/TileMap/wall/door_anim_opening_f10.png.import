@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/door_anim_opening_f10.png-cac6adeaf0fe3667454253bba2c17b0d.stex"
+path="res://.import/door_anim_opening_f10.png-5ce6bb119a4fd8b894f32ef7db046675.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/wall/door_anim_opening_f10.png"
-dest_files=[ "res://.import/door_anim_opening_f10.png-cac6adeaf0fe3667454253bba2c17b0d.stex" ]
+source_file="res://assets/tilemap/wall/door_anim_opening_f10.png"
+dest_files=[ "res://.import/door_anim_opening_f10.png-5ce6bb119a4fd8b894f32ef7db046675.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Freezing.png-7f7dd53b496c2426ce5e90eafb404ae6.stex"
+path="res://.import/freezing.png-2a1dec48ac24207dfccfe76f172bb186.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/StatusEffects/Freezing.png"
-dest_files=[ "res://.import/Freezing.png-7f7dd53b496c2426ce5e90eafb404ae6.stex" ]
+source_file="res://assets/ui/statuseffects/freezing.png"
+dest_files=[ "res://.import/freezing.png-2a1dec48ac24207dfccfe76f172bb186.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

@@ -12,7 +12,7 @@ onready var main := get_tree().get_root().find_node("Main", true, false)
 var health = 100 #Pozostałe życie w procentach
 
 onready var health_bar = $HealthBar
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
+var floating_dmg = preload("res://scenes/ui/ui_scenes/FloatingDmg.tscn")
 var randomPosition
 
 # === ZMIENNE DO KNOCKBACKU === #

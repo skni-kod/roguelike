@@ -20,17 +20,17 @@ func _ready():
 		dps = 4.0
 	elif boss.phase == 2:
 		$Light2D.color = Color("0051d7")
-		$Sprite.texture = load("res://Assets/Enemies/WaterBall.png")
+		$Sprite.texture = load("res://Assets/Enemies/waterball.png")
 		$Particles2D.process_material.set_color(Color("0051d7"))
 		dps = 5.0
 	elif boss.phase == 3:
 		$Light2D.color = Color("ff2700")
-		$Sprite.texture = load("res://Assets/Enemies/EarthBall.png")
+		$Sprite.texture = load("res://Assets/Enemies/earthball.png")
 		$Particles2D.process_material.set_color(Color("312523"))
 		dps = 8.0
 	elif boss.phase == 4:
 		$Light2D.color = Color("9fcade")
-		$Sprite.texture = load("res://Assets/Enemies/WindBall.png")
+		$Sprite.texture = load("res://Assets/Enemies/windball.png")
 		$Particles2D.process_material.set_color(Color("9fcade"))
 		dps = 6.0
 

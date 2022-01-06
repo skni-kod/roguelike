@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/snot.png-e09e0c9e859061d419432292e09ff7f4.stex"
+path="res://.import/snot.png-ad4611f39b10a02a6509e24cdc1c0160.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/snot.png"
-dest_files=[ "res://.import/snot.png-e09e0c9e859061d419432292e09ff7f4.stex" ]
+source_file="res://assets/enemies/snot.png"
+dest_files=[ "res://.import/snot.png-ad4611f39b10a02a6509e24cdc1c0160.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

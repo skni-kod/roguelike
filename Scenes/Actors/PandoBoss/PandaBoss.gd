@@ -7,8 +7,8 @@ signal died(body) # sygnał, czy przeciwnik umarł
 
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
-var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
+var floating_dmg = preload("res://Scenes/ui/ui_scenes/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+var portal = preload("res://Scenes/levels/levels_scenes/Portal.tscn") # portal do przechodzenia na kolejny poziom
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
 
@@ -43,7 +43,7 @@ var hp:float = max_hp
 
 # === HEALTHBAR === #
 export var health = 100 # procentowa wartość życia do healthbara
-var health_bar = preload("res://Scenes/UI/BossHealthBar.tscn").instance() # użycie paska życia bossa z folderu UI
+var health_bar = preload("res://Scenes/ui/ui_scenes/BossHealthBar.tscn").instance() # użycie paska życia bossa z folderu UI
 onready var statusEffect = UI.get_node("StatusBar") # get_node("../../../UI/StatusBar")
 # === ========= === #
 
@@ -239,7 +239,7 @@ func drop_coins():
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
 	for i in range(0,coins): # pętla tworząca monety
 		randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
-		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
+		var coin = load("res://scenes/loot/objects/objects_scenes/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level

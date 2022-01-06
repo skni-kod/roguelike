@@ -11,7 +11,7 @@ var health = 100  #Pozostale zycie w procentach
 onready var main := get_tree().get_root().find_node("Main", true, false)  #Zmienna przechowujaca wezel main
 onready var boss := get_tree().get_root().find_node("MageBoss", true, false)  #Zmienna przechowuje wezel bossa
 onready var health_bar = $HealthBar  #Zmienna przechowujaca pasek zycia
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
+var floating_dmg = preload("res://scenes/ui/ui_scenes/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
 
 func _ready():
 	health_bar.on_health_updated(health)  #Zaktualizowanie paska zycia
@@ -21,13 +21,13 @@ func _ready():
 		$Particles2D.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif boss.phase == 2:
 		$WaterL.visible = true #włącza odpowiednie światło
-		$Particles2D.texture = load("res://Assets/Enemies/WaterBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/waterball.png")
 	elif boss.phase == 3:
 		$EarthL.visible = true
-		$Particles2D.texture = load("res://Assets/Enemies/EarthBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/earthball.png")
 	elif boss.phase == 4:
 		$WindL.visible = true #włącza odpowiednie światło
-		$Particles2D.texture = load("res://Assets/Enemies/WindBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/windball.png")
 
 func _physics_process(delta):
 	move = Vector2.ZERO

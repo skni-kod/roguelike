@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/octo2.png-2b5a790f67beb1e91544b010e233f6a1.stex"
+path="res://.import/octo2.png-cb5c256929712a7b14817a10647d159f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/OctoBoss/octo2.png"
-dest_files=[ "res://.import/octo2.png-2b5a790f67beb1e91544b010e233f6a1.stex" ]
+source_file="res://scenes/Actors/OctoBoss/octo2.png"
+dest_files=[ "res://.import/octo2.png-cb5c256929712a7b14817a10647d159f.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

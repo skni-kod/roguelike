@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/earthball.png-8140742b3cbe6ae477dd1e4fd5a44f11.stex"
+path="res://.import/earthball.png-06ad00b5ee548da8a8af6f2423980734.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/earthball.png"
-dest_files=[ "res://.import/earthball.png-8140742b3cbe6ae477dd1e4fd5a44f11.stex" ]
+source_file="res://assets/enemies/earthball.png"
+dest_files=[ "res://.import/earthball.png-06ad00b5ee548da8a8af6f2423980734.stex" ]
 
 [params]
 

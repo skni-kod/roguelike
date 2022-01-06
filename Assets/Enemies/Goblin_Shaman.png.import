@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/goblin_shaman.png-5c14dce1efa92690a6b1c744759e2023.stex"
+path="res://.import/goblin_shaman.png-501e3753081be6e6304939e2feeae4bb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/goblin_shaman.png"
-dest_files=[ "res://.import/goblin_shaman.png-5c14dce1efa92690a6b1c744759e2023.stex" ]
+source_file="res://assets/enemies/goblin_shaman.png"
+dest_files=[ "res://.import/goblin_shaman.png-501e3753081be6e6304939e2feeae4bb.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

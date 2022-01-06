@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Background.png-9718d93d07fce0058b4856f00eb2c543.stex"
+path="res://.import/background.png-4676cb946979fd2d095a6152494974e3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/HealthBar/Background.png"
-dest_files=[ "res://.import/Background.png-9718d93d07fce0058b4856f00eb2c543.stex" ]
+source_file="res://assets/ui/healthbar/background.png"
+dest_files=[ "res://.import/background.png-4676cb946979fd2d095a6152494974e3.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

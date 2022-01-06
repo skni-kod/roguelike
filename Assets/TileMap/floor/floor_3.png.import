@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/floor_3.png-b5132a4998cd9e1ac4de9e33364e1b7f.stex"
+path="res://.import/floor_3.png-681a71ed9189c48534450205749b3cac.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/floor/floor_3.png"
-dest_files=[ "res://.import/floor_3.png-b5132a4998cd9e1ac4de9e33364e1b7f.stex" ]
+source_file="res://assets/tilemap/floor/floor_3.png"
+dest_files=[ "res://.import/floor_3.png-681a71ed9189c48534450205749b3cac.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

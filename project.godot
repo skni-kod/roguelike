@@ -21,9 +21,9 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-MusicController="*res://autoloads/MusicController.tscn"
+MusicController="*res://autoloads/musiccontroller.tscn"
 Bufor="*res://autoloads/bufor.gd"
-Pause="*res://autoloads/Pause.tscn"
+Pause="*res://autoloads/pause.tscn"
 
 [display]
 

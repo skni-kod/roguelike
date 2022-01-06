@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Potion+60hp.png-e17a6b225582bfc0f032390d5b77a62b.stex"
+path="res://.import/potion+60hp.png-e4cd465ae29f6d3df4d691cfda45d4a1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Potions/Potion+60hp.png"
-dest_files=[ "res://.import/Potion+60hp.png-e17a6b225582bfc0f032390d5b77a62b.stex" ]
+source_file="res://assets/loot/potions/potion+60hp.png"
+dest_files=[ "res://.import/potion+60hp.png-e4cd465ae29f6d3df4d691cfda45d4a1.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

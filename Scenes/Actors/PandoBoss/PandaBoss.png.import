@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex"
+path="res://.import/PandaBoss.png-ec66cebe32a6a28148aebc068558e472.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/PandoBoss/PandaBoss.png"
-dest_files=[ "res://.import/PandaBoss.png-e85da2426a41f8fb6811ef7f0c0e18e9.stex" ]
+source_file="res://scenes/Actors/PandoBoss/PandaBoss.png"
+dest_files=[ "res://.import/PandaBoss.png-ec66cebe32a6a28148aebc068558e472.stex" ]
 
 [params]
 

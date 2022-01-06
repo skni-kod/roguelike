@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+var floating_dmg = preload("res://Scenes/ui/ui_scenes/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
 var uderzyla = false
 
 func _ready():

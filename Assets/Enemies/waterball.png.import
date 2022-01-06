@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/waterball.png-ea76b848e35d22130487f32041a1239f.stex"
+path="res://.import/waterball.png-123c5cdfcab039578c0270dd8edcd61a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/waterball.png"
-dest_files=[ "res://.import/waterball.png-ea76b848e35d22130487f32041a1239f.stex" ]
+source_file="res://assets/enemies/waterball.png"
+dest_files=[ "res://.import/waterball.png-123c5cdfcab039578c0270dd8edcd61a.stex" ]
 
 [params]
 

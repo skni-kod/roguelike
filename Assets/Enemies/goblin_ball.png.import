@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/goblin_ball.png-f29dbf9058d31539e2e1709c9fb5633d.stex"
+path="res://.import/goblin_ball.png-1163c51bfbfb5b7a99755f1d862d41bd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/goblin_ball.png"
-dest_files=[ "res://.import/goblin_ball.png-f29dbf9058d31539e2e1709c9fb5633d.stex" ]
+source_file="res://assets/enemies/goblin_ball.png"
+dest_files=[ "res://.import/goblin_ball.png-1163c51bfbfb5b7a99755f1d862d41bd.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

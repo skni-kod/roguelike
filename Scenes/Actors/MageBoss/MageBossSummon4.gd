@@ -14,7 +14,7 @@ var drop = {"minCoins":0,"maxCoins":5} #Przedział definiujący ile summon może
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)
 
 onready var health_bar = $HealthBar
-var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")
+var floating_dmg = preload("res://scenes/ui/ui_scenes/FloatingDmg.tscn")
 var randomPosition
 
 # === ZMIENNE DO KNOCKBACKU === #

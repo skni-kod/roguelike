@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HP0.png-7221ddef72f88359f64b389e7eb11e9c.stex"
+path="res://.import/HP0.png-782c7df48eb76e9bed3222c65c934254.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/OctoBoss/HP0.png"
-dest_files=[ "res://.import/HP0.png-7221ddef72f88359f64b389e7eb11e9c.stex" ]
+source_file="res://scenes/Actors/OctoBoss/HP0.png"
+dest_files=[ "res://.import/HP0.png-782c7df48eb76e9bed3222c65c934254.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

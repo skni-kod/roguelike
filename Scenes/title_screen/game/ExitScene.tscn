@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/montserrat-extrabold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/title_screen/game/NewGame.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/title_screen/buttons/ExitButton.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=4]

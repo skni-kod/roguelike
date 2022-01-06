@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/lil_devil_body.png-016f94c8a7f9117d63e88df168681efa.stex"
+path="res://.import/lil_devil_body.png-349bf193f21b4fddbee65cc8d5b8fc7c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/lil_devil_body.png"
-dest_files=[ "res://.import/lil_devil_body.png-016f94c8a7f9117d63e88df168681efa.stex" ]
+source_file="res://assets/enemies/lil_devil_body.png"
+dest_files=[ "res://.import/lil_devil_body.png-349bf193f21b4fddbee65cc8d5b8fc7c.stex" ]
 
 [params]
 

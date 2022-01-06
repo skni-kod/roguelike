@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/door_closed.png-e5395ca50216c78e21e4864eaad123c9.stex"
+path="res://.import/door_closed.png-4052e2ab5b76eaab4c4cbfd1d0ced1ea.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/wall/door_closed.png"
-dest_files=[ "res://.import/door_closed.png-e5395ca50216c78e21e4864eaad123c9.stex" ]
+source_file="res://assets/tilemap/wall/door_closed.png"
+dest_files=[ "res://.import/door_closed.png-4052e2ab5b76eaab4c4cbfd1d0ced1ea.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

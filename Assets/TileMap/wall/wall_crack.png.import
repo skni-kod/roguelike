@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/wall_crack.png-cc7f07937095704d98595cca7392ded9.stex"
+path="res://.import/wall_crack.png-2a1caf652999f0c38bc4f8e128af40d1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/wall/wall_crack.png"
-dest_files=[ "res://.import/wall_crack.png-cc7f07937095704d98595cca7392ded9.stex" ]
+source_file="res://assets/tilemap/wall/wall_crack.png"
+dest_files=[ "res://.import/wall_crack.png-2a1caf652999f0c38bc4f8e128af40d1.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

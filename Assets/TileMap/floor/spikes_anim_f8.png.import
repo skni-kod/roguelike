@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spikes_anim_f8.png-a77613a84fd505231c343bef89929bb9.stex"
+path="res://.import/spikes_anim_f8.png-2c22e4af81a20997997f0c8e39b06c58.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TileMap/floor/spikes_anim_f8.png"
-dest_files=[ "res://.import/spikes_anim_f8.png-a77613a84fd505231c343bef89929bb9.stex" ]
+source_file="res://assets/tilemap/floor/spikes_anim_f8.png"
+dest_files=[ "res://.import/spikes_anim_f8.png-2c22e4af81a20997997f0c8e39b06c58.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

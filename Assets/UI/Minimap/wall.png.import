@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/wall.png-28248c279d26bf59f1396e5277a2013a.stex"
+path="res://.import/wall.png-eaff1b11fd5e1380ba9b59961c2bf50f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/Minimap/wall.png"
-dest_files=[ "res://.import/wall.png-28248c279d26bf59f1396e5277a2013a.stex" ]
+source_file="res://assets/ui/minimap/wall.png"
+dest_files=[ "res://.import/wall.png-eaff1b11fd5e1380ba9b59961c2bf50f.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

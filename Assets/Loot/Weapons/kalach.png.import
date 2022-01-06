@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/kalach.png-2b779e3a08af22b2ec71a55c6f28aa4a.stex"
+path="res://.import/kalach.png-7be185607cb5097d3c5e0083b83812f3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/kalach.png"
-dest_files=[ "res://.import/kalach.png-2b779e3a08af22b2ec71a55c6f28aa4a.stex" ]
+source_file="res://assets/loot/weapons/kalach.png"
+dest_files=[ "res://.import/kalach.png-7be185607cb5097d3c5e0083b83812f3.stex" ]
 
 [params]
 

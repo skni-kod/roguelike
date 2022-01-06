@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/0x72_DungeonTilesetII_v1.3.png-7e27946fb2d62a77aa808689d04887f4.stex"
+path="res://.import/0x72_dungeontilesetII_v1.3.png-a7de757323600e1a9a1ba16e496d648c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/0x72_DungeonTilesetII_v1.3.png"
-dest_files=[ "res://.import/0x72_DungeonTilesetII_v1.3.png-7e27946fb2d62a77aa808689d04887f4.stex" ]
+source_file="res://assets/0x72_dungeontilesetII_v1.3.png"
+dest_files=[ "res://.import/0x72_dungeontilesetII_v1.3.png-a7de757323600e1a9a1ba16e496d648c.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

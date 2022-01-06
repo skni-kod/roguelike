@@ -1,0 +1,295 @@
+[gd_scene load_steps=36 format=2]
+
+[ext_resource path="res://assets/hero/redhero.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Actors/Player/Player.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/equipment/weapons/EquippedWeapon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/levels/levels_scripts/Camera.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/title_screen/music/projekt_8bit.ogg" type="AudioStream" id=5]
+[ext_resource path="res://assets/enemies/shadow.png" type="Texture" id=6]
+[ext_resource path="res://assets/light/light.tscn" type="PackedScene" id=7]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.794702, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 0.359375, 0, 0, 1, 0.600586, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+max_value = 1024.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488506, 505.018 ), -83.0659, -83.0659, 0, 0, Vector2( 1, 1024 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="Curve" id=5]
+min_value = -5.0
+max_value = 10.0
+_data = [ Vector2( 0, 10 ), 0.0, 0.0, 0, 0, Vector2( 0.988506, -4.96591 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="Curve" id=7]
+max_value = 2.0
+_data = [ Vector2( 0, 0.493182 ), 0.0, 0.0, 0, 0, Vector2( 0.442529, 0.990909 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 2
+emission_box_extents = Vector3( 3, 5, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel_curve = SubResource( 6 )
+damping_curve = SubResource( 4 )
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 7.385, 6.133 )
+
+[sub_resource type="Animation" id=11]
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 8 ]
+}
+
+[sub_resource type="Animation" id=12]
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=13]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7 ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "skok"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 5, 5, 5, 5, 6, 8 ]
+}
+
+[sub_resource type="CircleShape2D" id=15]
+radius = 17.4039
+
+[sub_resource type="Gradient" id=16]
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0.703125, 0, 1 )
+
+[sub_resource type="GradientTexture" id=17]
+gradient = SubResource( 16 )
+
+[sub_resource type="Curve" id=18]
+max_value = 25.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 24.4318 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=19]
+curve = SubResource( 18 )
+
+[sub_resource type="Curve" id=20]
+min_value = -1.0
+_data = [ Vector2( 0, 0.00681829 ), 0.0, 0.0, 0, 0, Vector2( 0.247126, 0.170455 ), 0.0, 0.0, 0, 0, Vector2( 0.5, -0.175 ), 0.0, 0.0, 0, 0, Vector2( 0.747126, 0.134091 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.0113636 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=21]
+curve = SubResource( 20 )
+
+[sub_resource type="ParticlesMaterial" id=22]
+lifetime_randomness = 0.11
+emission_shape = 1
+emission_sphere_radius = 4.5
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 25.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+initial_velocity_random = 1.0
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+orbit_velocity_curve = SubResource( 21 )
+damping_curve = SubResource( 19 )
+scale = 1.5
+scale_random = 1.0
+color_ramp = SubResource( 17 )
+
+[sub_resource type="Gradient" id=23]
+offsets = PoolRealArray( 0, 0.284768, 0.5, 0.735099, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=24]
+gradient = SubResource( 23 )
+
+[sub_resource type="Curve" id=25]
+min_value = -1.5
+max_value = 1.5
+_data = [ Vector2( 0, -0.0306818 ), 0.0, 0.0, 0, 0, Vector2( 0.241379, -0.7125 ), 0.0, 0.0, 0, 0, Vector2( 0.517241, -1.5 ), 0.0, 0.0, 0, 0, Vector2( 0.724138, -0.981818 ), 0.0, 0.0, 0, 0, Vector2( 0.994253, -0.276136 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=26]
+curve = SubResource( 25 )
+
+[sub_resource type="ParticlesMaterial" id=27]
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+orbit_velocity_curve = SubResource( 26 )
+radial_accel = 10.53
+scale = 2.0
+color_ramp = SubResource( 24 )
+
+[sub_resource type="OccluderPolygon2D" id=28]
+polygon = PoolVector2Array( -5, -4, 5, -4, 5, 9, -5, 9 )
+
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
+collision_mask = 6
+script = ExtResource( 2 )
+
+[node name="BleedingParticles" type="Particles2D" parent="."]
+emitting = false
+amount = 128
+lifetime = 10.0
+local_coords = false
+process_material = SubResource( 9 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, 13.114 )
+scale = Vector2( 0.488622, 0.198521 )
+texture = ExtResource( 6 )
+
+[node name="PlayerSprite" type="Sprite" parent="."]
+light_mask = 2
+position = Vector2( 0, -4 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 1 )
+hframes = 9
+frame = 8
+
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 7.109 )
+shape = SubResource( 10 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.2, 0.2 )
+script = ExtResource( 4 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Camera2D"]
+stream = ExtResource( 5 )
+autoplay = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Hit = SubResource( 11 )
+anims/Idle = SubResource( 12 )
+anims/Run = SubResource( 13 )
+anims/skok = SubResource( 14 )
+
+[node name="Pick" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 97
+
+[node name="PickCollision" type="CollisionShape2D" parent="Pick"]
+position = Vector2( 0, -0.0787468 )
+shape = SubResource( 15 )
+
+[node name="EquippedWeapon" parent="." instance=ExtResource( 3 )]
+
+[node name="BurningParticles" type="Particles2D" parent="."]
+visible = false
+position = Vector2( 0.198425, 5.55624 )
+emitting = false
+amount = 32
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 22 )
+
+[node name="KnockbackParticles" type="Particles2D" parent="."]
+visible = false
+position = Vector2( 0, -13.264 )
+process_material = SubResource( 27 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="skok" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="stamina_regen" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 4
+occluder = SubResource( 28 )
+light_mask = 4
+
+[node name="Light2D" parent="." instance=ExtResource( 7 )]
+color = Color( 1, 0.964706, 0.686275, 1 )
+shadow_item_cull_mask = 1
+
+[node name="CoolDownS1" type="Timer" parent="."]
+one_shot = true
+
+[node name="CoolDownS2" type="Timer" parent="."]
+one_shot = true
+
+[node name="CoolDownS3" type="Timer" parent="."]
+one_shot = true
+
+[node name="CoolDownS4" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="health_updated" from="." to="." method="_on_Player_health_updated"]
+[connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
+[connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]
+[connection signal="timeout" from="stamina_regen" to="." method="_on_stamina_regen_timeout"]

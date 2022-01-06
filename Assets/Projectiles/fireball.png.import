@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fireball.png-501912f70209e78ed76224472b8e4365.stex"
+path="res://.import/fireball.png-bb07ffd541eb12971c560df40791cbad.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Projectiles/fireball.png"
-dest_files=[ "res://.import/fireball.png-501912f70209e78ed76224472b8e4365.stex" ]
+source_file="res://assets/projectiles/fireball.png"
+dest_files=[ "res://.import/fireball.png-bb07ffd541eb12971c560df40791cbad.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

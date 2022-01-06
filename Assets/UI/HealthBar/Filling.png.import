@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Filling.png-1ee389d5b39dc4b10e0a9ba01178fea8.stex"
+path="res://.import/filling.png-38a8c42e81627a03a3b92cc2fd9694a3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/HealthBar/Filling.png"
-dest_files=[ "res://.import/Filling.png-1ee389d5b39dc4b10e0a9ba01178fea8.stex" ]
+source_file="res://assets/ui/healthbar/filling.png"
+dest_files=[ "res://.import/filling.png-38a8c42e81627a03a3b92cc2fd9694a3.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

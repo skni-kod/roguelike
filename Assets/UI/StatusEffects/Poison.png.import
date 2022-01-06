@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Poison.png-bd6af7c51c2705d7c497fcb066368887.stex"
+path="res://.import/poison.png-ee58ec4d641d0d8d8cd2946bae717ce5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/StatusEffects/Poison.png"
-dest_files=[ "res://.import/Poison.png-bd6af7c51c2705d7c497fcb066368887.stex" ]
+source_file="res://assets/ui/statuseffects/poison.png"
+dest_files=[ "res://.import/poison.png-ee58ec4d641d0d8d8cd2946bae717ce5.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

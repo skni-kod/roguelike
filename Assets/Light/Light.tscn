@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Light/Light_texture.png" type="Texture" id=1]
+[ext_resource path="res://assets/light/light_texture.png" type="Texture" id=1]
 
 [node name="Light2D" type="Light2D"]
 texture = ExtResource( 1 )

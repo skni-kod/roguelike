@@ -15,7 +15,7 @@ func _ready():
 func _physics_process(delta):
 	self.position += (direction * delta * ball_speed)
 	
-func _on_Waterball_body_entered(body):
+func _on_waterball_body_entered(body):
 	if body.name == "Player":
 		body.take_dmg(dps, projectileKnockback, player_Pos)		# jeśli pocisk natrafi na body playera to zadaje mu damage o wartości dps
 		statusEffect.freezing = true
