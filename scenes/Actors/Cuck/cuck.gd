@@ -18,7 +18,7 @@ var drop = {"minCoins":0,"maxCoins":5}
 var rng = RandomNumberGenerator.new()
 
 onready var health_bar = $HealthBar
-var floating_dmg = preload("res://Scenes/ui/ui_scripts/FloatingDmg.gd")
+var floating_dmg = preload("res://scenes/ui/ui_scenes/FloatingDmg.tscn")
 var randomPosition
 
 # === ZMIENNE DO KNOCKBACKU === #
