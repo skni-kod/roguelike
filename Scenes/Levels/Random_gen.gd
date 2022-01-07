@@ -1,5 +1,8 @@
 extends Node
 
+var BIOM = 0
+# 0 - standardowy/podziemia, 1 - dżungla
+
 signal boss(bossRoom)
 signal map_generated(map)
 
@@ -20,7 +23,7 @@ var scene = load("res://Scenes/Levels/Room.tscn") #wczytywanie sceny pokoju
 var player = load("res://Scenes/Actors/Player.tscn") #wczytywanie sceny playera
 var random_room_nr = RandomNumberGenerator.new()
 var room_variations = {
-	1 : load("res://Assets/TileMap/Room2.tres"),
+	1 : load("res://Assets/TileMap/room6.tres"), #2
 	2 : load("res://Assets/TileMap/Room3.tres"),
 	3 : load("res://Assets/TileMap/Room4.tres"),
 	4 : load("res://Assets/TileMap/Room1.tres")
@@ -134,7 +137,10 @@ func _ready():
 		2:
 			current_room_type = 3
 		_:
-			current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			if randi() % 2 == 0:
+				BIOM = 1
+			else:
+				current_room_type = random_room_nr.randi_range(1, room_variations.size())
 			
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	generate() #generacja mapy

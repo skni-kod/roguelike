@@ -4,6 +4,7 @@ var boss = false
 var totem = preload("res://Assets/Light/Lamp_1.tscn")
 var krysztal = preload("res://Assets/Light/Lamp_2.tscn")
 var pomnik = preload("res://Assets/Light/Lamp_3.tscn")
+var swietlik = preload("res://Assets/Light/swietlik.tscn")
 var rand = RandomNumberGenerator.new()
 onready var generation = get_node("../../../Main")
 var id_list = [] #Lista ID pokojów, w których był już player
@@ -73,3 +74,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 						k.rotation_degrees = 270
 						k.position = Vector2(x, y)
 				add_child(k)
+			if (get_parent().get_parent().BIOM == 1):
+				var s = swietlik.instance()
+				add_child(s)

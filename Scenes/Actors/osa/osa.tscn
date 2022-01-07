@@ -1,0 +1,101 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Assets/Enemies/osa.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 30, 18 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 24.1233, 23.9811 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 103.805
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 45.2865
+
+[sub_resource type="Animation" id=6]
+resource_name = "Attack"
+
+[sub_resource type="Animation" id=7]
+resource_name = "Die"
+length = 0.2
+
+[sub_resource type="Animation" id=8]
+resource_name = "Hurt"
+length = 0.2
+loop = true
+
+[sub_resource type="Animation" id=9]
+length = 0.4
+step = 0.05
+
+[sub_resource type="Animation" id=10]
+length = 0.5
+step = 0.05
+
+[sub_resource type="OccluderPolygon2D" id=11]
+polygon = PoolVector2Array( -7, -5, 14, -5, 21, 2, 14, 5, -7, 0 )
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+
+[node name="HealthBar" parent="." instance=ExtResource( 2 )]
+visible = false
+margin_left = -10.041
+margin_top = -16.607
+margin_right = -10.041
+margin_bottom = -16.607
+rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="Sprites" type="Node2D" parent="."]
+
+[node name="Shadow" type="Sprite" parent="Sprites"]
+position = Vector2( 0, 50.862 )
+scale = Vector2( 2.96966, 0.700614 )
+texture = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprites"]
+light_mask = 2
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="Wzrok" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+position = Vector2( 0, 3.375 )
+shape = SubResource( 4 )
+
+[node name="Atak" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+position = Vector2( 0, 2.569 )
+shape = SubResource( 5 )
+
+[node name="BodyAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 6 )
+anims/Die = SubResource( 7 )
+anims/Hurt = SubResource( 8 )
+anims/Idle = SubResource( 9 )
+anims/Walk = SubResource( 10 )
+
+[node name="AttackTimer" type="Timer" parent="."]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 11 )
