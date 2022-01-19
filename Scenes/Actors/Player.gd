@@ -25,7 +25,7 @@ var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var all_weapons = {} #wszystkie bronki
 var weapons = {} #posiadane bronki
-var current_weapon = 1;
+var current_weapon = 1
 var first_weapon_stats = {"attack":float(12), "knc":float(0.15)}
 var second_weapon_stats = {}
 
@@ -58,6 +58,9 @@ var Potion_in_time = 0
 var skok = false
 var skok_vector = Vector2.DOWN
 var stamina = 3
+
+# === WYGLAD GRACZA === #
+var tekstury = [0, 0, 0]
 
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
@@ -164,7 +167,9 @@ func _ready(): #po inicjacji bohatera
 		"60healthPotion" : 0,
 		"Empty" : 0
 		}
-	UpdatePotions() 
+	UpdatePotions()
+	if Bufor.tekstury != null:
+		aktulizujSkorki()
 
 	
 func _process(delta):	
@@ -600,3 +605,11 @@ func on_skill_used(ability,mana_used):
 			$CoolDownS3.start(25)
 		else:
 			$CoolDownS4.start(50)
+
+func aktulizujSkorki():
+	if Bufor.tekstury != null:
+		tekstury = Bufor.tekstury
+		if tekstury[0] >= 0:
+			$PlayerSprite.texture = load("res://Assets/Hero/Hero" + str(tekstury[0]) + ".png")
+		$PlayerSprite/x1.frame = tekstury[1]
+		$PlayerSprite/x2.frame = tekstury[2]

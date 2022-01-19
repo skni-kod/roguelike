@@ -11,3 +11,6 @@ var second_weapon_stats = null
 var equipped = null
 var potions = null
 var potions_amount = null
+
+# przechowuje informacje o wyglądzie gracza
+var tekstury = [0, 0, 0]
