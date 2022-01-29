@@ -1,10 +1,9 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Assets/Enemies/Goblin_shaman.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Enemies/goblin_shaman.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/goblin_shaman.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=4]
-
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.14429
