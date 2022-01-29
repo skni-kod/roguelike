@@ -191,7 +191,7 @@ func get_dmg(dmg, weaponKnockback):
 		# === ZMNIEJSZANIE HP === #
 		hp -= dmg # zmniejszanie hp o otrzymany dmg
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
-		# Animacje obrażeń zostają aktywowane na sprite Body i Head
+		# Animacja obrażeń własnych
 		$BodyAnimationPlayer.play("Hurt")
 		 
 		health_bar.on_health_updated(health) # healthbar zostaje zupdateowany z nową procentową ilością hp
@@ -247,7 +247,7 @@ func random_potion():
 		potion = int(rng.randi_range(2,3))
 	else:
 		potion = int(rng.randi_range(0,3))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	if potion == 0:
 		tmp = load("res://Scenes/Loot/20healthPotion.tscn")

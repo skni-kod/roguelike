@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
@@ -72,6 +72,23 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
+[sub_resource type="Animation" id=29]
+resource_name = "Hurt"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.521569, 0.156863, 0.156863, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [sub_resource type="Animation" id=12]
 length = 0.6
 loop = true
@@ -86,6 +103,21 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=30]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=13]
@@ -192,9 +224,7 @@ color_ramp = SubResource( 24 )
 [sub_resource type="OccluderPolygon2D" id=28]
 polygon = PoolVector2Array( -5, -4, 5, -4, 5, 9, -5, 9 )
 
-[node name="Player" type="KinematicBody2D" groups=[
-"Player",
-]]
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 collision_mask = 6
 script = ExtResource( 2 )
 
@@ -233,7 +263,9 @@ autoplay = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 11 )
+anims/Hurt = SubResource( 29 )
 anims/Idle = SubResource( 12 )
+anims/RESET = SubResource( 30 )
 anims/Run = SubResource( 13 )
 anims/skok = SubResource( 14 )
 
