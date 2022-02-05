@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const LIMIT_PRZECIWNIKOW = 192
+
 signal died(body)
 var health = 10
 export var dps = 50 # Zmienna przechowująca wartość ataku
@@ -28,7 +30,7 @@ func atak():
 		if sqrt((global_position.x - gracz.global_position.x)*(global_position.x - gracz.global_position.x) + (global_position.y-gracz.global_position.y)*(global_position.y-gracz.global_position.y)) < 32:
 			# jeżeli gracz znajduje się w zasięgu kwiatka
 			gracz.take_dmg(dmgg[KOLOR], 1.2, Vector2(gracz.global_position.x, gracz.global_position.y + 10))
-		if get_parent().get_child_count() < 256: # kopia nie jest tworzona, jeżeli w pokoju znajduje się zbyt wielu przeciwników
+		if get_parent().get_child_count() < LIMIT_PRZECIWNIKOW: # kopia nie jest tworzona, jeżeli w pokoju znajduje się zbyt wielu przeciwników
 			var k = kopia.instance()
 			k.position = self.position # zostawia nasiona
 			k.gracz = gracz # przekazuje nasionom informacje o graczu
