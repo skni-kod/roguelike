@@ -68,7 +68,7 @@ rect_scale = Vector2( 0.2, 0.2 )
 
 [node name="Shadow" type="Sprite" parent="Sprites"]
 position = Vector2( 0, 46 )
-scale = Vector2( 2.96966, 0.700614 )
+scale = Vector2( 2.5, 0.7 )
 texture = ExtResource( 2 )
 
 [node name="BodySprite" type="Sprite" parent="Sprites"]

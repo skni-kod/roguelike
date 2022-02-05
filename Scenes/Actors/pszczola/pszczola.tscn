@@ -52,7 +52,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 1 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=10]
 resource_name = "Walk"
 length = 0.3
 loop = true
@@ -91,8 +91,8 @@ rect_scale = Vector2( 0.2, 0.2 )
 [node name="Sprites" type="Node2D" parent="."]
 
 [node name="Shadow" type="Sprite" parent="Sprites"]
-position = Vector2( 0, 50.862 )
-scale = Vector2( 2.96966, 0.700614 )
+position = Vector2( 0, 20 )
+scale = Vector2( 1.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="BodySprite" type="AnimatedSprite" parent="Sprites"]
@@ -123,7 +123,7 @@ anims/Attack = SubResource( 6 )
 anims/Die = SubResource( 7 )
 anims/Hurt = SubResource( 8 )
 anims/Idle = SubResource( 9 )
-anims/Walk = SubResource( 12 )
+anims/Walk = SubResource( 10 )
 
 [node name="AttackTimer" type="Timer" parent="."]
 

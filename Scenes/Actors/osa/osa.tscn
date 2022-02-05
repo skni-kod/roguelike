@@ -112,8 +112,8 @@ rect_scale = Vector2( 0.2, 0.2 )
 [node name="Sprites" type="Node2D" parent="."]
 
 [node name="Shadow" type="Sprite" parent="Sprites"]
-position = Vector2( 0, 50.862 )
-scale = Vector2( 2.96966, 0.700614 )
+position = Vector2( 0, 20 )
+scale = Vector2( 1.5, 0.5 )
 texture = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Sprites"]
