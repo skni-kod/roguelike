@@ -74,6 +74,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 						k.rotation_degrees = 270
 						k.position = Vector2(x, y)
 				add_child(k)
-			if (get_parent().get_parent().BIOM == 1):
-				var s = swietlik.instance()
-				add_child(s)
+			if (get_parent().get_parent().BIOM == 2):
+				while randi() % 3 == 0:
+					var s = swietlik.instance()
+					add_child(s)

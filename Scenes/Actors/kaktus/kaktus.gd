@@ -1,4 +1,4 @@
-# EnemyTemplate.gd
+# na podstawie EnemyTemplate.gd
 extends KinematicBody2D
 
 # === SYGNAŁY === #

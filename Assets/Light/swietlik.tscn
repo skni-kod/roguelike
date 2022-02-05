@@ -12,6 +12,7 @@ __meta__ = {
 }
 
 [node name="Light2D" parent="." instance=ExtResource( 1 )]
+color = Color( 0.137255, 1, 0.47451, 1 )
 
 [node name="zmiana kierunku" type="Timer" parent="."]
 autostart = true

@@ -5,8 +5,11 @@ var names = [] #Pusta tablica dla nazw broni
 
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
+onready var biom = get_parent().get_parent().BIOM
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
-var all_enemies = {
+
+var wrogowie = [
+	{ # standardowy/podziemia
 		0 : preload("res://Scenes/Actors/Big Devil.tscn"),
 		1 : preload("res://Scenes/Actors/cuck.tscn"),
 		2 : preload("res://Scenes/Actors/cuckshooter.tscn"),
@@ -17,14 +20,20 @@ var all_enemies = {
 		7 : preload("res://Scenes/Actors/Slime.tscn"),
 		8 : preload("res://Scenes/Actors/Snot.tscn"),
 		9 : preload("res://Scenes/Actors/Orc.tscn"),
-		10 : preload("res://Scenes/Actors/kwiatek/kwiatek.tscn"),
-		11 : preload("res://Scenes/Actors/kaktus/kaktus.tscn"),
-		12 : preload("res://Scenes/Actors/pszczola/pszczola.tscn"),
-		13 : preload("res://Scenes/Actors/osa/osa.tscn")
-	}
+	},
+	{ # ul
+		0 : preload("res://Scenes/Actors/pszczola/roj.tscn"),
+		1 : preload("res://Scenes/Actors/osa/osa.tscn")
+	},
+	{ # dżungla
+		0 : preload("res://Scenes/Actors/kwiatek/kwiatek.tscn"),
+		1 : preload("res://Scenes/Actors/kaktus/kaktus.tscn"),
+	},
+	]
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
-	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn")]
+	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn"),
+	load("res://Scenes/Actors/szerszen_azjatycki/szerszen.tscn")]
 var id_list = [] #Lista ID pokojów, w których był już player
 var current_id #ID aktualnego pokoju
 var down = Vector2(7,8) #Pozycja dolnych drzwi
@@ -68,7 +77,6 @@ func close_door(): #Podmiana tekstur na zamknięte drzwi
 
 func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
 	if body.name == "Player": 
-		ilosc_enemy = 5
 		if tilemap.get_cellv(left) == 1: #Sprawdzanie, czy drzwi są otwarte czy zamknięte
 			drzwi[0] = true
 		else:
@@ -89,9 +97,9 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
-			for i in range(0,5):
+			for _i in range(0, (5 + (Bufor.poziom - Bufor.poziom % 5) / 5)):
 				rand.randomize()
-				var enemy = all_enemies[rand.randi_range(12,13)].instance() #rodzaj przeciwnika
+				var enemy = wrogowie[biom][rand.randi_range(0,len(wrogowie[biom])-1)].instance() #rodzaj przeciwnika
 				rand.randomize()
 				enemy.position.x = rand.randf_range(-180,180) #pozycja x
 				rand.randomize()
@@ -106,7 +114,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
 		id_list.append(current_id)
-	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
+	if body.is_in_group("Enemy") and not body.name.count("roj"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 
 func potion():
@@ -138,10 +146,18 @@ func rand_num(from,to):
 		   arr.append(i)
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 
-func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
-	if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
-		ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
-	if ilosc_enemy == 0: #jeżeli nie ma przeciwników
+func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
+	ilosc_enemy = -1 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
+	for i in get_children():
+		if not i.name.count("roj"):
+			ilosc_enemy += 1
+	if ilosc_enemy <= 0:
+		return false
+	else:
+		return true
+
+func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
+	if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()

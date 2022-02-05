@@ -47,7 +47,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="OccluderPolygon2D" id=9]
-polygon = PoolVector2Array( -20, 0, 20, 0, 20, 20, -20, 20 )
+polygon = PoolVector2Array( -12, 6, 12, 6, 15, 29, -15, 29 )
 
 [node name="EnemyTemplate" type="KinematicBody2D" groups=[
 "Enemy",
