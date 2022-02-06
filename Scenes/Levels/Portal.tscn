@@ -59,6 +59,7 @@ visible = false
 position = Vector2( 0, -66 )
 z_index = 2
 frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="podstawa" type="Sprite" parent="."]
@@ -104,6 +105,13 @@ z_index = 2
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 192, 0, 96, 101 )
+
+[node name="filary2" type="Sprite" parent="."]
+light_mask = 2
+position = Vector2( 0, -21 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 288, 0, 96, 101 )
 
 [node name="filar1" type="StaticBody2D" parent="."]
 position = Vector2( -40.6667, 16.6667 )
