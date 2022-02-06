@@ -62,4 +62,5 @@ lifetime = 5.0
 preprocess = 4.0
 visibility_rect = Rect2( 0, 0, 0, 48.9708 )
 process_material = SubResource( 8 )
+
 [connection signal="body_entered" from="." to="." method="_on_EnemyProjectileShield_body_entered"]

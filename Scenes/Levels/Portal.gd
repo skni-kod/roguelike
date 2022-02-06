@@ -6,6 +6,7 @@ var player # zmienna do przerzucenia gracza
 
 func _ready():
 	set_process(true) # włącza proces, który czeka na nacisniecie E
+	$AnimationPlayer.play("portal") # odtwarza animację
 
 func _on_Portal_body_entered(body):
 	if body.name == "Player":
@@ -23,10 +24,10 @@ func _process(_delta):
 		Bufor.second_weapon_stats = player.second_weapon_stats
 		Bufor.equipped = player.equipped
 		Bufor.poziom += 1
-		get_tree().change_scene("res://Scenes/Levels/Main.tscn")
+		var _c = get_tree().change_scene("res://Scenes/Levels/Main.tscn")
 
 
-func _on_Portal_body_shape_exited(body_id, body, body_shape, local_shape):
+func _on_Portal_body_shape_exited(_body_id, body, _body_shape, _local_shape):
 	if body.name == "Player":
 		$E.visible = false
 		wPortalu = false # jeśli gracz wyszedł z portalu

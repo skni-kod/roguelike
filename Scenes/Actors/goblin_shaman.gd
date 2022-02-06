@@ -177,7 +177,7 @@ func random_potion():
 		potion = int(rng.randi_range(2,3))
 	else:
 		potion = int(rng.randi_range(0,2))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	
 	if potion == 0:

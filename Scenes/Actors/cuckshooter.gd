@@ -159,7 +159,7 @@ func random_potion():
 	rng.randomize()
 	var potion
 	potion = int(rng.randi_range(1,2))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	
 	if potion == 1:

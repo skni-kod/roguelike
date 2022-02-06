@@ -106,6 +106,7 @@ func _physics_process(delta):
 				self.add_child(t)				
 				t.start()						
 				yield(t, "timeout")
+				t.queue_free()
 				
 				player_node.speed = tmpspeed
 				damage = tmpdmg
