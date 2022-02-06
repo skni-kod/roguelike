@@ -30,10 +30,11 @@ var wrogowie = [
 		1 : preload("res://Scenes/Actors/kaktus/kaktus.tscn"),
 	},
 	]
-var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
-	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
-	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn"),
-	load("res://Scenes/Actors/szerszen_azjatycki/szerszen.tscn")]
+var bossScene = [#load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
+	#load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
+	#load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn"),
+	#load("res://Scenes/Actors/szerszen_azjatycki/szerszen.tscn"),
+	load("res://Scenes/Actors/trojkwiat/trojkwiat.tscn")]
 var id_list = [] #Lista ID pokojów, w których był już player
 var current_id #ID aktualnego pokoju
 var down = Vector2(7,8) #Pozycja dolnych drzwi

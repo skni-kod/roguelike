@@ -20,7 +20,7 @@ var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 
 # === WYKRYWANIE CELU I ATAK === #
 var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
-var attack = false # zmienna ataku (czy atakuje)
+var atakuje = false # zmienna ataku (czy atakuje)
 var dps = 25
 var pasywny = true
 # === ====================== === #
@@ -87,7 +87,7 @@ func _physics_process(delta):
 		
 		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	
-	elif !attack and health>0: # jeśli nie atakuje i żyje
+	elif !atakuje and health>0: # jeśli nie atakuje i żyje
 		$BodyAnimationPlayer.play("Idle")
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
@@ -119,18 +119,18 @@ func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘ
 # GRUPA COLLISION AREA2D "ATAK" -> PLAYER
 func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
-		attack = true
+		atakuje = true
 		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
 
 func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
-		attack = false
+		atakuje = false
 		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
 # === ================== === #
 
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
-	if attack and health>0: # gdy przełącznik attack jest włączony i pszczoła żyje, to wykonuje funkcje
+	if atakuje and health>0: # gdy przełącznik atakuje jest włączony i pszczoła żyje, to wykonuje funkcje
 		attack()
 # === ======================== === #
 
