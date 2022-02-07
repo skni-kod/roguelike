@@ -57,7 +57,6 @@ func _ready():
 	health_bar.on_health_updated(health) # wstępne przypisanie wartości życia przeciwnika do healthbara
 # === =========================== === #
 
-
 # === PHYSICS PROCESS === #
 # _physics_process wykonuje się co klatkę, delta to zmienna czasowa, definiuje klatkę
 # nie stosować _process, ponieważ działa on zależnie od prędkości sprzętu
@@ -102,12 +101,10 @@ func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASI
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
 		player = body
 
-
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
 		player = null
 # === ================== === #
-
 
 # === POLE WIDZENIA ATAK === #
 # GRUPA LAYER AREA2D "ATAK" -> ENEMY
@@ -123,15 +120,13 @@ func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘG
 		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
 # === ================== === #
 
-
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
 	if attack and health>0: # gdy przełącznik attack jest włączony i Lil Devil żyje, to wykonuje funkcje
 		attack()
 # === ======================== === #
 
-
-# === FUNCKJA ATAKU === #
+# === FUNKCJA ATAKU === #
 func attack():
 	player.take_dmg(dps, enemyKnockback, self.global_position)
 # === ============= === #
@@ -180,7 +175,6 @@ func get_dmg(dmg, weaponKnockback):
 	# === ========================= === #
 	
 # === ============================ === #
-
 
 # === FUNKCJA OPUSZCZANIA COINSÓW === #
 func drop_coins():

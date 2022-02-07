@@ -9,7 +9,7 @@ onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna p
 # === ==================== === #
 
 # === GRACZ === #
-var gracz
+var gracz = null
 # === ===== === #
 
 # === HP === #
@@ -43,10 +43,11 @@ func get_dmg(dmg, _weaponKnockback):
 		# === ZMNIEJSZANIE HP === #
 		hp -= dmg # zmniejszanie hp o otrzymany dmg
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
-		# Animacje obrażeń zostają aktywowane na sprite Body i Head
-		#$BodyAnimationPlayer.play("Hurt")
-		pasek_hp.value = health # healthbar zostaje zupdateowany z nową procentową ilością hp
 		# === =============== === #
+		# === ANIMACJE / INTERFEJS === #
+		$animacja.play("hurt")
+		pasek_hp.value = health # healthbar zostaje zupdateowany z nową procentową ilością hp
+		# === ==================== === #
 		
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
@@ -92,13 +93,16 @@ func czerwony():
 	$czerwony.wait_time = 1 * hp/max_hp
 	$czerwony.start()
 	var p = pocisk.instance()
-	p.kierunek = position.direction_to(gracz.position)
+	p.position = Vector2(-23,0)
+	p.Kolor = 0
+	p.kierunek = p.position.direction_to(gracz.position)
 	add_child(p)
 
 func zolty():
 	$zolty.wait_time = 0.5 * hp/max_hp
 	$zolty.start()
 	var p = pocisk.instance()
+	p.Kolor = 1
 	p.kierunek = position.direction_to(gracz.position)
 	add_child(p)
 
@@ -106,9 +110,10 @@ func niebieski():
 	$niebieski.wait_time = 0.75 * hp/max_hp
 	$niebieski.start()
 	var p = pocisk.instance()
-	p.kierunek = position.direction_to(gracz.position)
+	p.position = Vector2(23,0)
+	p.Kolor = 2
+	p.kierunek = p.position.direction_to(gracz.position)
 	add_child(p)
-
 
 func _on_Wzrok_body_entered(body):
 	if body.name == "Player":
@@ -117,3 +122,14 @@ func _on_Wzrok_body_entered(body):
 		$zolty.start()
 		$niebieski.start()
 		$Wzrok.queue_free()
+
+func _process(_delta):
+	if gracz and not $animacja.is_playing():
+		# == AKTUALIZUJE POŁOŻENIE OCZU ==
+		if gracz.position.x < -35:
+			$Sprite.frame = 1
+		elif gracz.position.x > 35:
+			$Sprite.frame = 2
+		else:
+			$Sprite.frame = 0
+		# == ========================== ==
