@@ -72,7 +72,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=29]
+[sub_resource type="Animation" id=12]
 resource_name = "Hurt"
 length = 0.25
 step = 0.05
@@ -89,7 +89,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.521569, 0.156863, 0.156863, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -105,7 +105,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=30]
+[sub_resource type="Animation" id=14]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:self_modulate")
@@ -120,7 +120,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=15]
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
@@ -135,8 +135,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=14]
-resource_name = "skok"
+[sub_resource type="Animation" id=16]
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
@@ -151,30 +150,30 @@ tracks/0/keys = {
 "values": [ 4, 5, 5, 5, 5, 5, 6, 8 ]
 }
 
-[sub_resource type="CircleShape2D" id=15]
+[sub_resource type="CircleShape2D" id=17]
 radius = 17.4039
 
-[sub_resource type="Gradient" id=16]
+[sub_resource type="Gradient" id=18]
 colors = PoolColorArray( 1, 0, 0, 1, 1, 0.703125, 0, 1 )
 
-[sub_resource type="GradientTexture" id=17]
-gradient = SubResource( 16 )
-
-[sub_resource type="Curve" id=18]
-max_value = 25.0
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 24.4318 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=19]
-curve = SubResource( 18 )
+[sub_resource type="GradientTexture" id=19]
+gradient = SubResource( 18 )
 
 [sub_resource type="Curve" id=20]
-min_value = -1.0
-_data = [ Vector2( 0, 0.00681829 ), 0.0, 0.0, 0, 0, Vector2( 0.247126, 0.170455 ), 0.0, 0.0, 0, 0, Vector2( 0.5, -0.175 ), 0.0, 0.0, 0, 0, Vector2( 0.747126, 0.134091 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.0113636 ), 0.0, 0.0, 0, 0 ]
+max_value = 25.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 24.4318 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=21]
 curve = SubResource( 20 )
 
-[sub_resource type="ParticlesMaterial" id=22]
+[sub_resource type="Curve" id=22]
+min_value = -1.0
+_data = [ Vector2( 0, 0.00681829 ), 0.0, 0.0, 0, 0, Vector2( 0.247126, 0.170455 ), 0.0, 0.0, 0, 0, Vector2( 0.5, -0.175 ), 0.0, 0.0, 0, 0, Vector2( 0.747126, 0.134091 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.0113636 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=23]
+curve = SubResource( 22 )
+
+[sub_resource type="ParticlesMaterial" id=24]
 lifetime_randomness = 0.11
 emission_shape = 1
 emission_sphere_radius = 4.5
@@ -188,40 +187,40 @@ angular_velocity = 100.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 21 )
-damping_curve = SubResource( 19 )
+orbit_velocity_curve = SubResource( 23 )
+damping_curve = SubResource( 21 )
 scale = 1.5
 scale_random = 1.0
-color_ramp = SubResource( 17 )
+color_ramp = SubResource( 19 )
 
-[sub_resource type="Gradient" id=23]
+[sub_resource type="Gradient" id=25]
 offsets = PoolRealArray( 0, 0.284768, 0.5, 0.735099, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=24]
-gradient = SubResource( 23 )
+[sub_resource type="GradientTexture" id=26]
+gradient = SubResource( 25 )
 
-[sub_resource type="Curve" id=25]
+[sub_resource type="Curve" id=27]
 min_value = -1.5
 max_value = 1.5
 _data = [ Vector2( 0, -0.0306818 ), 0.0, 0.0, 0, 0, Vector2( 0.241379, -0.7125 ), 0.0, 0.0, 0, 0, Vector2( 0.517241, -1.5 ), 0.0, 0.0, 0, 0, Vector2( 0.724138, -0.981818 ), 0.0, 0.0, 0, 0, Vector2( 0.994253, -0.276136 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=26]
-curve = SubResource( 25 )
+[sub_resource type="CurveTexture" id=28]
+curve = SubResource( 27 )
 
-[sub_resource type="ParticlesMaterial" id=27]
+[sub_resource type="ParticlesMaterial" id=29]
 flag_disable_z = true
 spread = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 26 )
+orbit_velocity_curve = SubResource( 28 )
 radial_accel = 10.53
 scale = 2.0
-color_ramp = SubResource( 24 )
+color_ramp = SubResource( 26 )
 
-[sub_resource type="OccluderPolygon2D" id=28]
+[sub_resource type="OccluderPolygon2D" id=30]
 polygon = PoolVector2Array( -5, -4, 5, -4, 5, 9, -5, 9 )
 
 [node name="Player" type="KinematicBody2D" groups=[
@@ -265,11 +264,11 @@ autoplay = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 11 )
-anims/Hurt = SubResource( 29 )
-anims/Idle = SubResource( 12 )
-anims/RESET = SubResource( 30 )
-anims/Run = SubResource( 13 )
-anims/skok = SubResource( 14 )
+anims/Hurt = SubResource( 12 )
+anims/Idle = SubResource( 13 )
+anims/RESET = SubResource( 14 )
+anims/Run = SubResource( 15 )
+anims/skok = SubResource( 16 )
 
 [node name="Pick" type="Area2D" parent="."]
 collision_layer = 0
@@ -277,7 +276,7 @@ collision_mask = 97
 
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
 position = Vector2( 0, -0.0787468 )
-shape = SubResource( 15 )
+shape = SubResource( 17 )
 
 [node name="EquippedWeapon" parent="." instance=ExtResource( 3 )]
 
@@ -288,12 +287,12 @@ emitting = false
 amount = 32
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 22 )
+process_material = SubResource( 24 )
 
 [node name="KnockbackParticles" type="Particles2D" parent="."]
 visible = false
 position = Vector2( 0, -13.264 )
-process_material = SubResource( 27 )
+process_material = SubResource( 29 )
 
 [node name="Timer" type="Timer" parent="."]
 
@@ -306,7 +305,7 @@ wait_time = 3.0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 light_mask = 4
-occluder = SubResource( 28 )
+occluder = SubResource( 30 )
 light_mask = 4
 
 [node name="Light2D" parent="." instance=ExtResource( 7 )]

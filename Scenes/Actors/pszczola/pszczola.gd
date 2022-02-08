@@ -8,6 +8,7 @@ signal died(body) # sygnał, czy przeciwnik umarł
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
+var miod = preload("res://Scenes/Loot/honey.tscn") # miód upuszczany przy śmierci
 # === ==================== === #
 
 # === PORUSZANIE SIĘ === #
@@ -65,6 +66,10 @@ func _physics_process(delta):
 	health -= delta*delta_hp
 	health_bar.on_health_updated(health)
 	if health <= 0:
+		var level = get_tree().get_root().find_node("Main", true, false)
+		var m = miod.instance()
+		m.global_position = self.global_position
+		level.add_child(m)
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że pszczoła umarła
 		queue_free() # instancja pszczoły zostaje usunięta
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
@@ -173,6 +178,11 @@ func get_dmg(dmg, weaponKnockback):
 		# === ======== === #
 		
 		# === UMIERANIE === #
+		if rand_range(0,8) > -1:
+			var level = get_tree().get_root().find_node("Main", true, false)
+			var m = miod.instance()
+			m.global_position = self.global_position
+			level.add_child(m)
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że pszczołas umarł
 		queue_free() # instancja pszczoły zostaje usunięta
 		# === ========= === #

@@ -32,8 +32,7 @@ radius = 45.2865
 length = 0.2
 
 [sub_resource type="Animation" id=8]
-length = 0.2
-loop = true
+length = 0.5
 
 [sub_resource type="Animation" id=9]
 length = 0.3
