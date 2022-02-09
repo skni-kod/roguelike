@@ -8,7 +8,8 @@ signal died(body) # sygnał, czy przeciwnik umarł
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
-var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
+var portal = preload("res://Scenes/Levels/portal.tscn") # portal do przechodzenia na kolejny poziom
+var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
 
@@ -244,3 +245,13 @@ func drop_coins():
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 		level.add_child(coin) # coin jest dzieckiem level
 # === =========================== === #
+
+func stworzPortal(lvl):
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position
+	if true:#Bufor.poziom > len(get_parent().bossScene):
+		var q = portalf.instance()
+		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
+		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
+		lvl.add_child(q) #Tworzy portal
+	lvl.add_child(p) #Tworzy portal
