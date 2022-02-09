@@ -10,13 +10,13 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 128.0
 
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=2]
 radius = 20.0
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 47, 34 )
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 length = 5.0
 loop = true
 tracks/0/type = "value"
@@ -32,10 +32,10 @@ tracks/0/keys = {
 "values": [ 1, 0, 0, 1, 2 ]
 }
 
-[sub_resource type="OccluderPolygon2D" id=8]
+[sub_resource type="OccluderPolygon2D" id=5]
 polygon = PoolVector2Array( -47, -35, 47, -35, 47, 35, -47, 35 )
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=6]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite2:position")
@@ -74,17 +74,17 @@ tracks/2/keys = {
 "values": [ Vector2( -38, -128 ), Vector2( -38, -129 ) ]
 }
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 16, 17 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 2 )
 region = Rect2( 16, 0, 16, 17 )
 
-[sub_resource type="SpriteFrames" id=4]
+[sub_resource type="SpriteFrames" id=9]
 animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ) ],
 "loop": true,
 "name": "default",
 "speed": 2.0
@@ -102,6 +102,7 @@ shape = SubResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 light_mask = 2
 scale = Vector2( 1.5, 1.5 )
+z_index = 1
 texture = ExtResource( 1 )
 hframes = 3
 
@@ -110,36 +111,38 @@ position = Vector2( 24, 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 scale = Vector2( 0.6, 0.75 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -24, 40 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 scale = Vector2( 0.6, 0.75 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 6 )
+shape = SubResource( 3 )
 
 [node name="Sprite2" type="Sprite" parent="."]
 light_mask = 2
 position = Vector2( -24, 39 )
+z_index = 1
 texture = ExtResource( 4 )
 
 [node name="Sprite3" type="Sprite" parent="."]
 light_mask = 2
 position = Vector2( 24, 39 )
+z_index = 1
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 7 )
+anims/idle = SubResource( 4 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource( 8 )
+occluder = SubResource( 5 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 9 )
+anims/idle = SubResource( 6 )
 
 [node name="ui" type="Node2D" parent="."]
 light_mask = 0
@@ -150,7 +153,7 @@ visible = false
 light_mask = 512
 position = Vector2( 0, -66 )
 z_index = 2
-frames = SubResource( 4 )
+frames = SubResource( 9 )
 playing = true
 
 [node name="cennik" parent="ui" instance=ExtResource( 6 )]

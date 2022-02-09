@@ -25,7 +25,8 @@ onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna p
 onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false)  #Zmienna przechowujaca wezel StatusBar
 var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
-var portal = preload("res://Scenes/Levels/Portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
+var portal = preload("res://Scenes/Levels/portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
+var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 var randomPosition = Vector2.ZERO  #Zmienna inicjujaca pozycje monet
 var outer_rotation_WF = false  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa na zewnetrznej orbicie
 var change_rotation_WF = true  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa w trakcie zmiany swoich orbit
@@ -145,12 +146,10 @@ func get_dmg(dmg, weaponKnockback):
 			yield($AnimationPlayer, "animation_finished")
 			#Wyrzuc monety po zakonczeniu animacji
 			var level = get_tree().get_root().find_node("Main", true, false)
-			var p = portal.instance()
-			p.global_position = get_node("../..").global_position
-			level.add_child(p) #Tworzy portal
+			stworzPortal(level)
 			rng.randomize()
 			var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
-			for i in range(0, coins):
+			for _i in range(0, coins):
 				randomPosition = Vector2(rng.randf_range(self.global_position.x - 10, self.global_position.x + 10), rng.randf_range(self.global_position.y - 10, self.global_position.y + 10))
 				var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 				coin = coin.instance()
@@ -259,3 +258,13 @@ func fire():  #Strzelanie przez bossa
 	ball_scene.position = self.global_position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
 	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position  #Ustaw pozycje gracza
 	main.add_child(ball_scene)  #Dodaj pocisk do glownej sceny
+
+func stworzPortal(lvl):
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position
+	if true:#Bufor.poziom > len(get_parent().bossScene):
+		var q = portalf.instance()
+		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
+		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
+		lvl.add_child(q) #Tworzy portal
+	lvl.add_child(p) #Tworzy portal
