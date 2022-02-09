@@ -157,10 +157,10 @@ func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 	else:
 		return true
 
-func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
+func open(body): #funkcja otwierania drzwi po pokonaniu przeciwników
 	if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
 		rand.randomize()
-		if rand.randf_range(0,100) <= 100: #drop broni
+		if rand.randf_range(0,100) <= 100 and not body.name.count("roj"): #drop broni
 			weapon()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)

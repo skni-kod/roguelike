@@ -95,7 +95,7 @@ func czerwony():
 	var p = pocisk.instance()
 	p.position = Vector2(-23,0)
 	p.Kolor = 0
-	p.kierunek = p.position.direction_to(gracz.position)
+	p.kierunek = p.global_position.direction_to(gracz.global_position)
 	add_child(p)
 
 func zolty():
@@ -103,7 +103,7 @@ func zolty():
 	$zolty.start()
 	var p = pocisk.instance()
 	p.Kolor = 1
-	p.kierunek = position.direction_to(gracz.position)
+	p.kierunek = global_position.direction_to(gracz.global_position)
 	add_child(p)
 
 func niebieski():
@@ -112,7 +112,7 @@ func niebieski():
 	var p = pocisk.instance()
 	p.position = Vector2(23,0)
 	p.Kolor = 2
-	p.kierunek = p.position.direction_to(gracz.position)
+	p.kierunek = p.global_position.direction_to(gracz.global_position)
 	add_child(p)
 
 func _on_Wzrok_body_entered(body):

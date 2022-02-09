@@ -72,7 +72,7 @@ tracks/0/keys = {
 [sub_resource type="OccluderPolygon2D" id=11]
 polygon = PoolVector2Array( -5, -4, 6, -4, 6, -1, -5, -1 )
 
-[node name="EnemyTemplate" type="KinematicBody2D" groups=[
+[node name="pszczola" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
 collision_layer = 4
@@ -129,8 +129,12 @@ anims/Walk = SubResource( 10 )
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 11 )
 
+[node name="zmianaKierunku" type="Timer" parent="."]
+autostart = true
+
 [connection signal="body_entered" from="Wzrok" to="." method="_on_Wzrok_body_entered"]
 [connection signal="body_exited" from="Wzrok" to="." method="_on_Wzrok_body_exited"]
 [connection signal="body_entered" from="Atak" to="." method="_on_Atak_body_entered"]
 [connection signal="body_exited" from="Atak" to="." method="_on_Atak_body_exited"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+[connection signal="timeout" from="zmianaKierunku" to="." method="zmianaKierunku"]

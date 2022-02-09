@@ -14,6 +14,7 @@ var miod = preload("res://Scenes/Loot/honey.tscn") # miód upuszczany przy śmie
 # === PORUSZANIE SIĘ === #
 export var speed = 2.2 # prędkość własna
 var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
+var losowy = Vector2(0,0) # losowy kierunek poruszania się, kiedy pszczoła jest pasywna
 # === ============== === #
 
 # === WIZUALNE ZMIENNE === #
@@ -57,6 +58,8 @@ var enemyKnockback = 0
 # _ready wykonuje się JEDNORAZOWO na inicjalizacji przeciwnika
 func _ready():
 	health_bar.on_health_updated(health) # wstępne przypisanie wartości życia przeciwnika do healthbara
+	$zmianaKierunku.wait_time = rand_range(0.9,1.5)
+	zmianaKierunku()
 # === =========================== === #
 
 # === PHYSICS PROCESS === #
@@ -66,15 +69,21 @@ func _physics_process(delta):
 	health -= delta*delta_hp
 	health_bar.on_health_updated(health)
 	if health <= 0:
-		var level = get_tree().get_root().find_node("Main", true, false)
-		var m = miod.instance()
-		m.global_position = self.global_position
-		level.add_child(m)
+		if rand_range(0,8) > 7:
+			upuscMiod()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że pszczoła umarła
 		queue_free() # instancja pszczoły zostaje usunięta
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
-	
-	if player != null and not pasywny and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
+	# == PORUSZANIE SIĘ W LOSOWYM KIERUNKU (KIEDY PASYWNY) ==
+	if pasywny:
+		move.x = losowy.x*delta
+		move.y = losowy.y*delta
+		if losowy.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
+		else:
+			$Sprites.scale.x = -1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
+# == ================================================= ==
+	elif player != null and not pasywny and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
@@ -178,11 +187,8 @@ func get_dmg(dmg, weaponKnockback):
 		# === ======== === #
 		
 		# === UMIERANIE === #
-		if rand_range(0,8) > -1:
-			var level = get_tree().get_root().find_node("Main", true, false)
-			var m = miod.instance()
-			m.global_position = self.global_position
-			level.add_child(m)
+		if rand_range(0,8) > 7:
+			upuscMiod()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że pszczołas umarł
 		queue_free() # instancja pszczoły zostaje usunięta
 		# === ========= === #
@@ -195,3 +201,17 @@ func get_dmg(dmg, weaponKnockback):
 	# === ========================= === #
 	
 # === ============================ === #
+
+# === UPUSZCZANIE MIODU PRZY ŚMIERCI === #
+func upuscMiod():
+	var level = get_tree().get_root().find_node("Main", true, false)
+	var m = miod.instance()
+	m.global_position = self.global_position
+	level.add_child(m)
+# === ============================== === #
+
+# == LOSOWA ZMIANA KIERUNKU ==
+func zmianaKierunku():
+	losowy.x = rand_range(-30,30)
+	losowy.y = rand_range(-30,30)
+	# == ================== ==

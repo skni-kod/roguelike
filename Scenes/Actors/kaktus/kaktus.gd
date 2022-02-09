@@ -131,7 +131,6 @@ func attack():
 	player.take_dmg(dps, enemyKnockback, self.global_position)
 # === ============= === #
 
-
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
 func get_dmg(dmg, weaponKnockback):
 	if health>0:

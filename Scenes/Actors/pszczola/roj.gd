@@ -1,6 +1,11 @@
 extends Node2D
 
-var rand = RandomNumberGenerator.new() #Losowa generacja numeru
+# === SYGNAŁY === #
+signal died(body) # sygnał emitowany na początku, 
+# żeby otworzyć drzwi, jeżeli w pokoju jest tylko rój
+# === ======= === #
+
+var rand = RandomNumberGenerator.new() # losowa generacja numeru
 
 func _ready():
 	# nadpisuje domyślną generację pozycji przeciwników
@@ -11,3 +16,4 @@ func _ready():
 		i.position.x = rand.randf_range(-180,180) #pozycja x
 		rand.randomize()
 		i.position.y = rand.randf_range(-80,80) #pozycja y
+	emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
