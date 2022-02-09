@@ -1,7 +1,7 @@
 extends YSort
 
 var gracz
-var portal = preload("res://Scenes/Levels/portal.tscn") # portal do przechodzenia na kolejny poziom
+var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
 var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 # == PUNKTY ŻYCIA (HP) ==
 export var max_hp = 900
@@ -60,9 +60,7 @@ func dmg(dmg): # przyjmowanie obrażeń od ciosów w macki
 func die(): # umieranie
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 	# == TWORZY PORTAL ==
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
+	stworzPortal(level)
 	# == ============= ==
 	# == TWORZY MONETY ==
 	rng.randomize() # losowanie generatora liczb
