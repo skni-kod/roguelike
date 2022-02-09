@@ -25,7 +25,7 @@ onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna p
 onready var statusEffect := get_tree().get_root().find_node("StatusBar", true, false)  #Zmienna przechowujaca wezel StatusBar
 var health_bar = load("res://Scenes/UI/BossHealthBar.tscn")  #Zaladowanie do zmiennej paska zycia bossa
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn")  #Zaladowanie wyswietlanego zadanego dmg
-var portal = preload("res://Scenes/Levels/portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
+var portal = preload("res://Scenes/Levels/Portal.tscn") #Zaladowanie portalu umożliwiającego "następny poziom"
 var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 var randomPosition = Vector2.ZERO  #Zmienna inicjujaca pozycje monet
 var outer_rotation_WF = false  #Zmienna przechowuje informacje o tym, czy kule wodna i ognista sa na zewnetrznej orbicie
@@ -63,7 +63,7 @@ func _physics_process(delta):
 			# === ======================== === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move_and_collide(move) # ruch o Vector2D move
+			var _m = move_and_collide(move) # ruch o Vector2D move
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
 			knockback *= 0.95

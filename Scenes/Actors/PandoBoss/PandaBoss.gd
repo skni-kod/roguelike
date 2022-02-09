@@ -8,7 +8,7 @@ signal died(body) # sygnał, czy przeciwnik umarł
 # === PRELOAD (SCENY ITD.) === #
 # np.: const FIREBALL_SCENE = preload("Fireball.tscn") # ładuję fireballa jako FIREBALL_SCENE
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
-var portal = preload("res://Scenes/Levels/portal.tscn") # portal do przechodzenia na kolejny poziom
+var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
 var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
@@ -233,9 +233,7 @@ func _on_animHurtTimer_timeout():
 # === FUNKCJA OPUSZCZANIA COINSÓW I PORTALU === #
 func drop_coins():
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
+	stworzPortal(level)
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
 	for i in range(0,coins): # pętla tworząca monety
