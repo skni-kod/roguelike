@@ -5,6 +5,7 @@ extends StaticBody2D
 const pocisk = preload("pocisk.tscn")# = preload("res://Scenes/Actors/Laser.tscn") # wczytuję pociski
 var floating_dmg = preload("res://Scenes/UI/FloatingDmg.tscn") # wizualny efekt zadanych obrażeń
 var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
+var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
 
@@ -76,9 +77,7 @@ func get_dmg(dmg, _weaponKnockback):
 # === FUNKCJA OPUSZCZANIA COINSÓW I PORTALU === #
 func drop_coins():
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
+	stworzPortal(level)
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
 	for _i in range(0,coins): # pętla tworząca monety
@@ -133,3 +132,13 @@ func _process(_delta):
 		else:
 			$Sprite.frame = 0
 		# == ========================== ==
+
+func stworzPortal(lvl):
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position
+	if true:#Bufor.poziom > len(get_parent().bossScene):
+		var q = portalf.instance()
+		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
+		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
+		lvl.add_child(q) #Tworzy portal
+	lvl.add_child(p) #Tworzy portal
