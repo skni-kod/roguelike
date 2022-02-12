@@ -33,7 +33,7 @@ var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 # === ZMIENNE DO KNOCKBACKU === #
 var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
-var enemyKnockback = 0.1
+var enemyKnockback = 0.75
 # === ===================== === #
 
 var drop = {"minCoins":150,"maxCoins":300} # zakres minimalnej i maksymalnej ilości pieniędzy
@@ -43,8 +43,8 @@ var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losow
 func _ready():
 	# == DODANIE PASKA HP DO UI == #
 	pasek_hp = preload("res://Scenes/UI/BossHealthBar.tscn").instance()
-	pasek_hp.texture_progress = load("res://Scenes/Actors/trojkwiat/HP1.png")
-	pasek_hp.texture_under = load("res://Scenes/Actors/trojkwiat/HP0.png")
+	pasek_hp.texture_progress = load("res://Scenes/Actors/szerszen_azjatycki/hp1.png")
+	pasek_hp.texture_under = load("res://Scenes/Actors/szerszen_azjatycki/hp0.png")
 	get_node("../../../UI").add_child(pasek_hp)
 	# == ====================== == #
 
@@ -108,14 +108,17 @@ func get_dmg(dmg, weaponKnockback):
 		# === ZMNIEJSZANIE HP === #
 		hp -= dmg # zmniejszanie hp o otrzymany dmg
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
-		# Animacje obrażeń zostają aktywowane na sprite Body i Head
+		pasek_hp.value = health
 		# === =============== === #
 		
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 
 		# === UMIERANIE I COINSY === #
+		for i in get_node("../../Lights").get_children():
+			i.queue_free()
 		drop_coins()
+		pasek_hp.queue_free()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że osa umarła
 		queue_free() # instancja osy zostaje usunięta
 		# === ================= === #
@@ -157,3 +160,34 @@ func stworzPortal(lvl):
 		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
 		lvl.add_child(q) #Tworzy portal
 	lvl.add_child(p) #Tworzy portal
+
+
+func _on_Timer_timeout():
+	for i in get_node("../../Lights").get_children():
+		i.queue_free()
+	var l
+	for i in range(3):
+		l = preload("dziura.tscn").instance()
+		l.position = Vector2(-135+i*135,floor(rand_range(-70,70)))
+		get_node("../../Lights").add_child(l)
+	$Timer.queue_free()
+
+# === POLE WIDZENIA ATAK === #
+# GRUPA LAYER AREA2D "ATAK" -> ENEMY
+# GRUPA COLLISION AREA2D "ATAK" -> PLAYER
+func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
+	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
+		atakuje = true
+		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
+
+func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
+	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
+		atakuje = false
+		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
+# === ================== === #
+
+# === TIMEOUT NODA ATTACKTIMER === #
+func _on_AttackTimer_timeout():
+	if atakuje and health>0: # gdy przełącznik atakuje jest włączony i osa żyje, to wykonuje funkcje
+		attack()
+# === ======================== === #

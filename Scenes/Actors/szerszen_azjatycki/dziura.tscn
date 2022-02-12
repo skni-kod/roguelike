@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Actors/szerszen_azjatycki/dziura.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Actors/szerszen_azjatycki/dziura.gd" type="Script" id=3]
+
+[node name="dziura" type="Area2D"]
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Light2D" parent="Sprite" instance=ExtResource( 1 )]
+color = Color( 1, 0.164706, 0, 1 )
+energy = 1.75
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -56, 9, -26, -12, 26, -12, 56, 9, 26, 26, -26, 26 )
+
+[connection signal="body_entered" from="." to="." method="_on_dziura_body_entered"]
