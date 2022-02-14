@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bigdevil.png-e6fd35bed5757ab99a95b41c6811c7e6.stex"
+path="res://.import/BigDevil.png-5c38b6de19d4dbe1a4e70d44f72414a0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/bigdevil.png"
-dest_files=[ "res://.import/bigdevil.png-e6fd35bed5757ab99a95b41c6811c7e6.stex" ]
+source_file="res://Assets/Enemies/BigDevil.png"
+dest_files=[ "res://.import/BigDevil.png-5c38b6de19d4dbe1a4e70d44f72414a0.stex" ]
 
 [params]
 

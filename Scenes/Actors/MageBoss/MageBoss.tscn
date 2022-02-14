@@ -2,11 +2,10 @@
 
 [ext_resource path="res://Scenes/Actors/MageBoss/MageBoss.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Enemies/waterball.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Enemies/fireball_new.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Enemies/WaterBall.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Enemies/windball.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Enemies/earthball.png" type="Texture" id=7]
-
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.244444, 0.525926, 0.777778, 1 )
@@ -208,9 +207,7 @@ tracks/6/keys = {
 "values": [ SubResource( 1 ), SubResource( 20 ) ]
 }
 
-[node name="MageBoss" type="KinematicBody2D" groups=[
-"Enemy",
-]]
+[node name="MageBoss" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 1 )
@@ -271,7 +268,7 @@ local_coords = false
 process_material = SubResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="WaterFireCenter/Waterball"]
-texture = ExtResource( 5 )
+texture = ExtResource( 3 )
 
 [node name="Light2D2" parent="WaterFireCenter/Waterball" instance=ExtResource( 2 )]
 scale = Vector2( 0.2, 0.2 )

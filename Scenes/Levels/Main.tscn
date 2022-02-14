@@ -80,6 +80,6 @@ z_index = 2
 [node name="Weapons" parent="." instance=ExtResource( 4 )]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.364706, 0.231373, 0.513726, 1 )
+color = Color( 0.160784, 0.109804, 0.282353, 1 )
 
 [connection signal="map_generated" from="." to="UI/Map" method="_on_map_generated"]
