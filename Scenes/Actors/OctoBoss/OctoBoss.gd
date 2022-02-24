@@ -70,7 +70,8 @@ func die(): # umieranie
 		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
-		level.add_child(coin) # coin jest dzieckiem level
+		#level.add_child(coin) # coin jest dzieckiem level
+		level.call_deferred('add_child', coin)
 	# == ============= ==
 	self.queue_free() # usunięcie bossa ze sceny
 
@@ -92,5 +93,7 @@ func stworzPortal(lvl):
 		var q = portalf.instance()
 		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
 		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
-		lvl.add_child(q) #Tworzy portal
-	lvl.add_child(p) #Tworzy portal
+		#lvl.add_child(q) #Tworzy portal
+		lvl.call_deferred('add_child', q)
+	#lvl.add_child(p) #Tworzy portal
+	lvl.call_deferred('add_child', p)

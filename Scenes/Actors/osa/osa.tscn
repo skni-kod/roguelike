@@ -96,9 +96,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1.5, 1.5 ) ]
 }
 
-[node name="KinematicBody2D" type="KinematicBody2D" groups=[
-"Enemy",
-]]
+[node name="KinematicBody2D" type="KinematicBody2D" groups=["Enemy"]]
 script = ExtResource( 4 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 2 )]

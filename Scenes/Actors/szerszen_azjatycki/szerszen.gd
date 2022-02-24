@@ -7,7 +7,7 @@ var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzeni
 var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 onready var UI := get_tree().get_root().find_node("UI", true, false)  #Zmienna przechowujaca wezel UI
 # === ==================== === #
-
+signal died(body)
 # === HP === #
 export var max_hp = 1800 # wartość życia przeciwnika
 var hp:float = max_hp
@@ -143,7 +143,8 @@ func drop_coins():
 		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
-		level.add_child(coin) # coin jest dzieckiem level
+		#level.add_child(coin) # coin jest dzieckiem level
+		level.call_deferred('add_child', coin)
 # === =========================== === #
 
 # === FUNKCJA ATAKU === #

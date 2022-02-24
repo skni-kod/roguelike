@@ -16,4 +16,8 @@ func _ready():
 		i.position.x = rand.randf_range(-180,180) #pozycja x
 		rand.randomize()
 		i.position.y = rand.randf_range(-80,80) #pozycja y
-	emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
+
+func _physics_process(delta):
+	if get_children().size() == 0:
+		emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
+		queue_free()
