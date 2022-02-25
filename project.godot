@@ -130,6 +130,10 @@ skok={
 2d_physics/layer_7="coins"
 2d_physics/projectiles=false
 
+[physics]
+
+2d/default_gravity=0
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

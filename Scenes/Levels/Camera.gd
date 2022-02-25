@@ -8,8 +8,8 @@ var grid_position = Vector2()
 onready var parent = get_parent() #Odwołanie do playera
 
 func _ready():
-	zoom.x = 0.4 #ustawienia zoom'a kamery
-	zoom.y = 0.4
+	zoom.x = 5 #ustawienia zoom'a kamery
+	zoom.y = 5
 	set_as_toplevel(true)
 	update_grid_position()
 	
