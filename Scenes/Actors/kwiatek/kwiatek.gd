@@ -35,7 +35,9 @@ func atak():
 			k.position = self.position # zostawia nasiona
 			k.gracz = gracz # przekazuje nasionom informacje o graczu
 			get_parent().add_child(k) # dodaje nasiona do sceny
-		global_position = Vector2(max(min(floor(gracz.global_position.x + rand_range(-100,100)),190),-190), gracz.global_position.y + max(min(floor(rand_range(-50,50)),100),-100)) # skacze do pozycji gracza
+		global_position = Vector2(floor(gracz.global_position.x + rand_range(-50,50)), floor(gracz.global_position.y + rand_range(-50,50))) # skacze do pozycji gracza
+		position.x = max(min(position.x, 190),-190) # zapobiega teleportowaniu się poza pokój
+		position.y = max(min(position.y, 100),-100) # zapobiega teleportowaniu się poza pokój
 
 func _on_ziarno_body_entered(body): # nadepnięcie na nasiona
 	if body.name == "Player":
