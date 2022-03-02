@@ -94,16 +94,16 @@ func czerwony():
 	var p = pocisk.instance()
 	p.position = Vector2(-23,0)
 	p.Kolor = 0
-	p.kierunek = p.global_position.direction_to(gracz.global_position)
 	add_child(p)
+	p.kierunek = p.global_position.direction_to(gracz.global_position)
 
 func zolty():
 	$zolty.wait_time = 0.5 * hp/max_hp
 	$zolty.start()
 	var p = pocisk.instance()
 	p.Kolor = 1
-	p.kierunek = global_position.direction_to(gracz.global_position)
 	add_child(p)
+	p.kierunek = p.global_position.direction_to(gracz.global_position)
 
 func niebieski():
 	$niebieski.wait_time = 0.75 * hp/max_hp
@@ -111,8 +111,8 @@ func niebieski():
 	var p = pocisk.instance()
 	p.position = Vector2(23,0)
 	p.Kolor = 2
-	p.kierunek = p.global_position.direction_to(gracz.global_position)
 	add_child(p)
+	p.kierunek = p.global_position.direction_to(gracz.global_position)
 
 func _on_Wzrok_body_entered(body):
 	if body.name == "Player":
@@ -125,9 +125,9 @@ func _on_Wzrok_body_entered(body):
 func _process(_delta):
 	if gracz and not $animacja.is_playing():
 		# == AKTUALIZUJE POŁOŻENIE OCZU ==
-		if gracz.position.x < -35:
+		if (gracz.global_position.x-global_position.x) < -35:
 			$Sprite.frame = 1
-		elif gracz.position.x > 35:
+		elif (gracz.global_position.x-global_position.x) > 35:
 			$Sprite.frame = 2
 		else:
 			$Sprite.frame = 0

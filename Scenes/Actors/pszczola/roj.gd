@@ -17,7 +17,7 @@ func _ready():
 		rand.randomize()
 		i.position.y = rand.randf_range(-80,80) #pozycja y
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if get_children().size() == 0:
 		emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
 		queue_free()
