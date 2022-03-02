@@ -28,6 +28,7 @@ var weapons = {} #posiadane bronki
 var current_weapon = 1;
 var first_weapon_stats = {"attack":float(12), "knc":float(0.15)}
 var second_weapon_stats = {}
+var wp = 0 #do broni +
 
 onready var all_weapons_script = get_node("../Weapons").all_weapons_script
 onready var all_weapons_p = get_node("../Weapons").all_weapons_p #do broni+
@@ -213,11 +214,15 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				self.speed = 100
 				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
 				current_weapon = check_current_weapon()
+				wp = 1 
 				swap_weapon(current_weapon,weaponToTake)
+				wp = 0
 			elif weapons[2] == weaponToTake.WeaponName:
 				self.speed = 100
 				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
+				wp = 1 
 				swap_weapon(2,weaponToTake)
+				wp = 0
 			elif weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
 				self.speed = 100
 				current_weapon = check_current_weapon()
@@ -397,7 +402,7 @@ func change_weapon_slot(currentSlot):
 
 
 func swap_weapon(slot,weaponOnGround):
-	if weapons[2] != "Empty":
+	if weapons[2] != "Empty" or wp == 1:
 		if slot == 1:
 			if weaponOnGround.WeaponName == "katana":
 				ui_access_wslot1.scale.x = .8
@@ -424,7 +429,8 @@ func swap_weapon(slot,weaponOnGround):
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
 		weaponUsed.position = weaponOnGround.global_position
-		level.add_child(weaponUsed)
+		if wp == 0:
+			level.add_child(weaponUsed)
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
 		$EquippedWeapon.position=Vector2.ZERO
@@ -433,7 +439,9 @@ func swap_weapon(slot,weaponOnGround):
 		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
+		
 	else:
+	
 		if weaponOnGround.WeaponName == "katana":
 			ui_access_wslot2.scale.x = .8
 			ui_access_wslot2.scale.y = .8
