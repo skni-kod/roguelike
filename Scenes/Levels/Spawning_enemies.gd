@@ -150,7 +150,8 @@ func rand_num(from,to):
 func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 	ilosc_enemy = -1 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
 	for i in get_children():
-		ilosc_enemy += 1
+		if not i.name.count("roj"):
+			ilosc_enemy += 1
 	if ilosc_enemy <= 0:
 		return false
 	else:
