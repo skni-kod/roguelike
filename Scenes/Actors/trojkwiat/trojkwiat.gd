@@ -89,7 +89,7 @@ func drop_coins():
 # === =========================== === #
 
 func czerwony():
-	$czerwony.wait_time = 1 * hp/max_hp
+	$czerwony.wait_time = 1 * max(hp/max_hp,0.05)
 	$czerwony.start()
 	var p = pocisk.instance()
 	p.position = Vector2(-23,0)
@@ -98,7 +98,7 @@ func czerwony():
 	p.kierunek = p.global_position.direction_to(gracz.global_position)
 
 func zolty():
-	$zolty.wait_time = 0.5 * hp/max_hp
+	$zolty.wait_time = 0.5 * max(hp/max_hp,0.05)
 	$zolty.start()
 	var p = pocisk.instance()
 	p.Kolor = 1
@@ -106,7 +106,7 @@ func zolty():
 	p.kierunek = p.global_position.direction_to(gracz.global_position)
 
 func niebieski():
-	$niebieski.wait_time = 0.75 * hp/max_hp
+	$niebieski.wait_time = 0.75 * max(hp/max_hp,0.05)
 	$niebieski.start()
 	var p = pocisk.instance()
 	p.position = Vector2(23,0)
