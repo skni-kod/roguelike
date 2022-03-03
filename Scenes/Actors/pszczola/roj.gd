@@ -18,6 +18,6 @@ func _ready():
 		i.position.y = rand.randf_range(-80,80) #pozycja y
 
 func _physics_process(_delta):
+	#emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
 	if get_children().size() == 0:
-		emit_signal("died", self) # objaśnienie: patrz deklaracja sygnału
 		queue_free()
