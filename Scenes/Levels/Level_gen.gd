@@ -6,11 +6,14 @@ onready var Map = $TileMap
 
 var tile_size = 32
 var room_num = 50
-var min_size = 4
-var max_size = 10 
-var hspread = 400
-var cull = 0.6
+var min_size = 10
+var max_size = 12
+var hspread = 600
+var cull = 0.7
 var path
+
+var start_room = null
+var end_room = null
 
 func _ready():
 	randomize()
@@ -51,7 +54,7 @@ func _input(event):
 
 func find_mst(nodes): #algorytm Prima
 	var path = AStar.new()
-	path.add_point(path.get_available_point_id(),nodes.pop_front())
+	path.add_point(path.get_available_point_id(), nodes.pop_front())
 	while nodes:
 		var min_dist = INF #minimalny dystans
 		var min_p = null #pozycja node'a
@@ -81,7 +84,7 @@ func make_map():
 	
 #	for x in range(topleft.x, bottomright.x):
 #		for y in range(topleft.y, bottomright.y):
-#			Map.set_cell(x,y,56)
+#			Map.set_cell(x,y,44)
 	var corridors = []
 	for room in $Rooms.get_children():
 		var s = (room.size/tile_size).floor()
@@ -90,6 +93,16 @@ func make_map():
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
 				Map.set_cell(ul.x + x, ul.y + y, 11)
+		for x in range(1, s.x * 2):
+			if(Map.get_cell(ul.x + x, ul.y + 1) != 11):
+				Map.set_cell(ul.x + x, ul.y + 1, 44)
+			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) != 11):
+				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 44)
+		for y in range(1, s.y * 2):
+			if(Map.get_cell(ul.x + 1, ul.y + y) != 11):
+				Map.set_cell(ul.x + 1, ul.y + y, 47)
+			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
+				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 47)
 		var p = path.get_closest_point(Vector3(room.position.x, room.position.y, 0))
 		for conn in path.get_point_connections(p):
 			if not conn in corridors:
@@ -108,11 +121,23 @@ func carve_path(pos1, pos2):
 	if y_diff == 0:
 		y_diff = pow(-1.0, randi() % 2)
 	var x_y = pos1
-	var y_x = pos2
+	var y_x = pos2 
 	if(randi()%2>0):
 		x_y = pos2
 		y_x = pos1
 	for x in range(pos1.x, pos2.x, x_diff):
 		Map.set_cell(x, x_y.y, 11)
+
 	for y in range(pos1.y, pos2.y, y_diff):
 		Map.set_cell(y_x.x, y, 11)
+
+	for x in range(pos1.x - 1, pos2.x + 1, x_diff):
+		if (Map.get_cell(x, x_y.y+1) != 11):
+			Map.set_cell(x, x_y.y+1, 44)
+		if (Map.get_cell(x, x_y.y-1) != 11):
+			Map.set_cell(x, x_y.y-1, 44)
+	for y in range(pos1.y - 1, pos2.y + 1, y_diff):
+		if (Map.get_cell(y_x.x+1, y) != 11):
+			Map.set_cell(y_x.x+1, y, 44)
+		if (Map.get_cell(y_x.x-1, y) != 11):
+			Map.set_cell(y_x.x-1, y, 44)
