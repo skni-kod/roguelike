@@ -35,7 +35,7 @@ var wirek_time = 100
 var hits_amount = 3
 var hits_speed = 0.05
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/blade.png")
@@ -73,7 +73,7 @@ func _physics_process(delta):
 				$WeaponSprite/WirMiecza.emitting = true
 				$AttackCollision.disabled = false
 				$WeaponSprite.position.x=wirek_range
-				for o in range(wirek_time):
+				for _o in range(wirek_time):
 													#----------------------
 					var t = Timer.new()   			# Timer do wirka
 					t.set_wait_time(wirek_smoothing)#
@@ -113,7 +113,7 @@ func _physics_process(delta):
 				timer.set_wait_time(animation_step)
 				
 				
-				for o in range(hits_amount):
+				for _o in range(hits_amount):
 					_on_Player_attacked()
 					var t = Timer.new() 
 					t.set_wait_time(0.25)

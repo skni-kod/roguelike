@@ -43,7 +43,7 @@ var attack_speedmultipler = 2
 var ability2duration = 5
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/axe.png")

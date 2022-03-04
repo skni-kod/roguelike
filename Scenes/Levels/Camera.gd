@@ -22,5 +22,5 @@ func update_grid_position(): #sprawdzanie czy player wyszedł poza granice siatk
 	grid_position = new_grid_position 
 	position = grid_position * grid_size
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	update_grid_position()
