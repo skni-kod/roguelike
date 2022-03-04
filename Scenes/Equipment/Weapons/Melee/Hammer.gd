@@ -120,7 +120,7 @@ func _physics_process(_delta):
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
-				var player_node := get_tree().get_root().find_node("Player", true, false)
+				var _player_node := get_tree().get_root().find_node("Player", true, false)
 				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
 				
 				var tmp = {

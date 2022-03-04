@@ -77,7 +77,7 @@ func _physics_process(delta):
 
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO:
-		move_and_collide(move) # ruch o Vector2D move
+		var _m = move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95

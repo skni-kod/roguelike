@@ -1,6 +1,6 @@
 extends Control
 
-signal pulse() #definicja sygnału od animacji pulsowania
+#signal pulse() #definicja sygnału od animacji pulsowania
 
 const FLASH_RATE = 0.05 #częstotliwość pulsowania
 const N_FLASHES = 4 #ilość pulsów
@@ -22,7 +22,7 @@ onready var flash_tween := $FlashTween #przypisanie do zmiennej drugiej animacji
 
 func _ready(): #funckja wywoływana po zainicjowaniu obiektu
 	var player_node := get_tree().get_root().find_node("Player", true, false) #wyszukanie i przypisanie gracza
-	player_node.connect("health_updated", self, "on_Player_health_updated") #połaczenie sygnałów
+	var _c = player_node.connect("health_updated", self, "on_Player_health_updated") #połaczenie sygnałów
 
 func on_health_updated(health): #funkcja aktualizująca pasek życia
 	health_over.value = health #przypisanie nowej ilości pkt życia
