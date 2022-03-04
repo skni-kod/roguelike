@@ -115,7 +115,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
 		id_list.append(current_id)
-	if body.is_in_group("Enemy") and not body.name.count("roj"): #zamykanie drzwi po wejsciu do pokoju
+	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 
 func potion():
@@ -152,6 +152,8 @@ func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 	for i in get_children():
 		if not i.name.count("roj"):
 			ilosc_enemy += 1
+			if i.name.count("osa"):
+				ilosc_enemy += 1
 	if ilosc_enemy <= 0:
 		return false
 	else:
