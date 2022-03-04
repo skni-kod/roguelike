@@ -34,7 +34,7 @@ var ph = 0
 var basedmg
 var basespd
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")

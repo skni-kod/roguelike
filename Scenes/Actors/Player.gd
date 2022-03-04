@@ -167,7 +167,7 @@ func _ready(): #po inicjacji bohatera
 	UpdatePotions() 
 
 	
-func _process(delta):	
+func _process(_delta):	
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
 	
 
@@ -582,10 +582,10 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 	
 
-func _on_Player_health_updated(health): #pusta funkcja która pozwala na poprawne działanie sygnałów
+func _on_Player_health_updated(_health): #pusta funkcja która pozwala na poprawne działanie sygnałów
 	pass
 
-func _on_Pick_body_exited(body): #Rozwiązanie tymczasowe
+func _on_Pick_body_exited(_body): #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 func on_skill_used(ability,mana_used):

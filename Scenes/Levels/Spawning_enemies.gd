@@ -85,7 +85,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
-			for i in range(0,5):
+			for _i in range(0,5):
 				rand.randomize()
 				var enemy = all_enemies[rand.randi_range(0,9)].instance() #rodzaj przeciwnika
 				rand.randomize()

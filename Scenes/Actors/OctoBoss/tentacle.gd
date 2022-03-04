@@ -13,7 +13,7 @@ func _ready():
 	else:
 		$AnimationPlayer.play("idle")
 
-func get_dmg(dmg, weaponKnockback):
+func get_dmg(dmg, _weaponKnockback):
 	get_parent().dmg(dmg) # obrażenia są odejmowane od zdrowia głównego bossa
 	# == EFEKTY WIZUALNE ==
 	var text = floating_dmg.instance()

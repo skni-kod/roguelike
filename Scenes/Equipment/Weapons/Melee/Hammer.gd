@@ -36,7 +36,7 @@ var range_y = 6
 #do um 2
 var immortal_time = 5 #czas niesmiertelnosci w sekundach
 var immortal_knockback = 20
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/hammer.png")

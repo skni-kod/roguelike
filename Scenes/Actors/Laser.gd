@@ -20,7 +20,7 @@ func _ready():
 
 	rotation = (player_Pos - origin).normalized().angle() # rotacja zostaje ustawiona jako znormalizowany kąt między pozycją gracza, a pozycją startową lasera
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var cast_point := cast_to # przypisanie z typem cast_point do miejsca do którego powinien zostać wyemitowany laser
 	force_raycast_update() # raycast zostaje zaktualizowany
 	

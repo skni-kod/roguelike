@@ -16,7 +16,7 @@ func _input(event):
 
 func _on_Return_to_Menu_pressed():
 	get_tree().paused = false
-	var err = get_tree().change_scene_to(menu_scene)
+	var _err = get_tree().change_scene_to(menu_scene)
 	set_visible(false)
 
 func set_visible(is_visible):

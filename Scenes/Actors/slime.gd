@@ -78,7 +78,7 @@ func _physics_process(delta):
 		
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO:
-		move_and_collide(move) # ruch o Vector2D move
+		var _m = move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -97,7 +97,7 @@ func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player": #Jeżeli gracz znajdzie się w zasięgu ataku
 		attack = true #Slime atakuje
 
-func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
+func _on_Atak_body_exited(_body): #Jeżeli gracz wyjdzie z zasięgu ataku
 	attack = false #Slime nie atakuje
 
 func _on_Timer_timeout():
@@ -142,7 +142,7 @@ func get_dmg(dmg, weaponKnockback):
 		if is_elite == true:
 			random_potion()
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
-		for i in range(0,coins):
+		for _i in range(0,coins):
 			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
