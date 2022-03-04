@@ -29,7 +29,7 @@ var swing_back = 0.5
 var animation_step = 0.02
 var ability = 0
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/spear.png")

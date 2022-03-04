@@ -6,8 +6,8 @@ onready var player_node := get_tree().get_root().find_node("Player", true, false
 
 
 func _ready():
-	player_node.connect("attacked", self, "_on_Player_attacked")
+	var _c = player_node.connect("attacked", self, "_on_Player_attacked")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	pass
 

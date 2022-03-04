@@ -6,7 +6,7 @@ onready var health_over := $HealthOver #przypisanie do zmiennej paska życia u g
 
 func _ready(): #funckja wywoływana po zainicjowaniu obiektu
 	var player_node := get_tree().get_root().find_node("Player", true, false) #wyszukanie i przypisanie gracza
-	player_node.connect("mana_updated", self, "on_Player_mana_updated") #połaczenie sygnałów
+	var _c = player_node.connect("mana_updated", self, "on_Player_mana_updated") #połaczenie sygnałów
 
 func on_mana_updated(health): #funkcja aktualizująca pasek życia
 	health_over.value = health #przypisanie nowej ilości pkt życia

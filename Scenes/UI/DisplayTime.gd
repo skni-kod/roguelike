@@ -4,6 +4,6 @@ extends Label
 var time = 0 
 var timer_on = false
 
-func _process(delta):
+func _process(_delta):
 	var timer = "%d" % [$Lifetime.time_left] # timer to string o formacie inta sekund pozostałego "czasu życia" efektu
 	text = timer # wpisuję timer do labela

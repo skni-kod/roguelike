@@ -60,7 +60,7 @@ func _ready():
 	pass
 
 # funkcje zmieniające sprite danych efektów
-func _physics_process(delta):
+func _physics_process(_delta):
 	if burning:
 		if $StatusContainer/Burning/DisplayTime/Lifetime.time_left < 2*($StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3) and $StatusContainer/Burning/DisplayTime/Lifetime.time_left > $StatusContainer/Burning/DisplayTime/Lifetime.wait_time/3:
 			$StatusContainer/Burning/BurningSprite.frame = 1 # w 2/3 czasu życia efektu zmienia na kolejną klatkę

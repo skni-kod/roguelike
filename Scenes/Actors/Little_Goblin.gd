@@ -77,7 +77,7 @@ func _physics_process(delta):
 		
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO:
-		move_and_collide(move) # ruch o Vector2D move
+		var _m = move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -95,7 +95,7 @@ func _on_Atak_body_entered(body):
 		attack = true
 
 
-func _on_Atak_body_exited(body): #Jeśli gracz nie znajduję się w polu Atak to ustaw attack na false
+func _on_Atak_body_exited(_body): #Jeśli gracz nie znajduję się w polu Atak to ustaw attack na false
 	attack = false
 
 

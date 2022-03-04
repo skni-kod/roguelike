@@ -32,7 +32,7 @@ var ability = 0
 var life_steal=0.1 #Potrzebna do pasywy, będzie mnożona przez damage
 var krew_vector #potrzebne żeby krew leciała w dobrym kierunku
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/bloodsword.png")
