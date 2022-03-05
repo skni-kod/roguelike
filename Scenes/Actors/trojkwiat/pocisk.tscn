@@ -15,12 +15,15 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="s0" type="Sprite" parent="."]
+light_mask = 2
 texture = ExtResource( 2 )
 
 [node name="s1" type="Sprite" parent="."]
+light_mask = 2
 texture = ExtResource( 4 )
 
 [node name="s2" type="Sprite" parent="."]
+light_mask = 2
 texture = ExtResource( 3 )
 
 [node name="Timer" type="Timer" parent="."]

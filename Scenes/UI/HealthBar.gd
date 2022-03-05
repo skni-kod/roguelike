@@ -1,6 +1,6 @@
 extends Control
 
-#signal pulse() #definicja sygnału od animacji pulsowania
+signal pulse() #definicja sygnału od animacji pulsowania
 
 const FLASH_RATE = 0.05 #częstotliwość pulsowania
 const N_FLASHES = 4 #ilość pulsów
