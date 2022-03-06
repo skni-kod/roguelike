@@ -32,6 +32,7 @@ var ilosc_enemy #aktualna ilosc przeciwnikow
 var boss = false #czy to jest pokoj z bossem
 var item
 var popups = {}
+var bosscounter = 1
 
 onready var main := get_tree().get_root().find_node("Main", true, false)
 
@@ -95,6 +96,10 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss: #respienie boss'a
+			bosscounter+=1
+			if bosscounter>3:
+				Bufor.healthmultiplier+=0.1
+				Bufor.damagemultiplier+=0.05
 			ilosc_enemy = 1
 			var bossIns
 			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()

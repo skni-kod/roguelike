@@ -13,8 +13,9 @@ var player = null
 var move = Vector2.ZERO
 var right = 1 # zwrot prawo/lewo sprite'a
 var attack = false
-export var max_hp = 30 # wartość życia Lil Devila
-var hp:float = max_hp
+export onready var max_hp = 30 * Bufor.healthmultiplier# wartość życia Lil Devila
+onready var hp = max_hp
+
 
 export var health = 100 # procentowa wartość życia do healthbara
 onready var health_bar = $HealthBar # deklaracja odwołania do node $HealthBar

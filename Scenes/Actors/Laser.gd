@@ -5,7 +5,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 
 var player_Pos = Vector2.ZERO
 onready var origin = self.position
-var dmg = 1
+onready var dmg = 1 * Bufor.damagemultiplier
 
 var is_casting := false setget set_is_casting # zmienna warunkująca czy laser jest emitowany, := to przypisanie typu do zmiennej, is_casting to bool setget set_is_casting - set_is_casting zostaje wywołana moment zanim is_casting zostanie zmieniona, decyduje co zrobić z is_casting
 

@@ -9,8 +9,8 @@ var player = null
 var move = Vector2.ZERO
 export var speed = 0.5 
 var right = 1
-export var max_hp = 40
-var hp:float = max_hp
+export onready var max_hp = 40 * Bufor.healthmultiplier
+onready var hp = max_hp
 var attack = false #sluzy do informowania czy player jest w polu strzelanie (strzelanie -> colisionshape2d)
 var eyes = false #sluzy do informowania czy player jest w polu wzrok (wzrok -> collisionshape2d)
 
@@ -128,7 +128,6 @@ func get_dmg(dmg, weaponKnockback):
 		elif knockbackResistance <= 0.6:
 			knockback /= 0.6
 		# ======= ========= ======= #
-		
 		hp -= dmg
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health) 

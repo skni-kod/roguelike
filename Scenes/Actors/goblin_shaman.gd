@@ -7,8 +7,8 @@ var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 0.5		#Zmienna przechowująca szybkość poruszania
 var right = 0.17		#Kierunek obrócenia
 var attack = false		#Czy atakuje
-var max_hp = 60		#Zmienna przechowywująca ilość życia
-var hp:float = max_hp	#Zmienna przechowuje ilość pozostałego życia
+onready var max_hp = 60 * Bufor.healthmultiplier		#Zmienna przechowywująca ilość życia
+onready var hp = max_hp	#Zmienna przechowuje ilość pozostałego życia
 var summon = false		#Czy przywołuje
 onready var main := get_tree().get_root().find_node("Main", true, false)
 

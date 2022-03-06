@@ -7,11 +7,11 @@ signal died(body)
 var player = null #Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.5 #Zmienna przechowująca szybkość poruszania
-export var dps = 5 #Zmienna przechowująca wartość ataku
+export onready var dps = 5 * Bufor.damagemultiplier#Zmienna przechowująca wartość ataku
 var right = 1 #Czy slime jest obrócony w prawo
 var attack = false #Czy slime jest w trakcie ataku
-var max_hp =61 #Zmienna definiująca ilość życia
-var hp:float = max_hp #Zmienna przechowuje ilość pozostałego życia
+onready var max_hp = 61 * Bufor.healthmultiplier#Zmienna definiująca ilość życia
+onready var hp = max_hp #Zmienna przechowuje ilość pozostałego życia
 var health = 100 #Pozostałe życie w procentach
 var drop = {"minCoins":0,"maxCoins":5} #Przedział definiujący ile slime może zostawić po sobie coinów
 var rng = RandomNumberGenerator.new() #Maszyna Lotto (losuje liczby)

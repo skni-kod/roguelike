@@ -6,7 +6,7 @@ onready var direction = Vector2.ZERO # kąt odchylenia toru pocisku
 var player_Pos = Vector2.ZERO # pozycja gracza w którego celuje
 onready var origin = self.position  # miejsce startowe pocisku
 
-var dps = 20 # damage, który pocisk zadaje
+onready var dps = 20 * Bufor.damagemultiplier # damage, który pocisk zadaje
 const goblin_ball_speed = 80 #prędkość pocisku
 
 var projectileKnockback = 0.1

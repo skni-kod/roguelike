@@ -24,8 +24,8 @@ var attack = false # zmienna ataku (czy atakuje)
 # === ====================== === #
 
 # === HP === #
-export var max_hp = 30 # wartość życia przeciwnika
-var hp:float = max_hp
+export onready var max_hp = 30 * Bufor.healthmultiplier # wartość życia przeciwnika
+var hp = max_hp
 # === == === #
 
 # === HEALTHBAR === #
