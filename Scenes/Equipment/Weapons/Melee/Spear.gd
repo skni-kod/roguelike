@@ -123,7 +123,7 @@ func _on_EquippedWeapon_body_entered(body):
 		if(crit_chance == 0):
 			damage *= crit_damage
 			crit = true
-		body.get_dmg(float(damage), weaponKnockback)
+		body.get_dmg(damage, weaponKnockback)
 		if crit:
 			damage /= crit_damage
 

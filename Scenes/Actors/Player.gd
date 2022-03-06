@@ -213,15 +213,15 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 			if weapons[1] == weaponToTake.WeaponName:
 				self.speed = 100
 				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
-				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
-				current_weapon = check_current_weapon()
+				weaponToTake.Stats['attack'] = float(all_weapons_p[(weaponToTake.WeaponName + "+")].attack)
+				#current_weapon = check_current_weapon() #nwm czemu to było ale z 1 działa lepiej xd
 				wp = 1 
-				swap_weapon(current_weapon,weaponToTake)
+				swap_weapon(1,weaponToTake) #current_weapon
 				wp = 0
 			elif weapons[2] == weaponToTake.WeaponName:
 				self.speed = 100
 				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
-				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
+				weaponToTake.Stats['attack'] = float(all_weapons_p[(weaponToTake.WeaponName + "+")].attack)
 				wp = 1 
 				swap_weapon(2,weaponToTake)
 				wp = 0

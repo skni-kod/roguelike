@@ -120,7 +120,7 @@ func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z pr
 		if(crit_chance == 0):
 			damage *= crit_damage
 			crit = true
-		body.get_dmg(float(damage), weaponKnockback)
+		body.get_dmg(damage, weaponKnockback)
 		########PASSIVE######## "Transfusion" każdy atak leczy za % obrażeń
 		player_node.health += (life_steal*damage) #dodajemy życie zgodnie z ilością obrażeń przemnożoną przez współczynik lifestealu
 		if crit:
