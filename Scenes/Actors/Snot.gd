@@ -136,6 +136,7 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -158,6 +159,7 @@ func get_dmg(dmg, weaponKnockback):
 #		level.add_child(weapon)
 		emit_signal("died", self)
 		poisonCloud.parent = null
+		SoundController.play_hit()
 		queue_free()
 		
 func random_potion():

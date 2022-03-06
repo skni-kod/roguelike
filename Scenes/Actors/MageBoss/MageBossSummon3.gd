@@ -82,6 +82,7 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
 		$AnimationPlayer.play("Die")
@@ -90,6 +91,7 @@ func get_dmg(dmg, weaponKnockback):
 		var boss = get_tree().get_root().find_node("MageBoss", true, false)
 		boss.phase_active = false
 		boss.find_node("FireTimer", true, false).stop()
+		SoundController.play_hit()
 		queue_free() #Usuń węzeł summon
 		
 func fire():		# funkcja odpowiadająca za tworzenie pocisków

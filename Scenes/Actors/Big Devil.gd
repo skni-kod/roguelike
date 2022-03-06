@@ -214,6 +214,7 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		# ======= ============== ======= #
+		SoundController.play_hit()
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -228,6 +229,7 @@ func get_dmg(dmg, weaponKnockback):
 			coin.position = randomPosition
 			level.add_child(coin)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free()
 		
 	var text = floating_dmg.instance()

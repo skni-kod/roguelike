@@ -7,13 +7,13 @@
 offsets = PoolRealArray( 0.248062, 1 )
 colors = PoolColorArray( 0.447059, 0.839216, 0.807843, 1, 0.862745, 0.290196, 0.482353, 1 )
 
-[sub_resource type="GradientTexture" id=2]
+[sub_resource type="GradientTexture" id=9]
 gradient = SubResource( 1 )
 
 [sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.611842, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.703947, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=4]
+[sub_resource type="CurveTexture" id=10]
 curve = SubResource( 3 )
 
 [sub_resource type="ParticlesMaterial" id=5]
@@ -26,10 +26,10 @@ orbit_velocity_random = 0.0
 angle = 720.0
 angle_random = 1.0
 scale = 2.0
-scale_curve = SubResource( 4 )
-color_ramp = SubResource( 2 )
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 9 )
 
-[sub_resource type="GradientTexture" id=6]
+[sub_resource type="GradientTexture" id=11]
 gradient = SubResource( 1 )
 
 [sub_resource type="ParticlesMaterial" id=7]
@@ -42,7 +42,7 @@ initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 3.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 11 )
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 6.97012

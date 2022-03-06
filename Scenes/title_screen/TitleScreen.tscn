@@ -76,6 +76,7 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
+frame = 12
 playing = true
 flip_h = true
 
@@ -85,7 +86,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 4
+frame = 6
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -138,7 +139,7 @@ margin_top = 640.0
 margin_right = 699.0
 margin_bottom = 685.0
 custom_fonts/font = SubResource( 1 )
-text = "Version v0.2.1
+text = "Version v0.3
 By SKNI KOD"
 
 [node name="FadeIn" parent="." instance=ExtResource( 7 )]

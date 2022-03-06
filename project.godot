@@ -22,16 +22,21 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 MusicController="*res://autoloads/MusicController.tscn"
+SoundController="*res://autoloads/SoundController.tscn"
 Bufor="*res://autoloads/bufor.gd"
 Pause="*res://autoloads/Pause.tscn"
+Weapons="*res://autoloads/Weapons.gd"
 
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/fullscreen=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
+
+[global]
+
+use_ability_1=false
 
 [importer_defaults]
 

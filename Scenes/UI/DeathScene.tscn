@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/UI/Menu/DeathScreen.png" type="Texture" id=1]
-[ext_resource path="res://Fonts/dogica.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Fonts/DynFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Scenes/UI/DeathScene.gd" type="Script" id=3]
-
-[sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 2 )
 
 [node name="DeathScene" type="Node2D"]
 script = ExtResource( 3 )
@@ -22,7 +19,7 @@ margin_left = 810.148
 margin_top = 532.634
 margin_right = 1109.15
 margin_bottom = 596.634
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "Wyjdz do menu"
 __meta__ = {
 "_edit_use_anchors_": false

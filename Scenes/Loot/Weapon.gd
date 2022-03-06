@@ -7,7 +7,7 @@ var weapons = {}
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 
 func _ready():
-	Stats = all_weapons["Weapons"][WeaponName]
+	Stats = all_weapons[WeaponName]
 	Stats['attack'] = float(Stats['attack'])
 	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
 	if WeaponName == "katana":

@@ -115,7 +115,7 @@ func potion():
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
 	var weapons #Zmienna przechowująca bronie
-	weapons = all_weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
+	weapons = all_weapons #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
