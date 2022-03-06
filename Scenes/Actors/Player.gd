@@ -212,6 +212,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[1] == weaponToTake.WeaponName:
 				self.speed = 100
+				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
 				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
 				current_weapon = check_current_weapon()
 				wp = 1 
@@ -219,6 +220,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				wp = 0
 			elif weapons[2] == weaponToTake.WeaponName:
 				self.speed = 100
+				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
 				weaponToTake.Stats['attack'] = all_weapons_p[(weaponToTake.WeaponName + "+")].attack
 				wp = 1 
 				swap_weapon(2,weaponToTake)

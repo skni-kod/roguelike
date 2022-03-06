@@ -17,49 +17,56 @@ var all_weapons = {
 			"spd": "1",
 			"knc": float(0.15),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		"axe": {
 			"attack": "10",
 			"spd": "0.5",
 			"knc": float(0.5),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		"katana": {
 			"attack": "15",
 			"spd": "0.4",
 			"knc": float(0.1),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		"knife": {
 			"attack": "3",
 			"spd": "1.5",
 			"knc": float(0.0),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		"hammer": {
 			"attack": "30",
 			"spd": "0.3",
 			"knc": float(1.0),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		"spear": {
 			"attack": "15",
 			"spd": "0.75",
 			"knc": float(0.25),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		},
 		 "bloodsword": {
 			"attack": "20",
 			"spd": "0.6",
 			"knc": float(0.3),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		}
 		,
 		 "fms": {
@@ -67,7 +74,8 @@ var all_weapons = {
 			"spd": "0.5",
 			"knc": float(0.5),
 			"range": "melee",
-			"effect": "none"
+			"effect": "none",
+			"plus": "0"
 		}
 		
 	}
@@ -123,7 +131,7 @@ var all_weapons_p = {
 			"range": "magic",
 			"effect": "none"
 		},
-		"bloodSword+": {
+		"bloodsword+": {
 			"attack": "20",
 			"spd": "1",
 			"knc": float(0.3),

@@ -134,6 +134,9 @@ func weapon():
 	weapons = all_weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
+	for i in weapons: #Pętla przypisująca nazwy do zmiennej
+		if int(weapons[i]["plus"])==0: 
+			names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
 
 	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
