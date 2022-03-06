@@ -6,11 +6,11 @@ signal died(body)
 var player = null		#Zmienna przechowująca węzeł gracza
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 1.5		#Zmienna przechowująca szybkość poruszania
-export var dps = 10		#Zmienna przechowująca wartość ataku
+export onready var dps = 10 * Bufor.damagemultiplier		#Zmienna przechowująca wartość ataku
 var right = 0.155		#Kierunek obrócenia
 var attack = false		#Czy atakuje
-var max_hp = 30		#Zmienna przechowywująca ilość życia
-var hp:float = max_hp	#Zmienna przechowuje ilość pozostałego życia
+onready var max_hp = 30 * Bufor.healthmultiplier		#Zmienna przechowywująca ilość życia
+onready var hp = max_hp	#Zmienna przechowuje ilość pozostałego życia
 
 export var health = 100 	#Pozostałe życie w procentach
 

@@ -5,11 +5,11 @@ signal died(body)
 var player = null
 var move = Vector2.ZERO
 export var speed = 1
-export var dps = 6
+export onready var dps = 6 * Bufor.damagemultiplier
 var right = 1
 var attack = false
-var max_hp = 40
-var hp:float = max_hp
+onready var max_hp = 40 * Bufor.healthmultiplier
+onready var hp = max_hp
 
 export var health = 100
 var drop = {"minCoins":0,"maxCoins":5}

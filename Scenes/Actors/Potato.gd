@@ -7,11 +7,11 @@ onready var statusEffect = get_node("../../../UI/StatusBar")
 var player = null
 var move = Vector2.ZERO
 export var speed = 2
-export var dps = 15
+export onready var dps = 15 * Bufor.damagemultiplier
 var right = 1
 var attack = false
-var max_hp = 9
-var hp:float = max_hp
+onready var max_hp = 9 * Bufor.healthmultiplier
+onready var hp = max_hp
 
 export var health = 100
 var drop = {"minCoins":0,"maxCoins":5}
@@ -129,7 +129,6 @@ func get_dmg(dmg, weaponKnockback):
 		elif knockbackResistance <= 0.6:
 			knockback /= 0.6
 		# ======= ========= ======= #
-		
 		hp -= dmg
 		health = hp/max_hp*100
 		$AnimationPlayer.play("Hurt")

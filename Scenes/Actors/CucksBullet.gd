@@ -4,7 +4,7 @@ var move = Vector2.ZERO
 var look_vec = Vector2.ZERO #kierunek pocisku
 var player = null 
 var speed = 1 #predkosc pocisku
-var dps = 5 #zadawany damage przez pocisk
+onready var dps = 5 * Bufor.damagemultiplier #zadawany damage przez pocisk
 onready var statusEffect = get_node("../UI/StatusBar")
 
 # === KNOCKBACK === #

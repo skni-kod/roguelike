@@ -15,11 +15,11 @@ var player = null
 var player_close = false
 var move = Vector2.ZERO
 export var speed = 0.25
-export var dps = 1
+export onready var dps = 1 * Bufor.damagemultiplier
 var right = 1
 var attack = false
-export var max_hp = 30
-var hp:float = max_hp
+export onready var max_hp = 30 * Bufor.healthmultiplier
+onready var hp = max_hp
 
 export var health = 100
 var drop = {"minCoins":0,"maxCoins":5}

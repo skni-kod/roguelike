@@ -7,7 +7,7 @@ onready var statusEffect = get_node("../UI/StatusBar")
 onready var direction = Vector2.ZERO # kąt odchylenia toru fireballa
 var player_Pos = Vector2.ZERO # pozycja playera w którego celuje
 onready var origin = self.position # miejsce startowe fireballa
-var dmg = 10 # damage, który fireball zadaje
+onready var dmg = 10 * Bufor.damagemultiplier # damage, który fireball zadaje
 
 var projectileKnockback = 0.2
 
