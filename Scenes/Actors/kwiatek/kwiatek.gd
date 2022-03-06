@@ -35,6 +35,8 @@ func atak():
 			k.position = self.position # zostawia nasiona
 			k.gracz = gracz # przekazuje nasionom informacje o graczu
 			get_parent().add_child(k) # dodaje nasiona do sceny
+		$animacje.play("hide" + str(KOLOR))
+		yield($animacje,"animation_finished")
 		global_position = Vector2(floor(gracz.global_position.x + rand_range(-50,50)), floor(gracz.global_position.y + rand_range(-50,50))) # skacze do pozycji gracza
 		position.x = max(min(position.x, 190),-190) # zapobiega teleportowaniu się poza pokój
 		position.y = max(min(position.y, 100),-100) # zapobiega teleportowaniu się poza pokój
@@ -51,8 +53,9 @@ func _on_zasieg_body_entered(body):
 func get_dmg(dmg, _weaponKnockback):
 	health -= dmg
 	if (health <= 0):
-		#drop_coins()
 		emit_signal("died", self)
+		$animacje.play("die" + str(KOLOR))
+		yield($animacje,"animation_finished")
 		queue_free()
 	# == EFEKTY WIZUALNE ==
 	var text = floating_dmg.instance()

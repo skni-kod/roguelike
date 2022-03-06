@@ -26,7 +26,7 @@ var dps = 30
 # === ====================== === #
 
 # === PORUSZANIE SIĘ === #
-export var speed = 20 # prędkość własna
+export var speed = 4 # prędkość własna
 var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 # === ============== === #
 

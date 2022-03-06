@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/Actors/kwiatek/kwiatek.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Enemies/kwiatek.png" type="Texture" id=2]
@@ -11,6 +11,30 @@ extents = Vector2( 9, 12 )
 [sub_resource type="CircleShape2D" id=3]
 radius = 96.0
 
+[sub_resource type="Animation" id=4]
+resource_name = "die_0"
+
+[sub_resource type="Animation" id=5]
+resource_name = "die_1"
+
+[sub_resource type="Animation" id=7]
+resource_name = "die_2"
+
+[sub_resource type="Animation" id=6]
+resource_name = "die_3"
+
+[sub_resource type="Animation" id=8]
+resource_name = "hide_0"
+
+[sub_resource type="Animation" id=9]
+resource_name = "hide_1"
+
+[sub_resource type="Animation" id=10]
+resource_name = "hide_2"
+
+[sub_resource type="Animation" id=11]
+resource_name = "hide_3"
+
 [node name="kwiatek" type="KinematicBody2D" groups=[
 "Enemy",
 ]]
@@ -22,7 +46,7 @@ texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 72, 0, 18, 24 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="kolizja" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="wzrost" type="Timer" parent="."]
@@ -33,13 +57,23 @@ autostart = true
 
 [node name="ziarno" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ziarno"]
+[node name="kolizja" type="CollisionShape2D" parent="ziarno"]
 shape = SubResource( 2 )
 
 [node name="zasieg" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="zasieg"]
+[node name="kolizja" type="CollisionShape2D" parent="zasieg"]
 shape = SubResource( 3 )
+
+[node name="animacje" type="AnimationPlayer" parent="."]
+anims/die_0 = SubResource( 4 )
+anims/die_1 = SubResource( 5 )
+anims/die_2 = SubResource( 7 )
+anims/die_3 = SubResource( 6 )
+anims/hide_0 = SubResource( 8 )
+anims/hide_1 = SubResource( 9 )
+anims/hide_2 = SubResource( 10 )
+anims/hide_3 = SubResource( 11 )
 
 [connection signal="timeout" from="wzrost" to="." method="wzrost"]
 [connection signal="timeout" from="atak" to="." method="atak"]
