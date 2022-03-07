@@ -33,7 +33,7 @@ var wrogowie = [
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
 	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn"),
-	load("res://Scenes/Actors/szerszen_azjatycki/szerszen.tscn"),
+	load("res://Scenes/Actors/szerszen/Szerszen.tscn"),
 	load("res://Scenes/Actors/trojkwiat/trojkwiat.tscn")]
 var id_list = [] #Lista ID pokojów, w których był już player
 var current_id #ID aktualnego pokoju
@@ -58,22 +58,23 @@ func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 		boss = true
 
 func close_door(): #Podmiana tekstur na zamknięte drzwi
-	tilemap.set_cell(6,8,28)
-	tilemap.set_cell(7,8,29)
-	tilemap.set_cell(8,8,30)
-	tilemap.set_cell(7,7,31)
-	tilemap.set_cell(6,0,24)
-	tilemap.set_cell(7,0,25)
-	tilemap.set_cell(8,0,26)
-	tilemap.set_cell(7,1,27)
-	tilemap.set_cell(14,3,20)
-	tilemap.set_cell(14,4,21)
-	tilemap.set_cell(14,5,22)
-	tilemap.set_cell(13,4,23)
-	tilemap.set_cell(0,3,16)
-	tilemap.set_cell(0,4,17)
-	tilemap.set_cell(0,5,18)
-	tilemap.set_cell(1,4,19)
+	if obecniPrzeciwnicy():
+		tilemap.set_cell(6,8,28)
+		tilemap.set_cell(7,8,29)
+		tilemap.set_cell(8,8,30)
+		tilemap.set_cell(7,7,31)
+		tilemap.set_cell(6,0,24)
+		tilemap.set_cell(7,0,25)
+		tilemap.set_cell(8,0,26)
+		tilemap.set_cell(7,1,27)
+		tilemap.set_cell(14,3,20)
+		tilemap.set_cell(14,4,21)
+		tilemap.set_cell(14,5,22)
+		tilemap.set_cell(13,4,23)
+		tilemap.set_cell(0,3,16)
+		tilemap.set_cell(0,4,17)
+		tilemap.set_cell(0,5,18)
+		tilemap.set_cell(1,4,19)
 
 func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
 	if body.name == "Player": 
@@ -150,16 +151,15 @@ func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 	for i in get_children():
 		if i.is_in_group("Enemy") and not i.is_in_group("Ignored"):
 			ilosc_enemy += 1
-	print(ilosc_enemy)
 	if ilosc_enemy <= 0:
 		return false
 	else:
 		return true
 
-func open(body): #funkcja otwierania drzwi po pokonaniu przeciwników
+func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 	if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
 		rand.randomize()
-		if rand.randf_range(0,100) <= 100 and not body.name.count("roj"): #drop broni
+		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)

@@ -79,7 +79,8 @@ func _physics_process(delta):
 			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
 		# === ===================== === #
 		
-		$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
+		if not $BodyAnimationPlayer.is_playing():
+			$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
 	
 	elif !atakuje and health>0: # jeśli nie atakuje i żyje
 		pass

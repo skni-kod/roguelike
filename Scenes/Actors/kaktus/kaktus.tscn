@@ -23,12 +23,36 @@ length = 0.2
 
 [sub_resource type="Animation" id=6]
 resource_name = "Hurt"
-length = 0.2
-loop = true
+length = 0.35
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3 ]
+}
 
 [sub_resource type="Animation" id=7]
 length = 0.4
 step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/BodySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
 
 [sub_resource type="Animation" id=8]
 length = 0.5
@@ -61,8 +85,10 @@ texture = ExtResource( 2 )
 
 [node name="BodySprite" type="Sprite" parent="Sprites"]
 light_mask = 2
+position = Vector2( 0, -4 )
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 4 )
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
