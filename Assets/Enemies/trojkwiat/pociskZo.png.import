@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pociskNb.png-679c3313681f04d03c55b3d0cdbdf0db.stex"
+path="res://.import/pociskZo.png-a874adea0133e9fb45460d7120c1f438.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/trojkwiat/pociskNb.png"
-dest_files=[ "res://.import/pociskNb.png-679c3313681f04d03c55b3d0cdbdf0db.stex" ]
+source_file="res://Assets/Enemies/trojkwiat/pociskZo.png"
+dest_files=[ "res://.import/pociskZo.png-a874adea0133e9fb45460d7120c1f438.stex" ]
 
 [params]
 

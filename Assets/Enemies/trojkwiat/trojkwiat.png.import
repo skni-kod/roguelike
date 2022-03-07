@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HP1.png-0b88201667996503edd8e4993b31929d.stex"
+path="res://.import/trojkwiat.png-bbf03be33a5ebbac2c129defd3a83d5c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/trojkwiat/HP1.png"
-dest_files=[ "res://.import/HP1.png-0b88201667996503edd8e4993b31929d.stex" ]
+source_file="res://Assets/Enemies/trojkwiat/trojkwiat.png"
+dest_files=[ "res://.import/trojkwiat.png-bbf03be33a5ebbac2c129defd3a83d5c.stex" ]
 
 [params]
 

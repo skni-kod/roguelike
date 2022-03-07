@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scenes/Actors/trojkwiat/trojkwiat.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Enemies/trojkwiat/trojkwiat.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/trojkwiat/trojkwiat.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]

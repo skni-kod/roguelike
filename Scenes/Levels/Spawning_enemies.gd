@@ -181,3 +181,29 @@ func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 			tilemap.set_cell(0,4,1)
 			tilemap.set_cell(0,5,2)
 			tilemap.set_cell(1,4,3)
+	else:
+		yield(get_tree().create_timer(1.0), "timeout")
+		if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
+			rand.randomize()
+			if rand.randf_range(0,100) <= 100: #drop broni
+				weapon()
+			if drzwi[3]: #otwieranie drzwi
+				tilemap.set_cell(6,8,12)
+				tilemap.set_cell(7,8,13)
+				tilemap.set_cell(8,8,14)
+				tilemap.set_cell(7,7,15)
+			if drzwi[1]:
+				tilemap.set_cell(6,0,8)
+				tilemap.set_cell(7,0,9)
+				tilemap.set_cell(8,0,10)
+				tilemap.set_cell(7,1,11)
+			if drzwi[2]:
+				tilemap.set_cell(14,3,4)
+				tilemap.set_cell(14,4,5)
+				tilemap.set_cell(14,5,6)
+				tilemap.set_cell(13,4,7)
+			if drzwi[0]:
+				tilemap.set_cell(0,3,0)
+				tilemap.set_cell(0,4,1)
+				tilemap.set_cell(0,5,2)
+				tilemap.set_cell(1,4,3)
