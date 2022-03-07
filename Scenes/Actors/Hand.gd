@@ -3,14 +3,15 @@ extends Position2D
 onready var diff = global_position - get_parent().get_node("PlayerSprite").global_position
 onready var main = get_tree().get_root().find_node("Main", true, false)
 
+onready var savedpos = position
 
 func _physics_process(delta):
 	global_position = get_parent().get_node("PlayerSprite").global_position + diff.rotated(get_parent().get_node("PlayerSprite").get_angle_to(get_global_mouse_position()))
 	rotate(get_parent().get_node("PlayerSprite").get_angle_to(get_global_mouse_position()) - rotation)
-#	if position.x > get_parent().get_node("PlayerSprite").position.x:
-#		scale.y = 1
-#	else:
-#		scale.y = -1
+	if position.x > get_parent().get_node("PlayerSprite").position.x:
+		scale.y = 1
+	else:
+		scale.y = -1
 	if rotation_degrees > 360 or rotation_degrees < -360:
 		rotation_degrees = 0
 #	print(self.scale, " ", rotation_degrees)

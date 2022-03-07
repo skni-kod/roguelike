@@ -576,11 +576,6 @@ func _on_Pick_body_entered(body) -> void: #Jeśli coś do podniesienia jest w za
 		if "Weapon" in body.name:
 			weaponToTake = body		
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
-	
-
-
-func _on_Player_health_updated(health) -> void: #pusta funkcja która pozwala na poprawne działanie sygnałów
-	pass
 
 
 func _on_Pick_body_exited(body) -> void: #Rozwiązanie tymczasowe

@@ -70,8 +70,7 @@ func _unhandled_input(event) -> void:
 				emit_signal("axeability1used", rotation_degrees, global_position)
 				$AnimationPlayer.play("Throw")
 				yield($AnimationPlayer, "animation_finished")
-				global_position += global_position + position
-				position = Vector2.ZERO
+				
 #				tmpknockback = weaponKnockback
 #				weaponKnockback = 0
 #				timer.start()
@@ -111,7 +110,7 @@ func reset_pivot() -> void: #Zresetuj broń. Nawet jak animacja jest spieprzona 
 
 
 func _on_Player_attacked() -> void:
-	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
+	if !attack: #Sprawdza czy broń nie jest w trakcie ataku
 		attack = true
 		$AttackCollision.disabled = false
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
