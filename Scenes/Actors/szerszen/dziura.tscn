@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Actors/szerszen_azjatycki/dziura.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/Actors/szerszen_azjatycki/dziura.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Enemies/szerszen/dziura.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Actors/szerszen/dziura.gd" type="Script" id=3]
 
 [node name="dziura" type="Area2D"]
 script = ExtResource( 3 )

@@ -43,8 +43,8 @@ var rng = RandomNumberGenerator.new() # zmienna generująca nowy generator losow
 func _ready():
 	# == DODANIE PASKA HP DO UI == #
 	pasek_hp = preload("res://Scenes/UI/BossHealthBar.tscn").instance()
-	pasek_hp.texture_progress = load("res://Scenes/Actors/szerszen_azjatycki/hp1.png")
-	pasek_hp.texture_under = load("res://Scenes/Actors/szerszen_azjatycki/hp0.png")
+	pasek_hp.texture_progress = load("res://Assets/Enemies/szerszen/hp1.png")
+	pasek_hp.texture_under = load("res://Assets/Enemies/szerszen/hp0.png")
 	get_node("../../../UI").add_child(pasek_hp)
 	# == ====================== == #
 

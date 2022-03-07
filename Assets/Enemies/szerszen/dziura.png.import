@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dziura.png-1bc738fea5c384dae0d0c290680cc4a4.stex"
+path="res://.import/dziura.png-64087c6853fdf84fd10b5f79c63048ce.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/szerszen_azjatycki/dziura.png"
-dest_files=[ "res://.import/dziura.png-1bc738fea5c384dae0d0c290680cc4a4.stex" ]
+source_file="res://Assets/Enemies/szerszen/dziura.png"
+dest_files=[ "res://.import/dziura.png-64087c6853fdf84fd10b5f79c63048ce.stex" ]
 
 [params]
 

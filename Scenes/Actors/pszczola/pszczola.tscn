@@ -98,6 +98,7 @@ polygon = PoolVector2Array( -5, -4, 6, -4, 6, -1, -5, -1 )
 
 [node name="pszczola" type="KinematicBody2D" groups=[
 "Enemy",
+"Ignored",
 ]]
 collision_layer = 4
 collision_mask = 3
@@ -127,6 +128,7 @@ frames = SubResource( 2 )
 light_mask = 2
 position = Vector2( 7.33333, -10.6667 )
 frames = SubResource( 7 )
+frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

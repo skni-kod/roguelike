@@ -138,7 +138,7 @@ tracks/4/keys = {
 "values": [ Rect2( 0, 0, 90, 108 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=6]
 resource_name = "die_1"
 length = 0.6
 tracks/0/type = "value"
@@ -202,7 +202,7 @@ tracks/4/keys = {
 "values": [ Rect2( 0, 0, 90, 108 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=7]
 resource_name = "die_2"
 length = 0.6
 tracks/0/type = "value"
@@ -266,7 +266,7 @@ tracks/4/keys = {
 "values": [ Rect2( 0, 0, 90, 108 ) ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=8]
 resource_name = "die_3"
 length = 0.6
 tracks/0/type = "value"
@@ -363,9 +363,9 @@ shape = SubResource( 3 )
 [node name="animacje" type="AnimationPlayer" parent="."]
 anims/0 = SubResource( 4 )
 anims/die_0 = SubResource( 5 )
-anims/die_1 = SubResource( 13 )
-anims/die_2 = SubResource( 14 )
-anims/die_3 = SubResource( 15 )
+anims/die_1 = SubResource( 6 )
+anims/die_2 = SubResource( 7 )
+anims/die_3 = SubResource( 8 )
 
 [connection signal="timeout" from="wzrost" to="." method="wzrost"]
 [connection signal="timeout" from="atak" to="." method="atak"]

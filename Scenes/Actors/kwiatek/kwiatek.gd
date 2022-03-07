@@ -51,10 +51,10 @@ func _on_zasieg_body_entered(body):
 func get_dmg(dmg, _weaponKnockback):
 	health -= dmg
 	if (health <= 0):
-		emit_signal("died", self)
 		if kwiatek:
 			$animacje.play("die_" + str(KOLOR))
 			yield($animacje,"animation_finished")
+		emit_signal("died", self)
 		queue_free()
 	# == EFEKTY WIZUALNE ==
 	var text = floating_dmg.instance()

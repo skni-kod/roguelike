@@ -42,7 +42,6 @@ var up = Vector2(7,0) #Pozycja górnych drzwi
 var right = Vector2(14,4) #Pozycja prawych drzwi
 var left = Vector2(0,4) #Pozycja lewych drzwi
 var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
-var ilosc_enemy #aktualna ilosc przeciwnikow
 var boss = false #czy to jest pokoj z bossem
 var item
 var popups = {}
@@ -108,7 +107,6 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss: #respienie boss'a
-			ilosc_enemy = 1
 			var bossIns
 			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
@@ -148,12 +146,11 @@ func rand_num(from,to):
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 
 func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
-	ilosc_enemy = -1 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
+	var ilosc_enemy = -1 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
 	for i in get_children():
-		if not i.name.count("roj"):
+		if i.is_in_group("Enemy") and not i.is_in_group("Ignored"):
 			ilosc_enemy += 1
-			if i.name.count("osa"):
-				ilosc_enemy += 1
+	print(ilosc_enemy)
 	if ilosc_enemy <= 0:
 		return false
 	else:

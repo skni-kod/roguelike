@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hp0.png-453c59b1ee9a4da1dd0483176dfdcf45.stex"
+path="res://.import/szerszen.png-07ab25c02d97a74b242ffe31788d5d39.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/szerszen_azjatycki/hp0.png"
-dest_files=[ "res://.import/hp0.png-453c59b1ee9a4da1dd0483176dfdcf45.stex" ]
+source_file="res://Assets/Enemies/szerszen/szerszen.png"
+dest_files=[ "res://.import/szerszen.png-07ab25c02d97a74b242ffe31788d5d39.stex" ]
 
 [params]
 

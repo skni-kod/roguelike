@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/skrzydla.png-050f1f08d16823f154a6628506e72230.stex"
+path="res://.import/skrzydla.png-d47eca506ba9692439e03ae5e775f884.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Actors/szerszen_azjatycki/skrzydla.png"
-dest_files=[ "res://.import/skrzydla.png-050f1f08d16823f154a6628506e72230.stex" ]
+source_file="res://Assets/Enemies/szerszen/skrzydla.png"
+dest_files=[ "res://.import/skrzydla.png-d47eca506ba9692439e03ae5e775f884.stex" ]
 
 [params]
 
