@@ -23,7 +23,4 @@ func _on_axeAbility1Used(direction, currPos) -> void:
 		var equippedAxe = get_node("Axe")
 		remove_child(equippedAxe)
 		main.add_child(equippedAxe)
-		equippedAxe.global_position = global_position
-		equippedAxe.rotation_degrees = direction
-
 

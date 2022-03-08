@@ -50,6 +50,11 @@ func _ready() -> void:
 	damage = float(Weapons.all_weapons.Axe["attack"])
 	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
 	attack_speed = float(Weapons.all_weapons.Axe["spd"])
+	$AnimationPlayer.play("RESET")
+
+
+func _physics_process(_delta):
+	print("[INFO]: Axe rotation: ", rotation_degrees)
 
 
 func _unhandled_input(event) -> void:
@@ -63,14 +68,30 @@ func _unhandled_input(event) -> void:
 		if active_ability1==false and active_ability2==false and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				attack_vector = Vector2(attack_range *ability1range* cos(rotation), attack_range *ability1range* sin(rotation))
-				print("[INFO]: Axe abilty 1 used")
+#				print("[INFO]: Axe abilty 1 used")
 #				tmpdmg = damage 
 #				damage *= ability1damagemultipler
 #				spell = 0
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 0, global_position.x)
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 0, global_position.y)
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(2, 0, rotation_degrees)
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
 				emit_signal("axeability1used", rotation_degrees, global_position)
 				$AnimationPlayer.play("Throw")
 				yield($AnimationPlayer, "animation_finished")
-				
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 0, global_position.x)
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 0, global_position.y)
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 1, global_position.x - 45 * cos(get_angle_to(player_node.global_position) - PI/2))
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 1, global_position.y - 45 * sin(get_angle_to(player_node.global_position) - PI/2))
+				$AnimationPlayer.play("Jump back")
+				yield($AnimationPlayer, "animation_finished")
+				var lootableAxe = load("res://Scenes/Loot/Weapon.tscn")
+				lootableAxe = lootableAxe.instance()
+				lootableAxe.WeaponName = weaponName
+				lootableAxe.position = position
+				get_parent().call_deferred("add_child", lootableAxe)
+				queue_free()
 #				tmpknockback = weaponKnockback
 #				weaponKnockback = 0
 #				timer.start()
