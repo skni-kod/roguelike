@@ -20,7 +20,6 @@ func _ready():
 	randomize()
 	make_rooms()
 
-
 func make_rooms(): #tworzenie pokojów
 	for i in range(room_num):
 		var pos = Vector2(0, 0)
@@ -41,9 +40,8 @@ func make_rooms(): #tworzenie pokojów
 	yield(get_tree(),"idle_frame")
 	path = find_mst(room_positions)
 	make_map()
+	global_tiles()
 	doors()
-#	global_tiles()
-
 
 func _process(delta):
 	update()
@@ -56,6 +54,7 @@ func _input(event):
 		make_rooms()
 	if event.is_action_pressed("ui_focus_next"): #naciśnięcie tab - zmienienie korytarzy
 		make_map()
+		global_tiles()
 		doors()
 
 func find_mst(nodes): #szukanie najkrótszej drogi
@@ -113,23 +112,6 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 				Map.set_cell(ul.x + 1, ul.y + y, 63)
 			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
 				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 47)
-			if y == 1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
-				Map.set_cell(ul.x + 1, ul.y + y, 35)
-				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 46)
-			if y == s.y*2-1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
-				Map.set_cell(ul.x + 1, ul.y + y, 62)
-				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 51)
-				
-#		for x in range(1, s.x * 2): #rysowanie ścian pokoju
-#			if(Map.get_cell(ul.x + x, ul.y + 1) != 11):
-#				Map.set_cell(ul.x + x, ul.y + 1, 44)
-#			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) != 11):
-#				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 44)
-#		for y in range(1, s.y * 2):
-#			if(Map.get_cell(ul.x + 1, ul.y + y) != 11):
-#				Map.set_cell(ul.x + 1, ul.y + y, 44)
-#			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
-#				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 44)
 #			if y == 1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
 #				Map.set_cell(ul.x + 1, ul.y + y, 35)
 #				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 46)
@@ -169,18 +151,18 @@ func carve_path(pos1, pos2):
 				Map.set_cell(x+1, x_y.y, 47)
 			if (Map.get_cell(x-1, x_y.y) != 11):
 				Map.set_cell(x-1, x_y.y, 63)
-		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and #trzeba dobrze tile poustawiać i będzie działało
-			Map.get_cell(x+1, x_y.y) == 47):
-				Map.set_cell(x+1, x_y.y+1, 51)
-		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y-1) == 45 and
-			Map.get_cell(x-1, x_y.y) == 63):
-				Map.set_cell(x-1, x_y.y-1, 35)
-		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y-1) == 45 and
-			Map.get_cell(x+1, x_y.y) == 47):
-				Map.set_cell(x+1, x_y.y-1, 46)
-		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and
-			Map.get_cell(x-1, x_y.y) == 63):
-				Map.set_cell(x-1, x_y.y+1, 62)
+#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and #trzeba dobrze tile poustawiać i będzie działało
+#			Map.get_cell(x+1, x_y.y) == 47):
+#				Map.set_cell(x+1, x_y.y+1, 51)
+#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y-1) == 45 and
+#			Map.get_cell(x-1, x_y.y) == 63):
+#				Map.set_cell(x-1, x_y.y-1, 35)
+#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y-1) == 45 and
+#			Map.get_cell(x+1, x_y.y) == 47):
+#				Map.set_cell(x+1, x_y.y-1, 46)
+#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and
+#			Map.get_cell(x-1, x_y.y) == 63):
+#				Map.set_cell(x-1, x_y.y+1, 62)
 	
 	for y in range(pos1.y, pos2.y, y_diff): #rysowanie korytarzy
 		Map.set_cell(y_x.x, y, 11)
@@ -193,18 +175,18 @@ func carve_path(pos1, pos2):
 				Map.set_cell(y_x.x, y+1, 45)
 			if (Map.get_cell(y_x.x, y-1) != 11):
 				Map.set_cell(y_x.x, y-1, 60)
-		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x+1, y) == 44 and 
-			Map.get_cell(y_x.x, y+1) == 44):
-				Map.set_cell(y_x.x+1, y+1, 51)
-		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x-1, y) == 44 and 
-			Map.get_cell(y_x.x, y-1) == 44):
-				Map.set_cell(y_x.x-1, y-1, 35)
-		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x+1, y) == 44 and 
-			Map.get_cell(y_x.x, y-1) == 44):
-				Map.set_cell(y_x.x+1, y-1, 46)
-		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x-1, y) == 44 and 
-			Map.get_cell(y_x.x, y+1) == 44):
-				Map.set_cell(y_x.x-1, y+1, 62)
+#		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x+1, y) == 44 and 
+#			Map.get_cell(y_x.x, y+1) == 44):
+#				Map.set_cell(y_x.x+1, y+1, 51)
+#		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x-1, y) == 44 and 
+#			Map.get_cell(y_x.x, y-1) == 44):
+#				Map.set_cell(y_x.x-1, y-1, 35)
+#		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x+1, y) == 44 and 
+#			Map.get_cell(y_x.x, y-1) == 44):
+#				Map.set_cell(y_x.x+1, y-1, 46)
+#		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x-1, y) == 44 and 
+#			Map.get_cell(y_x.x, y+1) == 44):
+#				Map.set_cell(y_x.x-1, y+1, 62)
 func find_start_room(): #szukanie pokoju startowego
 	var min_x = INF
 	for room in $Rooms.get_children():
@@ -219,7 +201,7 @@ func find_end_room(): #szukanie pokoju końcowego
 			end_room = room
 			max_x = room.position.x
 
-func doors(): #stawianie drzwi
+func doors(): #ustawianie drzwi
 	for room in $Rooms.get_children():
 		var s = (room.size/tile_size).floor()
 		var pos = Map.world_to_map(room.position)
@@ -243,7 +225,18 @@ func doors(): #stawianie drzwi
 				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) == 11):
 					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 5)
 	
-func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, będzie użyta do zmieniania rogów
+func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, nie działa na korytarz (why???)
 	for x in range(world_size_tl.x, world_size_br.x):
-		for y in range(world_size_tl.x, world_size_br.y):
-			Map.set_cell(x,y,1)
+		for y in range(world_size_tl.y, world_size_br.y):
+			if (Map.get_cell(x + 1, y) == 45 and 
+				Map.get_cell(x, y + 1) == 63):
+					Map.set_cell(x, y, 35)
+			if (Map.get_cell(x - 1, y) == 60 and 
+				Map.get_cell(x, y - 1) == 47):
+					Map.set_cell(x, y, 51)
+			if (Map.get_cell(x + 1, y) == 60 and 
+				Map.get_cell(x, y - 1) == 63):
+					Map.set_cell(x, y, 62)
+			if (Map.get_cell(x - 1, y) == 45 and 
+				Map.get_cell(x, y + 1) == 47):
+					Map.set_cell(x, y, 46)
