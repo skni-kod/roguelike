@@ -5,10 +5,10 @@ var Player = preload("res://Scenes/Actors/Player.tscn")
 onready var Map = $TileMap
 
 var tile_size = 32 #rozmiar tile'a
-var room_num = 50 #ilość pokoi (przed usunięciem)
+var room_num = 30 #ilość pokoi (przed usunięciem)
 var min_size = 10 #minimalny rozmiar pokoju
 var max_size = 12 #max rozmiar pokoju
-var cull = 0.7 #szansa na usunięcie pokoju podczas generacji
+var cull = 0.5 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
 var world_size_tl
 var world_size_br
@@ -143,15 +143,15 @@ func carve_path(pos1, pos2):
 	for x in range(pos1.x, pos2.x, x_diff): #rysowanie korytarzy
 		Map.set_cell(x, x_y.y, 11)
 		if (Map.get_cell(x, x_y.y+1) != 11 and Map.get_cell(x, x_y.y) == 11):
-			Map.set_cell(x, x_y.y + 1, 45)
+			Map.set_cell(x, x_y.y + 1, 60)
 		if (Map.get_cell(x, x_y.y-1) != 11 and Map.get_cell(x, x_y.y) == 11):
-			Map.set_cell(x, x_y.y - 1, 60)
+			Map.set_cell(x, x_y.y - 1, 45)
 		if x == pos1.x:
 			if (Map.get_cell(x+1, x_y.y) != 11):
 				Map.set_cell(x+1, x_y.y, 47)
 			if (Map.get_cell(x-1, x_y.y) != 11):
 				Map.set_cell(x-1, x_y.y, 63)
-#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and #trzeba dobrze tile poustawiać i będzie działało
+#		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y+1) == 60 and
 #			Map.get_cell(x+1, x_y.y) == 47):
 #				Map.set_cell(x+1, x_y.y+1, 51)
 #		if(Map.get_cell(x, x_y.y) == 11 and Map.get_cell(x, x_y.y-1) == 45 and
@@ -172,9 +172,9 @@ func carve_path(pos1, pos2):
 			Map.set_cell(y_x.x-1, y, 63)
 		if y == pos1.y:
 			if (Map.get_cell(y_x.x, y+1) != 11):
-				Map.set_cell(y_x.x, y+1, 45)
+				Map.set_cell(y_x.x, y+1, 60)
 			if (Map.get_cell(y_x.x, y-1) != 11):
-				Map.set_cell(y_x.x, y-1, 60)
+				Map.set_cell(y_x.x, y-1, 45)
 #		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x+1, y) == 44 and 
 #			Map.get_cell(y_x.x, y+1) == 44):
 #				Map.set_cell(y_x.x+1, y+1, 51)
@@ -228,7 +228,7 @@ func doors(): #ustawianie drzwi
 func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, nie działa na korytarz (why???)
 	for x in range(world_size_tl.x, world_size_br.x):
 		for y in range(world_size_tl.y, world_size_br.y):
-			if (Map.get_cell(x + 1, y) == 45 and 
+			if (Map.get_cell(x + 1, y) == 45 and
 				Map.get_cell(x, y + 1) == 63):
 					Map.set_cell(x, y, 35)
 			if (Map.get_cell(x - 1, y) == 60 and 
@@ -239,4 +239,17 @@ func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, nie
 					Map.set_cell(x, y, 62)
 			if (Map.get_cell(x - 1, y) == 45 and 
 				Map.get_cell(x, y + 1) == 47):
+					Map.set_cell(x, y, 46)
+			
+			if (Map.get_cell(x + 1, y) == 60 and
+				Map.get_cell(x, y + 1) == 47):
+					Map.set_cell(x, y, 35)
+			if (Map.get_cell(x - 1, y) == 45 and 
+				Map.get_cell(x, y - 1) == 63):
+					Map.set_cell(x, y, 51)
+			if (Map.get_cell(x + 1, y) == 45 and 
+				Map.get_cell(x, y - 1) == 47):
+					Map.set_cell(x, y, 62)
+			if (Map.get_cell(x - 1, y) == 60 and 
+				Map.get_cell(x, y + 1) == 63):
 					Map.set_cell(x, y, 46)
