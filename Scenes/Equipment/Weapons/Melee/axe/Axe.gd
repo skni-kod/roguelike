@@ -54,7 +54,8 @@ func _ready() -> void:
 
 
 func _physics_process(_delta):
-	print("[INFO]: Axe rotation: ", rotation_degrees)
+#	print("[INFO]: Axe rotation: ", rotation_degrees)
+	pass
 
 
 func _unhandled_input(event) -> void:
@@ -71,13 +72,14 @@ func _unhandled_input(event) -> void:
 #				print("[INFO]: Axe abilty 1 used")
 #				tmpdmg = damage 
 #				damage *= ability1damagemultipler
-#				spell = 0
+				spell = 0
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 0, global_position.x)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 0, global_position.y)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(2, 0, rotation_degrees)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
 				emit_signal("axeability1used", rotation_degrees, global_position)
+				player_node.remove_current_weapon()
 				$AnimationPlayer.play("Throw")
 				yield($AnimationPlayer, "animation_finished")
 				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 0, global_position.x)
@@ -95,7 +97,7 @@ func _unhandled_input(event) -> void:
 #				tmpknockback = weaponKnockback
 #				weaponKnockback = 0
 #				timer.start()
-#				spell = 0
+				spell = 0
 	elif event.is_action_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):

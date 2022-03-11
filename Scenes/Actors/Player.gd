@@ -189,7 +189,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
-				self.speed = 100
+#				self.speed = 100
 				current_weapon = check_current_weapon()
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
@@ -306,7 +306,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 
 	if weapons[2] != "Empty": 
 		if Input.is_action_just_pressed("change_weapon_slot"):
-			if (!$EquippedWeapon.spell):
+			if ($Hand.get_child(0) and $Hand.get_child(0).spell):
 				current_weapon = check_current_weapon()
 				change_weapon_slot(current_weapon)
 	  
@@ -329,13 +329,13 @@ func resetStats() -> void:#Reset player perks to default
 
 
 func check_current_weapon() -> int:
-	if weapons[2] == "Empty":
-		return 1
-	else:
-		if weapons[1] == $EquippedWeapon.weaponName:
+	if $Hand.get_child(0):
+		if weapons[1] == $Hand.get_child(0).weaponName:
 			return 1
 		else:
 			return 2
+	else:
+		return 0
 		
 
 
@@ -352,44 +352,54 @@ func change_weapon_slot(currentSlot) -> void:
 		equipped = weapons[2]
 		w2slot_visibility.visible = true
 		w1slot_visibility.visible = false
-#		$EquippedWeapon.position=Vector2.ZERO
-#		$EquippedWeapon.set_script(all_weapons_script[weapons[2]]) #Tylko melee poki co ;/
-#		$EquippedWeapon.timer = $EquippedWeapon/Timer
-#		$EquippedWeapon.damage = second_weapon_stats['attack']
-#		$EquippedWeapon.weaponKnockback = float(second_weapon_stats["knc"])
-	if currentSlot == 2:
+	elif currentSlot == 2:
 		equipped = weapons[1]
 		w1slot_visibility.visible = true
 		w2slot_visibility.visible = false
-#		$EquippedWeapon.position=Vector2.ZERO
-#		$EquippedWeapon.set_script(all_weapons_script[weapons[1]])
-#		$EquippedWeapon.timer = $EquippedWeapon/Timer
-#		$EquippedWeapon.damage = first_weapon_stats['attack']
-#		$EquippedWeapon.weaponKnockback = float(first_weapon_stats["knc"])
+	else:
+		equipped = null
+		w1slot_visibility.visible = false
+		w2slot_visibility.visible = false
+
+
+func remove_current_weapon() -> void:
+	equipped = null
+	if check_current_weapon() == 1:
+		weapons[1] = "Empty"
+		ui_access_wslot1.texture = null
+	else:
+		weapons[2] = "Empty"
+		ui_access_wslot2.texture = null
 
 
 func swap_weapon(slot,weaponOnGround) -> void:
 	if weapons[2] != "Empty":
 		if slot == 1:
-			if weaponOnGround.WeaponName == "katana":
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot1.scale.x = .8
+				ui_access_wslot1.scale.y = .8
+			elif weaponOnGround.WeaponName == "Spear":
 				ui_access_wslot1.scale.x = .8
 				ui_access_wslot1.scale.y = .8
 			else:
 				ui_access_wslot1.scale.x = 2.25
 				ui_access_wslot1.scale.y = 2.25
 			ui_access_wslot1.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
-			first_weapon_stats = weaponOnGround.Stats
+#			first_weapon_stats = weaponOnGround.Stats
 			w1slot_visibility.visible = true
 			w2slot_visibility.visible = false
 		elif slot == 2:
-			if weaponOnGround.WeaponName == "katana":
+			if weaponOnGround.WeaponName == "Katana":
+				ui_access_wslot2.scale.x = .8
+				ui_access_wslot2.scale.y = .8
+			elif weaponOnGround.WeaponName == "Spear":
 				ui_access_wslot2.scale.x = .8
 				ui_access_wslot2.scale.y = .8
 			else:
 				ui_access_wslot2.scale.x = 2.25
 				ui_access_wslot2.scale.y = 2.25
 			ui_access_wslot2.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
-			second_weapon_stats = weaponOnGround.Stats
+#			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
 			w1slot_visibility.visible = false
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
