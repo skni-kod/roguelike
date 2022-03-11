@@ -10,6 +10,8 @@ var min_size = 10 #minimalny rozmiar pokoju
 var max_size = 12 #max rozmiar pokoju
 var cull = 0.7 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
+var world_size_tl
+var world_size_br
 
 var start_room = null #zmienna przechowująca początkowy pokój
 var end_room = null #zmienna przechowująca końcowy pokój
@@ -17,6 +19,7 @@ var end_room = null #zmienna przechowująca końcowy pokój
 func _ready():
 	randomize()
 	make_rooms()
+
 
 func make_rooms(): #tworzenie pokojów
 	for i in range(room_num):
@@ -38,6 +41,8 @@ func make_rooms(): #tworzenie pokojów
 	yield(get_tree(),"idle_frame")
 	path = find_mst(room_positions)
 	make_map()
+	doors()
+#	global_tiles()
 
 
 func _process(delta):
@@ -51,6 +56,7 @@ func _input(event):
 		make_rooms()
 	if event.is_action_pressed("ui_focus_next"): #naciśnięcie tab - zmienienie korytarzy
 		make_map()
+		doors()
 
 func find_mst(nodes): #szukanie najkrótszej drogi
 	var path = AStar.new() 
@@ -84,6 +90,8 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 		full_rect = full_rect.merge(r)
 	var topleft = Map.world_to_map(full_rect.position)
 	var bottomright = Map.world_to_map(full_rect.end)
+	world_size_tl = topleft
+	world_size_br = bottomright
 #	for x in range(topleft.x, bottomright.x): #ustawienie tła
 #		for y in range(topleft.y, bottomright.y):
 #			Map.set_cell(x,y,44)
@@ -105,12 +113,29 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 				Map.set_cell(ul.x + 1, ul.y + y, 63)
 			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
 				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 47)
-			if y == 1:
+			if y == 1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
 				Map.set_cell(ul.x + 1, ul.y + y, 35)
 				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 46)
-			if y == s.y*2-1 :
+			if y == s.y*2-1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
 				Map.set_cell(ul.x + 1, ul.y + y, 62)
 				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 51)
+				
+#		for x in range(1, s.x * 2): #rysowanie ścian pokoju
+#			if(Map.get_cell(ul.x + x, ul.y + 1) != 11):
+#				Map.set_cell(ul.x + x, ul.y + 1, 44)
+#			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) != 11):
+#				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 44)
+#		for y in range(1, s.y * 2):
+#			if(Map.get_cell(ul.x + 1, ul.y + y) != 11):
+#				Map.set_cell(ul.x + 1, ul.y + y, 44)
+#			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
+#				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 44)
+#			if y == 1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
+#				Map.set_cell(ul.x + 1, ul.y + y, 35)
+#				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 46)
+#			if y == s.y*2-1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
+#				Map.set_cell(ul.x + 1, ul.y + y, 62)
+#				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 51)
 		var p = path.get_closest_point(Vector3(room.position.x, room.position.y, 0))
 		for conn in path.get_point_connections(p): #szukanie połączeń
 			if not conn in corridors:
@@ -194,17 +219,31 @@ func find_end_room(): #szukanie pokoju końcowego
 			end_room = room
 			max_x = room.position.x
 
-func doors(): #stawianie drzwi (do dopracowania)
+func doors(): #stawianie drzwi
 	for room in $Rooms.get_children():
 		var s = (room.size/tile_size).floor()
 		var pos = Map.world_to_map(room.position)
 		var ul = (room.position/tile_size).floor() - s
-		for x in range(1, s.x * 2):
-			if(Map.get_cell(ul.x + x - 1, ul.y + 1) == 43 and 
-				Map.get_cell(ul.x + x + 1, ul.y + 1) == 43 and
+		for x in range(1, s.x * 2 + 1):
+			if(Map.get_cell(ul.x + x - 1, ul.y + 1) == 45 and 
+				Map.get_cell(ul.x + x + 1, ul.y + 1) == 45 and
 				Map.get_cell(ul.x + x, ul.y + 1) == 11):
 					Map.set_cell(ul.x + x, ul.y + 1, 9)
-			if(Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 1 ) == 43 and
-				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 1 ) == 43 and
+			if(Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 1 ) == 60 and
+				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 1 ) == 60 and
 				Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) == 11):
 					Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 13)
+		for y in range(1, s.y * 2 + 1):
+			if(Map.get_cell(ul.x + 1, ul.y + y - 1) == 63 and 
+				Map.get_cell(ul.x + 1, ul.y + y + 1) == 63 and 
+				Map.get_cell(ul.x + 1, ul.y + y) == 11):
+					Map.set_cell(ul.x + 1, ul.y + y, 1)
+			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y - 1) == 47 and 
+				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y + 1) == 47 and 
+				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) == 11):
+					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 5)
+	
+func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, będzie użyta do zmieniania rogów
+	for x in range(world_size_tl.x, world_size_br.x):
+		for y in range(world_size_tl.x, world_size_br.y):
+			Map.set_cell(x,y,1)
