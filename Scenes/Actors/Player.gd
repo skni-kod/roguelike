@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 signal health_updated(health, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów życia bohatera
 signal mana_updated(mana, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów many bohatera
+signal armor_updated(helmet_durability, breastplate_durability, pants_durability, amount) 
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 signal player_moved(movement_vec)
@@ -68,9 +69,9 @@ var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 # === ZMIENNE DO ARMORA === #
 #zmienne przechowujące pozostałą wytrzymałość armorów
-var helmet_durability
-var breastplate_durability
-var pants_durability
+export var helmet_durability = 0 
+export var breastplate_durability = 0 
+export var pants_durability = 0
 
 #zmienne przechowujące procent rezystancji dps kazdego z armorów
 var helmet_resistance = 0.25
@@ -83,7 +84,7 @@ var breastplate_on
 var pants_on
 
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
-var armor_damage_on_hit = 5
+var armor_damage_on_hit = 2
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
@@ -105,6 +106,7 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 
 func UpdateArmorSprite():
+	emit_signal("armor_updated", helmet_durability, breastplate_durability, pants_durability)
 	if helmet_on == 1 and breastplate_on == 1 and pants_on == 1:
 		pass
 		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną pełną zbroją
@@ -154,6 +156,8 @@ func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
+	emit_signal("armor_updated", helmet_durability, breastplate_durability, pants_durability)
+	
 	if Bufor.coins:
 		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
@@ -229,9 +233,6 @@ func _ready(): #po inicjacji bohatera
 		"Empty" : 0
 		}
 	UpdatePotions() 
-	helmet_durability = 0
-	breastplate_durability = 0
-	pants_durability = 0
 	helmet_on = 0
 	breastplate_on = 0
 	pants_on = 0
@@ -617,8 +618,8 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 				UpdateArmorSprite()
 				body.queue_free()
 		if "Pants" in body.name:
-				helmet_durability = 100
-				helmet_on = 1
+				pants_durability = 100
+				pants_on = 1
 				UpdateArmorSprite()
 				body.queue_free()
 		if "GoldCoin" in body.name:

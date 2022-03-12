@@ -21,6 +21,8 @@ var all_enemies = {
 	}
 var all_armors = {
 	0 : preload("res://Scenes/Equipment/Armors/Helmet.tscn"),
+	1 : preload("res://Scenes/Equipment/Armors/Breastplate.tscn"),
+	2 : preload("res://Scenes/Equipment/Armors/Pants.tscn"),
 }
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
@@ -134,10 +136,17 @@ func weapon():
 
 func armor():
 	var armor
-	armor = load("res://Scenes/Equipment/Armors/Helmet.tscn")
+	
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var n = rng.randi_range(0, len(all_armors)-1)
+	
+	armor = all_armors[n]
 	armor = armor.instance()
 	armor.position = self.global_position + Vector2(-80,80)
 	main.call_deferred("add_child", armor)
+	
+	
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
@@ -152,6 +161,7 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
+		if rand.randf_range(0,100) <= 50: #drop zbroi
 			armor()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
