@@ -18,7 +18,7 @@ var all_weapons = {
 			"knc": float(0.15),
 			"range": "melee",
 			"effect": "none",
-			"plus": "0"
+			"plus": "1"
 		},
 		"axe": {
 			"attack": "10",

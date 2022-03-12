@@ -41,6 +41,8 @@ onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprit
 
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
+onready var w1plus_visibility = get_node("../UI/Slots/Background/Weaponslot1+")
+onready var w2plus_visibility = get_node("../UI/Slots/Background/Weaponslot2+")
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -212,7 +214,6 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[1] == weaponToTake.WeaponName:
 				self.speed = 100
-				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
 				weaponToTake.Stats['attack'] = float(all_weapons_p[(weaponToTake.WeaponName + "+")].attack)
 				#current_weapon = check_current_weapon() #nwm czemu to było ale z 1 działa lepiej xd
 				wp = 1 
@@ -220,19 +221,19 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				wp = 0
 			elif weapons[2] == weaponToTake.WeaponName:
 				self.speed = 100
-				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = 1
 				weaponToTake.Stats['attack'] = float(all_weapons_p[(weaponToTake.WeaponName + "+")].attack)
 				wp = 1 
 				swap_weapon(2,weaponToTake)
 				wp = 0
 			elif weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
+				get_node("../Weapons").all_weapons["Weapons"][weaponToTake.WeaponName]["plus"] = "1"
 				self.speed = 100
 				current_weapon = check_current_weapon()
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
 				else:
 					if current_weapon != null:
-						swap_weapon(current_weapon,weaponToTake)
+						swap_weapon(current_weapon,weaponToTake) 
 
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
@@ -416,6 +417,10 @@ func swap_weapon(slot,weaponOnGround):
 			first_weapon_stats = weaponOnGround.Stats
 			w1slot_visibility.visible = true
 			w2slot_visibility.visible = false
+			if wp == 1:
+				w1plus_visibility.visible = true
+			else:
+				w1plus_visibility.visible = false
 		elif slot == 2:
 			if weaponOnGround.WeaponName == "katana":
 				ui_access_wslot2.scale.x = .8
@@ -427,6 +432,10 @@ func swap_weapon(slot,weaponOnGround):
 			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
 			w1slot_visibility.visible = false
+			if wp == 1:
+				w2plus_visibility.visible = true
+			else:
+				w2plus_visibility.visible = false
 		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
 		weaponUsed = weaponUsed.instance()
 		weaponUsed.WeaponName = str(weapons[slot])
