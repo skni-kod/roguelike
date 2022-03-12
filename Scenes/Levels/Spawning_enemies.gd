@@ -4,6 +4,7 @@ var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
+
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
 var all_enemies = {
@@ -18,6 +19,9 @@ var all_enemies = {
 		8 : preload("res://Scenes/Actors/Snot.tscn"),
 		9 : preload("res://Scenes/Actors/Orc.tscn"),
 	}
+var all_armors = {
+	0 : preload("res://Scenes/Equipment/Armors/Helmet.tscn"),
+}
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
 	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn")]
@@ -128,6 +132,13 @@ func weapon():
 	weapon.position = Vector2(60,60) #Przypisuje pozycję broni
 	call_deferred('add_child', weapon) #Tworzy broń na podłodze
 
+func armor():
+	var armor
+	armor = load("res://Scenes/Equipment/Armors/Helmet.tscn")
+	armor = armor.instance()
+	armor.position = self.global_position + Vector2(-80,80)
+	main.call_deferred("add_child", armor)
+
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
 	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"
@@ -141,6 +152,7 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
+			armor()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)

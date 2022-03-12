@@ -66,6 +66,25 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 
 var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
+# === ZMIENNE DO ARMORA === #
+#zmienne przechowujące pozostałą wytrzymałość armorów
+var helmet_durability
+var breastplate_durability
+var pants_durability
+
+#zmienne przechowujące procent rezystancji dps kazdego z armorów
+var helmet_resistance = 0.25
+var breastplate_resistance = 0.25
+var pants_resistance = 0.25
+
+#zmienne przechowujące czy gracz posiada dany armor, używane do przeliczania otrzymanego dps
+var helmet_on
+var breastplate_on
+var pants_on
+
+#zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
+var armor_damage_on_hit = 5
+
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
 		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
@@ -84,6 +103,51 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 	elif potions[1] != "Empty":
 		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
 		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
+
+func UpdateArmorSprite():
+	if helmet_on == 1 and breastplate_on == 1 and pants_on == 1:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną pełną zbroją
+	elif helmet_on == 1 and breastplate_on == 1 and pants_on == 0:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubranym hełmem i klatą
+	elif helmet_on == 0 and breastplate_on == 1 and pants_on == 1:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną klata i spodniami
+	elif helmet_on == 1 and breastplate_on == 0 and pants_on == 0:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubranym hełmem
+	elif helmet_on == 0 and breastplate_on == 1 and pants_on == 0:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną klatą
+	elif helmet_on == 0 and breastplate_on == 0 and pants_on == 1:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego z ubranymi spodniami
+	elif helmet_on == 0 and breastplate_on == 0 and pants_on == 0:
+		pass
+		#tutaj wstawić ustawienie sprite gracza na takiego bez zbroi.
+
+func UpdateArmor():
+	if helmet_durability > 0 and helmet_on == 1:
+		if helmet_durability-armor_damage_on_hit <= 0:
+			helmet_durability = 0
+			helmet_on = 0
+		else:
+			helmet_durability -= armor_damage_on_hit
+	if breastplate_durability > 0 and breastplate_on == 1:
+		if breastplate_durability-armor_damage_on_hit <= 0:
+			breastplate_durability = 0
+			breastplate_on = 0
+		else:
+			breastplate_durability -= armor_damage_on_hit
+	if pants_durability > 0 and pants_on == 1:
+		if pants_durability-armor_damage_on_hit <= 0:
+			pants_durability = 0
+			pants_on = 0
+		else:
+			pants_durability -= armor_damage_on_hit
+	UpdateArmorSprite()
+	
 		
 
 func _ready(): #po inicjacji bohatera
@@ -165,11 +229,16 @@ func _ready(): #po inicjacji bohatera
 		"Empty" : 0
 		}
 	UpdatePotions() 
+	helmet_durability = 0
+	breastplate_durability = 0
+	pants_durability = 0
+	helmet_on = 0
+	breastplate_on = 0
+	pants_on = 0
 
 	
 func _process(delta):	
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
-	
 
 func _physics_process(delta): #funkcja wywoływana co klatkę
 	if ($CoolDownS1.get_time_left()):
@@ -524,8 +593,9 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 		elif knockbackResistance <= 0.6:
 			knockback /= 0.6
 		# ======= ========= ======= #
-		health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		health = health - ((dps - (dps * ((helmet_resistance * helmet_on)+(breastplate_resistance * breastplate_on)+(pants_resistance * pants_on)))) * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
+		UpdateArmor() # zaaktualizowanie armora po dostaniu hita.
 		got_hitted = true #bohater jest uderzany
 		$AnimationPlayer.play("Hit") #włącz animację "Hit"
 		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
@@ -536,6 +606,21 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
+		if "Helmet" in body.name:
+				helmet_durability = 100
+				helmet_on = 1
+				UpdateArmorSprite()
+				body.queue_free()
+		if "Breastplate" in body.name:
+				breastplate_durability = 100
+				breastplate_on = 1
+				UpdateArmorSprite()
+				body.queue_free()
+		if "Pants" in body.name:
+				helmet_durability = 100
+				helmet_on = 1
+				UpdateArmorSprite()
+				body.queue_free()
 		if "GoldCoin" in body.name:
 			coins += 3
 			body.queue_free()
