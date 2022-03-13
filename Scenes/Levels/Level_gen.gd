@@ -99,19 +99,19 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 		var s = (room.size/tile_size).floor()
 		var pos = Map.world_to_map(room.position)
 		var ul = (room.position/tile_size).floor() - s
-		for x in range(2, s.x * 2 - 1): #rysowanie pokoju
-			for y in range(2, s.y * 2 - 1):
+		for x in range(2, s.x * 2 - 2): #rysowanie pokoju
+			for y in range(2, s.y * 2 - 2):
 				Map.set_cell(ul.x + x, ul.y + y, 11)
-		for x in range(1, s.x * 2): #rysowanie ścian pokoju
+		for x in range(1, s.x * 2-2): #rysowanie ścian pokoju
 			if(Map.get_cell(ul.x + x, ul.y + 1) != 11):
 				Map.set_cell(ul.x + x, ul.y + 1, 45)
-			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) != 11):
-				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 60)
-		for y in range(1, s.y * 2):
+			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 2) != 11):
+				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 2, 60)
+		for y in range(1, s.y * 2-2):
 			if(Map.get_cell(ul.x + 1, ul.y + y) != 11):
 				Map.set_cell(ul.x + 1, ul.y + y, 63)
-			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11):
-				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 47)
+			if(Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y) != 11):
+				Map.set_cell(ul.x + s.x * 2 - 2, ul.y + y, 47)
 #			if y == 1 and Map.get_cell(ul.x + 1, ul.y + y) != 11 and Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) != 11:
 #				Map.set_cell(ul.x + 1, ul.y + y, 35)
 #				Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 46)
