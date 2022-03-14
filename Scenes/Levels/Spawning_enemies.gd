@@ -3,6 +3,8 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
+
+
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
@@ -20,9 +22,17 @@ var all_enemies = {
 		9 : preload("res://Scenes/Actors/Orc.tscn"),
 	}
 var all_armors = {
-	0 : preload("res://Scenes/Equipment/Armors/Helmet.tscn"),
-	1 : preload("res://Scenes/Equipment/Armors/Breastplate.tscn"),
-	2 : preload("res://Scenes/Equipment/Armors/Pants.tscn"),
+	'BlackArmor' : preload("res://Scenes/Equipment/Armors/BlackArmor.tscn"),
+	"Angel" : preload("res://Scenes/Equipment/Armors/Angel.tscn"),
+	"Amogus" : preload("res://Scenes/Equipment/Armors/Amogus.tscn")
+}
+
+var armor_drop_chance = 80 # szansa na to że wydropi jakiś armor po zabiciu wszystkich potworów w pokoju
+
+var armors_drop_chances = { # saznsa na drop kazdego z armorów
+	'BlackArmor' : 70,
+	"Angel" : 40,
+	"Amogus" : 2
 }
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
@@ -135,16 +145,25 @@ func weapon():
 	call_deferred('add_child', weapon) #Tworzy broń na podłodze
 
 func armor():
-	var armor
+	var armor = null
 	
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
-	var n = rng.randi_range(0, len(all_armors)-1)
+	var n = rng.randi_range(0, 100)
 	
-	armor = all_armors[n]
-	armor = armor.instance()
-	armor.position = self.global_position + Vector2(-80,80)
-	main.call_deferred("add_child", armor)
+	if n < armors_drop_chances['Amogus']:
+		armor = all_armors['Amogus']
+	
+	elif n < armors_drop_chances['Angel']:
+		armor = all_armors['Angel']
+	
+	elif n < armors_drop_chances['BlackArmor']:
+		armor = all_armors['BlackArmor']
+		
+	if armor != null:
+		armor = armor.instance()
+		armor.position = self.global_position + Vector2(-80,80)
+		main.call_deferred("add_child", armor)
 	
 	
 
@@ -161,7 +180,7 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
-		if rand.randf_range(0,100) <= 50: #drop zbroi
+		if rand.randf_range(0,100) <= armor_drop_chance: #drop zbroi
 			armor()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)

@@ -11,51 +11,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HelmetUnder" type="TextureProgress" parent="."]
-margin_left = 2.35969
-margin_top = 84.2408
-margin_right = 102.36
-margin_bottom = 94.2408
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 4 )
-
-[node name="HelmetOver" type="TextureProgress" parent="."]
-margin_left = 2.0
-margin_top = 84.0
-margin_right = 102.0
+[node name="ArmorUnder" type="TextureProgress" parent="."]
+margin_top = 85.0
+margin_right = 100.0
 margin_bottom = 95.0
-texture_over = ExtResource( 3 )
-texture_progress = ExtResource( 4 )
-
-[node name="BreastplateUnder" type="TextureProgress" parent="."]
-margin_left = 102.239
-margin_top = 84.0641
-margin_right = 202.239
-margin_bottom = 94.0641
+rect_scale = Vector2( 1.5, 1.5 )
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 4 )
 
-[node name="BreastplateOver" type="TextureProgress" parent="."]
-margin_left = 102.239
-margin_top = 84.0641
-margin_right = 202.239
-margin_bottom = 94.0641
-texture_over = ExtResource( 3 )
-texture_progress = ExtResource( 4 )
-
-[node name="PantsUnder" type="TextureProgress" parent="."]
-margin_left = 202.206
-margin_top = 83.9756
-margin_right = 302.206
-margin_bottom = 93.9756
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 4 )
-
-[node name="PantsOver" type="TextureProgress" parent="."]
-margin_left = 202.0
-margin_top = 84.0
-margin_right = 302.0
-margin_bottom = 94.0
+[node name="ArmorOver" type="TextureProgress" parent="."]
+margin_left = 0.000816345
+margin_top = 84.7263
+margin_right = 100.001
+margin_bottom = 94.7263
+rect_scale = Vector2( 1.5, 1.5 )
 texture_over = ExtResource( 3 )
 texture_progress = ExtResource( 4 )
 

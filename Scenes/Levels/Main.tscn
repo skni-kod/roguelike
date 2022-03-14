@@ -31,10 +31,10 @@ will_pulse = true
 [node name="ManaBar" parent="UI" instance=ExtResource( 13 )]
 anchor_left = 0.000615194
 anchor_right = 0.000615194
-margin_left = 2.8338
-margin_top = 49.1507
-margin_right = 2.8338
-margin_bottom = 49.1507
+margin_left = 3.04402
+margin_top = 37.1679
+margin_right = 3.04402
+margin_bottom = 37.1679
 rect_scale = Vector2( 2, 2 )
 script = ExtResource( 7 )
 
@@ -67,19 +67,19 @@ margin_bottom = 0.208862
 [node name="Coins" parent="UI" instance=ExtResource( 16 )]
 anchor_left = 0.000615194
 anchor_right = 0.000615213
-margin_left = 2.32675
-margin_top = 72.8408
-margin_right = 50.3267
-margin_bottom = 86.8408
+margin_left = 2.52518
+margin_top = 78.1983
+margin_right = 50.5252
+margin_bottom = 92.1983
 rect_scale = Vector2( 2, 2 )
 
 [node name="Slots" parent="UI" instance=ExtResource( 14 )]
 
 [node name="ArmorBar" parent="UI" instance=ExtResource( 8 )]
-margin_left = 2.84559
-margin_top = -47.1261
-margin_right = 2.84559
-margin_bottom = -47.1261
+margin_left = 3.77008
+margin_top = -26.2893
+margin_right = 3.77008
+margin_bottom = -26.2893
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 z_index = 2

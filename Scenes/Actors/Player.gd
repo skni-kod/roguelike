@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 signal health_updated(health, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów życia bohatera
 signal mana_updated(mana, amount) #deklaracja sygnału który będzie emitowany po zmianie ilości punktów many bohatera
-signal armor_updated(helmet_durability, breastplate_durability, pants_durability, amount) 
+signal armor_updated(armor_durability, amount) 
 signal attacked(damage) #deklaracja sygnału który będzie emitowany podczas ataku bohatera
 signal open() #deklaracja sygnału który będzie emitowany podczas otwarcia skrzyni przez bohatera
 signal player_moved(movement_vec)
@@ -68,20 +68,24 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 # === ZMIENNE DO ARMORA === #
-#zmienne przechowujące pozostałą wytrzymałość armorów
-export var helmet_durability = 0 
-export var breastplate_durability = 0 
-export var pants_durability = 0
+
+export var armor_durability = 0 
 
 #zmienne przechowujące procent rezystancji dps kazdego z armorów
-var helmet_resistance = 0.25
-var breastplate_resistance = 0.25
-var pants_resistance = 0.25
-
+var armors_resistance = {
+	null : 0,
+	"BlackArmor" : 0.5,
+	"Angel" : 0.7,
+	"Amogus" : 0.99
+}
 #zmienne przechowujące czy gracz posiada dany armor, używane do przeliczania otrzymanego dps
-var helmet_on
-var breastplate_on
-var pants_on
+onready var all_armors = {
+		"Hero" : preload("res://Assets/Hero/RedHero.png"),
+		"BlackArmor" : preload("res://Assets/Loot/Armors/BlackArmor.png"),
+		"Angel" : preload("res://Assets/Loot/Armors/angel.png"),
+		"Amogus" : preload("res://Assets/Loot/Armors/amogus.png")
+	}
+var equipped_armor = null
 
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
 var armor_damage_on_hit = 2
@@ -106,49 +110,28 @@ func UpdatePotions(): #funkcja aktualizująca status potek
 		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 
 func UpdateArmorSprite():
-	emit_signal("armor_updated", helmet_durability, breastplate_durability, pants_durability)
-	if helmet_on == 1 and breastplate_on == 1 and pants_on == 1:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną pełną zbroją
-	elif helmet_on == 1 and breastplate_on == 1 and pants_on == 0:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubranym hełmem i klatą
-	elif helmet_on == 0 and breastplate_on == 1 and pants_on == 1:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną klata i spodniami
-	elif helmet_on == 1 and breastplate_on == 0 and pants_on == 0:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubranym hełmem
-	elif helmet_on == 0 and breastplate_on == 1 and pants_on == 0:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubraną klatą
-	elif helmet_on == 0 and breastplate_on == 0 and pants_on == 1:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego z ubranymi spodniami
-	elif helmet_on == 0 and breastplate_on == 0 and pants_on == 0:
-		pass
-		#tutaj wstawić ustawienie sprite gracza na takiego bez zbroi.
+	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	emit_signal("armor_updated", armor_durability)
+	var player = level.get_node("Player")
+	if equipped_armor == null:
+		player.get_node("PlayerSprite").texture = all_armors["Hero"]
+	if equipped_armor == "BlackArmor":
+		player.get_node("PlayerSprite").texture = all_armors["BlackArmor"]
+	if equipped_armor == "Angel":
+		player.get_node("PlayerSprite").texture = all_armors["Angel"]
+	if equipped_armor == "Amogus":
+		player.get_node("PlayerSprite").texture = all_armors["Amogus"]
+	
 
 func UpdateArmor():
-	if helmet_durability > 0 and helmet_on == 1:
-		if helmet_durability-armor_damage_on_hit <= 0:
-			helmet_durability = 0
-			helmet_on = 0
+	if armor_durability > 0 and equipped_armor != null:
+		if armor_durability-armor_damage_on_hit <= 0:
+			armor_durability = 0
+			equipped_armor = null
 		else:
-			helmet_durability -= armor_damage_on_hit
-	if breastplate_durability > 0 and breastplate_on == 1:
-		if breastplate_durability-armor_damage_on_hit <= 0:
-			breastplate_durability = 0
-			breastplate_on = 0
-		else:
-			breastplate_durability -= armor_damage_on_hit
-	if pants_durability > 0 and pants_on == 1:
-		if pants_durability-armor_damage_on_hit <= 0:
-			pants_durability = 0
-			pants_on = 0
-		else:
-			pants_durability -= armor_damage_on_hit
+			armor_durability -= armor_damage_on_hit
 	UpdateArmorSprite()
+
 	
 		
 
@@ -156,7 +139,7 @@ func _ready(): #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
-	emit_signal("armor_updated", helmet_durability, breastplate_durability, pants_durability)
+	emit_signal("armor_updated", armor_durability)
 	
 	if Bufor.coins:
 		coins = Bufor.coins
@@ -233,9 +216,9 @@ func _ready(): #po inicjacji bohatera
 		"Empty" : 0
 		}
 	UpdatePotions() 
-	helmet_on = 0
-	breastplate_on = 0
-	pants_on = 0
+	#helmet_on = 0
+	equipped_armor = null
+	#pants_on = 0
 
 	
 func _process(delta):	
@@ -594,7 +577,7 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 		elif knockbackResistance <= 0.6:
 			knockback /= 0.6
 		# ======= ========= ======= #
-		health = health - ((dps - (dps * ((helmet_resistance * helmet_on)+(breastplate_resistance * breastplate_on)+(pants_resistance * pants_on)))) * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		health = health - ((dps - (dps * (armors_resistance[equipped_armor]))) * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 		UpdateArmor() # zaaktualizowanie armora po dostaniu hita.
 		got_hitted = true #bohater jest uderzany
@@ -607,19 +590,19 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
-		if "Helmet" in body.name:
-				helmet_durability = 100
-				helmet_on = 1
+		if "BlackArmor" in body.name:
+				armor_durability = 100
+				equipped_armor = "BlackArmor"
 				UpdateArmorSprite()
 				body.queue_free()
-		if "Breastplate" in body.name:
-				breastplate_durability = 100
-				breastplate_on = 1
+		if "Angel" in body.name:
+				armor_durability = 100
+				equipped_armor = "Angel"
 				UpdateArmorSprite()
 				body.queue_free()
-		if "Pants" in body.name:
-				pants_durability = 100
-				pants_on = 1
+		if "Amogus" in body.name:
+				armor_durability = 100
+				equipped_armor = "Amogus"
 				UpdateArmorSprite()
 				body.queue_free()
 		if "GoldCoin" in body.name:
