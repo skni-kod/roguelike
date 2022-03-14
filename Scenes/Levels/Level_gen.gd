@@ -225,7 +225,7 @@ func doors(): #ustawianie drzwi
 				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) == 11):
 					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 5)
 	
-func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, nie działa na korytarz (why???)
+func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, pomocnicza do "zalepiania" rogów korytarzy i pokoi
 	for x in range(world_size_tl.x, world_size_br.x):
 		for y in range(world_size_tl.y, world_size_br.y):
 			if (Map.get_cell(x + 1, y) == 45 and
