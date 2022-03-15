@@ -31,7 +31,7 @@ var armor_drop_chance = 80 # szansa na to że wydropi jakiś armor po zabiciu ws
 
 var armors_drop_chances = { # saznsa na drop kazdego z armorów
 	'BlackArmor' : 70,
-	"Angel" : 40,
+	"Angel" : 60,
 	"Amogus" : 2
 }
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),

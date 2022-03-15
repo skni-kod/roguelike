@@ -69,6 +69,10 @@ var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
 # === ZMIENNE DO ARMORA === #
 
+var t
+
+var freezed = 0
+
 export var armor_durability = 0 
 
 #zmienne przechowujące procent rezystancji dps kazdego z armorów
@@ -510,37 +514,46 @@ func swap_potion(slot,potionOnGround): #funkcja do podnoszenia potionów
 		equipped_potion = potions[2]
 
 func movement(delta): #funkcja poruszania się
-	direction = Vector2(
-		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
-		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	).normalized() # Określenie kierunku poruszania się
-	if direction != Vector2.ZERO:
-		skok_vector = direction
-	if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
-		jump() 
-		stamina = stamina - 1
-	if skok :
-		velocity = velocity.move_toward(skok_vector * speed * 2, 500 * delta)
-	else :
-		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
-	move() #wywołanie poruszania się
-	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
-			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif !skok:
-			$AnimationPlayer.play("Run")
-	#	elif direction.y != 0: #jeżeli porusza się w pionie
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
-	#		if direction.x < 0: #jeżeli idzie w lewo
-	#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-	#		else: #jeżeli idzie w prawo
-	#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-	#	elif direction.x < 0: #jeżeli idzie w lewo
-	#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
-	#	elif direction.x > 0: #jeżeli idzie w prawo
-	#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
+	if freezed != 1:
+		direction = Vector2(
+			Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+			Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+		).normalized() # Określenie kierunku poruszania się
+		if direction != Vector2.ZERO:
+			skok_vector = direction
+		if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
+			jump() 
+			stamina = stamina - 1
+		if skok :
+			velocity = velocity.move_toward(skok_vector * speed * 2, 500 * delta)
+		else :
+			velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
+		move() #wywołanie poruszania się
+		if !got_hitted: #jeżeli nie jest uderzany
+			if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
+				$AnimationPlayer.play("Idle") #włącz animację "Idle"
+			elif !skok:
+				$AnimationPlayer.play("Run")
+		#	elif direction.y != 0: #jeżeli porusza się w pionie
+		#		$AnimationPlayer.play("Run") #włącz animację "Run"
+		#		if direction.x < 0: #jeżeli idzie w lewo
+		#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+		#		else: #jeżeli idzie w prawo
+		#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+		#	elif direction.x < 0: #jeżeli idzie w lewo
+		#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
+		#		$AnimationPlayer.play("Run") #włącz animację "Run"
+		#	elif direction.x > 0: #jeżeli idzie w prawo
+		#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
+		#		$AnimationPlayer.play("Run") #włącz animację "Run"
+
+func wait_timer(wait_time):
+	t = Timer.new()
+	t.set_wait_time(0.75) #recznie ustawiony wait time taki sam jak na timerze 'skok' w playerze
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	yield(t, "timeout")
 
 func jump():
 	skok = true
@@ -585,7 +598,69 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
 		got_hitted = false #bohater nie jest uderzany
 		if (health <= 0):
-			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+			if equipped_armor == "Angel": #Jeżeli ma armor Angel to nastepuje odrodzenie
+				immortal = 1
+				freezed = 1
+				var smothing = 50 #plynność regeneracji hp
+				var revival_time = 0.9 #czas odradzania w sekundach
+				for i in smothing:
+					health += max_health/smothing
+					emit_signal("health_updated", health)
+					
+					t = Timer.new()
+					t.set_wait_time(revival_time/smothing) 
+					t.set_one_shot(true)
+					self.add_child(t)
+					t.start()
+					yield(t, "timeout")
+					print(health)
+					
+				health = max_health
+				immortal = 0
+				freezed = 0
+				equipped_armor = null
+				armor_durability = 0
+				emit_signal("health_updated", health)
+				UpdateArmorSprite()
+				
+				#-----KNOCKBACK-----
+				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
+				
+				var tmp = {
+					'position_x' : equipped_weapon.get_node("AttackCollision").position.x,
+					'position_y' : equipped_weapon.get_node("AttackCollision").position.y,
+					'scale_x' : equipped_weapon.get_node("AttackCollision").scale.x,
+					'scale_y' : equipped_weapon.get_node("AttackCollision").scale.y,
+					'damage' : equipped_weapon.damage,
+					'weaponKnockback' : equipped_weapon.weaponKnockback,
+				}
+				
+				equipped_weapon.get_node("AttackCollision").disabled = false
+				equipped_weapon.get_node("AttackCollision").position.x = 0
+				equipped_weapon.get_node("AttackCollision").position.y = 0
+				equipped_weapon.get_node("AttackCollision").scale.x = 3
+				equipped_weapon.get_node("AttackCollision").scale.y = 6
+				equipped_weapon.damage = 0
+				equipped_weapon.weaponKnockback *= 20
+				
+				t = Timer.new()
+				t.set_wait_time(0.1) 
+				t.set_one_shot(true)
+				self.add_child(t)
+				t.start()
+				yield(t, "timeout")
+			
+				equipped_weapon.get_node("AttackCollision").disabled = true
+				equipped_weapon.get_node("AttackCollision").position.x = tmp['position_x']
+				equipped_weapon.get_node("AttackCollision").position.y = tmp['position_y']
+				equipped_weapon.get_node("AttackCollision").scale.x = tmp['scale_x']
+				equipped_weapon.get_node("AttackCollision").scale.y = tmp['scale_y']
+				equipped_weapon.damage = tmp['damage']
+				equipped_weapon.weaponKnockback = tmp['weaponKnockback']
+				#-----KNOCKBACK-----
+				
+			else:
+				get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
 	
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
