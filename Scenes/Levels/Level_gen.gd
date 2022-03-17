@@ -5,10 +5,10 @@ var Player = preload("res://Scenes/Actors/Player.tscn")
 onready var Map = $TileMap
 
 var tile_size = 32 #rozmiar tile'a
-var room_num = 40 #ilość pokoi (przed usunięciem)
+var room_num = 30 #ilość pokoi (przed usunięciem)
 var min_size = 10 #minimalny rozmiar pokoju
-var max_size = 12 #max rozmiar pokoju
-var cull = 0.6 #szansa na usunięcie pokoju podczas generacji
+var max_size = 15 #max rozmiar pokoju
+var cull = 0.5 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
 var world_size_tl
 var world_size_br
@@ -23,8 +23,10 @@ var x_1 = 0
 var y_1 = 0
 
 func _ready():
+	MusicController.stop_music() #zapauzowanie muzyki z menu
 	randomize()
 	make_rooms()
+	
 
 func make_rooms(): #tworzenie pokojów
 	room_pos = []
@@ -119,12 +121,12 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 		for x in range(2, s.x * 2 - 2): #rysowanie pokoju
 			for y in range(2, s.y * 2 - 2):
 				Map.set_cell(ul.x + x, ul.y + y, 11)
-		for x in range(1, s.x * 2-2): #rysowanie ścian pokoju
+		for x in range(1, s.x * 2-1): #rysowanie ścian pokoju
 			if(Map.get_cell(ul.x + x, ul.y + 1) != 11):
 				Map.set_cell(ul.x + x, ul.y + 1, 45)
 			if(Map.get_cell(ul.x + x, ul.y + s.y * 2 - 2) != 11):
 				Map.set_cell(ul.x + x, ul.y + s.y * 2 - 2, 60)
-		for y in range(1, s.y * 2-2):
+		for y in range(1, s.y * 2-1):
 			if(Map.get_cell(ul.x + 1, ul.y + y) != 11):
 				Map.set_cell(ul.x + 1, ul.y + y, 63)
 			if(Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y) != 11):
