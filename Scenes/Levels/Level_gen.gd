@@ -5,10 +5,10 @@ var Player = preload("res://Scenes/Actors/Player.tscn")
 onready var Map = $TileMap
 
 var tile_size = 32 #rozmiar tile'a
-var room_num = 30 #ilość pokoi (przed usunięciem)
+var room_num = 40 #ilość pokoi (przed usunięciem)
 var min_size = 10 #minimalny rozmiar pokoju
 var max_size = 12 #max rozmiar pokoju
-var cull = 0.5 #szansa na usunięcie pokoju podczas generacji
+var cull = 0.6 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
 var world_size_tl
 var world_size_br
@@ -16,19 +16,35 @@ var world_size_br
 var start_room = null #zmienna przechowująca początkowy pokój
 var end_room = null #zmienna przechowująca końcowy pokój
 
+var rooms_pos = []
+var room_pos = Vector2(0,0)
+
+var x_1 = 0
+var y_1 = 0
+
 func _ready():
 	randomize()
 	make_rooms()
 
 func make_rooms(): #tworzenie pokojów
+	room_pos = []
+	for x in range(6):
+		for y in range(7):
+			room_pos = Vector2(x_1, y_1)
+			rooms_pos.append(room_pos)
+			y_1 += 1000
+		y_1 = 0
+		x_1 += 1000
+	
 	for i in range(room_num):
-		var pos = Vector2(0, 0)
+		var pos = rooms_pos[i]
 		var r = Room.instance()
 		var w = min_size + randi()%(max_size-min_size) #szerokość
 		var h = min_size + randi()%(max_size-min_size) #wysokość
 		r.make_room(pos, Vector2(w,h) * tile_size)
 		$Rooms.add_child(r)
-	yield(get_tree().create_timer(2),"timeout") #zatrzymuje funkcje i wykonuje w tym czasie przerwe (inne rzeczy się dzieją w tym momencie)
+
+	#yield(get_tree().create_timer(0.1),"timeout") #zatrzymuje funkcje i wykonuje w tym czasie przerwe (inne rzeczy się dzieją w tym momencie)
 	var room_positions = []
 	for room in $Rooms.get_children():
 		if randf() < cull:
@@ -52,6 +68,7 @@ func _input(event):
 			n.queue_free()
 		path = null
 		make_rooms()
+		global_tiles()
 	if event.is_action_pressed("ui_focus_next"): #naciśnięcie tab - zmienienie korytarzy
 		make_map()
 		global_tiles()
