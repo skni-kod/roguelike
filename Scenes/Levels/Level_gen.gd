@@ -6,9 +6,9 @@ onready var Map = $TileMap
 
 var tile_size = 32 #rozmiar tile'a
 var room_num = 30 #ilość pokoi (przed usunięciem)
-var min_size = 10 #minimalny rozmiar pokoju
+var min_size = 6 #minimalny rozmiar pokoju
 var max_size = 15 #max rozmiar pokoju
-var cull = 0.5 #szansa na usunięcie pokoju podczas generacji
+var cull = 0.4 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
 var world_size_tl
 var world_size_br
@@ -19,7 +19,7 @@ var end_room = null #zmienna przechowująca końcowy pokój
 var rooms_pos = []
 var room_pos = Vector2(0,0)
 
-var x_1 = 0
+var x_1 = 0 #zmienne pomocnicze do tworzenia pozycji pokoi
 var y_1 = 0
 
 func _ready():
@@ -58,8 +58,8 @@ func make_rooms(): #tworzenie pokojów
 	yield(get_tree(),"idle_frame")
 	path = find_mst(room_positions)
 	make_map()
-	global_tiles()
 	doors()
+	global_tiles()
 
 func _process(delta):
 	update()
@@ -226,23 +226,55 @@ func doors(): #ustawianie drzwi
 		var pos = Map.world_to_map(room.position)
 		var ul = (room.position/tile_size).floor() - s
 		for x in range(1, s.x * 2 + 1):
-			if(Map.get_cell(ul.x + x - 1, ul.y + 1) == 45 and 
-				Map.get_cell(ul.x + x + 1, ul.y + 1) == 45 and
+			if(((Map.get_cell(ul.x + x - 1, ul.y + 1) == 45 and 
+				Map.get_cell(ul.x + x + 1, ul.y + 1) == 45) or 
+				(Map.get_cell(ul.x + x - 1, ul.y + 1) == 63 and
+				Map.get_cell(ul.x + x + 1, ul.y + 1) == 47)) and
 				Map.get_cell(ul.x + x, ul.y + 1) == 11):
+					Map.set_cell(ul.x + x - 1, ul.y + 1, 8)
+					Map.set_cell(ul.x + x + 1, ul.y + 1, 10)
 					Map.set_cell(ul.x + x, ul.y + 1, 9)
-			if(Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 1 ) == 60 and
-				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 1 ) == 60 and
-				Map.get_cell(ul.x + x, ul.y + s.y * 2 - 1) == 11):
-					Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 13)
+					
+					Map.set_cell(ul.x + x - 1, ul.y, 62)
+					Map.set_cell(ul.x + x + 1, ul.y, 51)
+					Map.set_cell(ul.x + x, ul.y, 13)
+			if(((Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 2) == 60 and
+				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 2) == 60) or
+				(Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 2) == 63 and
+				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 2) == 47)) and
+				Map.get_cell(ul.x + x, ul.y + s.y * 2 - 2) == 11):
+					Map.set_cell(ul.x + x-1, ul.y + s.y * 2 - 2, 12)
+					Map.set_cell(ul.x + x+1, ul.y + s.y * 2 - 2, 14)
+					Map.set_cell(ul.x + x, ul.y + s.y * 2 - 2, 13)
+					
+					Map.set_cell(ul.x + x-1, ul.y + s.y * 2 - 1, 35)
+					Map.set_cell(ul.x + x+1, ul.y + s.y * 2 - 1, 46)
+					Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 9)
 		for y in range(1, s.y * 2 + 1):
-			if(Map.get_cell(ul.x + 1, ul.y + y - 1) == 63 and 
-				Map.get_cell(ul.x + 1, ul.y + y + 1) == 63 and 
+			if(((Map.get_cell(ul.x + 1, ul.y + y - 1) == 63 and 
+				Map.get_cell(ul.x + 1, ul.y + y + 1) == 63) or
+				(Map.get_cell(ul.x + 1, ul.y + y - 1) == 45 and 
+				Map.get_cell(ul.x + 1, ul.y + y + 1) == 60)) and 
 				Map.get_cell(ul.x + 1, ul.y + y) == 11):
+					Map.set_cell(ul.x + 1, ul.y + y-1, 0)
+					Map.set_cell(ul.x + 1, ul.y + y+1, 2)
 					Map.set_cell(ul.x + 1, ul.y + y, 1)
-			if(Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y - 1) == 47 and 
-				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y + 1) == 47 and 
-				Map.get_cell(ul.x + s.x * 2 - 1, ul.y + y) == 11):
-					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 5)
+					
+					Map.set_cell(ul.x, ul.y + y-1, 46)
+					Map.set_cell(ul.x, ul.y + y+1, 51)
+					Map.set_cell(ul.x, ul.y + y, 5)
+			if(((Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y - 1) == 47 and 
+				Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y + 1) == 47) or
+				(Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y - 1) == 45 and
+				Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y + 1) == 60)) and 
+				Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y) == 11):
+					Map.set_cell(ul.x + s.x * 2 - 2, ul.y + y-1, 4)
+					Map.set_cell(ul.x + s.x * 2 - 2, ul.y + y+1, 6)
+					Map.set_cell(ul.x + s.x * 2 - 2, ul.y + y, 5)
+					
+					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y-1, 35)
+					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y+1, 62)
+					Map.set_cell(ul.x + s.x * 2 - 1, ul.y + y, 1)
 	
 func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, pomocnicza do "zalepiania" rogów korytarzy i pokoi
 	for x in range(world_size_tl.x, world_size_br.x):
@@ -259,6 +291,7 @@ func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, pom
 			if (Map.get_cell(x - 1, y) == 45 and 
 				Map.get_cell(x, y + 1) == 47):
 					Map.set_cell(x, y, 46)
+			
 			
 			if (Map.get_cell(x + 1, y) == 60 and
 				Map.get_cell(x, y + 1) == 47):
