@@ -8,8 +8,8 @@ extends Camera2D
 onready var parent = get_parent() #Odwołanie do playera
 
 func _ready():
-	zoom.x = 1 #ustawienia zoom'a kamery
-	zoom.y = 1
+	zoom.x = 0.6 #ustawienia zoom'a kamery
+	zoom.y = 0.6
 #	set_as_toplevel(true)
 #	update_grid_position()
 	

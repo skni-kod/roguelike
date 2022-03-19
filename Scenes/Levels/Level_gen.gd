@@ -4,20 +4,21 @@ var Room = preload("res://Scenes/Levels/Room_new.tscn")
 var Player = preload("res://Scenes/Actors/Player.tscn")
 onready var Map = $TileMap
 
+
 var tile_size = 32 #rozmiar tile'a
 var room_num = 30 #ilość pokoi (przed usunięciem)
 var min_size = 6 #minimalny rozmiar pokoju
 var max_size = 15 #max rozmiar pokoju
 var cull = 0.4 #szansa na usunięcie pokoju podczas generacji
 var path #zmienna przechowująca najkrótszą ścieżkę
-var world_size_tl
-var world_size_br
+var world_size_tl #położenie lewego-górnego końca mapy
+var world_size_br #położenie prawego-dolnego końca mapy
 
 var start_room = null #zmienna przechowująca początkowy pokój
 var end_room = null #zmienna przechowująca końcowy pokój
 
-var rooms_pos = []
-var room_pos = Vector2(0,0)
+var rooms_pos = [] #tablica przechowująca położenie pokoi
+var room_pos = Vector2(0,0) #pozycja pokoju
 
 var x_1 = 0 #zmienne pomocnicze do tworzenia pozycji pokoi
 var y_1 = 0
@@ -26,19 +27,18 @@ func _ready():
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	randomize()
 	make_rooms()
-	
 
 func make_rooms(): #tworzenie pokojów
 	room_pos = []
-	for x in range(6):
+	for x in range(6): #ustalanie pozycji pokojów
 		for y in range(7):
 			room_pos = Vector2(x_1, y_1)
 			rooms_pos.append(room_pos)
-			y_1 += 1000
+			y_1 += 1000 #odległość między pokojami
 		y_1 = 0
 		x_1 += 1000
 	
-	for i in range(room_num):
+	for i in range(room_num): #ustalanie wielkości pokoju
 		var pos = rooms_pos[i]
 		var r = Room.instance()
 		var w = min_size + randi()%(max_size-min_size) #szerokość
@@ -46,9 +46,8 @@ func make_rooms(): #tworzenie pokojów
 		r.make_room(pos, Vector2(w,h) * tile_size)
 		$Rooms.add_child(r)
 
-	#yield(get_tree().create_timer(0.1),"timeout") #zatrzymuje funkcje i wykonuje w tym czasie przerwe (inne rzeczy się dzieją w tym momencie)
 	var room_positions = []
-	for room in $Rooms.get_children():
+	for room in $Rooms.get_children(): #usuwanie pokojów (żeby wyglądało bardziej na randomowe XD)
 		if randf() < cull:
 			room.queue_free()
 		else:
@@ -110,8 +109,8 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 	var bottomright = Map.world_to_map(full_rect.end)
 	world_size_tl = topleft
 	world_size_br = bottomright
-#	for x in range(topleft.x, bottomright.x): #ustawienie tła
-#		for y in range(topleft.y, bottomright.y):
+#	for x in range(topleft.x - 10, bottomright.x + 10): #ustawienie tła
+#		for y in range(topleft.y - 10, bottomright.y + 10):
 #			Map.set_cell(x,y,44)
 	var corridors = []
 	for room in $Rooms.get_children():
@@ -206,6 +205,7 @@ func carve_path(pos1, pos2):
 #		if (Map.get_cell(y_x.x, y) == 11 and Map.get_cell(y_x.x-1, y) == 44 and 
 #			Map.get_cell(y_x.x, y+1) == 44):
 #				Map.set_cell(y_x.x-1, y+1, 62)
+
 func find_start_room(): #szukanie pokoju startowego
 	var min_x = INF
 	for room in $Rooms.get_children():
@@ -225,8 +225,8 @@ func doors(): #ustawianie drzwi
 		var s = (room.size/tile_size).floor()
 		var pos = Map.world_to_map(room.position)
 		var ul = (room.position/tile_size).floor() - s
-		for x in range(1, s.x * 2 + 1):
-			if(((Map.get_cell(ul.x + x - 1, ul.y + 1) == 45 and 
+		for x in range(1, s.x * 2 + 1): 
+			if(((Map.get_cell(ul.x + x - 1, ul.y + 1) == 45 and #górne drzwi
 				Map.get_cell(ul.x + x + 1, ul.y + 1) == 45) or 
 				(Map.get_cell(ul.x + x - 1, ul.y + 1) == 63 and
 				Map.get_cell(ul.x + x + 1, ul.y + 1) == 47)) and
@@ -238,7 +238,8 @@ func doors(): #ustawianie drzwi
 					Map.set_cell(ul.x + x - 1, ul.y, 62)
 					Map.set_cell(ul.x + x + 1, ul.y, 51)
 					Map.set_cell(ul.x + x, ul.y, 13)
-			if(((Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 2) == 60 and
+			
+			if(((Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 2) == 60 and #dolne drzwi
 				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 2) == 60) or
 				(Map.get_cell(ul.x + x - 1, ul.y + s.y * 2 - 2) == 63 and
 				Map.get_cell(ul.x + x + 1, ul.y + s.y * 2 - 2) == 47)) and
@@ -250,8 +251,9 @@ func doors(): #ustawianie drzwi
 					Map.set_cell(ul.x + x-1, ul.y + s.y * 2 - 1, 35)
 					Map.set_cell(ul.x + x+1, ul.y + s.y * 2 - 1, 46)
 					Map.set_cell(ul.x + x, ul.y + s.y * 2 - 1, 9)
+					
 		for y in range(1, s.y * 2 + 1):
-			if(((Map.get_cell(ul.x + 1, ul.y + y - 1) == 63 and 
+			if(((Map.get_cell(ul.x + 1, ul.y + y - 1) == 63 and #lewe drzwi
 				Map.get_cell(ul.x + 1, ul.y + y + 1) == 63) or
 				(Map.get_cell(ul.x + 1, ul.y + y - 1) == 45 and 
 				Map.get_cell(ul.x + 1, ul.y + y + 1) == 60)) and 
@@ -263,7 +265,8 @@ func doors(): #ustawianie drzwi
 					Map.set_cell(ul.x, ul.y + y-1, 46)
 					Map.set_cell(ul.x, ul.y + y+1, 51)
 					Map.set_cell(ul.x, ul.y + y, 5)
-			if(((Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y - 1) == 47 and 
+			
+			if(((Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y - 1) == 47 and #prawe drzwi
 				Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y + 1) == 47) or
 				(Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y - 1) == 45 and
 				Map.get_cell(ul.x + s.x * 2 - 2, ul.y + y + 1) == 60)) and 
@@ -291,7 +294,6 @@ func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, pom
 			if (Map.get_cell(x - 1, y) == 45 and 
 				Map.get_cell(x, y + 1) == 47):
 					Map.set_cell(x, y, 46)
-			
 			
 			if (Map.get_cell(x + 1, y) == 60 and
 				Map.get_cell(x, y + 1) == 47):
