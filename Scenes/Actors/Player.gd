@@ -20,26 +20,23 @@ var max_mana = 200 #maksymalna ilość many
 var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If you wish to change it permamently go to statusEffect.gd
 var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
-var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
-var equipped # Aktualnie używana broń
+var currentlyEquippedWeapon # Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
-var weapons = {} #posiadane bronki
-var current_weapon = 1;
-var first_weapon_stats = {"attack":float(12), "knc":float(0.15)}
-var second_weapon_stats = {}
+var equippedWeapons = {} #posiadane bronki
 
 var stepsoundvar
 
-onready var ui_access_wslot1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
-onready var ui_access_wslot2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
+onready var UISlotWeaponSprite1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
+onready var UISlotWeaponSprite2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
 onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
-
-#onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
-onready var actualweapon_access = get_node("../Player/EquippedWeapon/WeaponSprite")
 
 onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
 onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
+
+# --- WEAPON VARS --- #
+var weaponToTake = null		# Variable for holding a weapon to pick up
+# --- ----------- --- #
 
 #zmienne do funkcji potionów
 onready var ui_access_pslot1 = get_node("../UI/Slots/Background/Potionslot1/potionsprite1")
@@ -95,29 +92,29 @@ func _ready() -> void: #po inicjacji bohatera
 		coins = Bufor.coins
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
-	weapons = {
+	equippedWeapons = {
 		1 : "Axe",
 		2 : "Empty"
 	}
-	ui_access_wslot1.texture = Weapons.all_weapons_textures[weapons[1]]
-	equipped = Weapons.all_weapons_scenes[weapons[1]]
+#	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weapons[1]]
+#	currentlyEquippedWeapon = Weapons.all_weapons_scenes[weapons[1]]
 	
 	
 #	if Bufor.weapons: # jeśli bufor nie jest pusty
 #		# bronie są ładowane z bufora
 #		weapons = Bufor.weapons
 #		first_weapon_stats = Bufor.first_weapon_stats
-#		equipped = Bufor.equipped
+#		currentlyEquippedWeapon = Bufor.currentlyEquippedWeapon
 #		if weapons[2] != "Empty":
 #			second_weapon_stats = Bufor.second_weapon_stats
-#			ui_access_wslot2.texture = Weapons.all_weapons_textures[weapons[2]]
-#		ui_access_wslot1.texture = Weapons.all_weapons_textures[weapons[1]]
+#			UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[weapons[2]]
+#		UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weapons[1]]
 #		if weapons[1] == "katana": # naprawia błąd wielkiej katany w interfejsie
-#				ui_access_wslot1.scale.x = .8
-#				ui_access_wslot1.scale.y = .8
+#				UISlotWeaponSprite1.scale.x = .8
+#				UISlotWeaponSprite1.scale.y = .8
 #		if weapons[2] == "katana":
-#				ui_access_wslot2.scale.x = .8
-#				ui_access_wslot2.scale.y = .8
+#				UISlotWeaponSprite2.scale.x = .8
+#				UISlotWeaponSprite2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -185,17 +182,14 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 			knockback *= 0.95
 			emit_signal("player_moved", knockback)
 		# === ========================== === #
-		
+	
+	# Pick weapon event
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
-			print("[INFO]: Weapons[1] - ", weapons[1], " Weapons[2] - ", weapons[2])
-			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
-#				self.speed = 100
-				current_weapon = get_current_weapon_slot()
-				if weapons[2] == "Empty":
-					swap_weapon(2,weaponToTake)
-				else:
-					swap_weapon(current_weapon,weaponToTake)
+			print("[INFO]: Weapons[1] - ", equippedWeapons[1], " Weapons[2] - ", equippedWeapons[2])
+			swapWeaponOnSlot(getCurrentWeaponSlot(), weaponToTake)
+			weaponToTake.queue_free()
+			
 
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
@@ -303,19 +297,98 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 		#	Potion_in_time -= 1
 		UpdatePotions()
 
-
-	if weapons[2] != "Empty": 
-		if Input.is_action_just_pressed("change_weapon_slot"):
+	if equippedWeapons[2] != "Empty": 
+		if Input.is_action_just_pressed("changeWeaponSlot"):
 			if ($Hand.get_child(0) and $Hand.get_child(0).spell):
-				current_weapon = get_current_weapon_slot()
-				change_weapon_slot(current_weapon)
-	  
+				changeWeaponSlot(getCurrentWeaponSlot())
+
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
 
-  
-func updateMana(value) -> void:
+
+# ============= WEAPONS ============== #  
+# Returns the number of the current chosen weapon slot if the Hand node has 
+# a child if there is no child in the Hand node, then returns 0
+func getCurrentWeaponSlot() -> int:
+	if $Hand.get_child(0):
+		if equippedWeapons[1] == $Hand.get_child(0).weaponName:
+			return 1
+		else:
+			return 2
+	else:
+		return 1
+
+
+# Zmiana ze slotu na inny slot (1 lub 2)
+func changeWeaponSlot(currentSlot: int) -> void:
+	match currentSlot:
+		1:
+			currentSlot = 2
+		2:
+			currentSlot = 1
+
+# Deletes the currently currentlyEquippedWeapon weapon or every child of the $Hand node
+func deleteCurrentWeapon() -> void:
+	if $Hand.get_child(0) and $Hand.get_child_count() == 1:
+		$Hand.get_child(0).queue_free()
+		
+	# If there is more children in the $Hand node, the method removes them all
+	elif $Hand.get_child_count() > 1:
+		for child in $Hand.get_children():
+			child.queue_free()
+
+
+# Method that swaps the weapon on the given slot 
+func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
+	if weaponOnGround:
+		equippedWeapons[slot] = weaponOnGround.weaponName
+		dropCurrentWeapon(slot)
+		$Hand.add_child(Weapons.all_weapons_scenes[weaponOnGround.weaponName].instance())
+		match slot:
+			1:
+				UISlotWeaponSprite1 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				w1slot_visibility.visible = true
+				w2slot_visibility.visible = false
+			2:
+				UISlotWeaponSprite2 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				w1slot_visibility.visible = false
+				w2slot_visibility.visible = true
+		
+
+
+# Method that drops the current weapon from the player to the parent scene (main)
+func dropCurrentWeapon(slot):
+	if $Hand.get_child(0) and $Hand.get_child_count() == 1:
+		var temporaryChildVariable = $Hand.get_child(0)
+		temporaryChildVariable.position = global_position
+		$Hand.remove_child(temporaryChildVariable)
+		var droppedWeapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
+		droppedWeapon = droppedWeapon.instance()
+		droppedWeapon.weaponName = temporaryChildVariable.weaponName #Przypisuje nazwę broni dla losowego indeksu zmiennej names
+		temporaryChildVariable.queue_free()
+		droppedWeapon.position = global_position #Przypisuje pozycję broni
+		get_parent().call_deferred('add_child', droppedWeapon) #Tworzy broń na podłodze
+
+
+# Skill cooldown method
+func startSkillCooldown(ability: int, mana_used: int) -> void:
+	updateMana(-mana_used)
+	if(currentlyEquippedWeapon == equippedWeapons[1]):
+		if(ability==1):
+			$CoolDownS1.start(25)
+		else:
+			$CoolDownS2.start(50)
+	else:
+		if(ability==1):
+			$CoolDownS3.start(25)
+		else:
+			$CoolDownS4.start(50)
+
+# ============= ====== ============== #  
+
+
+func updateMana(value: int) -> void:
 	level.get_node("Player").mana += value
 	if mana<0: 
 		level.get_node("Player").mana=0
@@ -328,14 +401,6 @@ func resetStats() -> void:#Reset player perks to default
 	manaRegenRate=statusEffect.manaRegenRate
 
 
-func get_current_weapon_slot() -> int:
-	if $Hand.get_child(0):
-		if weapons[1] == $Hand.get_child(0).weaponName:
-			return 1
-		else:
-			return 2
-	else:
-		return 0
 		
 
 
@@ -344,94 +409,6 @@ func change_potion_slot() -> void: #funcja zamieniająca potki miejscami
 	potions[1] = potions[2]
 	potions[2] = tmp
 	UpdatePotions()
-
-
-func change_weapon_slot(currentSlot) -> void:
-	resetStats()
-	if currentSlot == 1:
-		equipped = weapons[2]
-		w2slot_visibility.visible = true
-		w1slot_visibility.visible = false
-	elif currentSlot == 2:
-		equipped = weapons[1]
-		w1slot_visibility.visible = true
-		w2slot_visibility.visible = false
-	else:
-		equipped = null
-		w1slot_visibility.visible = false
-		w2slot_visibility.visible = false
-
-
-func remove_current_weapon() -> void:
-	equipped = null
-	if get_current_weapon_slot() == 1:
-		weapons[1] = "Empty"
-		ui_access_wslot1.texture = null
-	else:
-		weapons[2] = "Empty"
-		ui_access_wslot2.texture = null
-
-
-func swap_weapon(slot,weaponOnGround) -> void:
-	if weapons[2] != "Empty":
-		if slot == 1:
-			if weaponOnGround.WeaponName == "Katana":
-				ui_access_wslot1.scale.x = .8
-				ui_access_wslot1.scale.y = .8
-			elif weaponOnGround.WeaponName == "Spear":
-				ui_access_wslot1.scale.x = .8
-				ui_access_wslot1.scale.y = .8
-			else:
-				ui_access_wslot1.scale.x = 2.25
-				ui_access_wslot1.scale.y = 2.25
-			ui_access_wslot1.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
-#			first_weapon_stats = weaponOnGround.Stats
-			w1slot_visibility.visible = true
-			w2slot_visibility.visible = false
-		elif slot == 2:
-			if weaponOnGround.WeaponName == "Katana":
-				ui_access_wslot2.scale.x = .8
-				ui_access_wslot2.scale.y = .8
-			elif weaponOnGround.WeaponName == "Spear":
-				ui_access_wslot2.scale.x = .8
-				ui_access_wslot2.scale.y = .8
-			else:
-				ui_access_wslot2.scale.x = 2.25
-				ui_access_wslot2.scale.y = 2.25
-			ui_access_wslot2.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
-#			second_weapon_stats = weaponOnGround.Stats
-			w2slot_visibility.visible = true
-			w1slot_visibility.visible = false
-		drop_current_weapon(slot)
-		weapons[slot] = weaponOnGround.WeaponName
-		equipped = weapons[slot]
-		print("[INFO]: Currently equipped weapon - ", equipped, " at slot ", slot)
-#		$EquippedWeapon.position=Vector2.ZERO
-#		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
-#		$EquippedWeapon.timer = $EquippedWeapon/Timer
-#		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
-#		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
-		weaponOnGround.queue_free()
-	elif weaponOnGround:
-		if weaponOnGround.WeaponName == "Katana":
-			ui_access_wslot2.scale.x = .8
-			ui_access_wslot2.scale.y = .8
-		else:
-			ui_access_wslot2.scale.x = 2.25
-			ui_access_wslot2.scale.y = 2.25
-		ui_access_wslot2.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
-		weapons[2] = weaponOnGround.WeaponName
-		equipped = weapons[2]
-		print("[INFO]: Currently equipped weapon - ", equipped, " at slot ", 2)
-		second_weapon_stats = weaponOnGround.Stats
-		w2slot_visibility.visible = true
-		w1slot_visibility.visible = false
-#		$EquippedWeapon.position=Vector2.ZERO
-#		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
-#		$EquippedWeapon.timer = $EquippedWeapon/Timer
-#		$EquippedWeapon.damage = float(weaponOnGround.Stats['attack'])
-#		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats['knc'])
-		weaponOnGround.queue_free()
 
 
 func swap_potion(slot,potionOnGround) -> void: #funkcja do podnoszenia potionów
@@ -448,12 +425,7 @@ func swap_potion(slot,potionOnGround) -> void: #funkcja do podnoszenia potionów
 		equipped_potion = potions[2]
 
 
-func drop_current_weapon(slot):
-	var currentlyDroppingWeapon = load("res://Scenes/Loot/Weapon.tscn")
-	currentlyDroppingWeapon = currentlyDroppingWeapon.instance()
-	currentlyDroppingWeapon.WeaponName = str(weapons[slot])
-	currentlyDroppingWeapon.position = global_position
-	level.add_child(currentlyDroppingWeapon)
+	
 
 
 func movement(delta) -> void: #funkcja poruszania się
@@ -586,16 +558,3 @@ func _on_Pick_body_exited(body) -> void: #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 
-
-func on_skill_used(ability,mana_used) -> void:
-	updateMana(-mana_used)
-	if(equipped == weapons[1]):
-		if(ability==1):
-			$CoolDownS1.start(25)
-		else:
-			$CoolDownS2.start(50)
-	else:
-		if(ability==1):
-			$CoolDownS3.start(25)
-		else:
-			$CoolDownS4.start(50)

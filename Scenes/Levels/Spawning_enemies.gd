@@ -122,15 +122,15 @@ func weapon():
 
 	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
 	weapon = weapon.instance()
-	weapon.WeaponName = names[arr[0]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names
-	if weapon.WeaponName == "Fire Scepter":
-		weapon.WeaponName = names[arr[1]]
+	weapon.weaponName = names[arr[0]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names
+	if weapon.weaponName == "Fire Scepter":
+		weapon.weaponName = names[arr[1]]
 	weapon.position = Vector2(60,60) #Przypisuje pozycję broni
 	call_deferred('add_child', weapon) #Tworzy broń na podłodze
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
-	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"
+	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"a
 		   arr.append(i)
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 

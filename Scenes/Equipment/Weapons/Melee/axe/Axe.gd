@@ -67,7 +67,7 @@ func _unhandled_input(event) -> void:
 		
 	if event.is_action_pressed("use_ability_1"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=25:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+			if (player_node.equippedWeapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.equippedWeapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				attack_vector = Vector2(attack_range *ability1range* cos(rotation), attack_range *ability1range* sin(rotation))
 #				print("[INFO]: Axe abilty 1 used")
 #				tmpdmg = damage 
@@ -79,7 +79,7 @@ func _unhandled_input(event) -> void:
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
 				emit_signal("axeability1used", rotation_degrees, global_position)
-				player_node.remove_current_weapon()
+				player_node.deleteCurrentWeapon()
 				$AnimationPlayer.play("Throw")
 				yield($AnimationPlayer, "animation_finished")
 				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 0, global_position.x)
@@ -90,7 +90,7 @@ func _unhandled_input(event) -> void:
 				yield($AnimationPlayer, "animation_finished")
 				var lootableAxe = load("res://Scenes/Loot/Weapon.tscn")
 				lootableAxe = lootableAxe.instance()
-				lootableAxe.WeaponName = weaponName
+				lootableAxe.weaponName = weaponName
 				lootableAxe.position = position
 				get_parent().call_deferred("add_child", lootableAxe)
 				queue_free()
@@ -100,7 +100,7 @@ func _unhandled_input(event) -> void:
 				spell = 0
 	elif event.is_action_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
+			if (player_node.equippedWeapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.equippedWeapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
 				player_node.on_skill_used(2,50)
 				spell = 1
 				StatusBar_node.immune = true

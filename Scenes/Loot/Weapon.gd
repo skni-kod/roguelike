@@ -1,23 +1,24 @@
 extends StaticBody2D
 
-var WeaponName
+var weaponName
 var Stats = {}
 var popups = {}
 var weapons = {}
+var texture = null
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
 
 func _ready():
-	Stats = all_weapons[WeaponName]
+	Stats = all_weapons[weaponName]
 	Stats['attack'] = float(Stats['attack'])
-	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
-	if WeaponName == "katana":
+	texture = load("res://Assets/Loot/Weapons/"+weaponName+".png")
+	if weaponName == "katana":
 		$Sprite.scale.x = .5
 		$Sprite.scale.y = .5
 	else:
 		$Sprite.scale.x = 1
 		$Sprite.scale.y = 1
 	$Sprite.texture = texture
-	if (WeaponName == null):
+	if (weaponName == null):
 		queue_free()
 #test
 func take_dmg(a):
@@ -27,7 +28,7 @@ func _on_PopUp_body_entered(body):
 	if body.name == "Player":
 		var popup = load("res://Scenes/UI/ItemStats.tscn")
 		popup = popup.instance()
-		popup.itemName = WeaponName
+		popup.itemName = weaponName
 		popup.itemAttack = Stats['attack']
 		popup.itemSpd = Stats['spd']
 		popup.itemKnc = Stats['knc']

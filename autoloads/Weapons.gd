@@ -1,21 +1,21 @@
 extends Node
 
 var all_weapons_scenes = {
-	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/Axe.gd"),
+	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/axe/Axe.tscn"),
 	"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/blade/Blade.tscn"),
-	"Bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/BloodSword.gd"),
-	"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/FMS.gd"),
-	"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/Hammer.gd"),
-	"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/Katana.gd"),
-	"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/Knife.gd"),
-	"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/Spear.gd"),
+	"Bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
+	"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/fms/FMS.tscn"),
+	"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/hammer/Hammer.tscn"),
+	"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/katana/Katana.tscn"),
+	"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/knife/Knife.tscn"),
+	"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/spear/Spear.tscn"),
 }
 var all_weapons_textures = {
 	"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 	"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
-	"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
+	"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 	"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-	"FMS" : preload("res://Assets/Loot/Weapons/FMS.png"),
+	"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
 	"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 	"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 	"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
