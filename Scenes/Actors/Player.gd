@@ -21,7 +21,7 @@ var manaRegenRate=2.5 #Temorary value calculated according to equipment used. If
 var additionalManaRegen=0 #Dodatkowa regenacja many jako procent podstawowej
 var coins = 0 #ilośc coinsów bohatera
 var weaponToTake = null #Zmienna określająca czy gracz stoi przy broni leżącej na ziemi
-var equipped #Aktualnie używana broń
+var equipped # Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var weapons = {} #posiadane bronki
@@ -188,14 +188,14 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
+			print("[INFO]: Weapons[1] - ", weapons[1], " Weapons[2] - ", weapons[2])
 			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
 #				self.speed = 100
-				current_weapon = check_current_weapon()
+				current_weapon = get_current_weapon_slot()
 				if weapons[2] == "Empty":
 					swap_weapon(2,weaponToTake)
 				else:
-					if current_weapon != null:
-						swap_weapon(current_weapon,weaponToTake)
+					swap_weapon(current_weapon,weaponToTake)
 
 	if chest != null: #Jeżeli gracz stoi przy skrzyni
 		if Input.is_action_just_pressed("pick"):
@@ -307,7 +307,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if weapons[2] != "Empty": 
 		if Input.is_action_just_pressed("change_weapon_slot"):
 			if ($Hand.get_child(0) and $Hand.get_child(0).spell):
-				current_weapon = check_current_weapon()
+				current_weapon = get_current_weapon_slot()
 				change_weapon_slot(current_weapon)
 	  
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
@@ -328,7 +328,7 @@ func resetStats() -> void:#Reset player perks to default
 	manaRegenRate=statusEffect.manaRegenRate
 
 
-func check_current_weapon() -> int:
+func get_current_weapon_slot() -> int:
 	if $Hand.get_child(0):
 		if weapons[1] == $Hand.get_child(0).weaponName:
 			return 1
@@ -364,7 +364,7 @@ func change_weapon_slot(currentSlot) -> void:
 
 func remove_current_weapon() -> void:
 	equipped = null
-	if check_current_weapon() == 1:
+	if get_current_weapon_slot() == 1:
 		weapons[1] = "Empty"
 		ui_access_wslot1.texture = null
 	else:
@@ -402,21 +402,18 @@ func swap_weapon(slot,weaponOnGround) -> void:
 #			second_weapon_stats = weaponOnGround.Stats
 			w2slot_visibility.visible = true
 			w1slot_visibility.visible = false
-		var weaponUsed = load("res://Scenes/Loot/Weapon.tscn")
-		weaponUsed = weaponUsed.instance()
-		weaponUsed.WeaponName = str(weapons[slot])
-		weaponUsed.position = weaponOnGround.global_position
-		level.add_child(weaponUsed)
+		drop_current_weapon(slot)
 		weapons[slot] = weaponOnGround.WeaponName
 		equipped = weapons[slot]
+		print("[INFO]: Currently equipped weapon - ", equipped, " at slot ", slot)
 #		$EquippedWeapon.position=Vector2.ZERO
 #		$EquippedWeapon.set_script(all_weapons_script[weaponOnGround.WeaponName])
 #		$EquippedWeapon.timer = $EquippedWeapon/Timer
 #		$EquippedWeapon.damage = weaponOnGround.Stats['attack']
 #		$EquippedWeapon.weaponKnockback = float(weaponOnGround.Stats["knc"])
 		weaponOnGround.queue_free()
-	else:
-		if weaponOnGround.WeaponName == "katana":
+	elif weaponOnGround:
+		if weaponOnGround.WeaponName == "Katana":
 			ui_access_wslot2.scale.x = .8
 			ui_access_wslot2.scale.y = .8
 		else:
@@ -425,6 +422,7 @@ func swap_weapon(slot,weaponOnGround) -> void:
 		ui_access_wslot2.texture = Weapons.all_weapons_textures[weaponOnGround.WeaponName]
 		weapons[2] = weaponOnGround.WeaponName
 		equipped = weapons[2]
+		print("[INFO]: Currently equipped weapon - ", equipped, " at slot ", 2)
 		second_weapon_stats = weaponOnGround.Stats
 		w2slot_visibility.visible = true
 		w1slot_visibility.visible = false
@@ -450,6 +448,14 @@ func swap_potion(slot,potionOnGround) -> void: #funkcja do podnoszenia potionów
 		equipped_potion = potions[2]
 
 
+func drop_current_weapon(slot):
+	var currentlyDroppingWeapon = load("res://Scenes/Loot/Weapon.tscn")
+	currentlyDroppingWeapon = currentlyDroppingWeapon.instance()
+	currentlyDroppingWeapon.WeaponName = str(weapons[slot])
+	currentlyDroppingWeapon.position = global_position
+	level.add_child(currentlyDroppingWeapon)
+
+
 func movement(delta) -> void: #funkcja poruszania się
 	direction = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
@@ -470,18 +476,6 @@ func movement(delta) -> void: #funkcja poruszania się
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
 		elif !skok:
 			$AnimationPlayer.play("Run")
-	#	elif direction.y != 0: #jeżeli porusza się w pionie
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
-	#		if direction.x < 0: #jeżeli idzie w lewo
-	#			$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-	#		else: #jeżeli idzie w prawo
-	#			$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-	#	elif direction.x < 0: #jeżeli idzie w lewo
-	#		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
-	#	elif direction.x > 0: #jeżeli idzie w prawo
-	#		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w prawo
-	#		$AnimationPlayer.play("Run") #włącz animację "Run"
 
 
 func jump() -> void:
@@ -491,6 +485,11 @@ func jump() -> void:
 	$stamina_regen.start()
 	yield($skok,"timeout")
 	skok = false
+
+
+# Method used by the AnimationPlayer (skok) to call a SoundController audio playback
+func play_jump_sound():
+	SoundController.play_player_random_jump()
 
 
 func _on_stamina_regen_timeout() -> void:
@@ -509,14 +508,9 @@ func move() -> void:
 	emit_signal("player_moved", velocity)
 
 
+# Method used by AnimationPlayer (RUN) to call a SoundController audio playback
 func sound_play_step() -> void:
-	match stepsoundvar:
-		0:
-			SoundController.play_player_hard_step1()
-			stepsoundvar = 1
-		1:
-			SoundController.play_player_hard_step2()
-			stepsoundvar = 0
+	SoundController.play_player_random_hardstep()
 
 
 func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń przez bohatera

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spear.png-108b73e8d44770acfa9bd72276a31aab.stex"
+path="res://.import/dust_particle.png-d6f1321d6b518177da307ddf1c5d0b0d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/spear.png"
-dest_files=[ "res://.import/spear.png-108b73e8d44770acfa9bd72276a31aab.stex" ]
+source_file="res://Assets/Effects/dust_particle.png"
+dest_files=[ "res://.import/dust_particle.png-d6f1321d6b518177da307ddf1c5d0b0d.stex" ]
 
 [params]
 
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=false
+detect_3d=true
 svg/scale=1.0
