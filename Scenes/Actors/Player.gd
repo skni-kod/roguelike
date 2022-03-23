@@ -27,15 +27,18 @@ var equippedWeapons = {} #posiadane bronki
 
 var stepsoundvar
 
+# --- WEAPON VARS --- #
+var activeWeapon = null			# Variable that holds the currently active/equipped weapon from the inventory
+var weaponToTake = null		# Variable for holding a weapon to pick up
+var currentWeaponSlot = 1	# Variable that holds the currently active weapon slot
+# = UI Wapons sprites that show up in the UI Weapons Slots = #
 onready var UISlotWeaponSprite1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var UISlotWeaponSprite2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
-onready var skillSlots = get_tree().get_root().find_node("Slots", true, false)
-
-onready var w1slot_visibility = get_node("../UI/Slots/Background/w1slotbg")
-onready var w2slot_visibility = get_node("../UI/Slots/Background/w2slotbg")
-
-# --- WEAPON VARS --- #
-var weaponToTake = null		# Variable for holding a weapon to pick up
+# = UI Activity colored rects that show up when a weapon slot is chosen = #
+onready var UISlotWeaponActive1 = get_node("../UI/Slots/Background/w1slot_activitybg")
+onready var UISlotWeaponActive2 = get_node("../UI/Slots/Background/w2slot_activitybg")
+# = UI Weapon Skill Slots Nodes = #
+onready var UIWeaponSkillSlots = get_tree().get_root().find_node("Slots", true, false)
 # --- ----------- --- #
 
 #zmienne do funkcji potionów
@@ -150,24 +153,24 @@ func _process(delta) -> void:
 
 func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if ($CoolDownS1.get_time_left()):
-		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
+		UIWeaponSkillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
 	else:
-		skillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = 'R'
+		UIWeaponSkillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = 'R'
 	
 	if ($CoolDownS2.get_time_left()):
-		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = str(round($CoolDownS2.get_time_left()))
+		UIWeaponSkillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = str(round($CoolDownS2.get_time_left()))
 	else:
-		skillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = 'F'
+		UIWeaponSkillSlots.get_node('Background/Skillslot2/VBoxContainer/Label').text = 'F'
 		
 	if ($CoolDownS3.get_time_left()):
-		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = str(round($CoolDownS3.get_time_left()))
+		UIWeaponSkillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = str(round($CoolDownS3.get_time_left()))
 	else:
-		skillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = 'R'
+		UIWeaponSkillSlots.get_node('Background/Skillslot3/VBoxContainer/Label').text = 'R'
 		
 	if ($CoolDownS4.get_time_left()):
-		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
+		UIWeaponSkillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
 	else:
-		skillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
+		UIWeaponSkillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 	else: #Jeżeli nie atakuje to
@@ -297,10 +300,8 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 		#	Potion_in_time -= 1
 		UpdatePotions()
 
-	if equippedWeapons[2] != "Empty": 
-		if Input.is_action_just_pressed("changeWeaponSlot"):
-			if ($Hand.get_child(0) and $Hand.get_child(0).spell):
-				changeWeaponSlot(getCurrentWeaponSlot())
+	if Input.is_action_just_pressed("change_weapon_slot"):
+				changeWeaponSlot()
 
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
@@ -311,22 +312,24 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 # Returns the number of the current chosen weapon slot if the Hand node has 
 # a child if there is no child in the Hand node, then returns 0
 func getCurrentWeaponSlot() -> int:
-	if $Hand.get_child(0):
-		if equippedWeapons[1] == $Hand.get_child(0).weaponName:
-			return 1
-		else:
-			return 2
-	else:
-		return 1
+	return currentWeaponSlot
 
 
-# Zmiana ze slotu na inny slot (1 lub 2)
-func changeWeaponSlot(currentSlot: int) -> void:
-	match currentSlot:
+# Function that changes the current slot to another one
+func changeWeaponSlot() -> void:
+	match currentWeaponSlot:
 		1:
-			currentSlot = 2
+			currentWeaponSlot = 2
+			UISlotWeaponActive1.visible = false
+			UISlotWeaponActive2.visible = true
 		2:
-			currentSlot = 1
+			currentWeaponSlot = 1
+			UISlotWeaponActive1.visible = true
+			UISlotWeaponActive2.visible = false
+	deleteCurrentWeapon()
+	if equippedWeapons[currentWeaponSlot] != "Empty":
+		$Hand.call_deferred("add_child", Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]])
+#		$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]])
 
 # Deletes the currently currentlyEquippedWeapon weapon or every child of the $Hand node
 func deleteCurrentWeapon() -> void:
@@ -339,21 +342,22 @@ func deleteCurrentWeapon() -> void:
 			child.queue_free()
 
 
-# Method that swaps the weapon on the given slot 
+# Function that swaps the weapon on the given slot 
 func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
+	print("[INFO]: On weapon swap; Weapons[1] - ", equippedWeapons[1], " Weapons[2] - ", equippedWeapons[2])
 	if weaponOnGround:
-		equippedWeapons[slot] = weaponOnGround.weaponName
 		dropCurrentWeapon(slot)
+		equippedWeapons[slot] = weaponOnGround.weaponName
 		$Hand.add_child(Weapons.all_weapons_scenes[weaponOnGround.weaponName].instance())
 		match slot:
 			1:
 				UISlotWeaponSprite1 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
-				w1slot_visibility.visible = true
-				w2slot_visibility.visible = false
+				UISlotWeaponActive1.visible = true
+				UISlotWeaponActive2.visible = false
 			2:
 				UISlotWeaponSprite2 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
-				w1slot_visibility.visible = false
-				w2slot_visibility.visible = true
+				UISlotWeaponActive1.visible = false
+				UISlotWeaponActive2.visible = true
 		
 
 
@@ -363,6 +367,12 @@ func dropCurrentWeapon(slot):
 		var temporaryChildVariable = $Hand.get_child(0)
 		temporaryChildVariable.position = global_position
 		$Hand.remove_child(temporaryChildVariable)
+		match slot: 
+			1:
+				UISlotWeaponSprite1 = null
+			2:
+				UISlotWeaponActive2 = null
+		equippedWeapons[slot] = "Empty"
 		var droppedWeapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
 		droppedWeapon = droppedWeapon.instance()
 		droppedWeapon.weaponName = temporaryChildVariable.weaponName #Przypisuje nazwę broni dla losowego indeksu zmiennej names

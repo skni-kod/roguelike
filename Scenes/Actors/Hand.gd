@@ -22,12 +22,11 @@ func _on_axeAbility1Used(direction, currPos) -> void:
 		print("[INFO]: Axe throw direction: ", direction, " starting position: ", currPos)
 		var equippedAxe = get_node("Axe")
 		get_parent().equippedWeapons[get_parent().getCurrentWeaponSlot()] = "Empty"
-		if (get_parent().getCurrentWeaponSlot() == 1):
-			get_parent().w1slot_visibility.visible = false
-			get_parent().UISlotWeaponSprite1.texture = null
-		else:
-			get_parent().w2slot_visibility.visible = false
-			get_parent().UISlotWeaponSprite2.texture = null
+		match get_parent().getCurrentWeaponSlot():
+			1:
+				get_parent().UISlotWeaponSprite1 = null
+			2:
+				get_parent().UISlotWeaponSprite2 = null
 		remove_child(equippedAxe)
 		main.add_child(equippedAxe)
 

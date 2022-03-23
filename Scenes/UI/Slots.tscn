@@ -30,7 +30,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="w1slotbg" type="ColorRect" parent="Background"]
+[node name="w1slot_activitybg" type="ColorRect" parent="Background"]
 margin_left = 66.0
 margin_right = 106.0
 margin_bottom = 72.0
@@ -40,7 +40,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="w2slotbg" type="ColorRect" parent="Background"]
+[node name="w2slot_activitybg" type="ColorRect" parent="Background"]
 visible = false
 margin_left = 66.0
 margin_top = 100.0
@@ -188,7 +188,7 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Background/Skillslot1/VBoxContainer"]
 margin_top = 13.0
-margin_right = 42.0
+margin_right = 41.0
 margin_bottom = 29.0
 custom_fonts/font = SubResource( 1 )
 align = 1
@@ -254,7 +254,7 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Background/Skillslot3/VBoxContainer"]
 margin_top = 13.0
-margin_right = 42.0
+margin_right = 41.0
 margin_bottom = 29.0
 custom_fonts/font = SubResource( 1 )
 align = 1
