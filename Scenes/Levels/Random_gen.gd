@@ -27,6 +27,7 @@ var room_variations = {
 }
 var current_room_type
 
+
 func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów pokojów
 	var oneDoorRooms = [] #lista pokojów z jednymi otwartymi drzwiami
 	var furthestRoom = [Vector2.ZERO] #najdalszy pokój
@@ -138,3 +139,4 @@ func _ready():
 			
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	generate() #generacja mapy
+	MusicController.play_game_music()

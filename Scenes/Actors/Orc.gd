@@ -197,7 +197,7 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health) # healthbar zostaje zupdateowany z nową procentową ilością hp
 		health_bar.visible = true
 		# === =============== === #
-		
+		SoundController.play_hit()
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
@@ -212,6 +212,7 @@ func get_dmg(dmg, weaponKnockback):
 		random_potion()
 		drop_coins()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
+		SoundController.play_hit()
 		queue_free() # instancja Lil Devila zostaje usunięta
 		# === ================= === #
 		

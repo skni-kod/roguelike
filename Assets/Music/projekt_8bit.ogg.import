@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/projekt_8bit.ogg-a14c52a3e5e247bef99a90487b447873.oggstr"
+
+[deps]
+
+source_file="res://Assets/Music/projekt_8bit.ogg"
+dest_files=[ "res://.import/projekt_8bit.ogg-a14c52a3e5e247bef99a90487b447873.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

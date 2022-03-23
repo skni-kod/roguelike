@@ -197,7 +197,7 @@ func get_dmg(dmg, weaponKnockback):
 			$animHurtTimer.start()
 		health_bar.value = health # healthbar zostaje zupdateowany z nową procentową ilością hp
 		# === =============== === #
-	
+		SoundController.play_hit()
 	if health<=0:
 		$CollisionPolygon2D.set_deferred("disabled", true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
@@ -210,6 +210,7 @@ func get_dmg(dmg, weaponKnockback):
 		drop_coins()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że PandaBoss umarł
 		health_bar.queue_free() # usunięcie paska życia
+		SoundController.play_hit()
 		queue_free() # instancja PandaBossa zostaje usunięta
 		# === ================= === #
 		

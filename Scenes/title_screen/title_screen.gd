@@ -3,7 +3,7 @@ extends Control
 var scene_path_to_load #ścieżka do następnej sceny jaką chcemy załadować (options/exit/start(main.tscn))
 
 func _ready():
-	MusicController.play_music()
+	MusicController.play_menu_music()
 	$Menu/CenterRow/Buttons/StartButton.grab_focus() #łapie focus na przyciski(start/options/exit...)
 	for button in $Menu/CenterRow/Buttons.get_children(): #po naciśnięciu przycisku tworzy klasę w której podmienia ścieżkę sceny
 		button.connect("pressed", self, "_on_Button_pressed", [button.scene_to_load])
@@ -14,6 +14,6 @@ func _on_Button_pressed(scene_to_load):#dodaje animację przyciemniania przy prz
 	$FadeIn.fade_in()
 
 func _on_FadeIn_fade_finished():#przechodzi do wybranej sceny
-	get_tree().change_scene(scene_path_to_load)
+	get_tree().change_scene(scene_path_to_load)	
  
 

@@ -131,6 +131,7 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
@@ -149,6 +150,7 @@ func get_dmg(dmg, weaponKnockback):
 			coin.position = randomPosition
 			level.add_child(coin)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free() #Usuń węzeł slime
 		
 func random_potion():

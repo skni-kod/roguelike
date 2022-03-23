@@ -135,6 +135,7 @@ func get_dmg(dmg, weaponKnockback):
 			health = hp/max_hp*100
 			$AnimationPlayer.play("Hurt")
 			health_bar.value = health
+			SoundController.play_hit()
 		#Jeżeli poziom zdrowia spadnie do 0
 		if health<=0:
 			alive = false
@@ -158,6 +159,7 @@ func get_dmg(dmg, weaponKnockback):
 				level.add_child(coin)
 			health_bar.queue_free()  #Usun pasek zycia bossa z UI
 			emit_signal("died", self)
+			SoundController.play_hit()
 			queue_free()  #Usun caly wezel bossa
 
 func rotate_water_fire():  #Obracaj kule wodna i ognista

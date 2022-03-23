@@ -6,9 +6,6 @@
 [ext_resource path="res://Scenes/Actors/Laser_Load.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=5]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 14.3154, 12.2952 )
-
 [sub_resource type="CircleShape2D" id=2]
 radius = 68.0
 
@@ -17,6 +14,9 @@ radius = 153.639
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 105.357
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.3154, 12.2952 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Attack"
@@ -82,6 +82,28 @@ collision_mask = 3
 script = ExtResource( 2 )
 max_hp = 40
 
+[node name="Wzrok" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
+position = Vector2( 0, 3.375 )
+shape = SubResource( 2 )
+
+[node name="Wzrok2" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok2"]
+position = Vector2( 0, 3.375 )
+shape = SubResource( 10 )
+
+[node name="Atak" type="Area2D" parent="."]
+collision_layer = 0
+gravity = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
+position = Vector2( 0, 2.569 )
+shape = SubResource( 3 )
+
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
 visible = false
 margin_left = -10.041
@@ -110,28 +132,6 @@ collision_mask = 2147483648
 position = Vector2( 0, 6.819 )
 rotation = 1.5708
 shape = SubResource( 1 )
-
-[node name="Wzrok" type="Area2D" parent="."]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok"]
-position = Vector2( 0, 3.375 )
-shape = SubResource( 2 )
-
-[node name="Wzrok2" type="Area2D" parent="."]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wzrok2"]
-position = Vector2( 0, 3.375 )
-shape = SubResource( 10 )
-
-[node name="Atak" type="Area2D" parent="."]
-collision_layer = 0
-gravity = 0.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Atak"]
-position = Vector2( 0, 2.569 )
-shape = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 4 )

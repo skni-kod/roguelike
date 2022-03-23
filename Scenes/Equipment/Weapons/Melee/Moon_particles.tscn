@@ -7,20 +7,20 @@ min_value = -360.0
 max_value = 360.0
 _data = [ Vector2( 0, -360 ), 0.0, 0.0, 0, 0, Vector2( 0.488038, 360 ), 0.0, 0.0, 0, 0, Vector2( 0.985646, -360 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=6]
+[sub_resource type="CurveTexture" id=8]
 curve = SubResource( 5 )
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.886667 )
 colors = PoolColorArray( 0.933594, 0.878891, 0.878891, 1, 0.152588, 0.189304, 0.488281, 1 )
 
-[sub_resource type="GradientTexture" id=2]
+[sub_resource type="GradientTexture" id=9]
 gradient = SubResource( 1 )
 
 [sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 0.376136 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=8]
+[sub_resource type="CurveTexture" id=10]
 curve = SubResource( 7 )
 
 [sub_resource type="ParticlesMaterial" id=3]
@@ -30,15 +30,15 @@ spread = 52.1
 gravity = Vector3( 0, 0.2, 0 )
 initial_velocity = 0.1
 angular_velocity_random = 1.0
-angular_velocity_curve = SubResource( 6 )
+angular_velocity_curve = SubResource( 8 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 linear_accel = 1.0
 angle_random = 1.0
 scale = 5.0
 scale_random = 1.0
-scale_curve = SubResource( 8 )
-color_ramp = SubResource( 2 )
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 9 )
 
 [sub_resource type="GDScript" id=4]
 script/source = "extends Particles2D

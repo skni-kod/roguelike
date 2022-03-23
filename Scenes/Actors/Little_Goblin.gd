@@ -122,6 +122,7 @@ func get_dmg(dmg, weaponKnockback):
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
 	if health <=0 :
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -130,6 +131,7 @@ func get_dmg(dmg, weaponKnockback):
 		if is_elite == true:
 			random_potion()
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free()	#Usuń węzeł goblina
 	var text = floating_dmg.instance()
 	text.amount = dmg
