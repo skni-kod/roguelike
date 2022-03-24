@@ -3,7 +3,7 @@ extends Node
 var all_weapons_scenes = {
 	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/axe/Axe.tscn"),
 	"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/blade/Blade.tscn"),
-	"Bloodsword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
+	"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
 	"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/fms/FMS.tscn"),
 	"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/hammer/Hammer.tscn"),
 	"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/katana/Katana.tscn"),

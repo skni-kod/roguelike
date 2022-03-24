@@ -101,7 +101,7 @@ func _unhandled_input(event) -> void:
 	elif event.is_action_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
 			if (player_node.equippedWeapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.equippedWeapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
-				player_node.on_skill_used(2,50)
+				player_node.start_skill_cooldown(2,50)
 				spell = 1
 				StatusBar_node.immune = true
 				tmpspeed = player_node.speed
@@ -147,6 +147,7 @@ func change_weapon(texture) -> void:
 func _on_Axe_body_entered(body) -> void:
 #	print("[INFO]: Axe collided with ", body)
 	if body.is_in_group("Enemy"):
+		print("[INFO]: Axe hit: ", body)
 		rng.randomize()
 		crit_chance = rng.randi_range(0,10)
 		crit = false

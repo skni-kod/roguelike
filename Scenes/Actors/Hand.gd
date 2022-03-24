@@ -24,9 +24,9 @@ func _on_axeAbility1Used(direction, currPos) -> void:
 		get_parent().equippedWeapons[get_parent().getCurrentWeaponSlot()] = "Empty"
 		match get_parent().getCurrentWeaponSlot():
 			1:
-				get_parent().UISlotWeaponSprite1 = null
+				get_parent().UISlotWeaponSprite1.texture = null
 			2:
-				get_parent().UISlotWeaponSprite2 = null
+				get_parent().UISlotWeaponSprite2.texture = null
 		remove_child(equippedAxe)
 		main.add_child(equippedAxe)
 

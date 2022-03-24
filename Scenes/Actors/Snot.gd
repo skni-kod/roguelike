@@ -120,7 +120,7 @@ func get_dmg(dmg, weaponKnockback):
 	text.type = "Damage"
 	add_child(text)	
 	
-	if health>0:
+	if health>0 and self:
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:

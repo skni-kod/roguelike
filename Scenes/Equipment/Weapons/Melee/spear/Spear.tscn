@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Loot/Weapons/spear.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Equipment/Weapons/Melee/knife/Knife.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Equipment/Weapons/Melee/spear/Spear.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=14]
 radius = 3.90486

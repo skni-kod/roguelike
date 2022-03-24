@@ -99,8 +99,9 @@ func _ready() -> void: #po inicjacji bohatera
 		1 : "Axe",
 		2 : "Empty"
 	}
-#	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weapons[1]]
-#	currentlyEquippedWeapon = Weapons.all_weapons_scenes[weapons[1]]
+	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
+	currentlyEquippedWeapon = equippedWeapons[1]
+	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
 	
 	
 #	if Bufor.weapons: # jeśli bufor nie jest pusty
@@ -327,13 +328,15 @@ func changeWeaponSlot() -> void:
 			UISlotWeaponActive1.visible = true
 			UISlotWeaponActive2.visible = false
 	deleteCurrentWeapon()
+	print("[INFO]: On weapon change; Weapons[1] - ", equippedWeapons[1], " Weapons[2] - ", equippedWeapons[2])
 	if equippedWeapons[currentWeaponSlot] != "Empty":
-		$Hand.call_deferred("add_child", Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]])
-#		$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]])
+		print("[INFO]: On weapon change slot not empty: calling deffered add_child")
+		$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]].instance())
+
 
 # Deletes the currently currentlyEquippedWeapon weapon or every child of the $Hand node
 func deleteCurrentWeapon() -> void:
-	if $Hand.get_child(0) and $Hand.get_child_count() == 1:
+	if $Hand.get_child_count() == 1:
 		$Hand.get_child(0).queue_free()
 		
 	# If there is more children in the $Hand node, the method removes them all
@@ -351,11 +354,11 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 		$Hand.add_child(Weapons.all_weapons_scenes[weaponOnGround.weaponName].instance())
 		match slot:
 			1:
-				UISlotWeaponSprite1 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weaponOnGround.weaponName]
 				UISlotWeaponActive1.visible = true
 				UISlotWeaponActive2.visible = false
 			2:
-				UISlotWeaponSprite2 = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[weaponOnGround.weaponName]
 				UISlotWeaponActive1.visible = false
 				UISlotWeaponActive2.visible = true
 		
@@ -369,9 +372,9 @@ func dropCurrentWeapon(slot):
 		$Hand.remove_child(temporaryChildVariable)
 		match slot: 
 			1:
-				UISlotWeaponSprite1 = null
+				UISlotWeaponSprite1.texture = null
 			2:
-				UISlotWeaponActive2 = null
+				UISlotWeaponActive2.texture = null
 		equippedWeapons[slot] = "Empty"
 		var droppedWeapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
 		droppedWeapon = droppedWeapon.instance()
@@ -382,7 +385,7 @@ func dropCurrentWeapon(slot):
 
 
 # Skill cooldown method
-func startSkillCooldown(ability: int, mana_used: int) -> void:
+func start_skill_cooldown(ability: int, mana_used: int) -> void:
 	updateMana(-mana_used)
 	if(currentlyEquippedWeapon == equippedWeapons[1]):
 		if(ability==1):
@@ -411,9 +414,6 @@ func resetStats() -> void:#Reset player perks to default
 	manaRegenRate=statusEffect.manaRegenRate
 
 
-		
-
-
 func change_potion_slot() -> void: #funcja zamieniająca potki miejscami
 	var tmp = potions[1]
 	potions[1] = potions[2]
@@ -433,9 +433,6 @@ func swap_potion(slot,potionOnGround) -> void: #funkcja do podnoszenia potionów
 		ui_access_pslot2.texture = all_potions[potionOnGround]
 		potions[2] = potionOnGround
 		equipped_potion = potions[2]
-
-
-	
 
 
 func movement(delta) -> void: #funkcja poruszania się

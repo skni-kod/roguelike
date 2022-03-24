@@ -123,7 +123,7 @@ func shoot():
 
 
 func get_dmg(dmg, weaponKnockback):
-	if health>0:
+	if health>0 and self:
 		
 		# ======= KNOCKBACK ======= #
 		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
