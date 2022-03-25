@@ -29,7 +29,7 @@ var crit_damage = 2
 var active_ability1 = false
 var active_ability2 = false
 var ability1rotation = 530
-var ability1range = 10
+var ability1range = 100
 var tmpdmg
 var tmpknockback
 var ability1damagemultipler = 10
@@ -73,19 +73,31 @@ func _unhandled_input(event) -> void:
 #				tmpdmg = damage 
 #				damage *= ability1damagemultipler
 				spell = 0
+				var axeHandDirectionVariable: int = get_parent().scale.y
+				var axeThrowStartScale = scale.x
+				match axeHandDirectionVariable:
+					-1:
+						$AnimationPlayer.get_animation("Throw").track_set_key_value(8, 0, -axeThrowStartScale)
+						$AnimationPlayer.get_animation("Throw").track_set_key_value(8, 1, -axeThrowStartScale)
+					1:
+						$AnimationPlayer.get_animation("Throw").track_set_key_value(8, 0, axeThrowStartScale)
+						$AnimationPlayer.get_animation("Throw").track_set_key_value(8, 1, axeThrowStartScale)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 0, global_position.x)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 0, global_position.y)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(2, 0, rotation_degrees)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
 				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
+				$AnimationPlayer.get_animation("Throw").bezier_track_set_key_value(2, 1, 1180 * axeHandDirectionVariable)
+				# Emits signal to the Hand, so that it disconnects the axe from the player and reparents it to the main node
 				emit_signal("axeability1used", rotation_degrees, global_position)
+				# [WARNING]: At this point the parent of the axe is the "Main" node
 				player_node.deleteCurrentWeapon()
 				$AnimationPlayer.play("Throw")
 				yield($AnimationPlayer, "animation_finished")
 				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 0, global_position.x)
 				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 0, global_position.y)
-				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 1, global_position.x - 45 * cos(get_angle_to(player_node.global_position) - PI/2))
-				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 1, global_position.y - 45 * sin(get_angle_to(player_node.global_position) - PI/2))
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 1, global_position.x - axeHandDirectionVariable *45 * cos(get_angle_to(player_node.global_position) - PI/2))
+				$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 1, global_position.y - axeHandDirectionVariable * 45 * sin(get_angle_to(player_node.global_position) - PI/2))
 				$AnimationPlayer.play("Jump back")
 				yield($AnimationPlayer, "animation_finished")
 				var lootableAxe = load("res://Scenes/Loot/Weapon.tscn")

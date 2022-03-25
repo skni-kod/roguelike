@@ -63,9 +63,6 @@ light_mask = 0
 margin_right = 1283.0
 margin_bottom = 723.0
 color = Color( 0.257957, 0.0623627, 0.261719, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="OctoBossShadow" type="AnimatedSprite" parent="Background Decorations"]
 modulate = Color( 0.160784, 0.12549, 0.12549, 0.588235 )
@@ -73,7 +70,7 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 1 )
 animation = "octoboss_menu"
-frame = 2
+frame = 4
 playing = true
 flip_h = true
 
@@ -83,7 +80,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 5 )
 animation = "pandoboss_menu"
-frame = 9
+frame = 7
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
