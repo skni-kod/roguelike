@@ -7,9 +7,6 @@
 
 [node name="ManaBar" type="Control"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HealthUnder" type="TextureProgress" parent="."]
 margin_right = 100.0

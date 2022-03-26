@@ -29,14 +29,14 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	# === WEKTORY MOVE I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
-		if playerIsInRange and health>0: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+		if playerIsInRange and health>0 and Bufor.PLAYER: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
 			move = position.direction_to(Bufor.PLAYER.position) * speed
 	else:
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 	# === ======================== === #
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)

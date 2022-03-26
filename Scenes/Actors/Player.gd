@@ -28,9 +28,12 @@ var equippedWeapons = {} #posiadane bronki
 var stepsoundvar
 
 # --- WEAPON VARS --- #
-var activeWeapon = null			# Variable that holds the currently active/equipped weapon from the inventory
-var weaponToTake = null		# Variable for holding a weapon to pick up
 var currentWeaponSlot = 1	# Variable that holds the currently active weapon slot
+var activeWeapon = { # Variable that holds the currently active/equipped weapon from the inventory
+	"slot" : currentWeaponSlot,
+	"name" : "Empty"
+}			
+var weaponToTake = null		# Variable for holding a weapon to pick up
 # = UI Wapons sprites that show up in the UI Weapons Slots = #
 onready var UISlotWeaponSprite1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var UISlotWeaponSprite2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
@@ -88,7 +91,7 @@ func UpdatePotions() -> void: #funkcja aktualizująca status potek
 		
 
 func _enter_tree():
-	Bufor.PLAYER = self
+	Bufor.PLAYER = get_parent().get_node("Player")
 
 
 func _ready() -> void: #po inicjacji bohatera
@@ -103,6 +106,7 @@ func _ready() -> void: #po inicjacji bohatera
 		1 : "Axe",
 		2 : "Empty"
 	}
+	activeWeapon["name"] = equippedWeapons[1]
 	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
 	currentlyEquippedWeapon = equippedWeapons[1]
 	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
@@ -157,6 +161,8 @@ func _process(delta) -> void:
 	
 
 func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
+	if Bufor.PLAYER != get_parent().get_node("Player"):
+		Bufor.PLAYER = get_parent().get_node("Player")
 	if ($CoolDownS1.get_time_left()):
 		UIWeaponSkillSlots.get_node('Background/Skillslot1/VBoxContainer/Label').text = str(round($CoolDownS1.get_time_left()))
 	else:
@@ -183,7 +189,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ========= === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO :
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null :
 			movement(delta) #wywołanie funkcji poruszania się
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
@@ -331,6 +337,8 @@ func changeWeaponSlot() -> void:
 			currentWeaponSlot = 1
 			UISlotWeaponActive1.visible = true
 			UISlotWeaponActive2.visible = false
+	activeWeapon["slot"] = currentWeaponSlot
+	activeWeapon["name"] = equippedWeapons[currentWeaponSlot]
 	deleteCurrentWeapon()
 	print("[INFO]: On weapon change; Weapons[1] - ", equippedWeapons[1], " Weapons[2] - ", equippedWeapons[2])
 	if equippedWeapons[currentWeaponSlot] != "Empty":
@@ -355,6 +363,7 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 	if weaponOnGround:
 		dropCurrentWeapon(slot)
 		equippedWeapons[slot] = weaponOnGround.weaponName
+		activeWeapon["name"] = equippedWeapons[slot]
 		$Hand.add_child(Weapons.all_weapons_scenes[weaponOnGround.weaponName].instance())
 		match slot:
 			1:
@@ -370,33 +379,35 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 
 # Method that drops the current weapon from the Player to the parent scene (main)
 func dropCurrentWeapon(slot):
-	if $Hand.get_child(0) and $Hand.get_child_count() == 1:
-		var temporaryChildVariable = $Hand.get_child(0)
-		temporaryChildVariable.position = global_position
-		$Hand.remove_child(temporaryChildVariable)
-		match slot: 
-			1:
-				UISlotWeaponSprite1.texture = null
-			2:
-				UISlotWeaponActive2.texture = null
-		equippedWeapons[slot] = "Empty"
-		var droppedWeapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
-		droppedWeapon = droppedWeapon.instance()
-		droppedWeapon.weaponName = temporaryChildVariable.weaponName #Przypisuje nazwę broni dla losowego indeksu zmiennej names
-		temporaryChildVariable.queue_free()
-		droppedWeapon.position = global_position #Przypisuje pozycję broni
-		get_parent().call_deferred('add_child', droppedWeapon) #Tworzy broń na podłodze
+	if $Hand.get_child_count() == 1:
+		if $Hand.get_child(0):
+			var temporaryChildVariable = $Hand.get_child(0)
+			temporaryChildVariable.position = global_position
+			$Hand.remove_child(temporaryChildVariable)
+			match slot: 
+				1:
+					UISlotWeaponSprite1.texture = null
+				2:
+					UISlotWeaponActive2.texture = null
+			equippedWeapons[slot] = "Empty"
+			activeWeapon["name"] = equippedWeapons[slot]
+			var droppedWeapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
+			droppedWeapon = droppedWeapon.instance()
+			droppedWeapon.weaponName = temporaryChildVariable.weaponName #Przypisuje nazwę broni dla losowego indeksu zmiennej names
+			temporaryChildVariable.queue_free()
+			droppedWeapon.position = global_position #Przypisuje pozycję broni
+			get_parent().call_deferred('add_child', droppedWeapon) #Tworzy broń na podłodze
 
 
 # Skill cooldown method
 func start_skill_cooldown(ability: int, time: int, manaUsed: int) -> void:
 	updateMana(-manaUsed)
-	if(currentlyEquippedWeapon == equippedWeapons[1]):
+	if(activeWeapon["name"] == equippedWeapons[1] and activeWeapon["slot"] == 1):
 		if(ability==1):
 			$CoolDownS1.start(time)
 		else:
 			$CoolDownS2.start(time)
-	else:
+	elif(activeWeapon["name"] == equippedWeapons[2] and activeWeapon["slot"] == 2):
 		if(ability==1):
 			$CoolDownS3.start(time)
 		else:
@@ -514,6 +525,8 @@ func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń prze
 		got_hitted = false #bohater nie jest uderzany
 		SoundController.play_player_hit()
 		if (health <= 0):
+			Bufor.PLAYER = null
+			self.queue_free()
 			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
 
 

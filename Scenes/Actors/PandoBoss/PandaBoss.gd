@@ -81,9 +81,9 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
-	if playerIsInRange and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO and rolling == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null and rolling == Vector2.ZERO:
 			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed  * poruszaSie # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
@@ -122,7 +122,7 @@ func _physics_process(delta):
 			$BodyAnimationPlayer.play("Idle2") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO: # jeśli nie ma knockbacku
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null: # jeśli nie ma knockbacku
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0: # jeśli jest knockback, to nie może się ruszać
 		knockback = move_and_slide(knockback) # poruszaj się w stronę wektora knockback
@@ -146,7 +146,7 @@ func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘ
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
 	attack = true
-	if playerIsInRange and health>0: # gdy gracz jest w polu widzenia i Panda żyje, to wykonuje funkcje
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy gracz jest w polu widzenia i Panda żyje, to wykonuje funkcje
 		rolling_attack()
 		poruszaSie = 1
 # === ======================== === #

@@ -2,10 +2,8 @@ extends Node2D
 
 signal axeability1used(direction, currPos)
 
-export var attack_range = 15 #Zasięg ataku
 export var attacking = false setget set_attack_state, get_attack_state #Czy postać atakuje
 
-onready var player_node = get_tree().get_root().find_node("Player", true, false)
 onready var StatusBar_node = get_tree().get_root().find_node("StatusBar", true, false)
 
 var damage
@@ -38,7 +36,7 @@ var ability2duration = 5
 
 func _ready() -> void:
 	if get_parent() != null:
-		connect("axeability1used", player_node.get_node("Hand"), "_on_axeAbility1Used")
+		connect("axeability1used", Bufor.PLAYER.get_node("Hand"), "_on_axeAbility1Used")
 	damage = float(Weapons.all_weapons.Axe["attack"])
 	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
 	attack_speed = float(Weapons.all_weapons.Axe["spd"])
@@ -60,9 +58,9 @@ func _unhandled_input(event) -> void:
 			$AnimationPlayer.play("RESET")
 			
 		if event.is_action_pressed("use_ability_1"):
-			if player_node.mana>=25:
-				if (player_node.equippedWeapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.equippedWeapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-					player_node.start_skill_cooldown(1, 5, 30)
+			if Bufor.PLAYER.mana>=25:
+				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					Bufor.PLAYER.start_skill_cooldown(1, 5, 30)
 	#				print("[INFO]: Axe abilty 1 used")
 					tmpdmg = damage 
 					damage *= ability1damagemultipler
@@ -85,13 +83,13 @@ func _unhandled_input(event) -> void:
 					# Emits signal to the Hand, so that it disconnects the axe from the Player and reparents it to the main node
 					emit_signal("axeability1used", rotation_degrees, global_position)
 					# [WARNING]: At this point the parent of the axe is the "Main" node
-					player_node.deleteCurrentWeapon()
+					Bufor.PLAYER.deleteCurrentWeapon()
 					$AnimationPlayer.play("Throw")
 					yield($AnimationPlayer, "animation_finished")
 					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 0, global_position.x)
 					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 0, global_position.y)
-					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 1, global_position.x - axeHandDirectionVariable *45 * cos(get_angle_to(player_node.global_position) - PI/2))
-					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 1, global_position.y - axeHandDirectionVariable * 45 * sin(get_angle_to(player_node.global_position) - PI/2))
+					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(0, 1, global_position.x - axeHandDirectionVariable *45 * cos(get_angle_to(Bufor.PLAYER.global_position) - PI/2))
+					$AnimationPlayer.get_animation("Jump back").bezier_track_set_key_value(1, 1, global_position.y - axeHandDirectionVariable * 45 * sin(get_angle_to(Bufor.PLAYER.global_position) - PI/2))
 					$AnimationPlayer.play("Jump back")
 					yield($AnimationPlayer, "animation_finished")
 					var lootableAxe = load("res://Scenes/Loot/Weapon.tscn")
@@ -103,14 +101,16 @@ func _unhandled_input(event) -> void:
 	#				tmpknockback = weaponKnockback
 	#				weaponKnockback = 0
 					spell = 0
+			else:
+				print("[INFO]: No mana left for axe ability 1 to be used")
 		elif event.is_action_pressed("use_ability_2"):
-			if player_node.mana>=50:
-				if (player_node.equippedWeapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.equippedWeapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
-					player_node.start_skill_cooldown(2, 50, 50)
+			if Bufor.PLAYER.mana>=50:
+				if (Bufor.PLAYER.equippedWeapons[1]==weaponName and !Bufor.PLAYER.get_node("CoolDownS2").get_time_left()) or (Bufor.PLAYER.equippedWeapons[2]==weaponName and !Bufor.PLAYER.get_node("CoolDownS4").get_time_left()):
+					Bufor.PLAYER.start_skill_cooldown(2, 50, 50)
 					spell = 1
 					StatusBar_node.immune = true
-					tmpspeed = player_node.speed
-					player_node.speed *= speedmultipler
+					tmpspeed = Bufor.PLAYER.speed
+					Bufor.PLAYER.speed *= speedmultipler
 					tmpdmg = damage
 					damage *= dmgmultipler
 					tmpattack_speed = attack_speed
@@ -125,11 +125,13 @@ func _unhandled_input(event) -> void:
 					yield(t, "timeout")
 					t.queue_free()
 					
-					player_node.speed = tmpspeed
+					Bufor.PLAYER.speed = tmpspeed
 					damage = tmpdmg
 					attack_speed = tmpattack_speed
 					StatusBar_node.immune = false
 					spell = 0
+			else:
+				print("[INFO]: No mana left for axe ability 2 to be used")
 
 
 func _on_Player_attacked() -> void:
