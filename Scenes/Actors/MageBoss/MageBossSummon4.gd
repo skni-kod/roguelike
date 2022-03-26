@@ -1,7 +1,7 @@
 # summon.gd
 extends KinematicBody2D
 #summon
-var player = null #Zmienna przechowująca węzeł gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.8 #Zmienna przechowująca szybkość poruszania
 var attack = false #Czy summon jest w trakcie ataku
@@ -32,8 +32,8 @@ func _physics_process(delta):
 	enemyPos = self.global_position
 	# === WEKTORY MOVE I KNOCKBACK === #
 	if knockback == Vector2.ZERO:
-		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
-			move = position.direction_to(player.position) * speed
+		if playerIsInRange and health>0: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
+			move = position.direction_to(Bufor.PLAYER.position) * speed
 	else:
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 	# === ======================== === #
@@ -48,12 +48,12 @@ func _physics_process(delta):
 func _on_Atak_body_entered(body): 
 	if body != self and body.name == "Player": #Jeżeli gracz znajdzie się w zasięgu ataku
 		attack = true #summon atakuje
-		player = body
+		playerIsInRange = true
 
 func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 	if body != self and body.name == "Player":
 		attack = false #summon nie atakuje
-		player = null
+		playerIsInRange = false
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
@@ -70,7 +70,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:

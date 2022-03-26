@@ -345,7 +345,7 @@ process_material = SubResource( 31 )
 texture = ExtResource( 9 )
 
 [node name="Shadow" type="Sprite" parent="."]
-position = Vector2( 0, 13.114 )
+position = Vector2( -0.668175, 14.4503 )
 scale = Vector2( 0.488622, 0.198521 )
 texture = ExtResource( 6 )
 
@@ -432,9 +432,6 @@ position = Vector2( 0, 5.7 )
 [node name="Hand" type="Position2D" parent="."]
 position = Vector2( 12.297, 5.7 )
 script = ExtResource( 8 )
-__meta__ = {
-"_gizmo_extents_": 33.8
-}
 
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]

@@ -14,7 +14,7 @@ export var windball_dmg = 6.0  #Zmienna definiujaca obrazenia pocisku powietrzne
 export var fireball_dmg = 4.0  #Zmienna definiujaca obrazenia pocisku ognistego
 export var waterball_dmg = 5.0  #Zmienna definiujaca obrazenia pocisku wodnego
 var alive = true # zmienna czy boss żyje
-var player = null  #Zmienna przechowujaca wezel gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO  #Zmienna inicjujaca wektor poruszania
 var hp: float = max_hp  #Zmienna przechowujaca ilosc pozostalego zycia
 var health = 100  #Pozostale zycie w procentach
@@ -50,13 +50,13 @@ func _physics_process(delta):
 	#Ruch bossa
 	move = Vector2.ZERO
 	if alive:
-		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
+		if playerIsInRange and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
 			# === WEKTORY MOVE I KNOCKBACK === #
 			if knockback == Vector2.ZERO:
-				if global_position.distance_to(player.global_position) < 55.0:
-					move = -global_position.direction_to(player.global_position) * speed
-				elif global_position.distance_to(player.global_position) > 65.0:
-					move = global_position.direction_to(player.global_position) * speed
+				if global_position.distance_to(Bufor.PLAYER.global_position) < 55.0:
+					move = -global_position.direction_to(Bufor.PLAYER.global_position) * speed
+				elif global_position.distance_to(Bufor.PLAYER.global_position) > 65.0:
+					move = global_position.direction_to(Bufor.PLAYER.global_position) * speed
 			else:
 				knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 			# === ======================== === #
@@ -75,11 +75,11 @@ func _physics_process(delta):
 
 func _on_Wzrok_body_entered(body):  #Jesli gracz wejdzie w pole widzenia, przypisz jego wezel do zmiennej
 	if body.name == "Player":
-		player = body
+		playerIsInRange = true
 
 func _on_Wzrok_body_exited(body):  #Jesli gracz wyjdzie z pola widzenia, ustaw zmienna na null
 	if body.name == "Player":
-		player = null
+		playerIsInRange = false
 
 func _on_WaterFireTimer_timeout():  #Zmieniaj orbity kul wodnej i ognistej co czas
 	change_rotation_WF = true
@@ -89,22 +89,22 @@ func _on_EarthWindTimer_timeout():  #Zmieniaj orbity kul ziemnej i powietrznej c
 
 func _on_Fireball_body_entered(body):  #Jesli gracz wejdzie w ognista kule
 	if body.name == "Player":
-		player.take_dmg(fireball_dmg, projectileKnockback, self.global_position)
+		Bufor.PLAYER.take_dmg(fireball_dmg, projectileKnockback, self.global_position)
 		statusEffect.burning = true
 
 func _on_Waterball_body_entered(body):  #Jesli gracz wejdzie w wodna kule
 	if body.name == "Player":
-		player.take_dmg(waterball_dmg, projectileKnockback, self.global_position)
+		Bufor.PLAYER.take_dmg(waterball_dmg, projectileKnockback, self.global_position)
 		statusEffect.freezing = true
 		
 func _on_WindBall_body_entered(body):
 	if body.name == "Player":
-		player.take_dmg(windball_dmg, projectileKnockback, self.global_position)
+		Bufor.PLAYER.take_dmg(windball_dmg, projectileKnockback, self.global_position)
 		statusEffect.weakness = true
 
 func _on_EarthBall_body_entered(body):  #Jesli gracz wejdzie w ziemna kule
 	if body.name == "Player":
-		player.take_dmg(earthball_dmg, projectileKnockback, self.global_position)
+		Bufor.PLAYER.take_dmg(earthball_dmg, projectileKnockback, self.global_position)
 
 func _on_PhaseTimer_timeout():  #Po rozpoczeciu fazy i odpowiednim czasie stworz summona
 	var summon = load("res://Scenes/Actors/MageBoss/Summon.tscn")
@@ -124,7 +124,7 @@ func get_dmg(dmg, weaponKnockback):
 		if health>0:
 			# ======= KNOCKBACK ======= #
 			if weaponKnockback != 0:
-				knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+				knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 			if knockbackResistance != 0:
 				knockback /= knockbackResistance
 			elif knockbackResistance <= 0.6:

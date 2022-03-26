@@ -87,12 +87,16 @@ func UpdatePotions() -> void: #funkcja aktualizująca status potek
 		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 		
 
+func _enter_tree():
+	Bufor.PLAYER = self
+
+
 func _ready() -> void: #po inicjacji bohatera
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
-	if Bufor.coins:
-		coins = Bufor.coins
+	if Bufor.COINS:
+		coins = Bufor.COINS
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
@@ -104,13 +108,13 @@ func _ready() -> void: #po inicjacji bohatera
 	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
 	
 	
-#	if Bufor.weapons: # jeśli bufor nie jest pusty
+#	if Bufor.WEAPONS: # jeśli bufor nie jest pusty
 #		# bronie są ładowane z bufora
-#		weapons = Bufor.weapons
-#		first_weapon_stats = Bufor.first_weapon_stats
+#		weapons = Bufor.WEAPONS
+#		first_weapon_stats = Bufor.FIRST_WEAPON_STATS
 #		currentlyEquippedWeapon = Bufor.currentlyEquippedWeapon
 #		if weapons[2] != "Empty":
-#			second_weapon_stats = Bufor.second_weapon_stats
+#			second_weapon_stats = Bufor.SECOND_WEAPON_STATS
 #			UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[weapons[2]]
 #		UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weapons[1]]
 #		if weapons[1] == "katana": # naprawia błąd wielkiej katany w interfejsie
@@ -127,10 +131,10 @@ func _ready() -> void: #po inicjacji bohatera
 		"60healthPotion" : preload("res://Assets/Loot/Potions/Potion+60hp.png"),
 		"Empty" : preload("res://Assets/Loot/Potions/Empty.png")
 	}
-	if Bufor.potions: # jeżeli w buforze są dane
+	if Bufor.POTIONS: # jeżeli w buforze są dane
 		# mikstury są ładowane z bufora
-		potions = Bufor.potions
-		potions_amount = Bufor.potions_amount
+		potions = Bufor.POTIONS
+		potions_amount = Bufor.POTIONS_AMOUNT
 	else:
 		potions = { #słownik przechowujący jaki potek jest na danym slocie
 		1 : "20healthPotion",
@@ -230,7 +234,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("use_potion_1"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
-		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
+		if level.get_node("Player").health == base_hp: #gdy Player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[1] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
 			if level.get_node("Player").health > 0.5*base_hp:	#jeżeli gracz ma ponad pół hp to:
@@ -267,7 +271,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if Input.is_action_just_pressed("use_potion_2"): #funkcja wywoływana jak nacisniety zostanie przycisk uzycia potionu
 		level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 		base_hp = level.get_node("Player").max_health #pobranie maksymalnego hp gracza
-		if level.get_node("Player").health == base_hp: #gdy player ma pełne hp niemożna użyc potki
+		if level.get_node("Player").health == base_hp: #gdy Player ma pełne hp niemożna użyc potki
 			return
 		if potions_amount["50%Potion"] > 0 and potions[2] == "50%Potion": 									#jeżeli gracz posiada jakieś potki half hp to:
 			if level.get_node("Player").health > 0.5*base_hp:	#jeżeli gracz ma ponad pół hp to:
@@ -364,7 +368,7 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 		
 
 
-# Method that drops the current weapon from the player to the parent scene (main)
+# Method that drops the current weapon from the Player to the parent scene (main)
 func dropCurrentWeapon(slot):
 	if $Hand.get_child(0) and $Hand.get_child_count() == 1:
 		var temporaryChildVariable = $Hand.get_child(0)
@@ -385,18 +389,18 @@ func dropCurrentWeapon(slot):
 
 
 # Skill cooldown method
-func start_skill_cooldown(ability: int, mana_used: int) -> void:
-	updateMana(-mana_used)
+func start_skill_cooldown(ability: int, time: int, manaUsed: int) -> void:
+	updateMana(-manaUsed)
 	if(currentlyEquippedWeapon == equippedWeapons[1]):
 		if(ability==1):
-			$CoolDownS1.start(25)
+			$CoolDownS1.start(time)
 		else:
-			$CoolDownS2.start(50)
+			$CoolDownS2.start(time)
 	else:
 		if(ability==1):
-			$CoolDownS3.start(25)
+			$CoolDownS3.start(time)
 		else:
-			$CoolDownS4.start(50)
+			$CoolDownS4.start(time)
 
 # ============= ====== ============== #  
 
@@ -410,7 +414,7 @@ func updateMana(value: int) -> void:
 	emit_signal("mana_updated", mana/max_mana*100)
 
 
-func resetStats() -> void:#Reset player perks to default
+func resetStats() -> void: # Reset Player perks to default
 	manaRegenRate=statusEffect.manaRegenRate
 
 
@@ -467,7 +471,7 @@ func jump() -> void:
 
 
 # Method used by the AnimationPlayer (skok) to call a SoundController audio playback
-func play_jump_sound():
+func play_jump_sound() -> void:
 	SoundController.play_player_random_jump()
 
 
@@ -520,36 +524,36 @@ func _on_Pick_body_entered(body) -> void: #Jeśli coś do podniesienia jest w za
 			body.queue_free()
 		if "Chest" in body.name:
 			chest = body
-		if "50%Potion" in body.name: #jeżeli player wejdzie w potka
+		if "50%Potion" in body.name: # jeżeli Player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if potions_amount["50%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 50%
+			if potions_amount["50%Potion" ] != 0: # sprawdzenie czy Player posiada jakieś potki 50%
 				potions_amount["50%Potion" ] += 1 #jeżeli ma to ilosc potek 50% zwieksza się o 1
 				body.queue_free() #powoduje znikniecie potka z mapy
 				UpdatePotions()
 			else: #jeżeli nie posiada potki 50% to musi kliknąć pick żeby podnieść
 				potion = body
 
-		if "100%Potion" in body.name: #jeżeli player wejdzie w potka
+		if "100%Potion" in body.name: # jeżeli Player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if potions_amount["100%Potion" ] != 0: #sprawdzenie czy player posiada jakieś potki 100%
+			if potions_amount["100%Potion" ] != 0: # sprawdzenie czy Player posiada jakieś potki 100%
 				potions_amount["100%Potion" ] += 1 #jeżeli ma to ilosc potek 100% zwieksza się o 1
 				body.queue_free() #powoduje znikniecie potka z mapy
 				UpdatePotions()
 			else: #jeżeli nie posiada potki 100% to musi kliknąć pick żeby podnieść
 				potion = body
 
-		if "20healthPotion" in body.name: #jeżeli player wejdzie w potka
+		if "20healthPotion" in body.name: # jeżeli Player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if potions_amount["20healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 20hp
+			if potions_amount["20healthPotion" ] != 0: # sprawdzenie czy Player posiada jakieś potki 20hp
 				potions_amount["20healthPotion" ] += 1 #jeżeli ma to ilosc potek 20hp zwieksza się o 1
 				body.queue_free() #powoduje znikniecie potka z mapy
 				UpdatePotions()
 			else: #jeżeli nie posiada potki 20 aktualna potka jest zamieniana na potke 20hp
 				potion = body
 
-		if "60healthPotion" in body.name: #jeżeli player wejdzie w potka
+		if "60healthPotion" in body.name: # jeżeli Player wejdzie w potka
 			#level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			if potions_amount["60healthPotion" ] != 0: #sprawdzenie czy player posiada jakieś potki 60hp
+			if potions_amount["60healthPotion" ] != 0: # sprawdzenie czy Player posiada jakieś potki 60hp
 				potions_amount["60healthPotion" ] += 1 #jeżeli ma to ilosc potek 60hp zwieksza się o 1
 				body.queue_free() #powoduje znikniecie potka z mapy
 				UpdatePotions()

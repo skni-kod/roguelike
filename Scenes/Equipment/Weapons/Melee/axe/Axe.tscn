@@ -114,6 +114,18 @@ tracks/5/keys = {
 "method": "play_swoosh"
 } ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:attacking")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [sub_resource type="Animation" id=10]
 resource_name = "Jump back"
@@ -147,6 +159,18 @@ tracks/2/enabled = true
 tracks/2/keys = {
 "points": PoolRealArray( 460, -0.05, 0, 0.302788, -229.731, 0, -0.082, 0, 0.05, 0 ),
 "times": PoolRealArray( 0, 0.4 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:attacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -289,6 +313,18 @@ tracks/11/keys = {
 "update": 0,
 "values": [ Vector2( 1.25, 1.25 ) ]
 }
+tracks/12/type = "value"
+tracks/12/path = NodePath(".:attacking")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=12]
 length = 0.7
@@ -394,6 +430,18 @@ tracks/8/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ 1.25, 1.25 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath(".:attacking")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [node name="Axe" type="Area2D"]

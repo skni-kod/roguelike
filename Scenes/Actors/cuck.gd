@@ -4,7 +4,7 @@ signal died(body)
 
 onready var statusEffect = get_node("../../../UI/StatusBar")
 
-var player = null
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO
 export var speed = 1.7
 export var dps = 8
@@ -55,15 +55,15 @@ func _ready():
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
-	if player !=null and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
+	if playerIsInRange and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
 		$Sprite.scale.x= right
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x - self.global_position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
 			right = -1
 		else:
 			right = 1
@@ -80,24 +80,22 @@ func _physics_process(delta):
 	# === ========================== === #
 	
 func _on_Wzrok_body_entered(body):
-	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (wzrok -> collisionshape) to:
-		player = body #player juz nie jest nullem, dzieki czemu cuck moze isc w jego strone (patrz -> _physics_process(delta))
-		
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = true
 func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": #jezeli player wyszedl z pola wzrok (wzrok -> collisionshape) to:
-		player = null #player jest nullem, dzieki czemu cuck sobie stoi(patrz -> _physics_process(delta))
-		
+	if body != self and body.name == "Player": #jezeli Player wyszedl z pola wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = false
 func  _on_Atak_body_entered(body):
-	if body != self and body.name == "Player": #jezeli player wszedl w pole ataku (atak -> collisionshape) to:
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole ataku (atak -> collisionshape) to:
 		attack = true #cuck atakuje playera
 		
-func _on_Atak_body_exited(body):#jezeli player wyszedl z pola ataku (atak -> collisionshape) to:
+func _on_Atak_body_exited(body): # jezeli Player wyszedl z pola ataku (atak -> collisionshape) to:
 	attack = false #cuck przestaje atakowac playera
 	
 func _on_Timer_timeout():
 	if attack and health>0:
 		statusEffect.bleeding = true
-		player.take_dmg(dps, enemyKnockback, self.global_position) #wywolywana jest funkcja zabierania dmg playerowi
+		Bufor.PLAYER.take_dmg(dps, enemyKnockback, self.global_position) #wywolywana jest funkcja zabierania dmg playerowi
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		
@@ -106,7 +104,7 @@ func get_dmg(dmg, weaponKnockback):
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:

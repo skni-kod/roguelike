@@ -21,7 +21,7 @@ var all_enemies = {
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
 	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn")]
-var id_list = [] #Lista ID pokojów, w których był już player
+var id_list = [] #Lista ID pokojów, w których był już Player
 var current_id #ID aktualnego pokoju
 var down = Vector2(7,8) #Pozycja dolnych drzwi
 var up = Vector2(7,0) #Pozycja górnych drzwi
@@ -97,7 +97,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		elif boss: #respienie boss'a
 			ilosc_enemy = 1
 			var bossIns
-			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()
+			bossIns = bossScene[Bufor.POZIOM % len(bossScene)].instance()
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi

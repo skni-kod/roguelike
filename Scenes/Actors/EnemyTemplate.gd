@@ -19,7 +19,7 @@ var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 # === ================ === #
 
 # === WYKRYWANIE CELU I ATAK === #
-var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var attack = false # zmienna ataku (czy atakuje)
 # === ====================== === #
 
@@ -63,17 +63,17 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
-	if player != null and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
+	if playerIsInRange and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed # poruszanie się w stronę gracza 
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
 		
 		# === MODYFIKACJA SPRITE'ÓW === #
-		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
 		else:
 			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
@@ -98,13 +98,13 @@ func _physics_process(delta):
 # GRUPA LAYER AREA2D "WZROK" -> ENEMY
 # GRUPA COLLISION AREA2D "WZROK" -> PLAYER (JEŚLI MA WYKRYWAĆ INNE TO ZAZNACZYĆ INNE DODATKOWE COLLISION)
 func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
-		player = body
+	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = true
 
 
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
-		player = null
+	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = false
 # === ================== === #
 
 
@@ -114,12 +114,12 @@ func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘ
 func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
 		attack = true
-		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer
+		$AttackTimer.start() # gdy wchodzi Player do sfery ataku, to startuje timer
 
 func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
 		attack = false
-		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
+		$AttackTimer.stop() # gdy wychodzi Player ze sfery ataku, to stopuje timer
 # === ================== === #
 
 
@@ -142,7 +142,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		
 		# === KNOCKBACK === #
-		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance # knockbackResistance danego przeciwnika obniża iloczynowo otrzymany knockback
 		elif knockbackResistance <= 0.6:

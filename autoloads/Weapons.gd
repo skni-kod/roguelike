@@ -31,7 +31,7 @@ var all_weapons = {
 	},
 	"Axe": {
 		"attack": "10",
-		"spd": "0.5",
+		"spd": "1",
 		"knc": float(0.75),
 		"range": "melee",
 		"effect": "none"
