@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 signal died(body)
 
-var player = null	#Zmienna przechowująca węzeł gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 0.5		#Zmienna przechowująca szybkość poruszania
 var right = 0.17		#Kierunek obrócenia
@@ -59,15 +59,15 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	enemyPos = self.global_position
-	if player != null and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
+	if playerIsInRange and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
 		$Goblin_shaman.scale.x = right		# obrót w stronę gracza
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x-self.global_position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
+		if Bufor.PLAYER.global_position.x-self.global_position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
 			right = 0.17
 		else:
 			right = -0.17
@@ -105,12 +105,12 @@ func fire():		# funkcja odpowiadająca za tworzenie pocisków
 	
 func _on_wzrok_body_entered(body):
 	if body != self and body.name == "Player":	#Jeśli gracz znajduję się w polu wzrok przypisz jego węzeł do zmiennej i przywołuj
-		player = body
+		playerIsInRange = true
 		summon = true
 
-func _on_wzrok_body_exited(body):		#Jeżeli gracz nie znajduję się w polu wzrok to zmień player na null i nie przywołuj 
+func _on_wzrok_body_exited(body):		#Jeżeli gracz nie znajduję się w polu wzrok to zmień Player na null i nie przywołuj 
 	if body != self and body.name == "Player":
-		player = null
+		playerIsInRange = false
 		summon = false
 	
 func _on_Area2D_body_entered(body):		#Jeżeli gracz wszedł w pole atak (Area2D) to atakuj nie przywołuj
@@ -124,12 +124,12 @@ func _on_Area2D_body_exited(body):		#Jeżeli gracz wyszedł z pola atak (Area2D)
 		summon = true
 		
 func _on_summon_timeout():
-	if player!=null and health>0 and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
+	if playerIsInRange and health>0 and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
 		summon()
 
 
 func _on_attack_timeout():
-	if player != null and health>0 and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
+	if playerIsInRange and health>0 and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
 		fire()
 		
 		
@@ -138,7 +138,7 @@ func get_dmg(dmg, weaponKnockback):
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:

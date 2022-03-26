@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 var move = Vector2.ZERO
 var look_vec = Vector2.ZERO #kierunek pocisku
-var player = null 
 var speed = 1 #predkosc pocisku
 var dps = 5 #zadawany damage przez pocisk
 onready var statusEffect = get_node("../UI/StatusBar")
@@ -12,7 +11,7 @@ var projectileKnockback = 0.1
 # === ========= === #
 
 func _ready():
-	look_vec = player.global_position - global_position #kierunek wektora
+	look_vec = Bufor.PLAYER.global_position - global_position #kierunek wektora
 	
 func _physics_process(delta):
 	move = Vector2.ZERO

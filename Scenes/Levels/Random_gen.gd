@@ -17,7 +17,6 @@ var gen = 0
 var oneDoor = 0
 var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn") #wczytywanie sceny pokoju
-var player = load("res://Scenes/Actors/Player.tscn") #wczytywanie sceny playera
 var random_room_nr = RandomNumberGenerator.new()
 var room_variations = {
 	1 : load("res://Assets/TileMap/Room2.tres"),
@@ -26,6 +25,22 @@ var room_variations = {
 	4 : load("res://Assets/TileMap/Room1.tres")
 }
 var current_room_type
+
+
+func _ready():
+	match Bufor.POZIOM:
+		0:
+			current_room_type = 1
+		1:
+			current_room_type = 2
+		2:
+			current_room_type = 3
+		_:
+			current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			
+	MusicController.stop_music() #zapauzowanie muzyki z menu
+	generate() #generacja mapy
+	MusicController.play_game_music()
 
 
 func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów pokojów
@@ -126,17 +141,3 @@ func step(direction): #funkcja, która określa w którą stronę może zostać 
 	else: #jezeli jest juz w mapie to zmniejszamy "n" poniewaz nie wygenerowalismy pokoju
 		n -= 1
 
-func _ready():
-	match Bufor.poziom:
-		0:
-			current_room_type = 1
-		1:
-			current_room_type = 2
-		2:
-			current_room_type = 3
-		_:
-			current_room_type = random_room_nr.randi_range(1, room_variations.size())
-			
-	MusicController.stop_music() #zapauzowanie muzyki z menu
-	generate() #generacja mapy
-	MusicController.play_game_music()

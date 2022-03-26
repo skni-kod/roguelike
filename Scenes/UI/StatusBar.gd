@@ -2,7 +2,6 @@
 extends Control
 
 # wczytanie potrzebnych node'ów w celu modyfikacji efektów statusu lub efektów wizualnych
-onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
 onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
@@ -127,7 +126,7 @@ func _on_Burning_Lifetime_timeout():
 
 func _on_Burning_Damage_timeout():
 	if burning:
-		player.take_dmg(burningDMG+(burningStacks*1.1), 0, player.global_position) # zadaje damage równy ilości bazowego damage danego efektu
+		Bufor.PLAYER.take_dmg(burningDMG+(burningStacks*1.1), 0, Bufor.PLAYER.global_position) # zadaje damage równy ilości bazowego damage danego efektu
 		# startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, 
 		# "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
 		$StatusContainer/Burning/Damage.start() 
@@ -159,7 +158,7 @@ func _on_Poison_Lifetime_timeout():
 
 func _on_Poison_Damage_timeout():
 	if poison:
-		player.take_dmg(poisonDMG+(poisonStacks*1.2), 0, player.global_position) 
+		Bufor.PLAYER.take_dmg(poisonDMG+(poisonStacks*1.2), 0, Bufor.PLAYER.global_position) 
 		$StatusContainer/Poison/Damage.start()
 
 
@@ -191,7 +190,7 @@ func _on_Bleeding_Lifetime_timeout():
 
 func _on_Bleeding_Damage_timeout():
 	if bleeding:
-		player.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, player.global_position)
+		Bufor.PLAYER.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, Bufor.PLAYER.global_position)
 		$StatusContainer/Bleeding/Damage.start()
 
 
@@ -219,8 +218,8 @@ func _on_Healing_Lifetime_timeout():
 
 
 func _on_Healing_Healing_timeout():
-	if healing and player.health <= player.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
-		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, player.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
+	if healing and Bufor.PLAYER.health <= Bufor.PLAYER.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
+		Bufor.PLAYER.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, Bufor.PLAYER.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
 		$StatusContainer/Healing/Healing.start()
 
 

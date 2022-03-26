@@ -5,14 +5,14 @@ onready var main = get_tree().get_root().find_node("Main", true, false)
 
 signal died(body)
 
-var player = null
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO
 export var speed = 0.5 
 var right = 1
 export var max_hp = 40
 var hp:float = max_hp
-var attack = false #sluzy do informowania czy player jest w polu strzelanie (strzelanie -> colisionshape2d)
-var eyes = false #sluzy do informowania czy player jest w polu wzrok (wzrok -> collisionshape2d)
+var attack = false #sluzy do informowania czy Player jest w polu strzelanie (strzelanie -> colisionshape2d)
+var eyes = false #sluzy do informowania czy Player jest w polu wzrok (wzrok -> collisionshape2d)
 
 export var health = 100
 var drop = {"minCoins":0,"maxCoins":5}
@@ -56,24 +56,24 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	enemyPos = self.global_position
-	if player !=null and health>0: #jezeli playera jest w polu widzenia i jest zywy
+	if playerIsInRange and health>0: #jezeli playera jest w polu widzenia i jest zywy
 		# === WEKTORY MOVE I KNOCKBACK === #
 		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
 		$Sprite.scale.x= right #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
-		if player.global_position.x - self.global_position.x < 0:
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0:
 			right = -1 #obraca sie sprite cucka w zaleznosci od umiejscowienia playera
 		else:
 			right = 1
 		if eyes:
-			if !attack: #jezeli player znajduje sie w polu widzenia (wzrok -> collisionshape2d), a nie znajduje sie w polu strzelania (strzelanie -> collisionshape2d)
+			if !attack: #jezeli Player znajduje sie w polu widzenia (wzrok -> collisionshape2d), a nie znajduje sie w polu strzelania (strzelanie -> collisionshape2d)
 				$AnimationPlayer.play("Walk") #odtwarzana jest animacja chodzenia cucka
 			else:
 				$AnimationPlayer.play("Attack") #odtwarzana jest animacja ataku cucka
-	elif player == null and health>0:
+	elif !playerIsInRange and health>0:
 		move = Vector2.ZERO #parametr przekazywany do move_and_collide, z racji tego ze jest .ZERO to sobie stoi
 		$AnimationPlayer.play("Idle") #odtwarzana jest animacja spoczynku
 	
@@ -86,35 +86,35 @@ func _physics_process(delta):
 	# === ========================== === # 
 
 func _on_Area2D_body_entered(body):
-	if body != self and body.name == "Player": #jezeli player wszedl w pole strzelanie (strzelanie -> collisionshape) to:
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole strzelanie (strzelanie -> collisionshape) to:
 		speed = -0.1
 		attack = true #i ciupie w playera
 
 func _on_Area2D_body_exited(body): 
-	if body != self and body.name == "Player": #jezeli player wyszedl z pola strzelanie (strzelanie -> collisionshape) to:
+	if body != self and body.name == "Player": #jezeli Player wyszedl z pola strzelanie (strzelanie -> collisionshape) to:
 		attack = false #cuck przestaje strzelac
 		speed = 0.5 #zmienia sie predkosc cucka dzieki czemu zaczyna sie poruszac
 
 		
 func _on_Wzrok_body_entered(body):  
-	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (wzrok -> collisionshape) to:
-		player = body #player juz nie jest nullem, dzieki czemu cuck moze isc w jego strone (patrz -> _physics_process(delta))
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = true
 		eyes = true #jezeli jest w polu wzrok a nie jest w polu strzelanie to odgrywana jest animacja chodzenia (patrz ->_physics_process(delta))
 
 func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": #jezeli player wyszedl z pola wzrok (wzrok -> collisionshape) to:
-		player = null #player  jest nullem, dzieki czemu cuck sobie stoi(patrz -> _physics_process(delta))
-		eyes = false #player wyszedl z pola widzenia, odgrywana jest animacja spoczynku (patrz ->_physics_process(delta))
+	if body != self and body.name == "Player": #jezeli Player wyszedl z pola wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = false
+		eyes = false # Player wyszedl z pola widzenia, odgrywana jest animacja spoczynku (patrz ->_physics_process(delta))
 
 func fire():
 	var bullet = BULLET_SCENE.instance() #tworzy sie instancja bulletu
 	bullet.position = get_global_position() + $Position2D.position
-	bullet.player = player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
+#	bullet.Player = Player #Przekazywany jest obiekt gracza dzięki któremu później pocisk wylicza wektor w którym kierunku ma lecieć pocisk.
 	main.add_child(bullet)
-	#$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki player jest w polu strzelanie
+	#$Timer.set_wait_time(0.75) #powtarzane jest co pol sekundy, dopoki Player jest w polu strzelanie
 
 func _on_Timer_timeout():
-	if player !=null and health>0 and attack: #jezeli player znajduje sie w polu strzelanie to:
+	if playerIsInRange and health>0 and attack: #jezeli Player znajduje sie w polu strzelanie to:
 		fire() #wywolywana jest funkcja strzelania
 			
 func get_dmg(dmg, weaponKnockback):
@@ -122,7 +122,7 @@ func get_dmg(dmg, weaponKnockback):
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
