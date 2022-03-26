@@ -1,24 +1,20 @@
 extends Node2D
 
-onready var player_node = get_tree().get_root().find_node("Player", true, false)
-var mouse_position #Pozycja kursora
-var attack = false #Czy postać atakuje
-var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
-export var attack_range = 15 #Zasięg ataku
-var timer #Stoper
+export var attacking = false setget set_attack_state, get_attack_state #Czy postać atakuje
+
+onready var StatusBar_node = get_tree().get_root().find_node("StatusBar", true, false)
+
 var damage
 var weaponKnockback
-var a = 1
+var attack_speed
+
+var weaponName = "Axe"
 var spell = 0
-var weaponName = "blade"
-var smoothing = 1
 
 var rng = RandomNumberGenerator.new()
 var crit_chance = rng.randi_range(0,10)
 var crit = false
 var crit_damage = 2
-
-var attack_speed = 0
 
 var active_ability2 = 0
 var active_ability1 = 0
@@ -46,9 +42,9 @@ func _physics_process(delta):
 	
 	
 	if Input.is_action_just_pressed("use_ability_1"):
-		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=25:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+		if active_ability1!=1 and active_ability2!=1 and Bufor.PLAYER.mana>=25:
+			if (Bufor.PLAYER.weapons[1]==weaponName and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left()) or (Bufor.PLAYER.weapons[2]==weaponName and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				Bufor.PLAYER.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				active_ability1 = 1;
 				$WeaponSprite/WirMiecza.emitting = true
@@ -75,7 +71,6 @@ func _physics_process(delta):
 #						$WeaponSprite.rotation_degrees=0 #Obróć broń ostrzem do góry
 			$WeaponSprite/WirMiecza.emitting = false
 			$WeaponSprite.rotation_degrees = 0
-			reset_pivot()
 #			$WeaponSprite.position.x=13
 #			$WeaponSprite.position.y=0
 			$AttackCollision.disabled = true
@@ -83,9 +78,9 @@ func _physics_process(delta):
 			spell = 0
 			
 	if Input.is_action_just_pressed("use_ability_2"):
-		if active_ability1!=1 and active_ability2!=1 and player_node.mana>=50:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+		if active_ability1!=1 and active_ability2!=1 and Bufor.PLAYER.mana>=50:
+			if (Bufor.PLAYER.weapons[1]==weaponName and !Bufor.PLAYER.get_node("CoolDownS2").get_time_left()) or (Bufor.PLAYER.weapons[2]==weaponName and !Bufor.PLAYER.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+				Bufor.PLAYER.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				active_ability2 = 1
 				
@@ -109,17 +104,11 @@ func _unhandled_input(event):
 			yield($AnimationPlayer, "animation_finished")
 			$AnimationPlayer.play("RESET")
 
-func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x = 0
-	position.y = 0
-
 
 func _on_Player_attacked():
-	if !attack and active_ability1!=1:#Sprawdza czy broń nie jest w trakcie ataku
-		attack = true
+	if !attacking: #Sprawdza czy broń nie jest w trakcie ataku
+		set_attack_state(true)
 		$AttackCollision.disabled = false
-#		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-		timer.start()
 
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
@@ -135,3 +124,15 @@ func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z pr
 		body.get_dmg(damage, weaponKnockback)
 		if crit:
 			damage /= crit_damage
+
+
+# === SET/GET FOR THE ATTACK STATE === #
+# setter is called at the animations
+func set_attack_state(value: bool) -> void:
+	attacking = value
+
+
+# getter is called at _unhandled_input() to check if not already attacking
+func get_attack_state() -> bool:
+	return attacking
+# === ============================ === #

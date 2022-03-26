@@ -81,11 +81,11 @@ func _physics_process(delta):
 		aim() # strzał w czasie, gdy jakiś target został wyznaczony
 	# === ========= === #
 	
-	if playerIsInRange and health>0: # gdy BD żyje oraz w jego zasięgu jest gracz
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy BD żyje oraz w jego zasięgu jest gracz
 		$Sprite.scale.x = right
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			if player_close:
 				move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 			else:
@@ -106,7 +106,7 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)

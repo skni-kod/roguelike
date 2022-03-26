@@ -63,9 +63,9 @@ func _ready():
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	if playerIsInRange and health>0:
+	if playerIsInRange and health>0 and Bufor.PLAYER:
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
@@ -79,7 +79,7 @@ func _physics_process(delta):
 		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)

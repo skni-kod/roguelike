@@ -50,9 +50,9 @@ func _physics_process(delta):
 	#Ruch bossa
 	move = Vector2.ZERO
 	if alive:
-		if playerIsInRange and health>0: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
+		if playerIsInRange and health>0 and Bufor.PLAYER: #Jeżeli gracz jest w polu widzenia i MageBoss nie atakuje oraz życie jest większe niż 0 to
 			# === WEKTORY MOVE I KNOCKBACK === #
-			if knockback == Vector2.ZERO:
+			if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 				if global_position.distance_to(Bufor.PLAYER.global_position) < 55.0:
 					move = -global_position.direction_to(Bufor.PLAYER.global_position) * speed
 				elif global_position.distance_to(Bufor.PLAYER.global_position) > 65.0:
@@ -61,7 +61,7 @@ func _physics_process(delta):
 				knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 			# === ======================== === #
 		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			move_and_collide(move) # ruch o Vector2D move
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)

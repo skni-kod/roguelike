@@ -55,10 +55,10 @@ func _ready():
 	
 func _physics_process(delta):
 	move = Vector2.ZERO
-	if playerIsInRange and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
+	if playerIsInRange and !attack and health>0 and Bufor.PLAYER != null: #jezeli playera jest w polu widzenia i cuck jest zywy
 		$Sprite.scale.x= right
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
@@ -72,7 +72,7 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)

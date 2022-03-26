@@ -59,10 +59,10 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	enemyPos = self.global_position
-	if playerIsInRange and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
+	if playerIsInRange and health>0 and Bufor.PLAYER and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
 		$Goblin_shaman.scale.x = right		# obrót w stronę gracza
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
@@ -76,7 +76,7 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
@@ -124,12 +124,12 @@ func _on_Area2D_body_exited(body):		#Jeżeli gracz wyszedł z pola atak (Area2D)
 		summon = true
 		
 func _on_summon_timeout():
-	if playerIsInRange and health>0 and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
+	if playerIsInRange and health>0 and Bufor.PLAYER and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
 		summon()
 
 
 func _on_attack_timeout():
-	if playerIsInRange and health>0 and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
+	if playerIsInRange and health>0 and Bufor.PLAYER and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
 		fire()
 		
 		
