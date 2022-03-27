@@ -4,6 +4,7 @@ var Room = preload("res://Scenes/Levels/Room_new.tscn")
 var Player = preload("res://Scenes/Actors/Player.tscn")
 onready var Map = $TileMap
 
+signal boss(boss_room)
 
 var tile_size = 32 #rozmiar tile'a
 var room_num = 30 #ilość pokoi (przed usunięciem)
@@ -109,9 +110,9 @@ func make_map(): #tworzenie mapy z dostępnych pokoi
 	var bottomright = Map.world_to_map(full_rect.end)
 	world_size_tl = topleft
 	world_size_br = bottomright
-#	for x in range(topleft.x - 10, bottomright.x + 10): #ustawienie tła
-#		for y in range(topleft.y - 10, bottomright.y + 10):
-#			Map.set_cell(x,y,44)
+	for x in range(topleft.x - 10, bottomright.x + 10): #ustawienie tła
+		for y in range(topleft.y - 10, bottomright.y + 10):
+			Map.set_cell(x,y,44)
 	var corridors = []
 	for room in $Rooms.get_children():
 		var s = (room.size/tile_size).floor()
@@ -219,6 +220,7 @@ func find_end_room(): #szukanie pokoju końcowego
 		if room.position.x > max_x:
 			end_room = room
 			max_x = room.position.x
+	emit_signal("boss", end_room)
 
 func doors(): #ustawianie drzwi
 	for room in $Rooms.get_children():
@@ -307,3 +309,15 @@ func global_tiles(): #funkcja wykonująca się po wygenerowaniu całej mapy, pom
 			if (Map.get_cell(x - 1, y) == 60 and 
 				Map.get_cell(x, y + 1) == 63):
 					Map.set_cell(x, y, 46)
+
+func close_door():
+	for x in range(world_size_tl.x, world_size_br.x):
+		for y in range(world_size_tl.y, world_size_br.y):
+			if(Map.get_cell(x,y) == 9):
+				Map.set_cell(x,y,25)
+			if(Map.get_cell(x,y) == 13):
+				Map.set_cell(x,y,29)
+			if(Map.get_cell(x,y) == 1):
+				Map.set_cell(x,y,17)
+			if(Map.get_cell(x,y) == 5):
+				Map.set_cell(x,y,21)

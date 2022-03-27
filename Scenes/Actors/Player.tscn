@@ -309,6 +309,8 @@ light_mask = 4
 
 [node name="Light2D" parent="." instance=ExtResource( 7 )]
 color = Color( 1, 0.964706, 0.686275, 1 )
+shadow_filter = 4
+shadow_filter_smooth = 8.0
 shadow_item_cull_mask = 1
 
 [node name="CoolDownS1" type="Timer" parent="."]
