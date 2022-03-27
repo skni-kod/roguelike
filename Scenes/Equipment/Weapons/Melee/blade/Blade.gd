@@ -31,14 +31,16 @@ func _physics_process(_delta):
 	pass
 
 
-func _unhandled_input(_event):
+func _input(event):
 	if Input.is_action_just_pressed("attack") and !activeAbility1 and !activeAbility2:
 			print("[INFO]: Blade event identified as BUTTON_LEFT pressed")
 			$AnimationPlayer.playback_speed = attack_speed
 			$AnimationPlayer.play("Attack")
 			yield($AnimationPlayer, "animation_finished")
 			$AnimationPlayer.play("RESET")
-	
+
+
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if !activeAbility1 and !activeAbility2 and Bufor.PLAYER.mana>=25:
 			if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce

@@ -31,7 +31,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				var p = pomnik.instance()
 				if (randi() % 2 == 0):
 					p.Cuckshooter = true
-				p.z_index = -1
+				p.z_index = 1
 				call_deferred('add_child', p)
 			#małe struktury
 			#kryształy
@@ -73,5 +73,5 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 							y = rand.randi_range(-130,130)
 						k.rotation_degrees = 270
 						k.position = Vector2(x, y)
-				k.z_index = -1
+				k.z_index = 1
 				add_child(k)

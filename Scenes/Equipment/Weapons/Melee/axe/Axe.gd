@@ -49,15 +49,16 @@ func _physics_process(_delta):
 	pass
 
 
-func _unhandled_input(event) -> void:
+func _input(event) -> void:
 	if !attacking:
 		if Input.is_action_just_pressed("attack"):
 			print("[INFO]: Axe event identified as BUTTON_LEFT pressed")
-			$AnimationPlayer.playback_speed = attack_speed
 			$AnimationPlayer.play("Attack")
 			yield($AnimationPlayer, "animation_finished")
 			$AnimationPlayer.play("RESET")
-			
+
+
+func _unhandled_input(event) -> void:
 		if event.is_action_pressed("use_ability_1"):
 			if Bufor.PLAYER.mana>=25:
 				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
@@ -116,6 +117,7 @@ func _unhandled_input(event) -> void:
 					damage *= dmgmultipler
 					tmpattack_speed = attack_speed
 					attack_speed *= attack_speedmultipler
+					$AnimationPlayer.playback_speed = attack_speed
 					print("[INFO]: Axe ability 2 used")
 					
 					var t = Timer.new()   			
@@ -129,6 +131,7 @@ func _unhandled_input(event) -> void:
 					Bufor.PLAYER.speed = tmpspeed
 					damage = tmpdmg
 					attack_speed = tmpattack_speed
+					$AnimationPlayer.playback_speed = attack_speed
 					StatusBar_node.immune = false
 					spell = 0
 			else:

@@ -13,7 +13,7 @@ var ability1ManaCost=1 #koszt do zmiany w balansie
 var ability2ManaCost=1 #koszt do zmiany w balansie
 var SR=0 #Stab rotation, potrzebne do ability 2
 var weaponKnockback
-var weaponName = "spear"
+var weaponName = "Spear"
 var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 

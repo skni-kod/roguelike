@@ -34,6 +34,9 @@ var activeWeapon = { # Variable that holds the currently active/equipped weapon 
 	"name" : "Empty"
 }			
 var weaponToTake = null		# Variable for holding a weapon to pick up
+
+var katanaDash = false
+
 # = UI Wapons sprites that show up in the UI Weapons Slots = #
 onready var UISlotWeaponSprite1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
 onready var UISlotWeaponSprite2 = get_node("../UI/Slots/Background/Weaponslot2/weaponsprite2")
@@ -106,27 +109,35 @@ func _ready() -> void: #po inicjacji bohatera
 		1 : "Katana",
 		2 : "Empty"
 	}
+
+	if Bufor.WEAPONS: # jeśli bufor nie jest pusty
+		# bronie są ładowane z bufora
+		equippedWeapons = Bufor.WEAPONS
+		currentlyEquippedWeapon = Bufor.currentlyEquippedWeapon
+		if equippedWeapons[2] != "Empty":
+			UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[equippedWeapons[2]]
+		UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
+		
+	if equippedWeapons[1] == "Katana" or equippedWeapons[1] == "Spear": # naprawia błąd wielkiej katany w interfejsie
+		UISlotWeaponSprite1.scale.x = .9
+		UISlotWeaponSprite1.scale.y = .9
+		UISlotWeaponSprite1.set_rotation(-PI/4)
+	else:
+		UISlotWeaponSprite1.set_rotation(0)
+		
+	if equippedWeapons[1] == "Katana" or equippedWeapons[1] == "Spear":
+		UISlotWeaponSprite2.scale.x = .9
+		UISlotWeaponSprite2.scale.y = .9
+		UISlotWeaponSprite2.set_rotation(-PI/4)
+	else:
+		UISlotWeaponSprite2.set_rotation(0)
+
 	activeWeapon["name"] = equippedWeapons[1]
 	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
 	currentlyEquippedWeapon = equippedWeapons[1]
 	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
 	
 	
-#	if Bufor.WEAPONS: # jeśli bufor nie jest pusty
-#		# bronie są ładowane z bufora
-#		weapons = Bufor.WEAPONS
-#		first_weapon_stats = Bufor.FIRST_WEAPON_STATS
-#		currentlyEquippedWeapon = Bufor.currentlyEquippedWeapon
-#		if weapons[2] != "Empty":
-#			second_weapon_stats = Bufor.SECOND_WEAPON_STATS
-#			UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[weapons[2]]
-#		UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weapons[1]]
-#		if weapons[1] == "katana": # naprawia błąd wielkiej katany w interfejsie
-#				UISlotWeaponSprite1.scale.x = .8
-#				UISlotWeaponSprite1.scale.y = .8
-#		if weapons[2] == "katana":
-#				UISlotWeaponSprite2.scale.x = .8
-#				UISlotWeaponSprite2.scale.y = .8
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
 		"50%Potion" : preload("res://Assets/Loot/Potions/Potion50.png"),
@@ -182,20 +193,19 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 		UIWeaponSkillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = str(round($CoolDownS4.get_time_left()))
 	else:
 		UIWeaponSkillSlots.get_node('Background/Skillslot4/VBoxContainer/Label').text = 'F'
-	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
-		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
-	else: #Jeżeli nie atakuje to
-		# === KNOCKBACK === #
-		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
-		# === ========= === #
-		# === PORUSZANIE SIĘ I KNOCKBACK === #
-		if knockback == Vector2.ZERO and Bufor.PLAYER != null :
-			movement(delta) #wywołanie funkcji poruszania się
-		elif knockback != Vector2.ZERO and health > 0:
-			knockback = move_and_slide(knockback)
-			knockback *= 0.95
-			emit_signal("player_moved", knockback)
-		# === ========================== === #
+	
+
+	# === KNOCKBACK === #
+	knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
+	# === ========= === #
+	# === PORUSZANIE SIĘ I KNOCKBACK === #
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null :
+		movement(delta) #wywołanie funkcji poruszania się
+	elif knockback != Vector2.ZERO and health > 0:
+		knockback = move_and_slide(knockback)
+		knockback *= 0.95
+		emit_signal("player_moved", knockback)
+	# === ========================== === #
 	
 	# Pick weapon event
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
@@ -317,6 +327,11 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	if potions[2] != "Empty": 									#jeżeli jest potek na 2 slocie i:
 		if Input.is_action_just_pressed("change_potion_slot"): 	#jeżeli zostanie nacisniety przycisk zmiany slota potionu
 			change_potion_slot() #potki zamieniają się miejscami w slotach
+
+
+func _input(event):
+	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
+		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 
 
 # ============= WEAPONS ============== #  
@@ -460,7 +475,7 @@ func movement(delta) -> void: #funkcja poruszania się
 	).normalized() # Określenie kierunku poruszania się
 	if direction != Vector2.ZERO:
 		skok_vector = direction
-	if Input.is_action_just_pressed("skok") and !skok and stamina > 0 :
+	if Input.is_action_just_pressed("skok") and !skok and !katanaDash and stamina > 0 :
 		jump() 
 		stamina = stamina - 1
 	if skok :
@@ -469,9 +484,9 @@ func movement(delta) -> void: #funkcja poruszania się
 		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
 	move() #wywołanie poruszania się
 	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO and !skok: #jeżeli stoi w miejscu
+		if direction == Vector2.ZERO and !skok and !katanaDash: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif !skok:
+		elif !skok and !katanaDash:
 			$AnimationPlayer.play("Run")
 
 
@@ -498,9 +513,9 @@ func _on_stamina_regen_timeout() -> void:
 
 func move() -> void:
 	velocity = move_and_slide(velocity, Vector2.UP)
-	if direction.x < 0 :
+	if get_global_mouse_position().x < global_position.x :
 		$PlayerSprite.scale.x = -abs($PlayerSprite.scale.x) #obróć bohatera w lewo
-	elif direction.x > 0:
+	elif get_global_mouse_position().x > global_position.x:
 		$PlayerSprite.scale.x = abs($PlayerSprite.scale.x) #obróć bohatera w lewo
 	emit_signal("player_moved", velocity)
 
@@ -512,7 +527,7 @@ func sound_play_step() -> void:
 
 func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok and !immortal:
+	if !skok and !katanaDash and !immortal:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:

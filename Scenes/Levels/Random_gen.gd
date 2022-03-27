@@ -28,6 +28,7 @@ var current_room_type
 
 
 func _ready():
+	get_node("UI").set_process_input(false)
 	match Bufor.POZIOM:
 		0:
 			current_room_type = 1

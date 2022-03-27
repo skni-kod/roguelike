@@ -11,12 +11,12 @@ func _ready():
 	Stats = all_weapons[weaponName]
 	Stats['attack'] = float(Stats['attack'])
 	texture = load("res://Assets/Loot/Weapons/"+weaponName+".png")
-	if weaponName == "katana":
+	if weaponName == "Katana":
 		$Sprite.scale.x = .5
 		$Sprite.scale.y = .5
-	elif weaponName == "spear":
-		$Sprite.scale.x = .5
-		$Sprite.scale.y = .5
+	elif weaponName == "Spear":
+		$Sprite.scale.x = .8
+		$Sprite.scale.y = .8
 	else:
 		$Sprite.scale.x = 1
 		$Sprite.scale.y = 1
