@@ -8,6 +8,7 @@ func _process(_delta):
 
 
 func _on_Button_pressed():		#zmiana sceny z opcji/exitu do strony tytułowej
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/title_screen/TitleScreen.tscn")
 
 

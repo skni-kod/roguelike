@@ -30,11 +30,11 @@ var ability = 0
 var life_steal=0.1 #Potrzebna do pasywy, będzie mnożona przez damage
 var krew_vector #potrzebne żeby krew leciała w dobrym kierunku
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if player_node.mana>=ability1ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,ability1ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,ability1ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability1()
 				spell = 0
@@ -42,7 +42,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_2"):
 		if player_node.mana>=ability2ManaCost and !ability:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,ability2ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,ability2ManaCost) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability2()
 				spell = 0

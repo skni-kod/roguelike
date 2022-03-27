@@ -8,14 +8,14 @@ onready var playerBurningParticles = get_node("../../Player/BurningParticles")
 onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
 
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
-var burning := false setget burn
-var bleeding := false setget bleeding
-var poison := false setget poisoning
+var burning := false setget burningSetter
+var bleeding := false setget bleedingSetter
+var poison := false setget poisonSetter
 
-var freezing := false setget freeze
-var knockback := false setget knockback
-var weakness := false setget weakness
-var healing := false setget healing
+var freezing := false setget freezeSetter
+var knockback := false setget knockbackSetter
+var weakness := false setget weaknessSetter
+var healing := false setget healingSetter
 
 # bazowe wartości dmg zadawanego przez poszczególne efekty
 var burningDMG = 0.5
@@ -99,7 +99,7 @@ func _physics_process(delta):
 
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
-func burn(var fire):
+func burningSetter(var fire):
 	if fire and prawdopodobienstwo(0.5) and immune == false:
 		if burningStacks <= burningMaxStacks: # ograniczam stacki do maksymalnej wartości stacków dla danego efektu
 			burningStacks += 1 # dodaję stack
@@ -133,8 +133,8 @@ func _on_Burning_Damage_timeout():
 
 
 # -------------- ZATRUCIE -------------- #
-# tak samo jak w funkcji burn(), ewentualne zmiany opisane w komentarzach
-func poisoning(var poisoned):
+# tak samo jak w funkcji burningSetter(), ewentualne zmiany opisane w komentarzach
+func poisonSetter(var poisoned):
 	if poisoned and prawdopodobienstwo(0.75) and immune == false:
 		if poisonStacks <= poisonMaxStacks:
 			poisonStacks += 1
@@ -163,8 +163,8 @@ func _on_Poison_Damage_timeout():
 
 
 # -------------- KRWAWIENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func bleeding(var bleed):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func bleedingSetter(var bleed):
 	if bleed and prawdopodobienstwo(0.9) and immune == false:
 		if bleedingStacks <= bleedingMaxStacks:
 			bleedingStacks += 1
@@ -195,8 +195,8 @@ func _on_Bleeding_Damage_timeout():
 
 
 # -------------- REGENERACJA -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func healing(var heal):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func healingSetter(var heal):
 	if heal:
 		if healingStacks <= healingMaxStacks:
 			healingStacks += 1
@@ -225,8 +225,8 @@ func _on_Healing_Healing_timeout():
 
 #=============== NIE-OKRESOWE EFEKTY ===============#
 # -------------- ZAMROŻENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func freeze(var freeze):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func freezeSetter(var freeze):
 	if freeze and prawdopodobienstwo(0.6) and immune == false:
 		if freezingStacks <= freezingMaxStacks:
 			freezingStacks += 1
@@ -254,8 +254,8 @@ func _on_Freezing_Lifetime_timeout():
 # -------------- KNOCKBACK -------------- #
 # UWAGA     WORK IN PROGRESS      UWAGA #
 # Funkcjonalność knockbacku nie jest zaimplementowana jeszcze
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func knockback(var knocked_back):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func knockbackSetter(var knocked_back):
 	if knocked_back and prawdopodobienstwo(0.5) and immune == false:
 		if knockbackStacks <= knockbackMaxStacks:
 			knockbackStacks += 1
@@ -280,8 +280,8 @@ func _on_Knockback_Lifetime_timeout():
 
 
 # -------------- OSŁABIENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func weakness(var weak):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func weaknessSetter(var weak):
 	if weak and prawdopodobienstwo(0.4) and immune == false:
 		if weaknessStacks <= weaknessMaxStacks:
 			weaknessStacks += 1

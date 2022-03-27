@@ -7,7 +7,6 @@ var attack = false
 var attack_vector = Vector2.ZERO
 var attack_rotation=45
 export var attack_range = 5
-var timer #Cooldown pomiędzy atakami
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
 var passiveAbilityDamageMultiplier=0.35 #Pasywna umiejętność, dodatkowe obrażenia w procentach
 var passiveAbilityStacks=0 #Obecny stopień umiejętności
@@ -33,38 +32,33 @@ var animation_step = 0.01
 var isEnemyHit = 0
 
 
-func _physics_process(delta):
-	if Input.is_action_just_pressed("use_ability_1"):
+func _physics_process(_delta):
+	pass
+
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("attack") and isWeaponReady:
+		$AnimationPlayer.play("Attack")
+		yield($AnimationPlayer, "animation_finished")
+		$AnimationPlayer.play("RESET")
+	
+	if Input.is_action_just_pressed("use_ability_1") and isWeaponReady:
 		#Really powerful blow - 40 bonus damage
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				abilityDamage=12
 				_on_Player_attacked()
 				spell = 0
 				
-	if Input.is_action_just_pressed("use_ability_2"):
+	if Input.is_action_just_pressed("use_ability_2") and isWeaponReady:
 		if player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				abilityDamage=45
 				_on_Player_attacked()
 				spell = 0
-
-
-func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x=0.281
-	position.y=0.281
-
-
-func _unhandled_input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
-			$AnimationPlayer.play("Attack")
-			yield($AnimationPlayer, "animation_finished")
-			$AnimationPlayer.play("RESET")
 
 
 func _on_Player_attacked():
@@ -73,45 +67,9 @@ func _on_Player_attacked():
 		isWeaponReady=0
 		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))	
 		$AttackCollision.disabled = false
-		timer.start()
 
-func _on_Timer_timeout():
-	attack_speed+=animation_step
-	if attack_speed<swing_to:		
-		position += attack_vector*(animation_step/swing_to)
-		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.rotation_degrees += -90*(animation_step/swing_to)
-		else:
-			$WeaponSprite.rotation_degrees += 90*(animation_step/swing_to)
-	elif attack_speed<paused:
-		pass
-	elif attack_speed<swing_back:
-		position-=attack_vector*(animation_step/swing_back)
-		if rotation < -PI/2 or rotation > PI/2:
-			$WeaponSprite.rotation_degrees -= -90*(animation_step/swing_back)
-		else:
-			$WeaponSprite.rotation_degrees -= 90*(animation_step/swing_back)
-	else:
-		$WeaponSprite.rotation_degrees = 0
-		$AttackCollision.disabled = true
-		attack = false
-		attack_speed=0
-		if isEnemyHit == 1:#passive ability revelant shit
-			passiveAbilityStacks+=1
-		else:
-			passiveAbilityStacks=0#Reset marksman stack on miss
-		if passiveAbilityStacks<0:#Clamp value
-			passiveAbilityStacks=0
-		if passiveAbilityStacks>passiveAbilityMaxStacks:
-			passiveAbilityStacks=passiveAbilityMaxStacks
-		timer.stop()
-		isEnemyHit=0 
-		reset_pivot()
 
-func change_weapon(texture):
-	$WeaponSprite.texture = texture
-
-func _on_EquippedWeapon_body_entered(body):
+func _on_Katana_body_entered(body):
 	if body.is_in_group("Enemy"):
 		isEnemyHit=1	
 		rng.randomize()
@@ -125,3 +83,6 @@ func _on_EquippedWeapon_body_entered(body):
 			damage /= crit_damage
 		abilityDamage=0 #Reset ability damage
 		
+
+
+	

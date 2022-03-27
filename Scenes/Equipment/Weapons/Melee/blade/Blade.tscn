@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Loot/Weapons/blade.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/blade/Blade.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Effects/180deg_swoosh.png" type="Texture" id=4]
 
 [sub_resource type="Gradient" id=7]
 offsets = PoolRealArray( 0.248062, 1 )
@@ -12,7 +13,8 @@ colors = PoolColorArray( 0.447059, 0.839216, 0.807843, 1, 0.862745, 0.290196, 0.
 gradient = SubResource( 7 )
 
 [sub_resource type="Curve" id=8]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.611842, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.703947, 0 ), 0.0, 0.0, 0, 0 ]
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=4]
 curve = SubResource( 8 )
@@ -22,27 +24,38 @@ emission_shape = 2
 emission_box_extents = Vector3( 4, 15, 1 )
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
+angular_velocity = 2160.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
+linear_accel = 1000.0
+linear_accel_random = 1.0
+radial_accel = 100.0
 angle = 720.0
 angle_random = 1.0
-scale = 2.0
 scale_curve = SubResource( 4 )
 color_ramp = SubResource( 2 )
 
 [sub_resource type="GradientTexture" id=6]
 gradient = SubResource( 7 )
 
+[sub_resource type="Curve" id=15]
+max_value = 4.0
+_data = [ Vector2( 0, 4 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=16]
+curve = SubResource( 15 )
+
 [sub_resource type="ParticlesMaterial" id=10]
 flag_disable_z = true
 direction = Vector3( 0, -1, 0 )
-spread = 35.58
+spread = 41.7
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 200.0
 initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale = 3.0
+radial_accel = 100.0
+scale_curve = SubResource( 16 )
 color_ramp = SubResource( 6 )
 
 [sub_resource type="CapsuleShape2D" id=11]
@@ -107,6 +120,98 @@ tracks/4/keys = {
 "update": 1,
 "values": [ false, true, false ]
 }
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.17594 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_swoosh"
+} ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "Chopping"
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.95, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, -6.4051, -0.01, 0, 0.01, 0, 8.96291, -0.01, 0, 0.01, 0, -6.4051, -0.01, 0, 0.01, 0, 8.96291, -0.01, 0, 0.25, 0, -6.4051, -0.01, 0, 0.01, 0, 8.96291, -0.01, 0, 0.01, 0, -6.4051, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.95, 1 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, -12.4, -0.01, 0, 0.01, 0, 124.2, -0.01, -100, 0.05, 100, -12.4, -0.01, 0, 0.01, 0, 124.2, -0.01, -100, 0.05, 100, -12.4, -0.01, 0, 0.01, 0, 124.2, -0.01, -100, 0.05, 100, -12.4, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.95, 1 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WeaponSprite/TrzystronneCiecie:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.95 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AttackCollision:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1, 0.95 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.15, 0.4, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_swoosh"
+}, {
+"args": [  ],
+"method": "play_swoosh"
+}, {
+"args": [  ],
+"method": "play_swoosh"
+} ]
+}
 
 [sub_resource type="Animation" id=13]
 length = 0.001
@@ -164,6 +269,130 @@ tracks/4/keys = {
 "update": 0,
 "values": [ false ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("180SwooshSprite:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WeaponSprite/WirMiecza:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("WeaponSprite/TrzystronneCiecie:emitting")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "Vortex"
+length = 1.05
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, 0, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, -15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, -15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.3, 0.35, 0.4, 0.6, 0.65, 0.7, 0.75, 0.8, 1.05 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, 0, 0, 0.01, 0, -15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, -15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, -15, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.3, 0.35, 0.4, 0.6, 0.65, 0.7, 0.75, 0.8, 1.05 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, 0, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 90, -0.01, 0, 0.01, 0, 180, -0.01, 0, 0.01, 0, 270, -0.01, 0, 0.01, 0, 360, -0.01, 0, 0.01, 0, 450, -0.01, 0, 0.01, 0, 540, -0.01, 0, 0.01, 0, 630, -0.05, 0, 0.05, 0, 720, -0.01, 0, 0.01, 0, 720, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.3, 0.35, 0.4, 0.6, 0.65, 0.7, 0.75, 1, 1.05 )
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.3, 0.65 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_swoosh"
+}, {
+"args": [  ],
+"method": "play_swoosh"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("180SwooshSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.35, 0.45, 0.6, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("WeaponSprite/WirMiecza:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("AttackCollision:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.25, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [node name="Blade" type="Area2D"]
 collision_mask = 4
@@ -176,6 +405,13 @@ rotation = -1.54998
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 
+[node name="180SwooshSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( -19.0703, 10.3298 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+
 [node name="WeaponSprite" type="Sprite" parent="."]
 light_mask = 2
 position = Vector2( 0, -13 )
@@ -183,8 +419,8 @@ scale = Vector2( 1.25, 1.25 )
 texture = ExtResource( 1 )
 
 [node name="WirMiecza" type="Particles2D" parent="WeaponSprite"]
+visible = false
 position = Vector2( -0.145164, -2.62772 )
-scale = Vector2( 0.8, 0.8 )
 emitting = false
 amount = 200
 lifetime = 0.4
@@ -196,7 +432,7 @@ process_material = SubResource( 9 )
 position = Vector2( 0, 3.63392 )
 emitting = false
 amount = 100
-lifetime = 0.15
+lifetime = 0.2
 local_coords = false
 draw_order = 1
 process_material = SubResource( 10 )
@@ -208,5 +444,10 @@ shape = SubResource( 11 )
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_process_mode = 0
 anims/Attack = SubResource( 12 )
+anims/Chopping = SubResource( 17 )
 anims/RESET = SubResource( 13 )
+anims/Vortex = SubResource( 14 )
+
+[connection signal="body_entered" from="." to="." method="_on_Blade_body_entered"]

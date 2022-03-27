@@ -29,7 +29,7 @@ var stepsoundvar
 
 # --- WEAPON VARS --- #
 var currentWeaponSlot = 1	# Variable that holds the currently active weapon slot
-var activeWeapon = { # Variable that holds the currently active/equipped weapon from the inventory
+var activeWeapon = { # Variable that holds the currently active/equipped weapon and active slot from the inventory
 	"slot" : currentWeaponSlot,
 	"name" : "Empty"
 }			
@@ -103,7 +103,7 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "Axe",
+		1 : "Katana",
 		2 : "Empty"
 	}
 	activeWeapon["name"] = equippedWeapons[1]
@@ -402,16 +402,19 @@ func dropCurrentWeapon(slot):
 # Skill cooldown method
 func start_skill_cooldown(ability: int, time: int, manaUsed: int) -> void:
 	updateMana(-manaUsed)
-	if(activeWeapon["name"] == equippedWeapons[1] and activeWeapon["slot"] == 1):
-		if(ability==1):
-			$CoolDownS1.start(time)
-		else:
-			$CoolDownS2.start(time)
-	elif(activeWeapon["name"] == equippedWeapons[2] and activeWeapon["slot"] == 2):
-		if(ability==1):
-			$CoolDownS3.start(time)
-		else:
-			$CoolDownS4.start(time)
+	if time > 0:
+		if(activeWeapon["name"] == equippedWeapons[1] and activeWeapon["slot"] == 1):
+			if(ability==1):
+				$CoolDownS1.start(time)
+			else:
+				$CoolDownS2.start(time)
+		elif(activeWeapon["name"] == equippedWeapons[2] and activeWeapon["slot"] == 2):
+			if(ability==1):
+				$CoolDownS3.start(time)
+			else:
+				$CoolDownS4.start(time)
+	else:
+		pass
 
 # ============= ====== ============== #  
 

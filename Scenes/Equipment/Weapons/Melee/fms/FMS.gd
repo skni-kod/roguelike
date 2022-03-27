@@ -33,7 +33,7 @@ var ph = 0
 var basedmg
 var basespd
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if player_node.mana>=ability1ManaCost and !ability:
 			player_node.updateMana(-ability1ManaCost)
@@ -125,7 +125,7 @@ func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z pr
 func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				basespd = player_node.speed
 				player_node.speed += 100
@@ -135,7 +135,7 @@ func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifeste
 func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
 	if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability = 1
 				$AttackCollision.disabled = false

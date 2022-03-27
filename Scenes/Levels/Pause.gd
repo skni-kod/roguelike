@@ -18,7 +18,8 @@ func _on_Resume_pressed():
 
 func _on_Return_to_Menu_pressed():
 	get_tree().paused = false
-	var err = get_tree().change_scene_to(menu_scene)
+# warning-ignore:return_value_discarded
+	get_tree().change_scene_to(menu_scene)
 	set_visible(false)
 
 func set_visible(is_visible):
