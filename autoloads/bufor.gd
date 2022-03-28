@@ -11,3 +11,5 @@ var second_weapon_stats = null
 var equipped = null
 var potions = null
 var potions_amount = null
+var armor_durability = 0
+var equipped_armor = null

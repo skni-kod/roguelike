@@ -83,7 +83,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 5
+frame = 4
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]

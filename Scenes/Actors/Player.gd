@@ -73,23 +73,25 @@ var t
 
 var freezed = 0
 
-export var armor_durability = 0 
+var armor_durability = 0
 
 #zmienne przechowujące procent rezystancji dps kazdego z armorów
 var armors_resistance = {
 	null : 0,
-	"BlackArmor" : 0.5,
+	"BlackArmor" : 0.7,
 	"Angel" : 0.7,
 	"Amogus" : 0.99
 }
-#zmienne przechowujące czy gracz posiada dany armor, używane do przeliczania otrzymanego dps
+
 onready var all_armors = {
 		"Hero" : preload("res://Assets/Hero/RedHero.png"),
 		"BlackArmor" : preload("res://Assets/Loot/Armors/BlackArmor.png"),
 		"Angel" : preload("res://Assets/Loot/Armors/angel.png"),
 		"Amogus" : preload("res://Assets/Loot/Armors/amogus.png")
 	}
-var equipped_armor = null
+var equipped_armor
+
+var speedtmp = speed
 
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
 var armor_damage_on_hit = 2
@@ -119,12 +121,18 @@ func UpdateArmorSprite():
 	var player = level.get_node("Player")
 	if equipped_armor == null:
 		player.get_node("PlayerSprite").texture = all_armors["Hero"]
+		DefaultPlayerStats()
+		
 	if equipped_armor == "BlackArmor":
 		player.get_node("PlayerSprite").texture = all_armors["BlackArmor"]
+		DefaultPlayerStats()
+		BlackArmorStats()
 	if equipped_armor == "Angel":
 		player.get_node("PlayerSprite").texture = all_armors["Angel"]
+		DefaultPlayerStats()
 	if equipped_armor == "Amogus":
 		player.get_node("PlayerSprite").texture = all_armors["Amogus"]
+		DefaultPlayerStats()
 	
 
 func UpdateArmor():
@@ -132,10 +140,17 @@ func UpdateArmor():
 		if armor_durability-armor_damage_on_hit <= 0:
 			armor_durability = 0
 			equipped_armor = null
+			DefaultPlayerStats()
 		else:
 			armor_durability -= armor_damage_on_hit
 	UpdateArmorSprite()
 
+func BlackArmorStats():#funkcja ustawiająca efekty Black armora
+	speedtmp = speed
+	speed = 80
+
+func DefaultPlayerStats(): #funckja ustawiająca domyślnie statystyki playera
+	speed = speedtmp
 	
 		
 
@@ -144,6 +159,14 @@ func _ready(): #po inicjacji bohatera
 	emit_signal("health_updated", health) #emitowanie sygnału o zmianie życia bohatera 100%/100% 
 	emit_signal("mana_updated", mana) #emitowanie sygnału o zmianie many bohatera 100%/100% 
 	emit_signal("armor_updated", armor_durability)
+	
+	if Bufor.equipped_armor:
+		equipped_armor = Bufor.equipped_armor
+		armor_durability = Bufor.armor_durability
+		UpdateArmorSprite();
+	else:
+		equipped_armor = null
+		armor_durability = 0;
 	
 	if Bufor.coins:
 		coins = Bufor.coins
@@ -220,9 +243,6 @@ func _ready(): #po inicjacji bohatera
 		"Empty" : 0
 		}
 	UpdatePotions() 
-	#helmet_on = 0
-	equipped_armor = null
-	#pants_on = 0
 
 	
 func _process(delta):	
