@@ -61,3 +61,8 @@ func _on_katana_dash_used(dashDestination) -> void:
 		Bufor.PLAYER.global_position = Bufor.PLAYER.position
 		Bufor.PLAYER.get_node("AnimationPlayer").play("RESET")
 		Bufor.PLAYER.katanaDash = false
+		
+
+func _on_hammer_smash_initiated() -> void:
+	# doesn't play the animation <- [DEV]
+	Bufor.PLAYER.get_node("AnimationPlayer").play("Hammer Smash")

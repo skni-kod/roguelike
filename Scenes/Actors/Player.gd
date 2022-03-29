@@ -106,7 +106,7 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "Katana",
+		1 : "Hammer",
 		2 : "Empty"
 	}
 
@@ -136,7 +136,6 @@ func _ready() -> void: #po inicjacji bohatera
 	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
 	currentlyEquippedWeapon = equippedWeapons[1]
 	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
-	
 	
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
