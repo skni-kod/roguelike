@@ -114,7 +114,7 @@ func get_dmg(dmg, weaponKnockback):
 	text.type = "Damage"
 	add_child(text)	
 	
-	if health>0:
+	if health>0 and Bufor.PLAYER != null:
 		
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
@@ -137,7 +137,7 @@ func get_dmg(dmg, weaponKnockback):
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
-		#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
+		# Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
 		var level = get_tree().get_root().find_node("Main", true, false)
 		rng.randomize()
 		if is_elite == true:

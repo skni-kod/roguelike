@@ -5,14 +5,13 @@
 [ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Effects/dust_particle.png" type="Texture" id=4]
 
-[sub_resource type="Curve" id=17]
-max_value = 0.5
-_data = [ Vector2( 0, 0.521591 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=18]
-curve = SubResource( 17 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=19]
+[sub_resource type="ParticlesMaterial" id=3]
 lifetime_randomness = 1.0
 emission_shape = 1
 emission_sphere_radius = 16.06
@@ -28,18 +27,16 @@ orbit_velocity_random = 0.0
 radial_accel = 100.0
 radial_accel_random = 1.0
 tangential_accel_random = 1.0
-scale_curve = SubResource( 18 )
-color = Color( 1, 1, 1, 0.52549 )
+scale_curve = SubResource( 2 )
 
-[sub_resource type="CapsuleShape2D" id=14]
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 5.33107
 height = 6.45063
 
-[sub_resource type="CapsuleShape2D" id=15]
-radius = 18.0368
-height = 27.3791
+[sub_resource type="CircleShape2D" id=9]
+radius = 21.3448
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=6]
 resource_name = "Attack"
 length = 1.1
 step = 0.05
@@ -98,7 +95,7 @@ tracks/4/keys = {
 "values": [ false, true, false ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=7]
 resource_name = "Jump Smash"
 length = 1.5
 tracks/0/type = "bezier"
@@ -108,7 +105,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1.83049e-07, -0.25, 0, 0.01, 0, 1.83049e-07, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1.83049e-07, -0.25, 0, 0.01, 0, 1.83049e-07, -0.25, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.9, 1.1, 1.5 )
 }
 tracks/1/type = "bezier"
@@ -118,7 +115,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -10.0794, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.01, 0, 0, -0.25, 0, 0.25, 0, 0, -0.01, 0, 0.01, 0 ),
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -10.0794, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.01, 0, 0, -0.25, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.9, 1.1, 1.5 )
 }
 tracks/2/type = "bezier"
@@ -128,7 +125,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -49.7, -0.25, 0, 0.25, 0, 124.1, -0.05, -194.513, 0.01, 0, 124.1, -0.01, 0, 0.4, 0, 0, -0.01, 0, 0.01, 0 ),
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -60, -0.25, 0, 0.25, 0, 100, -0.05, -194.513, 0.01, 0, 100, 0, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.9, 1.1, 1.5 )
 }
 tracks/3/type = "value"
@@ -162,13 +159,27 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.9 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ false, true, false ]
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "emit_hammer_smash_signal"
+} ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=8]
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/path = NodePath(".:rotation_degrees")
@@ -250,18 +261,23 @@ tracks/6/keys = {
 }
 
 [node name="Hammer" type="Area2D"]
+position = Vector2( 1.83049e-07, 0 )
+rotation = 2.16595
 collision_mask = 4
 script = ExtResource( 2 )
 
 [node name="SmashParticles" type="Particles2D" parent="."]
+light_mask = 2
 position = Vector2( 2.64668, -20.8111 )
 rotation = -0.588176
 emitting = false
 amount = 256
+lifetime = 0.5
 one_shot = true
+speed_scale = 0.5
 explosiveness = 1.0
 local_coords = false
-process_material = SubResource( 19 )
+process_material = SubResource( 3 )
 texture = ExtResource( 4 )
 
 [node name="WeaponSprite" type="Sprite" parent="."]
@@ -280,16 +296,16 @@ texture = ExtResource( 3 )
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -21.6162 )
 rotation = 1.5708
-shape = SubResource( 14 )
+shape = SubResource( 4 )
 disabled = true
 
 [node name="SmashCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 2.64668, -20.8111 )
 rotation = -0.588176
-shape = SubResource( 15 )
+shape = SubResource( 9 )
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Attack = SubResource( 12 )
-"anims/Jump Smash" = SubResource( 16 )
-anims/RESET = SubResource( 13 )
+anims/Attack = SubResource( 6 )
+"anims/Jump Smash" = SubResource( 7 )
+anims/RESET = SubResource( 8 )

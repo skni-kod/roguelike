@@ -36,6 +36,7 @@ var activeWeapon = { # Variable that holds the currently active/equipped weapon 
 var weaponToTake = null		# Variable for holding a weapon to pick up
 
 var katanaDash = false
+var hammerSmash = false
 
 # = UI Wapons sprites that show up in the UI Weapons Slots = #
 onready var UISlotWeaponSprite1 = get_node("../UI/Slots/Background/Weaponslot1/weaponsprite1")
@@ -106,7 +107,7 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "Hammer",
+		1 : "Katana",
 		2 : "Empty"
 	}
 
@@ -198,12 +199,13 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 	# === ========= === #
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO and Bufor.PLAYER != null :
-		movement(delta) #wywołanie funkcji poruszania się
-	elif knockback != Vector2.ZERO and health > 0:
-		knockback = move_and_slide(knockback)
-		knockback *= 0.95
-		emit_signal("player_moved", knockback)
+	if !katanaDash and !hammerSmash:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null :
+			movement(delta) #wywołanie funkcji poruszania się
+		elif knockback != Vector2.ZERO and health > 0:
+			knockback = move_and_slide(knockback)
+			knockback *= 0.95
+			emit_signal("player_moved", knockback)
 	# === ========================== === #
 	
 	# Pick weapon event
@@ -391,6 +393,10 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 		
 
 
+func animationTestFunction() -> void:
+	print("[INFO]: Animation tested")
+
+
 # Method that drops the current weapon from the Player to the parent scene (main)
 func dropCurrentWeapon(slot):
 	if $Hand.get_child_count() == 1:
@@ -474,7 +480,7 @@ func movement(delta) -> void: #funkcja poruszania się
 	).normalized() # Określenie kierunku poruszania się
 	if direction != Vector2.ZERO:
 		skok_vector = direction
-	if Input.is_action_just_pressed("skok") and !skok and !katanaDash and stamina > 0 :
+	if Input.is_action_just_pressed("skok") and stamina > 0 :
 		jump() 
 		stamina = stamina - 1
 	if skok :
@@ -482,10 +488,10 @@ func movement(delta) -> void: #funkcja poruszania się
 	else :
 		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
 	move() #wywołanie poruszania się
-	if !got_hitted: #jeżeli nie jest uderzany
-		if direction == Vector2.ZERO and !skok and !katanaDash: #jeżeli stoi w miejscu
+	if !got_hitted  and !skok: #jeżeli nie jest uderzany
+		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
-		elif !skok and !katanaDash:
+		else:
 			$AnimationPlayer.play("Run")
 
 
@@ -526,7 +532,7 @@ func sound_play_step() -> void:
 
 func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok and !katanaDash and !immortal:
+	if !skok and !katanaDash and !hammerSmash and !immortal:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:

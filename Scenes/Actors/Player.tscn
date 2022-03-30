@@ -8,83 +8,83 @@
 [ext_resource path="res://Scenes/Actors/Hand.gd" type="Script" id=8]
 [ext_resource path="res://Assets/Effects/dust_particle.png" type="Texture" id=9]
 
-[sub_resource type="Curve" id=44]
+[sub_resource type="Curve" id=1]
 min_value = -360.0
 max_value = 360.0
 _data = [ Vector2( 0, 360 ), 0.0, 0.0, 0, 0, Vector2( 1, -360 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=45]
-curve = SubResource( 44 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="Gradient" id=37]
+[sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 1, 1, 1, 0.588235, 0, 1, 0, 0 )
 
-[sub_resource type="GradientTexture" id=38]
-gradient = SubResource( 37 )
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
 
-[sub_resource type="Curve" id=39]
+[sub_resource type="Curve" id=5]
 min_value = -200.0
 max_value = 200.0
 _data = [ Vector2( 0, 200 ), 0.0, 0.0, 0, 0, Vector2( 1, -200 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=40]
-curve = SubResource( 39 )
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
 
-[sub_resource type="Curve" id=41]
+[sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.526316, 0.0670455 ), -0.755316, -0.755316, 0, 0, Vector2( 0.982456, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=42]
-curve = SubResource( 41 )
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
 
-[sub_resource type="ParticlesMaterial" id=43]
+[sub_resource type="ParticlesMaterial" id=9]
 emission_shape = 2
 emission_box_extents = Vector3( 1, 9.076, 1 )
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = -5.0
 angular_velocity_random = 1.0
-angular_velocity_curve = SubResource( 45 )
+angular_velocity_curve = SubResource( 2 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 radial_accel = 200.0
 radial_accel_random = 1.0
-radial_accel_curve = SubResource( 40 )
+radial_accel_curve = SubResource( 6 )
 angle = 720.0
 angle_random = 1.0
 scale_random = 1.0
-scale_curve = SubResource( 42 )
-color_ramp = SubResource( 38 )
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 4 )
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Gradient" id=10]
 offsets = PoolRealArray( 0, 0.794702, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 0.359375, 0, 0, 1, 0.600586, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=12]
 max_value = 1024.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.488506, 505.018 ), -83.0659, -83.0659, 0, 0, Vector2( 1, 1024 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
 
-[sub_resource type="Curve" id=5]
+[sub_resource type="Curve" id=14]
 min_value = -5.0
 max_value = 10.0
 _data = [ Vector2( 0, 10 ), 0.0, 0.0, 0, 0, Vector2( 0.988506, -4.96591 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=6]
-curve = SubResource( 5 )
+[sub_resource type="CurveTexture" id=15]
+curve = SubResource( 14 )
 
-[sub_resource type="Curve" id=7]
+[sub_resource type="Curve" id=16]
 max_value = 2.0
 _data = [ Vector2( 0, 0.493182 ), 0.0, 0.0, 0, 0, Vector2( 0.442529, 0.990909 ), 0.0, 0.0, 0, 0, Vector2( 1, 2 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=8]
-curve = SubResource( 7 )
+[sub_resource type="CurveTexture" id=17]
+curve = SubResource( 16 )
 
-[sub_resource type="ParticlesMaterial" id=9]
+[sub_resource type="ParticlesMaterial" id=18]
 emission_shape = 2
 emission_box_extents = Vector3( 3, 5, 1 )
 flag_disable_z = true
@@ -94,26 +94,26 @@ gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-linear_accel_curve = SubResource( 6 )
-damping_curve = SubResource( 4 )
+linear_accel_curve = SubResource( 15 )
+damping_curve = SubResource( 13 )
 scale = 2.0
 scale_random = 1.0
-scale_curve = SubResource( 8 )
-color_ramp = SubResource( 2 )
+scale_curve = SubResource( 17 )
+color_ramp = SubResource( 11 )
 
-[sub_resource type="Gradient" id=32]
+[sub_resource type="Gradient" id=19]
 colors = PoolColorArray( 1, 1, 1, 0.572549, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=33]
-gradient = SubResource( 32 )
+[sub_resource type="GradientTexture" id=20]
+gradient = SubResource( 19 )
 
-[sub_resource type="Curve" id=34]
+[sub_resource type="Curve" id=21]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.4875 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=35]
-curve = SubResource( 34 )
+[sub_resource type="CurveTexture" id=22]
+curve = SubResource( 21 )
 
-[sub_resource type="ParticlesMaterial" id=31]
+[sub_resource type="ParticlesMaterial" id=23]
 lifetime_randomness = 1.0
 flag_disable_z = true
 spread = 180.0
@@ -129,18 +129,19 @@ radial_accel = 100.0
 radial_accel_random = 1.0
 damping = 100.0
 scale_random = 1.0
-scale_curve = SubResource( 35 )
-color_ramp = SubResource( 33 )
+scale_curve = SubResource( 22 )
+color_ramp = SubResource( 20 )
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=24]
 extents = Vector2( 7.385, 6.133 )
 
-[sub_resource type="CircleShape2D" id=17]
+[sub_resource type="CircleShape2D" id=25]
 radius = 17.4039
 
-[sub_resource type="Animation" id=46]
+[sub_resource type="Animation" id=26]
 resource_name = "Hammer Smash"
 length = 1.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
@@ -148,10 +149,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 1, 1.1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.85, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 4, 5, 6, 13, 9 ]
+"values": [ 1, 4, 5, 6, 13, 1, 9 ]
 }
 tracks/1/type = "bezier"
 tracks/1/path = NodePath(".:scale:x")
@@ -173,8 +174,37 @@ tracks/2/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1.5, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.3, 1 )
 }
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "animationTestFunction"
+}, {
+"args": [  ],
+"method": "play_jump_sound"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("JumpParticles:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=27]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
@@ -189,8 +219,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=12]
-resource_name = "Hurt"
+[sub_resource type="Animation" id=28]
 length = 0.25
 step = 0.05
 tracks/0/type = "value"
@@ -206,7 +235,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.521569, 0.156863, 0.156863, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=29]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -222,7 +251,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=36]
+[sub_resource type="Animation" id=30]
 resource_name = "Katana Dash"
 length = 2.0
 tracks/0/type = "bezier"
@@ -270,7 +299,7 @@ tracks/3/keys = {
 "values": [ false, true, false, false ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=31]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:self_modulate")
@@ -361,7 +390,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=32]
 length = 0.5
 step = 0.05
 tracks/0/type = "value"
@@ -394,7 +423,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=33]
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite:frame")
@@ -435,27 +464,27 @@ tracks/2/keys = {
 } ]
 }
 
-[sub_resource type="Gradient" id=18]
+[sub_resource type="Gradient" id=34]
 colors = PoolColorArray( 1, 0, 0, 1, 1, 0.703125, 0, 1 )
 
-[sub_resource type="GradientTexture" id=19]
-gradient = SubResource( 18 )
+[sub_resource type="GradientTexture" id=35]
+gradient = SubResource( 34 )
 
-[sub_resource type="Curve" id=20]
+[sub_resource type="Curve" id=36]
 max_value = 25.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 24.4318 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=21]
-curve = SubResource( 20 )
+[sub_resource type="CurveTexture" id=37]
+curve = SubResource( 36 )
 
-[sub_resource type="Curve" id=22]
+[sub_resource type="Curve" id=38]
 min_value = -1.0
 _data = [ Vector2( 0, 0.00681829 ), 0.0, 0.0, 0, 0, Vector2( 0.247126, 0.170455 ), 0.0, 0.0, 0, 0, Vector2( 0.5, -0.175 ), 0.0, 0.0, 0, 0, Vector2( 0.747126, 0.134091 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.0113636 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=23]
-curve = SubResource( 22 )
+[sub_resource type="CurveTexture" id=39]
+curve = SubResource( 38 )
 
-[sub_resource type="ParticlesMaterial" id=24]
+[sub_resource type="ParticlesMaterial" id=40]
 lifetime_randomness = 0.11
 emission_shape = 1
 emission_sphere_radius = 4.5
@@ -469,43 +498,45 @@ angular_velocity = 100.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 23 )
-damping_curve = SubResource( 21 )
+orbit_velocity_curve = SubResource( 39 )
+damping_curve = SubResource( 37 )
 scale = 1.5
 scale_random = 1.0
-color_ramp = SubResource( 19 )
+color_ramp = SubResource( 35 )
 
-[sub_resource type="Gradient" id=25]
+[sub_resource type="Gradient" id=41]
 offsets = PoolRealArray( 0, 0.284768, 0.5, 0.735099, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1, 1, 1, 0.588235, 1, 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=26]
-gradient = SubResource( 25 )
+[sub_resource type="GradientTexture" id=42]
+gradient = SubResource( 41 )
 
-[sub_resource type="Curve" id=27]
+[sub_resource type="Curve" id=43]
 min_value = -1.5
 max_value = 1.5
 _data = [ Vector2( 0, -0.0306818 ), 0.0, 0.0, 0, 0, Vector2( 0.241379, -0.7125 ), 0.0, 0.0, 0, 0, Vector2( 0.517241, -1.5 ), 0.0, 0.0, 0, 0, Vector2( 0.724138, -0.981818 ), 0.0, 0.0, 0, 0, Vector2( 0.994253, -0.276136 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=28]
-curve = SubResource( 27 )
+[sub_resource type="CurveTexture" id=44]
+curve = SubResource( 43 )
 
-[sub_resource type="ParticlesMaterial" id=29]
+[sub_resource type="ParticlesMaterial" id=45]
 flag_disable_z = true
 spread = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-orbit_velocity_curve = SubResource( 28 )
+orbit_velocity_curve = SubResource( 44 )
 radial_accel = 10.53
 scale = 2.0
-color_ramp = SubResource( 26 )
+color_ramp = SubResource( 42 )
 
-[sub_resource type="OccluderPolygon2D" id=30]
+[sub_resource type="OccluderPolygon2D" id=46]
 polygon = PoolVector2Array( -6, 0, 6.5, 0, 6.5, 11, -6, 11 )
 
-[node name="Player" type="KinematicBody2D" groups=["Player"]]
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
 collision_mask = 6
 script = ExtResource( 2 )
 
@@ -516,7 +547,7 @@ amount = 128
 lifetime = 2.0
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 43 )
+process_material = SubResource( 9 )
 texture = ExtResource( 9 )
 
 [node name="BleedingParticles" type="Particles2D" parent="."]
@@ -524,7 +555,7 @@ emitting = false
 amount = 128
 lifetime = 10.0
 local_coords = false
-process_material = SubResource( 9 )
+process_material = SubResource( 18 )
 
 [node name="JumpParticles" type="Particles2D" parent="."]
 position = Vector2( 0.374573, 16.8559 )
@@ -534,12 +565,12 @@ lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 local_coords = false
-process_material = SubResource( 31 )
+process_material = SubResource( 23 )
 texture = ExtResource( 9 )
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 4.84 )
-shape = SubResource( 10 )
+shape = SubResource( 24 )
 
 [node name="Pick" type="Area2D" parent="."]
 collision_layer = 0
@@ -547,7 +578,7 @@ collision_mask = 97
 
 [node name="PickCollision" type="CollisionShape2D" parent="Pick"]
 position = Vector2( 0, -0.0787468 )
-shape = SubResource( 17 )
+shape = SubResource( 25 )
 
 [node name="Shadow" type="Sprite" parent="."]
 position = Vector2( -0.668175, 14.4503 )
@@ -570,14 +601,14 @@ script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_process_mode = 0
-"anims/Hammer Smash" = SubResource( 46 )
-anims/Hit = SubResource( 11 )
-anims/Hurt = SubResource( 12 )
-anims/Idle = SubResource( 13 )
-"anims/Katana Dash" = SubResource( 36 )
-anims/RESET = SubResource( 14 )
-anims/Run = SubResource( 15 )
-anims/skok = SubResource( 16 )
+"anims/Hammer Smash" = SubResource( 26 )
+anims/Hit = SubResource( 27 )
+anims/Hurt = SubResource( 28 )
+anims/Idle = SubResource( 29 )
+"anims/Katana Dash" = SubResource( 30 )
+anims/RESET = SubResource( 31 )
+anims/Run = SubResource( 32 )
+anims/skok = SubResource( 33 )
 
 [node name="BurningParticles" type="Particles2D" parent="."]
 position = Vector2( 0.198425, 5.55624 )
@@ -585,16 +616,16 @@ emitting = false
 amount = 32
 lifetime = 0.2
 local_coords = false
-process_material = SubResource( 24 )
+process_material = SubResource( 40 )
 
 [node name="KnockbackParticles" type="Particles2D" parent="."]
 visible = false
 position = Vector2( 0, -13.264 )
-process_material = SubResource( 29 )
+process_material = SubResource( 45 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 light_mask = 4
-occluder = SubResource( 30 )
+occluder = SubResource( 46 )
 light_mask = 4
 
 [node name="Light2D" parent="." instance=ExtResource( 7 )]

@@ -8,15 +8,12 @@ var attack_vector = Vector2.ZERO
 var attack_rotation=45
 export var attack_range = 5
 var damage #Obrażenia zadawane przez broń. Wartość pobierana z pliku
-var passiveAbilityDamageMultiplier=0.35 #Pasywna umiejętność, dodatkowe obrażenia w procentach
-var passiveAbilityStacks=0 #Obecny stopień umiejętności
-var passiveAbilityMaxStacks=20 #Maksymalny stopień umiejętności
 var abilityDamage=0 #Temporary variable: Holds additional damaga inflicted by ability
 var abilityManaCost=25
 var weaponKnockback
 var spell = 0
-var weaponName = "Katana"
-var isWeaponReady=1 #Sprawdź czy broń jest gotowa do ataku
+var weaponName = "Hammer"
+var isWeaponReady = true #Sprawdź czy broń jest gotowa do ataku
 var smoothing = 1
 
 var rng = RandomNumberGenerator.new()
@@ -41,6 +38,7 @@ var immortal_knockback = 20
 
 
 func _enter_tree() -> void:
+# warning-ignore:return_value_discarded
 	connect("hammer_smash_initiated", Bufor.PLAYER.get_node("Hand"), "_on_hammer_smash_initiated")
 
 
@@ -53,18 +51,18 @@ func _ready() -> void:
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_ability_1"):
-		if active_ability1!=1 and Bufor.PLAYER.mana>=25:
+		if isWeaponReady and Bufor.PLAYER.mana>=25:
 			if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				Bufor.PLAYER.start_skill_cooldown(1, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
-				active_ability1 = 1
+				isWeaponReady = false
 				var tmpDmg = damage
 				damage *= damage_multipler
 				$AnimationPlayer.play("Jump Smash")
 				yield($AnimationPlayer, "animation_finished")
 				damage = tmpDmg
 				spell = 0
-				active_ability1 = 0
+				isWeaponReady = true
 		
 	if Input.is_action_just_pressed("use_ability_2"):		
 		if active_ability1!=1 and Bufor.PLAYER.mana>=50:
@@ -111,7 +109,7 @@ func _physics_process(_delta):
 
 
 func _input(event):
-	if event is InputEventMouseButton:
+	if isWeaponReady and event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			$AnimationPlayer.play("Attack")
 			yield($AnimationPlayer, "animation_finished")
@@ -127,6 +125,7 @@ func _on_Player_attacked():
 
 func _on_EquippedWeapon_body_entered(body):#Zadaje obrażenia przy kolizji z przeciwnikiem
 	if body.is_in_group("Enemy"):
+		print("[INFO]: Hammer damage: ", damage)
 		rng.randomize()
 		crit_chance = rng.randi_range(0,10)
 		crit = false

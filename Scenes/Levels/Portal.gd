@@ -18,10 +18,10 @@ func _process(_delta):
 		Bufor.COINS = player.coins
 		Bufor.POTIONS = player.potions
 		Bufor.POTIONS_AMOUNT = player.potions_amount
-		Bufor.WEAPONS = player.weapons
+		Bufor.WEAPONS = player.equippedWeapons
 		Bufor.FIRST_WEAPON_STATS = player.first_weapon_stats
 		Bufor.SECOND_WEAPON_STATS = player.second_weapon_stats
-		Bufor.EQUIPPED = player.equipped
+		Bufor.EQUIPPED = player.currentlyEquippedWeapon
 		Bufor.POZIOM += 1
 		Bufor.PLAYER = null
 		get_tree().change_scene("res://Scenes/Levels/Main.tscn")

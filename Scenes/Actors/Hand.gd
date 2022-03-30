@@ -4,7 +4,7 @@ onready var diff = global_position - Bufor.PLAYER.get_node("HandRotationalPoint"
 onready var main = get_tree().get_root().find_node("Main", true, false)
 
 func _physics_process(_delta):
-	if Bufor.PLAYER != null and !Bufor.PLAYER.katanaDash:
+	if Bufor.PLAYER != null and !Bufor.PLAYER.katanaDash and !Bufor.PLAYER.hammerSmash:
 		global_position = Bufor.PLAYER.get_node("HandRotationalPoint").global_position + diff.rotated(Bufor.PLAYER.get_node("HandRotationalPoint").get_angle_to(get_global_mouse_position()))
 		rotate(Bufor.PLAYER.get_node("HandRotationalPoint").get_angle_to(get_global_mouse_position()) - rotation)
 		# If condition that makes the weapon turn around when it's to either side of the Player (HandRotationalPoint - Position2D on Player)
@@ -56,8 +56,10 @@ func _on_katana_dash_used(dashDestination) -> void:
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(1, 2, Bufor.PLAYER.global_position.y - dashDestination.direction_to(Bufor.PLAYER.global_position).y * distancefactor)
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(0, 3, Bufor.PLAYER.global_position.x - dashDestination.direction_to(Bufor.PLAYER.global_position).x * distancefactor)
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(1, 3, Bufor.PLAYER.global_position.y - dashDestination.direction_to(Bufor.PLAYER.global_position).y * distancefactor)
+		Bufor.PLAYER.immortal = 1
 		Bufor.PLAYER.get_node("AnimationPlayer").play("Katana Dash")
 		yield(Bufor.PLAYER.get_node("AnimationPlayer"), "animation_finished")
+		Bufor.PLAYER.immortal = 0
 		Bufor.PLAYER.global_position = Bufor.PLAYER.position
 		Bufor.PLAYER.get_node("AnimationPlayer").play("RESET")
 		Bufor.PLAYER.katanaDash = false
@@ -65,4 +67,9 @@ func _on_katana_dash_used(dashDestination) -> void:
 
 func _on_hammer_smash_initiated() -> void:
 	# doesn't play the animation <- [DEV]
-	Bufor.PLAYER.get_node("AnimationPlayer").play("Hammer Smash")
+	if get_node("Hammer") and Bufor.PLAYER != null:
+		Bufor.PLAYER.hammerSmash = true
+#		yield(Bufor.PLAYER.get_node("AnimationPlayer"), "animation_finished")
+		Bufor.PLAYER.get_node("AnimationPlayer").play("Hammer Smash")
+		yield(Bufor.PLAYER.get_node("AnimationPlayer"), "animation_finished")
+		Bufor.PLAYER.hammerSmash = false

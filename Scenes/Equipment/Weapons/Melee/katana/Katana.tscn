@@ -5,11 +5,11 @@
 [ext_resource path="res://Assets/Effects/180deg_swoosh.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=4]
 
-[sub_resource type="CapsuleShape2D" id=14]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 2.10796
 height = 24.87
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=2]
 resource_name = "Attack"
 length = 0.6
 step = 0.025
@@ -82,7 +82,7 @@ tracks/5/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=3]
 resource_name = "Combo Hit"
 length = 1.5
 tracks/0/type = "bezier"
@@ -213,7 +213,7 @@ tracks/9/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=4]
 resource_name = "Dash"
 length = 2.0
 tracks/0/type = "bezier"
@@ -223,7 +223,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.01, 0, 0.25, 0, -9.13171, -0.01, 0, 0.01, 0, 3.85734, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.01, 0, 0.25, 0 ),
+"points": PoolRealArray( 0, -0.01, 0, 0.25, 0, -9.13171, -0.01, 0, 0.0858026, 0.722768, 3.85734, -0.0975441, -0.338969, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.01, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.5, 1.2, 1.4, 2 )
 }
 tracks/1/type = "bezier"
@@ -233,7 +233,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 4.38331, -0.25, 0, 0.25, 0, -9.132, -0.25, 0, 0.25, 0, -9.132, -0.25, 0, 0.25, 0, 0, -0.01, 0, 0.01, 0 ),
+"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 4.38331, -0.01, 0, 0.25, 0, -9.132, -0.25, 0, 0.25, 0, -9.132, -0.25, 0, 0.25, 0, 0, -0.01, 0, 0.01, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.5, 1.2, 1.4, 2 )
 }
 tracks/2/type = "bezier"
@@ -243,7 +243,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( -111.7, -0.01, 0, 0.01, 0, -111.7, -0.25, 0, 0.25, 0, -208.485, -0.25, 0, 0.25, 0, -420, -0.25, 0, 0.25, 0, -420, -0.25, 0, 0.25, 0, -111.7, -0.01, 0, 0.01, 0 ),
+"points": PoolRealArray( -111.7, -0.01, 0, 0.01, 0, -111.7, -0.25, 0, 0.194049, -0.212402, -208.485, -0.01, 0, 0.25, 0, -420, -0.25, 0, 0.25, 0, -420, -0.25, 0, 0.25, 0, -111.7, -0.01, 0, 0.01, 0 ),
 "times": PoolRealArray( 0, 0.3, 0.5, 1.2, 1.4, 2 )
 }
 tracks/3/type = "value"
@@ -314,8 +314,20 @@ tracks/7/keys = {
 "update": 1,
 "values": [ true, false, true ]
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("ForceParticles:emitting")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.3, 1.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/path = NodePath(".:rotation_degrees")
@@ -504,20 +516,20 @@ tracks/16/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Gradient" id=20]
+[sub_resource type="Gradient" id=6]
 colors = PoolColorArray( 1, 1, 1, 1, 0, 1, 0, 0 )
 
-[sub_resource type="GradientTexture" id=21]
-gradient = SubResource( 20 )
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
 
-[sub_resource type="Curve" id=17]
+[sub_resource type="Curve" id=8]
 max_value = 2.0
 _data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=18]
-curve = SubResource( 17 )
+[sub_resource type="CurveTexture" id=9]
+curve = SubResource( 8 )
 
-[sub_resource type="ParticlesMaterial" id=19]
+[sub_resource type="ParticlesMaterial" id=10]
 emission_shape = 2
 emission_box_extents = Vector3( 1, 10.951, 1 )
 flag_disable_z = true
@@ -531,11 +543,12 @@ damping = 100.0
 angle = 720.0
 angle_random = 1.0
 scale_random = 1.0
-scale_curve = SubResource( 18 )
-color_ramp = SubResource( 21 )
+scale_curve = SubResource( 9 )
+color_ramp = SubResource( 7 )
 
 [node name="Katana" type="Area2D"]
-rotation = -1.94953
+position = Vector2( 3.65726, 3.68227 )
+rotation = -3.83024
 collision_mask = 4
 script = ExtResource( 2 )
 
@@ -568,22 +581,21 @@ texture = ExtResource( 1 )
 
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -14.91 )
-shape = SubResource( 14 )
-disabled = true
+shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_process_mode = 0
-anims/Attack = SubResource( 12 )
-"anims/Combo Hit" = SubResource( 16 )
-anims/Dash = SubResource( 15 )
-anims/RESET = SubResource( 13 )
+anims/Attack = SubResource( 2 )
+"anims/Combo Hit" = SubResource( 3 )
+anims/Dash = SubResource( 4 )
+anims/RESET = SubResource( 5 )
 
 [node name="ForceParticles" type="Particles2D" parent="."]
 position = Vector2( -0.602167, -17.538 )
-emitting = false
 amount = 128
+speed_scale = 3.0
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 19 )
+process_material = SubResource( 10 )
 
 [connection signal="body_entered" from="." to="." method="_on_Katana_body_entered"]
