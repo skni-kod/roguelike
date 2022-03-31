@@ -80,9 +80,12 @@ func _unhandled_input(event) -> void:
 		elif event.is_action_pressed("use_ability_2"):
 			if Player_node.mana>=50:
 				if (Player_node.equippedWeapons[1]==weaponName and !Player_node.get_node("CoolDownS2").get_time_left()) or (Player_node.equippedWeapons[2]==weaponName and !Player_node.get_node("CoolDownS4").get_time_left()):
-					Player_node.start_skill_cooldown(2, 50, 50)
+					Player_node.start_skill_cooldown(2, 20, 30)
 					spell = 1
-					
+					$FlurryAttack.playback_speed = attack_speed*3
+					$FlurryAttack.play("Attack")
+					yield($FlurryAttack, "animation_finished")
+					$FlurryAttack.play("RESET")
 					spell = 0
 
 func _on_ComboTimer_timeout() -> void:
