@@ -109,7 +109,7 @@ func _on_Timer_timeout():
 		yield($AnimationPlayer,"animation_finished")
 
 func get_dmg(dmg, weaponKnockback):
-	if health > 0 :
+	if health > 0 and Bufor.PLAYER != null:
 		
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
@@ -125,6 +125,11 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
+		
 	if health <=0 :
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -132,13 +137,14 @@ func get_dmg(dmg, weaponKnockback):
 		var _level = get_tree().get_root().find_node("Main", true, false)
 		if is_elite == true:
 			random_potion()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
 		SoundController.play_hit()
 		queue_free()	#Usuń węzeł goblina
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)
+
 
 func random_potion():
 	rng.randomize()

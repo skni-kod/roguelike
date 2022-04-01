@@ -197,6 +197,12 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.visible = true
 		# === =============== === #
 		SoundController.play_hit()
+		# === WIZUALIZACJA ZADANEGO DMG === #
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)	
+		# === ========================= === #
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
@@ -210,17 +216,18 @@ func get_dmg(dmg, weaponKnockback):
 		# === UMIERANIE I COINSY (I POTION JESLI JEST ELITA) === #
 		random_potion()
 		drop_coins()
+		# === WIZUALIZACJA ZADANEGO DMG === #
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
+		# === ========================= === #
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
 		SoundController.play_hit()
 		queue_free() # instancja Lil Devila zostaje usunięta
 		# === ================= === #
 		
-	# === WIZUALIZACJA ZADANEGO DMG === #
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	# === ========================= === #
+
 	
 
 # === ============================ === #

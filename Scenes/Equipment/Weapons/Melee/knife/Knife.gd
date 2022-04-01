@@ -26,10 +26,18 @@ var swing_to = 0.05
 var swing_back = 0.1
 var animation_step = 0.02
 
+
+func _ready():
+	damage = float(Weapons.all_weapons.Knife["attack"])
+	weaponKnockback = float(Weapons.all_weapons.Knife["knc"])
+	attack_speed = float(Weapons.all_weapons.Knife["spd"])
+
+
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if skill1 and skill2 and !skill and player_node.mana>=25:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+			if ((player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or 
+				(player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left())): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				skill = 1
@@ -108,7 +116,19 @@ func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
 func change_weapon(texture):
 	$WeaponSprite.texture = texture
 
-func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
+#func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
+#	if body.is_in_group("Enemy"):
+#		rng.randomize()
+#		crit_chance = rng.randi_range(0,10)
+#		crit = false
+#		if(crit_chance == 0):
+#			damage *= crit_damage
+#			crit = true
+#		body.get_dmg(damage, weaponKnockback)
+#		if crit:
+#			damage /= crit_damage
+
+func _on_Knife_body_entered(body):
 	if body.is_in_group("Enemy"):
 		rng.randomize()
 		crit_chance = rng.randi_range(0,10)

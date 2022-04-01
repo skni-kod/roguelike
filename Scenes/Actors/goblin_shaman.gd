@@ -150,6 +150,10 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health <=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -164,14 +168,15 @@ func get_dmg(dmg, weaponKnockback):
 			main.add_child(coin)
 		for summoners in get_tree().get_nodes_in_group(name):
 			summoners.queue_free()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
 		SoundController.play_hit()
 		queue_free()
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)
-	
+
+
 func random_potion():
 	rng.randomize()
 	var potion

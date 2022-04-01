@@ -108,12 +108,6 @@ func _on_Timer_timeout():
 		yield($AnimationPlayer,"animation_finished")
 			
 func get_dmg(dmg, weaponKnockback):
-	
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	
 	if health>0 and Bufor.PLAYER != null:
 		
 		# ======= KNOCKBACK ======= #
@@ -132,6 +126,10 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
@@ -149,6 +147,10 @@ func get_dmg(dmg, weaponKnockback):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
 		SoundController.play_hit()
 		queue_free() #Usuń węzeł slime

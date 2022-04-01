@@ -118,3 +118,5 @@ disabled = true
 playback_speed = 2.0
 anims/Attack = SubResource( 2 )
 anims/RESET = SubResource( 3 )
+
+[connection signal="body_entered" from="." to="." method="_on_Knife_body_entered"]

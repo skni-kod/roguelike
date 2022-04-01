@@ -141,7 +141,10 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		SoundController.play_hit()
-		
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# Animacje śmierci zostają aktywowane na sprite'ach
@@ -161,15 +164,16 @@ func get_dmg(dmg, weaponKnockback):
 			coin = coin.instance() # coin staje się nową instacją coina
 			coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 			level.add_child(coin) # coin jest dzieckiem level
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
 		SoundController.play_hit()
 		queue_free() # instancja Lil Devila zostaje usunięta
 		
 	# floating_dmg zostaje stworzony poprzed dodanie nowej instancji sceny floating_dmg jako zmienna text
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
+
 		
 
 func random_potion():
