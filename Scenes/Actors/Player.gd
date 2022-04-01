@@ -77,24 +77,31 @@ var armor_durability = 0
 
 #zmienne przechowujące procent rezystancji dps kazdego z armorów
 var armors_resistance = {
-	null : 0,
+	"Hero" : 0,
 	"BlackArmor" : 0.7,
 	"Angel" : 0.7,
-	"Amogus" : 0.99
+	"Amogus" : 0.95,
+	"Cactus" : 0.5,
+	"Knight" : 0.3,
+	"Ninja" : 0.3,
 }
 
 onready var all_armors = {
 		"Hero" : preload("res://Assets/Hero/RedHero.png"),
 		"BlackArmor" : preload("res://Assets/Loot/Armors/BlackArmor.png"),
 		"Angel" : preload("res://Assets/Loot/Armors/angel.png"),
-		"Amogus" : preload("res://Assets/Loot/Armors/amogus.png")
+		"Amogus" : preload("res://Assets/Loot/Armors/amogus.png"),
+		"Cactus" : preload("res://Assets/Loot/Armors/cactus.png"),
+		"Knight" : preload("res://Assets/Loot/Armors/knight.png"),
+		"Ninja" : preload("res://Assets/Loot/Armors/ninja.png"),
 	}
-var equipped_armor
+	
+export var equipped_armor = "Hero"
 
 var speedtmp = speed
 
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
-var armor_damage_on_hit = 2
+var armor_damage_on_hit = 2  
 
 func UpdatePotions(): #funkcja aktualizująca status potek
 	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
@@ -133,17 +140,31 @@ func UpdateArmorSprite():
 	if equipped_armor == "Amogus":
 		player.get_node("PlayerSprite").texture = all_armors["Amogus"]
 		DefaultPlayerStats()
+	if equipped_armor == "Cactus":
+		player.get_node("PlayerSprite").texture = all_armors["Cactus"]
+		DefaultPlayerStats()
+	if equipped_armor == "Knight":
+		player.get_node("PlayerSprite").texture = all_armors["Knight"]
+		DefaultPlayerStats()
+	if equipped_armor == "Ninja":
+		player.get_node("PlayerSprite").texture = all_armors["Ninja"]
+		DefaultPlayerStats()
+		NinjaStats()
 	
 
 func UpdateArmor():
 	if armor_durability > 0 and equipped_armor != null:
 		if armor_durability-armor_damage_on_hit <= 0:
 			armor_durability = 0
-			equipped_armor = null
+			equipped_armor = "Hero"
 			DefaultPlayerStats()
 		else:
 			armor_durability -= armor_damage_on_hit
 	UpdateArmorSprite()
+
+func NinjaStats():
+	speedtmp = speed
+	speed = 150;
 
 func BlackArmorStats():#funkcja ustawiająca efekty Black armora
 	speedtmp = speed
@@ -165,7 +186,7 @@ func _ready(): #po inicjacji bohatera
 		armor_durability = Bufor.armor_durability
 		UpdateArmorSprite();
 	else:
-		equipped_armor = null
+		equipped_armor = "Hero"
 		armor_durability = 0;
 	
 	if Bufor.coins:
@@ -638,7 +659,7 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 				health = max_health
 				immortal = 0
 				freezed = 0
-				equipped_armor = null
+				equipped_armor = "Hero"
 				armor_durability = 0
 				emit_signal("health_updated", health)
 				UpdateArmorSprite()
@@ -698,6 +719,21 @@ func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu g
 		if "Amogus" in body.name:
 				armor_durability = 100
 				equipped_armor = "Amogus"
+				UpdateArmorSprite()
+				body.queue_free()
+		if "Cactus" in body.name:
+				armor_durability = 100
+				equipped_armor = "Cactus"
+				UpdateArmorSprite()
+				body.queue_free()
+		if "Knight" in body.name:
+				armor_durability = 80
+				equipped_armor = "Knight"
+				UpdateArmorSprite()
+				body.queue_free()
+		if "Ninja" in body.name:
+				armor_durability = 50
+				equipped_armor = "Ninja"
 				UpdateArmorSprite()
 				body.queue_free()
 		if "GoldCoin" in body.name:

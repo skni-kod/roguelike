@@ -97,6 +97,14 @@ func _ready():
 # _physics_process wykonuje się co klatkę, delta to zmienna czasowa, definiuje klatkę
 # nie stosować _process, ponieważ działa on zależnie od prędkości sprzętu
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
 	if player != null and health>0 and !attack: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
@@ -172,6 +180,11 @@ func _on_AttackTimer_timeout():
 # === FUNCKJA ATAKU === #
 func attack():
 	player.take_dmg(dps, enemyKnockback, self.global_position)	
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Cactus":
+		get_dmg(dps,enemyKnockback)
 	pass
 # === ============= === #
 

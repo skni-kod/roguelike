@@ -73,7 +73,7 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
-frame = 2
+frame = 8
 playing = true
 flip_h = true
 

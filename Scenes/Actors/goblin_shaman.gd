@@ -57,6 +57,17 @@ func _ready():
 
 	
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$wzrok.scale = Vector2(0.5,0.5)
+		$Area2D.scale = Vector2(0.75,0.75)
+	else:
+		$wzrok.scale = Vector2(1,1)
+		$Area2D.scale = Vector2(1,1)
+	
+	
 	move = Vector2.ZERO
 	enemyPos = self.global_position
 	if player != null and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje

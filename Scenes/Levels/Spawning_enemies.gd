@@ -24,15 +24,21 @@ var all_enemies = {
 var all_armors = {
 	'BlackArmor' : preload("res://Scenes/Equipment/Armors/BlackArmor.tscn"),
 	"Angel" : preload("res://Scenes/Equipment/Armors/Angel.tscn"),
-	"Amogus" : preload("res://Scenes/Equipment/Armors/Amogus.tscn")
+	"Amogus" : preload("res://Scenes/Equipment/Armors/Amogus.tscn"),
+	"Ninja" : preload("res://Scenes/Equipment/Armors/Ninja.tscn"),
+	"Cactus" : preload("res://Scenes/Equipment/Armors/Cactus.tscn"),
+	"Knight" : preload("res://Scenes/Equipment/Armors/Knight.tscn"),
 }
 
 var armor_drop_chance = 80 # szansa na to że wydropi jakiś armor po zabiciu wszystkich potworów w pokoju
 
-var armors_drop_chances = { # saznsa na drop kazdego z armorów
-	'BlackArmor' : 70,
-	"Angel" : 40,
-	"Amogus" : 5
+var armors_drop_chances = { # szansa na drop kazdego z armorów
+	'BlackArmor' : 50,
+	"Angel" : 10,
+	"Amogus" : 2,
+	"Cactus" : 15,
+	"Knight" : 70,
+	"Ninja" : 20,
 }
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
@@ -157,8 +163,20 @@ func armor():
 	elif n < armors_drop_chances['Angel']:
 		armor = all_armors['Angel']
 	
+
+		
+	elif n < armors_drop_chances['Cactus']:
+		armor = all_armors['Cactus']
+	
+	
+	elif n < armors_drop_chances['Ninja']:
+		armor = all_armors['Ninja']
+	
 	elif n < armors_drop_chances['BlackArmor']:
 		armor = all_armors['BlackArmor']
+	
+	elif n < armors_drop_chances['Knight']:
+		armor = all_armors['Knight']
 		
 	if armor != null:
 		armor = armor.instance()
