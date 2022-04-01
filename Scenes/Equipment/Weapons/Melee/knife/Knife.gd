@@ -36,7 +36,8 @@ func _ready():
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if skill1 and skill2 and !skill and player_node.mana>=25:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+			if ((player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or 
+				(player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left())): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				skill = 1
