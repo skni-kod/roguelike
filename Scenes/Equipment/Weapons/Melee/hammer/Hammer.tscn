@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Loot/Weapons/hammer.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/hammer/Hammer.gd" type="Script" id=2]
@@ -15,6 +15,13 @@ height = 14.5372
 [sub_resource type="CapsuleShape2D" id=14]
 radius = 30.4027
 height = 29.3207
+
+[sub_resource type="Gradient" id=15]
+offsets = PoolRealArray( 0, 0.615385, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.667969, 0.667969, 0.667969, 1, 0.992157, 0.992157, 0.992157, 0.576471 )
+
+[sub_resource type="GradientTexture" id=16]
+gradient = SubResource( 15 )
 
 [sub_resource type="Curve" id=12]
 min_value = -200.0
@@ -48,6 +55,7 @@ radial_accel_curve = SubResource( 13 )
 tangential_accel_random = 1.0
 scale_curve = SubResource( 2 )
 color = Color( 0.482353, 0.482353, 0.482353, 1 )
+color_ramp = SubResource( 16 )
 
 [sub_resource type="Animation" id=6]
 resource_name = "Attack"
@@ -102,7 +110,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.25, 0.35 ),
+"times": PoolRealArray( 0, 0.15, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
@@ -120,6 +128,16 @@ tracks/5/keys = {
 "args": [  ],
 "method": "play_hammer_swoosh_sound"
 } ]
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 1, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0.15, 0.35 )
 }
 
 [sub_resource type="Animation" id=7]
@@ -396,6 +414,46 @@ tracks/7/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ true ]
+}
+tracks/8/type = "bezier"
+tracks/8/path = NodePath("SwooshSprite:self_modulate:r")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/9/type = "bezier"
+tracks/9/path = NodePath("SwooshSprite:self_modulate:g")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/10/type = "bezier"
+tracks/10/path = NodePath("SwooshSprite:self_modulate:b")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/11/type = "bezier"
+tracks/11/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
 }
 
 [node name="Hammer" type="Area2D"]

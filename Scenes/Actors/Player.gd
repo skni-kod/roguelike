@@ -74,24 +74,6 @@ var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończon
 
 var immortal = 0 #jezeli rowne 1 to niesmiertelny
 
-func UpdatePotions() -> void: #funkcja aktualizująca status potek
-	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
-		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
-		potion1_amount.text = "" # ustawienie textu ilosci potek na nic
-		potions[1] = "Empty" #przypisanie potxe z slotu 1 nazwe Empty potrzebne do poprawnego działania
-	if potions_amount[potions[2]] == 0: #to samo co wyżej tylko dla slotu 2
-		ui_access_pslot2.texture = null
-		potion2_amount.text = ""
-		potions[2] = "Empty"
-		
-	if potions[2] != "Empty" and potions[1] != "Empty": #jeżeli niema potki na slocie pierwszy ani drugim to:
-		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
-		ui_access_pslot2.texture = all_potions[potions[2]] #przypisanie do textury slotu drugiego textury aktualnego drugiego potka
-		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
-		potion2_amount.text = str(potions_amount[potions[2]]) #aktualizacja textu ilości potek w eq
-	elif potions[1] != "Empty":
-		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
-		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 		
 
 func _enter_tree():
@@ -107,7 +89,7 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "Hammer",
+		1 : "BloodSword",
 		2 : "Empty"
 	}
 
@@ -437,6 +419,25 @@ func start_skill_cooldown(ability: int, time: int, manaUsed: int) -> void:
 		pass
 
 # ============= ====== ============== #  
+
+func UpdatePotions() -> void: #funkcja aktualizująca status potek
+	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
+		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
+		potion1_amount.text = "" # ustawienie textu ilosci potek na nic
+		potions[1] = "Empty" #przypisanie potxe z slotu 1 nazwe Empty potrzebne do poprawnego działania
+	if potions_amount[potions[2]] == 0: #to samo co wyżej tylko dla slotu 2
+		ui_access_pslot2.texture = null
+		potion2_amount.text = ""
+		potions[2] = "Empty"
+		
+	if potions[2] != "Empty" and potions[1] != "Empty": #jeżeli niema potki na slocie pierwszy ani drugim to:
+		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
+		ui_access_pslot2.texture = all_potions[potions[2]] #przypisanie do textury slotu drugiego textury aktualnego drugiego potka
+		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
+		potion2_amount.text = str(potions_amount[potions[2]]) #aktualizacja textu ilości potek w eq
+	elif potions[1] != "Empty":
+		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
+		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
 
 
 func updateMana(value: int) -> void:

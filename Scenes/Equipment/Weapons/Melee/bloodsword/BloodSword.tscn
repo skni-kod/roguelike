@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Loot/Weapons/BloodSword.png" type="Texture" id=2]
@@ -43,25 +43,6 @@ scale_random = 1.0
 scale_curve = SubResource( 24 )
 color = Color( 1, 1, 1, 0.705882 )
 color_ramp = SubResource( 22 )
-
-[sub_resource type="Gradient" id=14]
-offsets = PoolRealArray( 0.296443, 1 )
-colors = PoolColorArray( 0.618652, 0.0507488, 0.0507488, 1, 0.188965, 0.00590515, 0.00590515, 1 )
-
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 14 )
-
-[sub_resource type="ParticlesMaterial" id=15]
-lifetime_randomness = 1.0
-flag_disable_z = true
-direction = Vector3( 0, 0, 0 )
-spread = 37.89
-gravity = Vector3( -2, 0, 0 )
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-linear_accel = 1.0
-angle_random = 1.0
-color_ramp = SubResource( 2 )
 
 [sub_resource type="Gradient" id=17]
 offsets = PoolRealArray( 0.296443, 1 )
@@ -121,10 +102,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ true, false, true ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("SwooshSprite:visible")
@@ -138,30 +119,28 @@ tracks/4/keys = {
 "update": 1,
 "values": [ false, true, false ]
 }
-tracks/5/type = "value"
-tracks/5/path = NodePath("Particles2D:emitting")
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("SwooshSprite:self_modulate:r")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ true, false ]
+"points": PoolRealArray( 0.439216, -0.25, 0, 0.25, 0, 0.964706, -0.01, 0, 0.01, 0, 0.439216, -0.01, 0, 0.01, 0, 0.439216, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.4, 1 )
 }
 tracks/6/type = "bezier"
-tracks/6/path = NodePath("SwooshSprite:self_modulate:r")
+tracks/6/path = NodePath("SwooshSprite:self_modulate:g")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"points": PoolRealArray( 0.439216, -0.25, 0, 0.25, 0, 0.964706, -0.01, 0, 0.01, 0, 0.439216, -0.01, 0, 0.01, 0, 0.439216, -0.25, 0, 0.25, 0 ),
+"points": PoolRealArray( 0.117647, -0.25, 0, 0.25, 0, 0.533333, -0.01, 0, 0.01, 0, 0.117647, -0.01, 0, 0.01, 0, 0.117647, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.25, 0.4, 1 )
 }
 tracks/7/type = "bezier"
-tracks/7/path = NodePath("SwooshSprite:self_modulate:g")
+tracks/7/path = NodePath("SwooshSprite:self_modulate:b")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -171,32 +150,22 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.25, 0.4, 1 )
 }
 tracks/8/type = "bezier"
-tracks/8/path = NodePath("SwooshSprite:self_modulate:b")
+tracks/8/path = NodePath("SwooshSprite:self_modulate:a")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"points": PoolRealArray( 0.117647, -0.25, 0, 0.25, 0, 0.533333, -0.01, 0, 0.01, 0, 0.117647, -0.01, 0, 0.01, 0, 0.117647, -0.25, 0, 0.25, 0 ),
+"points": PoolRealArray( 0.819608, -0.25, 0, 0.25, 0, 0.819608, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0.819608, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.25, 0.4, 1 )
 }
-tracks/9/type = "bezier"
-tracks/9/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/9/type = "method"
+tracks/9/path = NodePath(".")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"points": PoolRealArray( 0.819608, -0.25, 0, 0.25, 0, 0.819608, -0.01, 0, 0.01, 0, 0, -0.01, 0, 0.01, 0, 0.819608, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.25, 0.4, 1 )
-}
-tracks/10/type = "method"
-tracks/10/path = NodePath(".")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/keys = {
 "times": PoolRealArray( 0.25 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -262,7 +231,7 @@ tracks/4/keys = {
 "values": [ false ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Particles2D:emitting")
+tracks/5/path = NodePath("Ability1Particles:emitting")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -324,12 +293,19 @@ scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 11 )
 disabled = true
 
-[node name="Particles2D" type="Particles2D" parent="."]
+[node name="Ability1Particles" type="Particles2D" parent="."]
 position = Vector2( -0.053, -16.601 )
 emitting = false
 amount = 64
 local_coords = false
 process_material = SubResource( 25 )
+
+[node name="Ability2Particles" type="Particles2D" parent="."]
+position = Vector2( 0.0026319, -10.9976 )
+amount = 140
+lifetime = 3.0
+speed_scale = 20.0
+process_material = SubResource( 19 )
 
 [node name="SwooshSprite" type="Sprite" parent="."]
 visible = false
@@ -343,22 +319,6 @@ texture = ExtResource( 3 )
 light_mask = 2
 position = Vector2( 0, -11 )
 texture = ExtResource( 2 )
-
-[node name="BloodParticles2" type="Particles2D" parent="WeaponSprite"]
-visible = false
-position = Vector2( -0.0530493, -0.0533183 )
-amount = 140
-lifetime = 4.0
-speed_scale = 20.0
-process_material = SubResource( 15 )
-
-[node name="BloodParticles1" type="Particles2D" parent="WeaponSprite"]
-visible = false
-position = Vector2( 0.0026319, 0.00236297 )
-amount = 140
-lifetime = 3.0
-speed_scale = 20.0
-process_material = SubResource( 19 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 12 )

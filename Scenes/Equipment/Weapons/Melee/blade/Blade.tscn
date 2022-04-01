@@ -46,11 +46,12 @@ _data = [ Vector2( 0, 4 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 curve = SubResource( 15 )
 
 [sub_resource type="ParticlesMaterial" id=10]
+emission_shape = 2
+emission_box_extents = Vector3( 1, 5.013, 1 )
 flag_disable_z = true
-direction = Vector3( 0, -1, 0 )
-spread = 41.7
+direction = Vector3( -1, -1, 0 )
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 200.0
+initial_velocity = 100.0
 initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
@@ -115,7 +116,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.2, 0.325 ),
+"times": PoolRealArray( 0, 0.15, 0.325 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
@@ -133,6 +134,16 @@ tracks/5/keys = {
 "args": [  ],
 "method": "play_swoosh"
 } ]
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.05, 0, 0, -0.05, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.15, 0.325 )
 }
 
 [sub_resource type="Animation" id=17]
@@ -175,10 +186,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.1, 0.95 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.25, 0.35, 0.55, 0.65, 0.95 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ false, true, false ]
+"values": [ false, true, false, true, false, true, false ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("AttackCollision:disabled")
@@ -211,6 +222,28 @@ tracks/5/keys = {
 "args": [  ],
 "method": "play_swoosh"
 } ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("SwooshSprite:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.15, 0.25, 0.45, 0.55, 0.75, 0.85 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true, false ]
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.05, 0, 0.05, 0, 1, -0.05, 0, 0.05, 0, 0, -0.05, 0, 0.05, 0, 1, -0.05, 0, 0.05, 0, 0, -0.05, 0, 0.05, 0 ),
+"times": PoolRealArray( 0.15, 0.25, 0.45, 0.55, 0.75, 0.85 )
 }
 
 [sub_resource type="Animation" id=13]
@@ -305,6 +338,86 @@ tracks/7/keys = {
 "update": 0,
 "values": [ false ]
 }
+tracks/8/type = "bezier"
+tracks/8/path = NodePath("SwooshSprite:self_modulate:r")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/9/type = "bezier"
+tracks/9/path = NodePath("SwooshSprite:self_modulate:g")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/10/type = "bezier"
+tracks/10/path = NodePath("SwooshSprite:self_modulate:b")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/11/type = "bezier"
+tracks/11/path = NodePath("SwooshSprite:self_modulate:a")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/12/type = "bezier"
+tracks/12/path = NodePath("180SwooshSprite:self_modulate:r")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/13/type = "bezier"
+tracks/13/path = NodePath("180SwooshSprite:self_modulate:g")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/14/type = "bezier"
+tracks/14/path = NodePath("180SwooshSprite:self_modulate:b")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/15/type = "bezier"
+tracks/15/path = NodePath("180SwooshSprite:self_modulate:a")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="Animation" id=14]
 resource_name = "Vortex"
@@ -393,6 +506,16 @@ tracks/6/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/7/type = "bezier"
+tracks/7/path = NodePath("180SwooshSprite:self_modulate:a")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 1, -0.05, 0, 0, 0, 0, -0.1, 0, 0.05, 0, 1, -0.05, 0, 0.05, 0, 0, -0.1, 0, 0.05, 0 ),
+"times": PoolRealArray( 0.35, 0.45, 0.6, 0.75 )
+}
 
 [node name="Blade" type="Area2D"]
 collision_mask = 4
@@ -429,7 +552,7 @@ draw_order = 1
 process_material = SubResource( 9 )
 
 [node name="TrzystronneCiecie" type="Particles2D" parent="WeaponSprite"]
-position = Vector2( 0, 3.63392 )
+position = Vector2( 0, -3.913 )
 emitting = false
 amount = 100
 lifetime = 0.2

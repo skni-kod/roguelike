@@ -21,11 +21,9 @@ __meta__ = {
 [node name="HealthOver" type="TextureProgress" parent="."]
 margin_right = 100.0
 margin_bottom = 10.0
+value = 50.0
 texture_over = ExtResource( 3 )
 texture_progress = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="UpdateTween" type="Tween" parent="."]
 

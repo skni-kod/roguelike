@@ -3,6 +3,7 @@ extends Position2D
 onready var diff = global_position - Bufor.PLAYER.get_node("HandRotationalPoint").global_position
 onready var main = get_tree().get_root().find_node("Main", true, false)
 
+
 func _physics_process(_delta):
 	if Bufor.PLAYER != null and !Bufor.PLAYER.katanaDash and !Bufor.PLAYER.hammerSmash:
 		global_position = Bufor.PLAYER.get_node("HandRotationalPoint").global_position + diff.rotated(Bufor.PLAYER.get_node("HandRotationalPoint").get_angle_to(get_global_mouse_position()))
