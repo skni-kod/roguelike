@@ -107,7 +107,7 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "Hammer",
+		1 : "Knife",
 		2 : "Empty"
 	}
 

@@ -109,7 +109,7 @@ func _on_Timer_timeout():
 		yield($AnimationPlayer,"animation_finished")
 
 func get_dmg(dmg, weaponKnockback):
-	if health > 0 :
+	if health > 0 and Bufor.PLAYER != null:
 		
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
