@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/TileMap/Room1.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Levels/Spawning_enemies.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Levels/Lights.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/npc/sklep.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Levels/Room.gd" type="Script" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 208, 112 )
@@ -12,9 +13,22 @@ extents = Vector2( 208, 112 )
 closed = false
 polygon = PoolVector2Array( -256, -144, 256, -144, 256, 144, -256, 144, -256, -144 )
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 18.653, 4.90807 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 18.653, 4.90807 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 6.38266, 18.6887 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 8.24753, 19.0661 )
+
 [node name="Node2D" type="Area2D" groups=["walls"]]
 collision_layer = 0
 collision_mask = 5
+script = ExtResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2( -240, -144 )
@@ -39,5 +53,33 @@ position = Vector2( 128, -36 )
 [node name="Lights" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
+[node name="TopEntrance" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="TopEntrance"]
+position = Vector2( 0, -134.502 )
+shape = SubResource( 3 )
+
+[node name="BottomEntrance" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="BottomEntrance"]
+position = Vector2( 0, 135.446 )
+shape = SubResource( 4 )
+
+[node name="LeftEntrance" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="LeftEntrance"]
+position = Vector2( -237.384, -1.52588e-05 )
+shape = SubResource( 5 )
+
+[node name="RightEntrance" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="RightEntrance"]
+position = Vector2( 238.328, 0 )
+shape = SubResource( 6 )
+
 [connection signal="body_entered" from="." to="Enemies" method="_on_Node2D_body_entered"]
 [connection signal="body_entered" from="." to="Lights" method="_on_Node2D_body_entered"]
+[connection signal="body_entered" from="TopEntrance" to="." method="_on_TopEntrance_body_entered"]
+[connection signal="body_entered" from="BottomEntrance" to="." method="_on_BottomEntrance_body_entered"]
+[connection signal="body_entered" from="LeftEntrance" to="." method="_on_LeftEntrance_body_entered"]
+[connection signal="body_entered" from="RightEntrance" to="." method="_on_RightEntrance_body_entered"]

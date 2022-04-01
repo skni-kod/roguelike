@@ -16,6 +16,7 @@ func check_boss(room): #sprawdzanie, czy w to pokój bossa
 func _ready():
 	generation.connect("boss", self, "check_boss")
 
+
 func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
 	if body.name == "Player": 
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
