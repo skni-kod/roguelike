@@ -4,7 +4,7 @@ var all_weapons_scenes = {
 	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/axe/Axe.tscn"),
 	"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/blade/Blade.tscn"),
 	"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
-	"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/fms/FMS.tscn"),
+	"Fms" : preload("res://Scenes/Equipment/Weapons/Melee/fms/Fms.tscn"),
 	"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/hammer/Hammer.tscn"),
 	"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/katana/Katana.tscn"),
 	"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/knife/Knife.tscn"),
@@ -15,7 +15,7 @@ var all_weapons_textures = {
 	"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 	"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 	"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-	"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+	"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
 	"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 	"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 	"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -71,7 +71,7 @@ var all_weapons = {
 		"range": "melee",
 		"effect": "none"
 	},
-	 "FMS": {
+	 "Fms": {
 		"attack": "22",
 		"spd": "0.5",
 		"knc": float(0.5),

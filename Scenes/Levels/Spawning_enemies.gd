@@ -1,5 +1,7 @@
 extends Node
 
+signal Cleared() #Fms
+
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
@@ -138,9 +140,12 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 	if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
 		ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
 	if ilosc_enemy == 0: #jeżeli nie ma przeciwników
+		
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
+			emit_signal("Cleared")
+			print("[INFO]: reeeeeeeeeee1")
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)
@@ -161,3 +166,7 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 			tilemap.set_cell(0,4,1)
 			tilemap.set_cell(0,5,2)
 			tilemap.set_cell(1,4,3)
+
+
+func _on_Enemies_Cleared() -> void:
+	pass # Replace with function body.

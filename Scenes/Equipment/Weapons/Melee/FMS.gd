@@ -15,7 +15,7 @@ var ability2ManaCost=1 #koszt do zmiany w balansie
 var damage
 var weaponKnockback
 var a = 1
-var weaponName = "fms"
+var weaponName = "Fms"
 var smoothing = 1
 
 var rng = RandomNumberGenerator.new()

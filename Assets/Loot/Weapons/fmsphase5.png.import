@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/FMS1.png-a84a18730add9db172d599a062e88e21.stex"
+path="res://.import/fmsphase5.png-ae8a199f181b86eb6b1e35ebea58e0f4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/FMS1.png"
-dest_files=[ "res://.import/FMS1.png-a84a18730add9db172d599a062e88e21.stex" ]
+source_file="res://Assets/Loot/Weapons/fmsphase5.png"
+dest_files=[ "res://.import/fmsphase5.png-ae8a199f181b86eb6b1e35ebea58e0f4.stex" ]
 
 [params]
 
@@ -28,7 +28,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
-process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false
