@@ -98,6 +98,8 @@ onready var all_armors = {
 	
 export var equipped_armor = "Hero"
 
+var armor_to_pick = null;
+
 var speedtmp = speed
 
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
@@ -126,7 +128,7 @@ func UpdateArmorSprite():
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("armor_updated", armor_durability)
 	var player = level.get_node("Player")
-	if equipped_armor == null:
+	if equipped_armor == "Hero":
 		player.get_node("PlayerSprite").texture = all_armors["Hero"]
 		DefaultPlayerStats()
 		
@@ -303,7 +305,45 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 			knockback *= 0.95
 			emit_signal("player_moved", knockback)
 		# === ========================== === #
-		
+	
+	if armor_to_pick !=null:
+		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
+			if "BlackArmor" in armor_to_pick.name:
+				armor_durability = 100
+				equipped_armor = "BlackArmor"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free()
+			
+			if "Angel" in armor_to_pick.name:
+				armor_durability = 100
+				equipped_armor = "Angel"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free()
+				
+			if "Amogus" in armor_to_pick.name:
+				armor_durability = 100
+				equipped_armor = "Amogus"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free
+
+			if "Cactus" in armor_to_pick.name:
+				armor_durability = 100
+				equipped_armor = "Cactus"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free()
+				
+			if "Knight" in armor_to_pick.name:
+				armor_durability = 80
+				equipped_armor = "Knight"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free()
+					
+			if "Ninja" in armor_to_pick.name:
+				armor_durability = 50
+				equipped_armor = "Ninja"
+				UpdateArmorSprite()
+				armor_to_pick.queue_free()
+			armor_to_pick = null		
 	if weaponToTake != null: #Jeżeli gracz stoi przy broni do podniesienia
 		if Input.is_action_just_pressed("pick"): #Jeżeli nacisnął przycisk podniesienia
 			if weapons[1] != weaponToTake.WeaponName and weapons[2] != weaponToTake.WeaponName:
@@ -644,6 +684,7 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 				freezed = 1
 				var smothing = 50 #plynność regeneracji hp
 				var revival_time = 0.9 #czas odradzania w sekundach
+				health = 0
 				for i in smothing:
 					health += max_health/smothing
 					emit_signal("health_updated", health)
@@ -654,7 +695,6 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 					self.add_child(t)
 					t.start()
 					yield(t, "timeout")
-					print(health)
 					
 				health = max_health
 				immortal = 0
@@ -675,7 +715,7 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 					'damage' : equipped_weapon.damage,
 					'weaponKnockback' : equipped_weapon.weaponKnockback,
 				}
-				
+
 				equipped_weapon.get_node("AttackCollision").disabled = false
 				equipped_weapon.get_node("AttackCollision").position.x = 0
 				equipped_weapon.get_node("AttackCollision").position.y = 0
@@ -707,35 +747,59 @@ func take_dmg(dps, enemyKnockback, enemyPos): #otrzymanie obrażeń przez bohate
 func _on_Pick_body_entered(body): #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):
 		if "BlackArmor" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 100
 				equipped_armor = "BlackArmor"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body
+			
 		if "Angel" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 100
 				equipped_armor = "Angel"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body
+			
 		if "Amogus" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 100
 				equipped_armor = "Amogus"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body		
+
 		if "Cactus" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 100
 				equipped_armor = "Cactus"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body
+			
 		if "Knight" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 80
 				equipped_armor = "Knight"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body
+				
 		if "Ninja" in body.name:
+			if equipped_armor == "Hero":
 				armor_durability = 50
 				equipped_armor = "Ninja"
 				UpdateArmorSprite()
 				body.queue_free()
+			else:
+				armor_to_pick = body
+			
 		if "GoldCoin" in body.name:
 			coins += 3
 			body.queue_free()
