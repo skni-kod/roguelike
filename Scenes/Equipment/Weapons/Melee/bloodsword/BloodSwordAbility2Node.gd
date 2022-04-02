@@ -29,6 +29,6 @@ func _on_deathTimer_timeout() -> void:
 
 
 func _on_damageTimer_timeout() -> void:
-	if Bufor.PLAYER and Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "BloodSword":
-		Bufor.PLAYER.health += (Bufor.PLAYER.get_node("Hand").get_child(0).life_steal * abilityDamage)
+	if Bufor.PLAYER:
+		Bufor.PLAYER.health += ((1 + Bufor.PLAYER.get_node("Hand").get_child(0).life_steal) * abilityDamage)
 	get_parent().get_dmg(abilityDamage, 0)

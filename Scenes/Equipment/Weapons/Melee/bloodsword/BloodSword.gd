@@ -60,10 +60,12 @@ func _unhandled_input(_event):
 func _input(event):
 	if Bufor.PLAYER and !Bufor.PLAYER.dying:
 		if event is InputEventMouseButton:
-			if event.button_index == BUTTON_LEFT and event.pressed:
+			if event.button_index == BUTTON_LEFT and event.pressed and isWeaponReady:
+				isWeaponReady = false
 				$AnimationPlayer.play("Attack")
 				yield($AnimationPlayer, "animation_finished")
 				$AnimationPlayer.play("RESET")
+				isWeaponReady = true
 		
 
 func change_weapon(texture):
@@ -76,8 +78,8 @@ func ability1() -> void: # "Thirst" na krótki czas zwiększa prędkośc ataku i
 	$Ability1Particles.emitting = true
 	yield(get_tree().create_timer(ability1Time), "timeout") #czas trwania umiejętności
 	$Ability1Particles.emitting = false
-	life_steal = 0.1
-	isWeaponReady = false
+	life_steal = 0.2
+	isWeaponReady = true
 
 
 func ability2() -> void: # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
@@ -97,10 +99,11 @@ func ability2() -> void: # "Gluttony" seria 4 ataków, każdy zadaje większe ob
 
 		yield($AnimationPlayer, "animation_finished")
 		damage = tmpDmg
-		if Bufor.PLAYER.health > 1:
+		if Bufor.PLAYER.health > 10:
 			Bufor.PLAYER.health -= (((n + 1) * damage) / 2.2) #odbieramy życie za każdy atak, można zmienić ile
 		else:
-			Bufor.PLAYER.health = 1
+			Bufor.PLAYER.health = 10
+			break
 		$AnimationPlayer.play("RESET")
 		Bufor.PLAYER.emit_signal("health_updated", Bufor.PLAYER.health) #emitujemy sygnał żeby pasek życia się zaktualizował
 		ability2Running = false
