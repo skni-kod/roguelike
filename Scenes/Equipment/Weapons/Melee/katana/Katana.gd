@@ -51,46 +51,48 @@ func _physics_process(_delta):
 
 
 func _input(event):
-	if Input.is_action_just_pressed("attack") and isWeaponReady:
-		isWeaponReady = false
-		$AnimationPlayer.play("Attack")
-		yield($AnimationPlayer, "animation_finished")
-		$AnimationPlayer.play("RESET")
-		isWeaponReady = true
+	if Bufor.PLAYER and !Bufor.PLAYER.dying:
+		if Input.is_action_just_pressed("attack") and isWeaponReady:
+			isWeaponReady = false
+			$AnimationPlayer.play("Attack")
+			yield($AnimationPlayer, "animation_finished")
+			$AnimationPlayer.play("RESET")
+			isWeaponReady = true
 
 
 func _unhandled_input(_event):
-	if Input.is_action_just_pressed("use_ability_1") and isWeaponReady:
-		#Really powerful blow - 40 bonus damage
-		if player_node.mana>=25:
-			if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				isWeaponReady = false
-				player_node.start_skill_cooldown(1, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-				spell = 1
-				var tmpDmg = damage
-				damage *= ability1DamageMultiplier
-				$AnimationPlayer.play("Dash")
-				yield($AnimationPlayer, "animation_finished")
-				damage = tmpDmg
-				spell = 0
-				$AnimationPlayer.play("RESET")
-				isWeaponReady = true
-				
-	if Input.is_action_just_pressed("use_ability_2") and isWeaponReady:
-		if player_node.mana>=50:
-			if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				isWeaponReady = false
-				player_node.start_skill_cooldown(2, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-				spell = 1
-				abilityDamage=45
-				var tmpDmg = damage
-				$AnimationPlayer.play("Combo Hit")
-				yield($AnimationPlayer, "animation_finished")
-				damage = tmpDmg
-				comboDmgCounter = 1
-				spell = 0
-				$AnimationPlayer.play("RESET")
-				isWeaponReady = true
+	if Bufor.PLAYER and !Bufor.PLAYER.dying:
+		if Input.is_action_just_pressed("use_ability_1") and isWeaponReady:
+			#Really powerful blow - 40 bonus damage
+			if player_node.mana>=25:
+				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					isWeaponReady = false
+					player_node.start_skill_cooldown(1, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					spell = 1
+					var tmpDmg = damage
+					damage *= ability1DamageMultiplier
+					$AnimationPlayer.play("Dash")
+					yield($AnimationPlayer, "animation_finished")
+					damage = tmpDmg
+					spell = 0
+					$AnimationPlayer.play("RESET")
+					isWeaponReady = true
+					
+		if Input.is_action_just_pressed("use_ability_2") and isWeaponReady:
+			if player_node.mana>=50:
+				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					isWeaponReady = false
+					player_node.start_skill_cooldown(2, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					spell = 1
+					abilityDamage=45
+					var tmpDmg = damage
+					$AnimationPlayer.play("Combo Hit")
+					yield($AnimationPlayer, "animation_finished")
+					damage = tmpDmg
+					comboDmgCounter = 1
+					spell = 0
+					$AnimationPlayer.play("RESET")
+					isWeaponReady = true
 
 
 func _on_Player_attacked():

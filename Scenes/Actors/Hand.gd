@@ -5,7 +5,7 @@ onready var main = get_tree().get_root().find_node("Main", true, false)
 
 
 func _physics_process(_delta):
-	if Bufor.PLAYER != null and !Bufor.PLAYER.katanaDash and !Bufor.PLAYER.hammerSmash:
+	if Bufor.PLAYER and !Bufor.PLAYER.katanaDash and !Bufor.PLAYER.hammerSmash and !Bufor.PLAYER.dying:
 		global_position = Bufor.PLAYER.get_node("HandRotationalPoint").global_position + diff.rotated(Bufor.PLAYER.get_node("HandRotationalPoint").get_angle_to(get_global_mouse_position()))
 		rotate(Bufor.PLAYER.get_node("HandRotationalPoint").get_angle_to(get_global_mouse_position()) - rotation)
 		# If condition that makes the weapon turn around when it's to either side of the Player (HandRotationalPoint - Position2D on Player)
@@ -25,7 +25,7 @@ func _physics_process(_delta):
 
 
 func _on_axeAbility1Used(direction, currPos) -> void:
-	if get_node("Axe") and Bufor.PLAYER != null:
+	if get_node("Axe") and Bufor.PLAYER != null and !Bufor.PLAYER.dying:
 		print("[INFO]: Axe throw direction: ", direction, " starting position: ", currPos)
 		var equippedAxe = get_node("Axe")
 		Bufor.PLAYER.equippedWeapons[Bufor.PLAYER.getCurrentWeaponSlot()] = "Empty"
@@ -39,7 +39,7 @@ func _on_axeAbility1Used(direction, currPos) -> void:
 
 
 func _on_katana_dash_used(dashDestination) -> void:
-	if get_node("Katana") and Bufor.PLAYER != null:
+	if get_node("Katana") and Bufor.PLAYER != null and !Bufor.PLAYER.dying:
 		print("[INFO]: Katana dash singnal arrived")
 		print("[INFO]: Animation player: ", Bufor.PLAYER.get_node("AnimationPlayer"))
 		print("[INFO]: Animation Katana Dash: ", Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash"))

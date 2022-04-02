@@ -301,6 +301,7 @@ local_coords = false
 process_material = SubResource( 25 )
 
 [node name="Ability2Particles" type="Particles2D" parent="."]
+visible = false
 position = Vector2( 0.0026319, -10.9976 )
 amount = 140
 lifetime = 3.0
@@ -325,3 +326,4 @@ anims/Attack = SubResource( 12 )
 anims/RESET = SubResource( 13 )
 
 [connection signal="body_entered" from="." to="." method="_on_BloodSword_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_BloodSword_body_exited"]

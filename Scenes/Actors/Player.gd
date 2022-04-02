@@ -24,6 +24,7 @@ var currentlyEquippedWeapon # Aktualnie używana broń
 var chest = null #Zmienna określająca czy gracz stoi przy skrzyni
 var level #przypisanie sceny głównej
 var equippedWeapons = {} #posiadane bronki
+var dying = false
 
 var stepsoundvar
 
@@ -149,7 +150,7 @@ func _ready() -> void: #po inicjacji bohatera
 	stepsoundvar = 0
 
 	
-func _process(delta) -> void:	
+func _process(_delta) -> void:	
 	updateMana((statusEffect.manaRegenRate+additionalManaRegen)*0.0167)
 	
 
@@ -181,8 +182,8 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 	knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 	# === ========= === #
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if !katanaDash and !hammerSmash:
-		if knockback == Vector2.ZERO and Bufor.PLAYER != null :
+	if !katanaDash and !hammerSmash and health > 0 and !dying:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			movement(delta) #wywołanie funkcji poruszania się
 		elif knockback != Vector2.ZERO and health > 0:
 			knockback = move_and_slide(knockback)
@@ -312,7 +313,7 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 			change_potion_slot() #potki zamieniają się miejscami w slotach
 
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
 
@@ -489,7 +490,7 @@ func movement(delta) -> void: #funkcja poruszania się
 	else :
 		velocity = direction * speed * statusEffect.speedMultiplier #pomnożenie wektora kierunku z wartością szybkości daje prędkość
 	move() #wywołanie poruszania się
-	if !got_hitted  and !skok: #jeżeli nie jest uderzany
+	if !got_hitted  and !skok and health > 0: #jeżeli nie jest uderzany
 		if direction == Vector2.ZERO: #jeżeli stoi w miejscu
 			$AnimationPlayer.play("Idle") #włącz animację "Idle"
 		else:
@@ -533,7 +534,7 @@ func sound_play_step() -> void:
 
 func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń przez bohatera
 	# ======= KNOCKBACK ======= #
-	if !skok and !katanaDash and !hammerSmash and !immortal:
+	if !skok and !katanaDash and !hammerSmash and !immortal and !dying:
 		if enemyKnockback != 0:
 			knockback = -global_position.direction_to(enemyPos)*(100+(100*enemyKnockback))*(statusEffect.knockbackMultiplier) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
@@ -548,10 +549,17 @@ func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń prze
 		yield($AnimationPlayer, "animation_finished") #poczekaj do końca animacji
 		got_hitted = false #bohater nie jest uderzany
 		SoundController.play_player_hit()
-		if (health <= 0):
+		if health <= 0 and !dying:
+			dying = true
+			$PlayerCollision.disabled = true
+			health = 0
+			$AnimationPlayer.play("Die")
+			yield($AnimationPlayer, "animation_finished")
 			Bufor.PLAYER = null
 			self.queue_free()
+# warning-ignore:return_value_discarded
 			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+			
 
 
 func _on_Pick_body_entered(body) -> void: #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
@@ -602,7 +610,7 @@ func _on_Pick_body_entered(body) -> void: #Jeśli coś do podniesienia jest w za
 	level.get_node("UI/Coins").text = "Coins:"+str(coins)
 
 
-func _on_Pick_body_exited(body) -> void: #Rozwiązanie tymczasowe
+func _on_Pick_body_exited(_body) -> void: #Rozwiązanie tymczasowe
 	weaponToTake = null
 	chest = null
 

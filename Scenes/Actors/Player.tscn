@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Assets/Hero/RedHero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Actors/Player.gd" type="Script" id=2]
@@ -137,6 +137,78 @@ extents = Vector2( 7.385, 6.133 )
 
 [sub_resource type="CircleShape2D" id=25]
 radius = 17.4039
+
+[sub_resource type="Animation" id=47]
+resource_name = "Die"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pick/PickCollision:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Light2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0.5, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 3 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 3 ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 2.7 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("DyingParticles:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("LightOccluder2D:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, false, false ]
+}
 
 [sub_resource type="Animation" id=26]
 resource_name = "Hammer Smash"
@@ -389,6 +461,104 @@ tracks/7/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("PlayerCollision:disabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Pick/PickCollision:disabled")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/10/type = "bezier"
+tracks/10/path = NodePath("Light2D:energy")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/11/type = "bezier"
+tracks/11/path = NodePath(".:modulate:r")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/12/type = "bezier"
+tracks/12/path = NodePath(".:modulate:g")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/13/type = "bezier"
+tracks/13/path = NodePath(".:modulate:b")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/14/type = "bezier"
+tracks/14/path = NodePath(".:modulate:a")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("DyingParticles:emitting")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("LightOccluder2D:visible")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=32]
 length = 0.5
@@ -534,9 +704,36 @@ color_ramp = SubResource( 42 )
 [sub_resource type="OccluderPolygon2D" id=46]
 polygon = PoolVector2Array( -6, 0, 6.5, 0, 6.5, 11, -6, 11 )
 
-[node name="Player" type="KinematicBody2D" groups=[
-"Player",
-]]
+[sub_resource type="Curve" id=49]
+min_value = -1.0
+_data = [ Vector2( 0, 0.25 ), 0.0, -2.00125, 0, 1, Vector2( 0.254386, -0.259091 ), 0.0, 0.0, 0, 0, Vector2( 0.508772, 0.25 ), 0.0, 0.0, 0, 0, Vector2( 0.763158, -0.277273 ), 0.0, 0.0, 0, 0, Vector2( 0.991228, 0.213636 ), 2.15245, 0.0, 1, 0 ]
+
+[sub_resource type="CurveTexture" id=50]
+curve = SubResource( 49 )
+
+[sub_resource type="Curve" id=51]
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=52]
+curve = SubResource( 51 )
+
+[sub_resource type="ParticlesMaterial" id=48]
+emission_shape = 5
+emission_ring_radius = 8.0
+emission_ring_inner_radius = 0.0
+emission_ring_height = 1.0
+emission_ring_axis = Vector3( 0, 0, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 100.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+orbit_velocity_curve = SubResource( 50 )
+scale_curve = SubResource( 52 )
+
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 collision_mask = 6
 script = ExtResource( 2 )
 
@@ -601,6 +798,7 @@ script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_process_mode = 0
+anims/Die = SubResource( 47 )
 "anims/Hammer Smash" = SubResource( 26 )
 anims/Hit = SubResource( 27 )
 anims/Hurt = SubResource( 28 )
@@ -661,6 +859,12 @@ position = Vector2( 0, 5.7 )
 [node name="Hand" type="Position2D" parent="."]
 position = Vector2( 12.297, 5.7 )
 script = ExtResource( 8 )
+
+[node name="DyingParticles" type="Particles2D" parent="."]
+position = Vector2( 0, 5.113 )
+emitting = false
+amount = 64
+process_material = SubResource( 48 )
 
 [connection signal="body_entered" from="Pick" to="." method="_on_Pick_body_entered"]
 [connection signal="body_exited" from="Pick" to="." method="_on_Pick_body_exited"]
