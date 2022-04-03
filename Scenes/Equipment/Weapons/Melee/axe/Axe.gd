@@ -38,9 +38,9 @@ func _ready() -> void:
 	if get_parent() != null:
 # warning-ignore:return_value_discarded
 		connect("axeability1used", Bufor.PLAYER.get_node("Hand"), "_on_axeAbility1Used")
-	damage = float(Weapons.all_weapons.Axe["attack"])
-	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
-	attack_speed = float(Weapons.all_weapons.Axe["spd"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Axe["attack"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Axe["knc"])
+	attack_speed = float(Weapons.ALL_WEAPONS_STATS.Axe["spd"])
 	$AnimationPlayer.play("RESET")
 
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Slime.png-b000dd7a00740bc68a34a6d318d8cc82.stex"
+path="res://.import/slime.png-3b311431684beafde68d2de815132ef4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Enemies/Slime.png"
-dest_files=[ "res://.import/Slime.png-b000dd7a00740bc68a34a6d318d8cc82.stex" ]
+source_file="res://Assets/Enemies/slime.png"
+dest_files=[ "res://.import/slime.png-3b311431684beafde68d2de815132ef4.stex" ]
 
 [params]
 

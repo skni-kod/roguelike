@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/fms/FMS.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Loot/Weapons/FMS0.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Loot/Weapons/fms0.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape2D" id=11]

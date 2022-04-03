@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Loot/Weapons/BloodSword.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Loot/Weapons/bloodsword.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape2D" id=11]

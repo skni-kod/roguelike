@@ -57,10 +57,11 @@ func _on_katana_dash_used(dashDestination) -> void:
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(1, 2, Bufor.PLAYER.global_position.y - dashDestination.direction_to(Bufor.PLAYER.global_position).y * distancefactor)
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(0, 3, Bufor.PLAYER.global_position.x - dashDestination.direction_to(Bufor.PLAYER.global_position).x * distancefactor)
 		Bufor.PLAYER.get_node("AnimationPlayer").get_animation("Katana Dash").bezier_track_set_key_value(1, 3, Bufor.PLAYER.global_position.y - dashDestination.direction_to(Bufor.PLAYER.global_position).y * distancefactor)
-		Bufor.PLAYER.immortal = 1
+		var tempVar = Bufor.PLAYER.immortal
+		Bufor.PLAYER.immortal = true
 		Bufor.PLAYER.get_node("AnimationPlayer").play("Katana Dash")
 		yield(Bufor.PLAYER.get_node("AnimationPlayer"), "animation_finished")
-		Bufor.PLAYER.immortal = 0
+		Bufor.PLAYER.immortal = tempVar
 		Bufor.PLAYER.global_position = Bufor.PLAYER.position
 		Bufor.PLAYER.get_node("AnimationPlayer").play("RESET")
 		Bufor.PLAYER.katanaDash = false

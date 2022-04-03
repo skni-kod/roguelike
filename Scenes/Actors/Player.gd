@@ -73,7 +73,7 @@ var knockback = Vector2.ZERO
 var knockbackResistance = 1 # rezystancja knockbacku zakres -> (0.6-nieskończoność), poniżej 0.6 przeciwnicy za daleko odlatują
 # === ===================== === #
 
-var immortal = 0 #jezeli rowne 1 to niesmiertelny
+var immortal := false #jezeli rowne true to niesmiertelny
 
 		
 
@@ -90,17 +90,17 @@ func _ready() -> void: #po inicjacji bohatera
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
-		1 : "BloodSword",
+		1 : "Katana",
 		2 : "Empty"
 	}
 
 	if Bufor.WEAPONS: # jeśli bufor nie jest pusty
 		# bronie są ładowane z bufora
 		equippedWeapons = Bufor.WEAPONS
-		currentlyEquippedWeapon = Bufor.currentlyEquippedWeapon
+		currentlyEquippedWeapon = Bufor.CURRENTLY_EQUIPPED_WEAPON
 		if equippedWeapons[2] != "Empty":
-			UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[equippedWeapons[2]]
-		UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
+			UISlotWeaponSprite2.texture = Weapons.ALL_WEAPONS_TEXTURES[equippedWeapons[2]]
+		UISlotWeaponSprite1.texture = Weapons.ALL_WEAPONS_TEXTURES[equippedWeapons[1]]
 		
 	if equippedWeapons[1] == "Katana" or equippedWeapons[1] == "Spear": # naprawia błąd wielkiej katany w interfejsie
 		UISlotWeaponSprite1.scale.x = .9
@@ -117,9 +117,9 @@ func _ready() -> void: #po inicjacji bohatera
 		UISlotWeaponSprite2.set_rotation(0)
 
 	activeWeapon["name"] = equippedWeapons[1]
-	UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[equippedWeapons[1]]
+	UISlotWeaponSprite1.texture = Weapons.ALL_WEAPONS_TEXTURES[equippedWeapons[1]]
 	currentlyEquippedWeapon = equippedWeapons[1]
-	$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[1]].instance())
+	$Hand.add_child(Weapons.ALL_WEAPONS_SCENES[equippedWeapons[1]].instance())
 	
 	
 	all_potions = { #słownik przechowujący png poszczegolnych potek
@@ -313,9 +313,14 @@ func _physics_process(delta) -> void: #funkcja wywoływana co klatkę
 			change_potion_slot() #potki zamieniają się miejscami w slotach
 
 
-func _input(_event):
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("attack"): #jeżeli przycisk "attack" został wsciśnięty
 		emit_signal("attacked") #wyemituj sygnał że bohater zaatakował
+
+
+func _unhandled_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("die"):
+		take_dmg(health, 0, self.global_position)
 
 
 # ============= WEAPONS ============== #  
@@ -342,7 +347,7 @@ func changeWeaponSlot() -> void:
 	print("[INFO]: On weapon change; Weapons[1] - ", equippedWeapons[1], " Weapons[2] - ", equippedWeapons[2])
 	if equippedWeapons[currentWeaponSlot] != "Empty":
 		print("[INFO]: On weapon change slot not empty: calling deffered add_child")
-		$Hand.add_child(Weapons.all_weapons_scenes[equippedWeapons[currentWeaponSlot]].instance())
+		$Hand.add_child(Weapons.ALL_WEAPONS_SCENES[equippedWeapons[currentWeaponSlot]].instance())
 
 
 # Deletes the currently currentlyEquippedWeapon weapon or every child of the $Hand node
@@ -363,14 +368,14 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 		dropCurrentWeapon(slot)
 		equippedWeapons[slot] = weaponOnGround.weaponName
 		activeWeapon["name"] = equippedWeapons[slot]
-		$Hand.add_child(Weapons.all_weapons_scenes[weaponOnGround.weaponName].instance())
+		$Hand.add_child(Weapons.ALL_WEAPONS_SCENES[weaponOnGround.weaponName].instance())
 		match slot:
 			1:
-				UISlotWeaponSprite1.texture = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				UISlotWeaponSprite1.texture = Weapons.ALL_WEAPONS_TEXTURES[weaponOnGround.weaponName]
 				UISlotWeaponActive1.visible = true
 				UISlotWeaponActive2.visible = false
 			2:
-				UISlotWeaponSprite2.texture = Weapons.all_weapons_textures[weaponOnGround.weaponName]
+				UISlotWeaponSprite2.texture = Weapons.ALL_WEAPONS_TEXTURES[weaponOnGround.weaponName]
 				UISlotWeaponActive1.visible = false
 				UISlotWeaponActive2.visible = true
 		
@@ -378,6 +383,7 @@ func swapWeaponOnSlot(slot: int, weaponOnGround) -> void:
 
 func animationTestFunction() -> void:
 	print("[INFO]: Animation tested")
+	
 
 
 # Method that drops the current weapon from the Player to the parent scene (main)
@@ -542,7 +548,8 @@ func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń prze
 		elif knockbackResistance <= 0.6:
 			knockback /= 0.6
 		# ======= ========= ======= #
-		health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
+		if !immortal:
+			health = health - (dps * statusEffect.damageMultiplier) # aktualizacja ilości życia z uwzględnieniem współczynnika damage
 		emit_signal("health_updated", health) #wyemitowanie sygnału o zmianie ilości punktów życia
 		got_hitted = true #bohater jest uderzany
 		$AnimationPlayer.play("Hit") #włącz animację "Hit"

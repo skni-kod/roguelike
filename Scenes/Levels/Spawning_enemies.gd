@@ -3,7 +3,7 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
-onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
+onready var ALL_WEAPONS_STATS = get_tree().get_root().find_node("Weapons", true, false).ALL_WEAPONS_STATS #Wczytanie z niewidzialnego node wszystkich broni
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
 var all_enemies = {
@@ -18,9 +18,9 @@ var all_enemies = {
 		8 : preload("res://Scenes/Actors/Snot.tscn"),
 		9 : preload("res://Scenes/Actors/Orc.tscn"),
 	}
-var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
-	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
-	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn")]
+var bossScene = [preload("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
+	preload("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
+	preload("res://Scenes/Actors/OctoBoss/OctoBoss.tscn")]
 var id_list = [] #Lista ID pokojów, w których był już Player
 var current_id #ID aktualnego pokoju
 var down = Vector2(7,8) #Pozycja dolnych drzwi
@@ -30,6 +30,7 @@ var left = Vector2(0,4) #Pozycja lewych drzwi
 var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
 var ilosc_enemy #aktualna ilosc przeciwnikow
 var boss = false #czy to jest pokoj z bossem
+var bossFightStarted := false
 var item
 var popups = {}
 
@@ -43,6 +44,7 @@ func _ready():
 func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
+		
 
 func close_door(): #Podmiana tekstur na zamknięte drzwi
 	tilemap.set_cell(6,8,28)
@@ -82,7 +84,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		else:
 			drzwi[3] = false
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
-		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
+		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0 and not current_id in id_list: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
@@ -94,14 +96,17 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				enemy.position.y = rand.randf_range(-80,80) #pozycja y
 				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
-		elif boss: #respienie boss'a
+		elif boss and !bossFightStarted: #respienie boss'a
+			bossFightStarted = true
 			ilosc_enemy = 1
 			var bossIns
 			bossIns = bossScene[Bufor.POZIOM % len(bossScene)].instance()
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
-		id_list.append(current_id)
+		if not current_id in id_list:	
+			id_list.append(current_id)
+		print("[INFO]: Room saved to list:", id_list)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 
@@ -115,7 +120,7 @@ func potion():
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
 	var weapons #Zmienna przechowująca bronie
-	weapons = all_weapons #Przypisanie wszystkich broni do zmiennej
+	weapons = ALL_WEAPONS_STATS #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()

@@ -164,10 +164,7 @@ func _physics_process(delta):
 				yield(t, "timeout")
 				level.get_node("Player").immortal = 0
 				spell =0
-	
-func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x=0.281
-	position.y=0.281
+
 
 func _on_Player_attacked():
 	if !attack:#Sprawdza czy broń nie jest w trakcie ataku

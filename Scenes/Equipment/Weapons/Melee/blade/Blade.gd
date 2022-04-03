@@ -21,9 +21,9 @@ var activeAbility1 = false
 
 
 func _ready() -> void:
-	damage = float(Weapons.all_weapons.Blade["attack"])
-	weaponKnockback = float(Weapons.all_weapons.Blade["knc"])
-	attack_speed = float(Weapons.all_weapons.Blade["spd"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Blade["attack"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Blade["knc"])
+	attack_speed = float(Weapons.ALL_WEAPONS_STATS.Blade["spd"])
 	$AnimationPlayer.play("RESET")
 
 

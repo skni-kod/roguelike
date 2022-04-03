@@ -1,6 +1,6 @@
 extends Node
 
-var all_weapons_scenes = {
+var ALL_WEAPONS_SCENES = {
 	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/axe/Axe.tscn"),
 	"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/blade/Blade.tscn"),
 	"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
@@ -10,7 +10,7 @@ var all_weapons_scenes = {
 	"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/knife/Knife.tscn"),
 	"Spear" : preload("res://Scenes/Equipment/Weapons/Melee/spear/Spear.tscn"),
 }
-var all_weapons_textures = {
+var ALL_WEAPONS_TEXTURES = {
 	"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 	"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 	"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
@@ -21,7 +21,7 @@ var all_weapons_textures = {
 	"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
 	"Spear" : preload("res://Assets/Loot/Weapons/spear.png"),
 }
-var all_weapons = {
+var ALL_WEAPONS_STATS = {
 	"Blade": {
 		"attack": "12",
 		"spd": "1",

@@ -13,3 +13,6 @@ bus = "Sounds"
 
 [node name="WeaponSound" type="AudioStreamPlayer" parent="."]
 bus = "Sounds"
+
+[node name="BossSound" type="AudioStreamPlayer" parent="."]
+volume_db = -20.0

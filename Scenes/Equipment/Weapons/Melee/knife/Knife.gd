@@ -1,92 +1,79 @@
 extends Node2D
 
-onready var player_node = get_tree().get_root().find_node("Player", true, false)
 var spell = 0
 var mouse_position #Pozycja kursora
 var attack = false #Czy postać atakuje
 var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
 export var attack_range = 15 #Zasięg ataku
-var timer #Stoper
-var damage
-var weaponKnockback
-var a = 1
-var skill = 0
-var skill1 = 1
-var skill2 = 1
 var smoothing = 1
-var weaponName = "Knife"
 
 var rng = RandomNumberGenerator.new()
 var crit_chance = rng.randi_range(0,10)
 var crit = false
 var crit_damage = 2
 
-var attack_speed = 0
-var swing_to = 0.05
-var swing_back = 0.1
-var animation_step = 0.02
+#	Weapon Stats
+var damage
+var weaponKnockback
+var attack_speed
+var weaponName = "Knife"
+var isWeaponReady = true
+# 	============
+
+#	Ability 1
+var ability1ManaNeeded = 0
+var ability1Cooldown = 0
+var ability1Multiplier = 1.5
+#	=========
+
+#	Ability 2
+var ability2ManaNeeded = 0
+var ability2Cooldown = 0
+var ability2Duration = 5
+#	=========
 
 
 func _ready():
-	damage = float(Weapons.all_weapons.Knife["attack"])
-	weaponKnockback = float(Weapons.all_weapons.Knife["knc"])
-	attack_speed = float(Weapons.all_weapons.Knife["spd"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Knife["attack"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Knife["knc"])
+	attack_speed = float(Weapons.ALL_WEAPONS_STATS.Knife["spd"])
 
 
-func _physics_process(_delta):
-	if Input.is_action_just_pressed("use_ability_1"):
-		if skill1 and skill2 and !skill and player_node.mana>=25:
-			if ((player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or 
-				(player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left())): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-				spell = 1
-				skill = 1
-				skill1 = 0
-				player_node.mana -= 25
-				for i in range(0,5):
-					
-					if !attack and attack_speed==0:
-						attack = true
-					if i%2 == 0:rotation += .2
-					else:rotation -= .2*2
-					attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-					if rotation < -PI/2 or rotation > PI/2:
-						$WeaponSprite.rotation_degrees = -90#-90
-					else:
-						$WeaponSprite.rotation_degrees = 90#90
-					$AttackCollision.disabled = false
-					yield(get_tree().create_timer(.1), "timeout")
-					timer.start()
-				skill = 0
-				yield(get_tree().create_timer(10),'timeout')
-				skill1 = 1
-				spell = 0
-	if Input.is_action_just_pressed("use_ability_2"):
-		if skill1 and skill2 and !skill and player_node.mana>=50:
-			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.start_skill_cooldown(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-				spell = 1
-				skill2 = 0
-				damage += 20
-				player_node.speed += 20
-				yield(get_tree().create_timer(10), "timeout")
-				damage -= 20
-				yield(get_tree().create_timer(30),'timeout')
-				spell = 0
-				skill2 = 1
-
-func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x=0.281
-	position.y=0.281
-
-
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == BUTTON_LEFT and event.pressed and Bufor.PLAYER and !Bufor.PLAYER.dying:
 			$AnimationPlayer.play("Attack")
 			yield($AnimationPlayer, "animation_finished")
 			$AnimationPlayer.play("RESET")
 
+
+func _unhandled_input(_event):
+	if Bufor.PLAYER and !Bufor.PLAYER.dying and isWeaponReady:
+		if Input.is_action_just_pressed("use_ability_1"):
+			if Bufor.PLAYER.mana >= ability1ManaNeeded:
+				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					Bufor.PLAYER.start_skill_cooldown(1, ability1Cooldown, ability1ManaNeeded) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					isWeaponReady = false
+					var tmpDmg = damage
+					damage *= ability1Multiplier
+					$AnimationPlayer.play("MultiStab")
+					yield($AnimationPlayer, "animation_finished")
+					$AnimationPlayer.play("RESET")
+					damage = tmpDmg
+					isWeaponReady = true
+					
+		if Input.is_action_just_pressed("use_ability_2"):
+			if Bufor.PLAYER.mana >= ability2ManaNeeded:
+				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					Bufor.PLAYER.start_skill_cooldown(2, ability2Cooldown, ability2ManaNeeded) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					isWeaponReady = false
+					Bufor.PLAYER.set_collision_layer(0)
+					Bufor.PLAYER.modulate = Color( 1, 1, 1, 0.25 )
+					yield(get_tree().create_timer(ability2Duration), "timeout")
+					Bufor.PLAYER.set_collision_layer(1)
+					Bufor.PLAYER.modulate = Color( 1, 1, 1, 1 )
+					isWeaponReady = true
+					
 
 func _on_Player_attacked():
 	if !attack and attack_speed==0:
@@ -97,36 +84,7 @@ func _on_Player_attacked():
 		else:
 			$WeaponSprite.rotation_degrees = 90#90
 		$AttackCollision.disabled = false
-		timer.start()
 
-func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
-	attack_speed+=animation_step
-	if attack_speed<swing_to:
-		position += attack_vector*(animation_step/swing_to)
-	elif attack_speed<swing_back:
-		position -= attack_vector*(animation_step/swing_back)
-	else:
-		$AttackCollision.disabled = true
-		if !skill:
-			attack = false
-		attack_speed=0		
-		timer.stop()
-		reset_pivot()
-
-func change_weapon(texture):
-	$WeaponSprite.texture = texture
-
-#func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
-#	if body.is_in_group("Enemy"):
-#		rng.randomize()
-#		crit_chance = rng.randi_range(0,10)
-#		crit = false
-#		if(crit_chance == 0):
-#			damage *= crit_damage
-#			crit = true
-#		body.get_dmg(damage, weaponKnockback)
-#		if crit:
-#			damage /= crit_damage
 
 func _on_Knife_body_entered(body):
 	if body.is_in_group("Enemy"):
@@ -139,3 +97,7 @@ func _on_Knife_body_entered(body):
 		body.get_dmg(damage, weaponKnockback)
 		if crit:
 			damage /= crit_damage
+
+
+func play_swoosh() -> void:
+	SoundController.play_player_swoosh1()

@@ -5,10 +5,10 @@ var Stats = {}
 var popups = {}
 var weapons = {}
 var texture = null
-onready var all_weapons = Weapons.all_weapons #Wczytanie z niewidzialnego node wszystkich broni
+onready var ALL_WEAPONS_STATS = Weapons.ALL_WEAPONS_STATS #Wczytanie z niewidzialnego node wszystkich broni
 
 func _ready():
-	Stats = all_weapons[weaponName]
+	Stats = ALL_WEAPONS_STATS[weaponName]
 	Stats['attack'] = float(Stats['attack'])
 	texture = load("res://Assets/Loot/Weapons/"+weaponName+".png")
 	if weaponName == "Katana":

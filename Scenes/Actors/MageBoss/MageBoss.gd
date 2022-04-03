@@ -45,6 +45,7 @@ func _ready():
 	health_bar = health_bar.instance()
 	UI.add_child(health_bar)
 	health_bar.value = health
+	SoundController.play_random_mageboss_load()
 
 func _physics_process(delta):
 	#Ruch bossa
@@ -244,11 +245,12 @@ func phase_start():  #Rozpocznij faze bossa
 	if phase == 1:
 		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif phase == 2:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WaterBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/waterball.png")
 	elif phase == 3:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/EarthBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/earthball.png")
 	elif phase == 4:
-		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/WindBall.png")
+		$ShieldCenter/Shield.texture = load("res://Assets/Enemies/windball.png")
+	SoundController.play_random_mageboss_summon()
 	#Wlacz emitowanie czasteczek tarczy
 	$ShieldCenter/Shield.emitting = true
 	$PhaseTimer.start()  #Uruchom timer tworzacy summona
@@ -260,4 +262,9 @@ func fire():  #Strzelanie przez bossa
 	#Ustaw pozycje poczatkowa pocisku na tarczy bossa
 	ball_scene.position = self.global_position + Vector2(20.0, 0.0).rotated($ShieldCenter.rotation)
 	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).global_position  #Ustaw pozycje gracza
+	SoundController.play_random_mageboss_shoot()
 	main.add_child(ball_scene)  #Dodaj pocisk do glownej sceny
+
+
+func play_death_sound() -> void:
+	SoundController.play_mageboss_die()

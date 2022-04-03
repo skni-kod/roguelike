@@ -35,8 +35,8 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	damage = float(Weapons.all_weapons.Katana["attack"])
-	weaponKnockback = float(Weapons.all_weapons.Katana["knc"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Katana["attack"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Katana["knc"])
 	$AnimationPlayer.play("RESET")
 
 

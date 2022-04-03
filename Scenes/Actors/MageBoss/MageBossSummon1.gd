@@ -95,4 +95,5 @@ func fire():		# funkcja odpowiadająca za tworzenie pocisków
 	ball_scene= ball_scene.instance()
 	ball_scene.position = self.position
 	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).position
+	SoundController.play_random_mageboss_shoot()
 	main.add_child(ball_scene)

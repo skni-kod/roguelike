@@ -1,6 +1,6 @@
 extends Control
 
-var all_weapons = {} #wszystkie bronki
+var ALL_WEAPONS_STATS = {} #wszystkie bronki
 
 var weapons = {} #posiadane bronki
 
@@ -10,7 +10,7 @@ var current_weapon_slot = "Empty"
 
 func _ready():
 	hud = owner.get_node("Slots")
-	all_weapons = {
+	ALL_WEAPONS_STATS = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),

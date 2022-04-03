@@ -1,4 +1,8 @@
 extends Button #kod do przycisku który zamyka grę z pozycji start menu
 
-func _on_ButtonQuit_button_up():
+
+export(String) var scene_to_load
+
+
+func _on_QuitButton_pressed() -> void:
 	get_tree().quit()
