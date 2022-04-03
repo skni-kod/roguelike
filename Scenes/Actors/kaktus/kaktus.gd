@@ -80,7 +80,10 @@ func _physics_process(delta):
 		# === ===================== === #
 		
 		if not $BodyAnimationPlayer.is_playing():
-			$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
+			if move.length() > 0:
+				$BodyAnimationPlayer.play("Walk") # Animacja chodzenia zostaje włączona
+			else:
+				$BodyAnimationPlayer.play("Idle")
 	
 	elif !atakuje and health>0: # jeśli nie atakuje i żyje
 		pass
