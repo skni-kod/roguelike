@@ -402,7 +402,6 @@ position = Vector2( 429.262, 532.726 )
 scale = Vector2( 16, 16 )
 frames = SubResource( 31 )
 animation = "playertitlescreen"
-frame = 3
 playing = true
 
 [node name="Monster1Sprite2" type="AnimatedSprite" parent="Background Decorations"]
@@ -411,7 +410,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 94 )
 animation = "titlescreenanimation"
-frame = 3
+frame = 8
 playing = true
 
 [node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -419,7 +418,7 @@ position = Vector2( 1146.23, 529.07 )
 rotation = 3.14159
 scale = Vector2( 12, -12 )
 frames = SubResource( 95 )
-frame = 7
+frame = 2
 playing = true
 
 [node name="TSLilDevil" type="Node2D" parent="Background Decorations"]
@@ -431,7 +430,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 96 )
 animation = "titlescreenanimation"
-frame = 5
+frame = 2
 playing = true
 
 [node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
@@ -440,7 +439,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 97 )
 animation = "titlescreenanimation"
-frame = 9
+frame = 3
 playing = true
 
 [node name="ShamanSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -453,7 +452,6 @@ playing = true
 position = Vector2( 1209.16, 591.999 )
 scale = Vector2( -8, 8 )
 frames = SubResource( 99 )
-frame = 5
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]

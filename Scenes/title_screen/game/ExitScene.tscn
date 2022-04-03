@@ -408,7 +408,7 @@ position = Vector2( 131.669, 528.624 )
 scale = Vector2( -16, 16 )
 frames = SubResource( 95 )
 animation = "playertitlescreen"
-frame = 8
+frame = 1
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Background Decorations"]
@@ -423,7 +423,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 96 )
 animation = "titlescreenanimation"
-frame = 8
+frame = 7
 playing = true
 
 [node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -431,7 +431,7 @@ position = Vector2( 1146.23, 529.07 )
 rotation = 3.14159
 scale = Vector2( 12, -12 )
 frames = SubResource( 97 )
-frame = 8
+frame = 3
 playing = true
 
 [node name="TSLilDevil" type="Node2D" parent="Background Decorations"]
@@ -443,7 +443,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 98 )
 animation = "titlescreenanimation"
-frame = 2
+frame = 3
 playing = true
 
 [node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
@@ -452,19 +452,21 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 99 )
 animation = "titlescreenanimation"
-frame = 14
+frame = 1
 playing = true
 
 [node name="ShamanSprite" type="AnimatedSprite" parent="Background Decorations"]
 position = Vector2( 1017.38, 584.507 )
 scale = Vector2( -2, 2 )
 frames = SubResource( 100 )
+frame = 4
 playing = true
 
 [node name="MonsterSprite" type="AnimatedSprite" parent="Background Decorations"]
 position = Vector2( 1209.16, 591.999 )
 scale = Vector2( -8, 8 )
 frames = SubResource( 101 )
+frame = 1
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -489,22 +491,22 @@ margin_bottom = 261.0
 theme = ExtResource( 13 )
 custom_constants/separation = 16
 
-[node name="QuitButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
+[node name="BackButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
 margin_right = 400.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
 theme = SubResource( 103 )
-text = "Quit"
-script = ExtResource( 3 )
+text = "Back to menu"
+scene_to_load = "res://Scenes/title_screen/TitleScreen.tscn"
 
-[node name="BackButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
+[node name="QuitButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
 margin_top = 76.0
 margin_right = 400.0
 margin_bottom = 136.0
 rect_min_size = Vector2( 50, 60 )
 theme = SubResource( 103 )
-text = "Back to menu"
-scene_to_load = "res://Scenes/title_screen/TitleScreen.tscn"
+text = "Quit"
+script = ExtResource( 3 )
 
 [node name="FadeIn" parent="." instance=ExtResource( 4 )]
 visible = false

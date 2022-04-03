@@ -314,7 +314,7 @@ position = Vector2( 147.566, 656.151 )
 scale = Vector2( 16, 16 )
 frames = SubResource( 94 )
 animation = "playertitlescreen"
-frame = 3
+frame = 6
 playing = true
 offset = Vector2( 2.10753, 7.52536 )
 
@@ -324,7 +324,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 95 )
 animation = "titlescreenanimation"
-frame = 7
+frame = 9
 playing = true
 
 [node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations" index="3"]
@@ -332,7 +332,7 @@ position = Vector2( 1538.89, 761.591 )
 rotation = 3.14159
 scale = Vector2( 12, -12 )
 frames = SubResource( 96 )
-frame = 3
+frame = 5
 playing = true
 
 [node name="TSLilDevil" type="Node2D" parent="Background Decorations" index="4"]
@@ -344,7 +344,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 97 )
 animation = "titlescreenanimation"
-frame = 5
+frame = 7
 playing = true
 
 [node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil" index="1"]
@@ -353,21 +353,21 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 98 )
 animation = "titlescreenanimation"
-frame = 16
+frame = 1
 playing = true
 
 [node name="ShamanSprite" type="AnimatedSprite" parent="Background Decorations" index="5"]
 position = Vector2( 1410.04, 817.029 )
 scale = Vector2( -2, 2 )
 frames = SubResource( 99 )
-frame = 4
+frame = 1
 playing = true
 
 [node name="MonsterSprite" type="AnimatedSprite" parent="Background Decorations" index="6"]
 position = Vector2( 1601.82, 824.52 )
 scale = Vector2( -8, 8 )
 frames = SubResource( 100 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="OptionsContainer" type="VBoxContainer" parent="." index="2"]
@@ -462,14 +462,6 @@ margin_top = 576.0
 margin_right = 816.0
 margin_bottom = 680.0
 rect_scale = Vector2( 1, 1 )
-theme = ExtResource( 11 )
-
-[node name="Label" parent="VBoxContainer" index="0"]
-margin_right = 352.0
-
-[node name="Button" parent="VBoxContainer" index="1"]
-margin_right = 352.0
-margin_bottom = 100.0
 
 [node name="Lights2" type="Node2D" parent="." index="4"]
 script = ExtResource( 6 )
