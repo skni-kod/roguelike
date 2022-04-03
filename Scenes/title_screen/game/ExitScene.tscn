@@ -408,6 +408,7 @@ position = Vector2( 131.669, 528.624 )
 scale = Vector2( -16, 16 )
 frames = SubResource( 95 )
 animation = "playertitlescreen"
+frame = 8
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Background Decorations"]
@@ -422,7 +423,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 96 )
 animation = "titlescreenanimation"
-frame = 3
+frame = 8
 playing = true
 
 [node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -442,7 +443,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 98 )
 animation = "titlescreenanimation"
-frame = 3
+frame = 2
 playing = true
 
 [node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
@@ -464,7 +465,6 @@ playing = true
 position = Vector2( 1209.16, 591.999 )
 scale = Vector2( -8, 8 )
 frames = SubResource( 101 )
-frame = 3
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -523,18 +523,26 @@ mode = 2
 color = Color( 0.364706, 0.231373, 0.513726, 1 )
 
 [node name="Light2D" type="Light2D" parent="Lights"]
-position = Vector2( 485.233, 191.633 )
+position = Vector2( 321.048, 250.366 )
 scale = Vector2( 2.228, 1.986 )
 texture = ExtResource( 14 )
 texture_scale = 3.38
 mode = 2
 
 [node name="Light2D2" type="Light2D" parent="Lights"]
-position = Vector2( 1026.34, 409.038 )
+position = Vector2( 1100.95, 672.547 )
 scale = Vector2( 1.34, 3.332 )
 texture = ExtResource( 14 )
 texture_scale = 3.38
 color = Color( 1, 0.14902, 0.866667, 1 )
 mode = 2
 
+[node name="Light2D3" type="Light2D" parent="Lights"]
+position = Vector2( 503.58, 448.971 )
+scale = Vector2( 0.821422, 0.832781 )
+texture = ExtResource( 14 )
+texture_scale = 3.38
+mode = 2
+
 [connection signal="pressed" from="Menu/Buttons/QuitButton" to="Menu/Buttons/QuitButton" method="_on_QuitButton_pressed"]
+[connection signal="fade_finished" from="FadeIn" to="." method="_on_FadeIn_fade_finished"]

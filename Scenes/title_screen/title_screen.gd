@@ -4,7 +4,6 @@ var scene_path_to_load #ścieżka do następnej sceny jaką chcemy załadować (
 
 
 func _ready():
-	MusicController.play_menu_music()
 	$Menu/Buttons.get_child(0).grab_focus() #łapie focus na przyciski(start/options/exit...)
 	for button in $Menu/Buttons.get_children(): #po naciśnięciu przycisku tworzy klasę w której podmienia ścieżkę sceny
 		button.connect("pressed", self, "_on_Button_pressed", [button.scene_to_load])

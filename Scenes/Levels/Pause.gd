@@ -21,6 +21,7 @@ func _on_Return_to_Menu_pressed():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene_to(menu_scene)
 	set_visible(false)
+	MusicController.play_menu_music()
 
 func set_visible(is_visible):
 	for node in get_children():

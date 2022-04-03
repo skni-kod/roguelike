@@ -2,6 +2,12 @@ extends Node#autoload który pozwala na kontynuację muzyki pomiędzy scenami(w 
 
 var menu_music = load("res://Assets/Music/roguelike7.ogg")
 var soundtrack = load("res://Assets/Music/projekt_8bit.ogg")
+
+
+func _ready() -> void:
+	play_menu_music()
+
+
 func play_menu_music():#odpala muzykę, wywołujemy w skrypcie sceny poprzez "MusicController.play_menu_music(): w funkcji _ready
 	$Music.stream = menu_music
 	$Music.play()
