@@ -15,10 +15,10 @@ scale = Vector2( 0.67, 0.67 )
 texture = ExtResource( 1 )
 
 [node name="Button" type="Button" parent="CanvasLayer"]
-margin_left = 747.785
-margin_top = 532.634
-margin_right = 1147.78
-margin_bottom = 596.634
+margin_left = 440.0
+margin_top = 550.0
+margin_right = 840.0
+margin_bottom = 614.0
 rect_min_size = Vector2( 400, 0 )
 theme = ExtResource( 2 )
 text = "Return to menu"
