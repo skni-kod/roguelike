@@ -1,7 +1,5 @@
 extends Node
 
-signal Cleared() #Fms
-
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
@@ -86,6 +84,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
+			
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for i in range(0,5):
 				rand.randomize()
@@ -140,12 +139,13 @@ func open(body): #funckja otwierania drzwi po pokonaniu przeciwników
 	if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
 		ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
 	if ilosc_enemy == 0: #jeżeli nie ma przeciwników
-		
+		if Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase < 9: #Fms
+			Bufor.PLAYER.get_node("Hand").get_child(0).phase += 1 
+		elif Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase == 9:
+			Bufor.PLAYER.get_node("Hand").get_child(0).phase = 0
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
-			emit_signal("Cleared")
-			print("[INFO]: reeeeeeeeeee1")
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)
