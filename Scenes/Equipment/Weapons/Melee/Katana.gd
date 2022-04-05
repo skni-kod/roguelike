@@ -33,7 +33,7 @@ var animation_step = 0.01
 var isEnemyHit = 0
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/katana.png")

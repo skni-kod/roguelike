@@ -36,7 +36,7 @@ var range_y = 6
 #do um 2
 var immortal_time = 5 #czas niesmiertelnosci w sekundach
 var immortal_knockback = 20
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/hammer.png")
@@ -120,7 +120,7 @@ func _physics_process(delta):
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
 				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
-				var player_node := get_tree().get_root().find_node("Player", true, false)
+				var _player_node := get_tree().get_root().find_node("Player", true, false)
 				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
 				
 				var tmp = {

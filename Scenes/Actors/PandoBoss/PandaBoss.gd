@@ -125,7 +125,7 @@ func _physics_process(delta):
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO: # jeśli nie ma knockbacku
-		move_and_collide(move) # ruch o Vector2D move
+		var _m = move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0: # jeśli jest knockback, to nie może się ruszać
 		knockback = move_and_slide(knockback) # poruszaj się w stronę wektora knockback
 		knockback *= 0.95 # zmniejszanie wektora knockbacku z czasem o 5%
@@ -240,7 +240,7 @@ func drop_coins():
 	stworzPortal(level)
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
-	for i in range(0,coins): # pętla tworząca monety
+	for _i in range(0,coins): # pętla tworząca monety
 		randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
 		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina

@@ -37,7 +37,7 @@ func mapping():
 	grid_map = markers
 	
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	for item in markers: #Pętla ustala położenie ikon względem gracza
 		item.position = (grid.rect_size/2 + markers[item])
 		#markers[item] -= Vector2(playerMovement.x/16/1.7, playerMovement.y/9/5.5)/((get_viewport_rect().size)/(grid.rect_size*zoom))

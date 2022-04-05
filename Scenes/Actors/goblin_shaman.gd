@@ -88,7 +88,7 @@ func _physics_process(delta):
 
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
 	if knockback == Vector2.ZERO:
-		move_and_collide(move) # ruch o Vector2D move
+		var _m = move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -166,7 +166,7 @@ func get_dmg(dmg, weaponKnockback):
 		yield($AnimationPlayer,"animation_finished")
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		random_potion()
-		for i in range(0,coins):
+		for _i in range(0,coins):
 			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()

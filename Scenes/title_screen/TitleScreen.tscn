@@ -15,7 +15,7 @@
 [ext_resource path="res://Scenes/Actors/OctoBoss/octo3.png" type="Texture" id=13]
 [ext_resource path="res://Scenes/title_screen/MenuLights.gd" type="Script" id=14]
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 12 ), ExtResource( 9 ), ExtResource( 9 ) ],
 "loop": true,
@@ -23,27 +23,27 @@ animations = [ {
 "speed": 2.0
 } ]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 11 )
 region = Rect2( 0, 0, 46, 56 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 11 )
 region = Rect2( 0, 56, 46, 56 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 11 )
 region = Rect2( 0, 112, 46, 56 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 3 ), SubResource( 4 ), SubResource( 4 ), SubResource( 4 ), SubResource( 3 ), SubResource( 4 ), SubResource( 3 ), SubResource( 5 ), SubResource( 3 ), SubResource( 3 ), SubResource( 3 ), SubResource( 3 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 2 ), SubResource( 3 ), SubResource( 3 ), SubResource( 3 ), SubResource( 2 ), SubResource( 3 ), SubResource( 2 ), SubResource( 4 ), SubResource( 2 ), SubResource( 2 ), SubResource( 2 ), SubResource( 2 ) ],
 "loop": true,
 "name": "pandoboss_menu",
 "speed": 2.0
 } ]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=6]
 font_data = ExtResource( 5 )
 
 [node name="TitleScreen" type="Control"]
@@ -71,7 +71,7 @@ __meta__ = {
 modulate = Color( 0.160784, 0.12549, 0.12549, 0.588235 )
 position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
-frames = SubResource( 2 )
+frames = SubResource( 1 )
 animation = "octoboss_menu"
 frame = 8
 playing = true
@@ -81,9 +81,9 @@ flip_h = true
 modulate = Color( 0.160784, 0.12549, 0.12549, 0.588235 )
 position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
-frames = SubResource( 6 )
+frames = SubResource( 5 )
 animation = "pandoboss_menu"
-frame = 10
+frame = 13
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -135,7 +135,7 @@ scene_to_load = "res://Scenes/title_screen/game/ExitScene.tscn"
 margin_top = 640.0
 margin_right = 699.0
 margin_bottom = 685.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 6 )
 text = "Version v0.2.1
 By SKNI KOD"
 

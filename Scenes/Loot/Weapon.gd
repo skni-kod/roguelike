@@ -20,7 +20,7 @@ func _ready():
 	if (WeaponName == null):
 		queue_free()
 #test
-func take_dmg(a):
+func take_dmg(_a):
 	pass
 func _on_PopUp_body_entered(body):
 	 #Przypisuje zmienne i tworzy okienko statystyk broni
