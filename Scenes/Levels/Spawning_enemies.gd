@@ -3,7 +3,10 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
+
+
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
+
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
 onready var biom = get_parent().get_parent().BIOM
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
@@ -30,6 +33,26 @@ var wrogowie = [
 		1 : preload("res://Scenes/Actors/kaktus/kaktus.tscn"),
 	},
 	]
+	}
+var all_armors = {
+	'BlackArmor' : preload("res://Scenes/Equipment/Armors/BlackArmor.tscn"),
+	"Angel" : preload("res://Scenes/Equipment/Armors/Angel.tscn"),
+	"Amogus" : preload("res://Scenes/Equipment/Armors/Amogus.tscn"),
+	"Ninja" : preload("res://Scenes/Equipment/Armors/Ninja.tscn"),
+	"Cactus" : preload("res://Scenes/Equipment/Armors/Cactus.tscn"),
+	"Knight" : preload("res://Scenes/Equipment/Armors/Knight.tscn"),
+}
+
+var armor_drop_chance = 80 # szansa na to że wydropi jakiś armor po zabiciu wszystkich potworów w pokoju
+
+var armors_drop_chances = { # szansa na drop kazdego z armorów
+	'BlackArmor' : 50,
+	"Angel" : 10,
+	"Amogus" : 2,
+	"Cactus" : 15,
+	"Knight" : 70,
+	"Ninja" : 20,
+}
 var bossScene = [load("res://Scenes/Actors/MageBoss/MageBoss.tscn"),
 	load("res://Scenes/Actors/PandoBoss/PandaBoss.tscn"),
 	load("res://Scenes/Actors/OctoBoss/OctoBoss.tscn"),
@@ -113,6 +136,22 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
+		#elif is_sklep:
+		#	if odwiedzony == false:
+		#		weapon()
+		#		potion()
+		#		var popup = load("res://Scenes/UI/Sklep_ceny.tscn")
+		#		popup = popup.instance()
+		#		popup.rect_scale.x = 0.5
+		#		popup.rect_scale.y = 0.5
+		#		call_deferred("add_child", popup)
+		#		popups[body] = popup
+		#		odwiedzony = true
+		#	Bufor.in_sklep = true
+		#elif is_sklep == false:
+		#	if body in popups:
+		#		popups[body].call_deferred('free')
+		#	Bufor.in_sklep = false
 		id_list.append(current_id)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
@@ -130,6 +169,9 @@ func weapon():
 	weapons = all_weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
+	for i in weapons: #Pętla przypisująca nazwy do zmiennej
+		if int(weapons[i]["plus"])==0: 
+			names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
 
 	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
@@ -139,6 +181,41 @@ func weapon():
 		weapon.WeaponName = names[arr[1]]
 	weapon.position = Vector2(60,60) #Przypisuje pozycję broni
 	call_deferred('add_child', weapon) #Tworzy broń na podłodze
+
+func armor():
+	var armor = null
+	
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var n = rng.randi_range(0, 100)
+	
+	if n < armors_drop_chances['Amogus']:
+		armor = all_armors['Amogus']
+	
+	elif n < armors_drop_chances['Angel']:
+		armor = all_armors['Angel']
+	
+
+		
+	elif n < armors_drop_chances['Cactus']:
+		armor = all_armors['Cactus']
+	
+	
+	elif n < armors_drop_chances['Ninja']:
+		armor = all_armors['Ninja']
+	
+	elif n < armors_drop_chances['BlackArmor']:
+		armor = all_armors['BlackArmor']
+	
+	elif n < armors_drop_chances['Knight']:
+		armor = all_armors['Knight']
+		
+	if armor != null:
+		armor = armor.instance()
+		armor.position = self.global_position + Vector2(-80,80)
+		main.call_deferred("add_child", armor)
+	
+	
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
@@ -161,6 +238,8 @@ func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
+		if rand.randf_range(0,100) <= armor_drop_chance: #drop zbroi
+			armor()
 		if drzwi[3]: #otwieranie drzwi
 			tilemap.set_cell(6,8,12)
 			tilemap.set_cell(7,8,13)

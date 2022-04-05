@@ -5,7 +5,6 @@
 [ext_resource path="res://Scenes/Actors/Snot.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=4]
 
-
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 7.4746
 height = 1.92495

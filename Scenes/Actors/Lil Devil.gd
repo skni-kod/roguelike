@@ -62,6 +62,17 @@ func _ready():
 
 
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+		$Atak.scale = Vector2(0.75,0.75)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+		$Atak.scale = Vector2(1,1)
+	
+	
 	move = Vector2.ZERO
 	if player != null and health>0:
 		# === WEKTORY MOVE I KNOCKBACK === #

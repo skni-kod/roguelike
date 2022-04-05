@@ -62,6 +62,14 @@ func _ready():
 	####                         ####
 
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
 	if player != null and !attack and health>0:
 		$Sprite.scale.x = right
@@ -109,6 +117,12 @@ func _on_Timer_timeout():
 	if attack and health>0:
 		$AnimationPlayer.play("Attack")
 		player.take_dmg(dps, enemyKnockback, self.global_position)
+		
+		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		var player = level.get_node("Player")
+		if player.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+		
 		yield($AnimationPlayer,"animation_finished")
 
 

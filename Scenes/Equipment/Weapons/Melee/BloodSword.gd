@@ -1,7 +1,7 @@
 extends Node2D
 
-const K1 = preload("Blood_particles_1.tscn") #pobieramy particle do umiejek
-const K2 = preload("Blood_particles_2.tscn")
+const K1 = preload("effects/Blood_particles_1.tscn") #pobieramy particle do umiejek
+const K2 = preload("effects/Blood_particles_2.tscn")
 var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)

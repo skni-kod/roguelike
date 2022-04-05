@@ -1,6 +1,6 @@
 extends Node2D
 
-const M = preload("Moon_particles.tscn") #pobieramy particle do umiejek
+const M = preload("effects/Moon_particles.tscn") #pobieramy particle do umiejek
 var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)

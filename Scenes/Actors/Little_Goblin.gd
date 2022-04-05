@@ -58,6 +58,14 @@ func _ready():
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
 	if player != null and !attack and health>0:	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
 		$Sprite.scale.x = right		# obrót w stronę gracza
@@ -102,6 +110,12 @@ func _on_Atak_body_exited(_body): #Jeśli gracz nie znajduję się w polu Atak t
 func _on_Timer_timeout():		
 	if attack and health>0:		#Jeśli gracz znajduję się w polu Atak i goblin żyje to zadaj obrażenia
 		player.take_dmg(dps, enemyKnockback, self.global_position)
+		
+		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		var player = level.get_node("Player")
+		if player.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+		
 		yield($AnimationPlayer,"animation_finished")
 		$AnimationPlayer.play("Atak")
 		yield($AnimationPlayer,"animation_finished")
