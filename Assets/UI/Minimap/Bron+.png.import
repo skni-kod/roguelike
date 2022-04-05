@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fire_sceptre.png-3ff40e7f32c7dc981337745c788adbfc.stex"
+path="res://.import/Bron+.png-7a90db208300929d4b3912963283bcee.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/fire_sceptre.png"
-dest_files=[ "res://.import/fire_sceptre.png-3ff40e7f32c7dc981337745c788adbfc.stex" ]
+source_file="res://Assets/UI/Minimap/Bron+.png"
+dest_files=[ "res://.import/Bron+.png-7a90db208300929d4b3912963283bcee.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
