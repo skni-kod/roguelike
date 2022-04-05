@@ -2,21 +2,20 @@
 extends Control
 
 # wczytanie potrzebnych node'ów w celu modyfikacji efektów statusu lub efektów wizualnych
-onready var player = get_node("../../Player")
 onready var playerBody = get_node("../../Player/PlayerSprite")
 onready var playerBleedingParticles = get_node("../../Player/BleedingParticles")
 onready var playerBurningParticles = get_node("../../Player/BurningParticles")
 onready var playerKnockbackParticles = get_node("../../Player/KnockbackParticles")
 
 # zmienne setterowe/getterowe wywołujące swoje funkcje w trakcie zmiany wartości samej zmiennej
-var burning := false setget burn
-var bleeding := false setget bleeding
-var poison := false setget poisoning
+var burning := false setget burningSetter
+var bleeding := false setget bleedingSetter
+var poison := false setget poisonSetter
 
-var freezing := false setget freeze
-var knockback := false setget knockback
-var weakness := false setget weakness
-var healing := false setget healing
+var freezing := false setget freezeSetter
+var knockback := false setget knockbackSetter
+var weakness := false setget weaknessSetter
+var healing := false setget healingSetter
 
 # bazowe wartości dmg zadawanego przez poszczególne efekty
 var burningDMG = 0.5
@@ -100,7 +99,7 @@ func _physics_process(_delta):
 
 #=============== OKRESOWO-POWTARZAJĄCE-SIĘ EFEKTY ===============#
 # -------------- PODPALENIE -------------- #
-func burn(var fire):
+func burningSetter(var fire):
 	if fire and prawdopodobienstwo(0.5) and immune == false:
 		if burningStacks <= burningMaxStacks: # ograniczam stacki do maksymalnej wartości stacków dla danego efektu
 			burningStacks += 1 # dodaję stack
@@ -126,16 +125,16 @@ func _on_Burning_Lifetime_timeout():
 
 
 func _on_Burning_Damage_timeout():
-	if burning:
-		player.take_dmg(burningDMG+(burningStacks*1.1), 0, player.global_position) # zadaje damage równy ilości bazowego damage danego efektu
+	if burning and Bufor.PLAYER != null:
+		Bufor.PLAYER.take_dmg(burningDMG+(burningStacks*1.1), 0, Bufor.PLAYER.global_position) # zadaje damage równy ilości bazowego damage danego efektu
 		# startuję "czas zadawania damage" ponownie - sekwencja zadawania damage, 
 		# "Damage" ma własność One Shot, więc bez ponownego startu by nie zadawało damage przez cały okres działania efektu
 		$StatusContainer/Burning/Damage.start() 
 
 
 # -------------- ZATRUCIE -------------- #
-# tak samo jak w funkcji burn(), ewentualne zmiany opisane w komentarzach
-func poisoning(var poisoned):
+# tak samo jak w funkcji burningSetter(), ewentualne zmiany opisane w komentarzach
+func poisonSetter(var poisoned):
 	if poisoned and prawdopodobienstwo(0.75) and immune == false:
 		if poisonStacks <= poisonMaxStacks:
 			poisonStacks += 1
@@ -158,14 +157,14 @@ func _on_Poison_Lifetime_timeout():
 
 
 func _on_Poison_Damage_timeout():
-	if poison:
-		player.take_dmg(poisonDMG+(poisonStacks*1.2), 0, player.global_position) 
+	if poison and Bufor.PLAYER != null:
+		Bufor.PLAYER.take_dmg(poisonDMG+(poisonStacks*1.2), 0, Bufor.PLAYER.global_position) 
 		$StatusContainer/Poison/Damage.start()
 
 
 # -------------- KRWAWIENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func bleeding(var bleed):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func bleedingSetter(var bleed):
 	if bleed and prawdopodobienstwo(0.9) and immune == false:
 		if bleedingStacks <= bleedingMaxStacks:
 			bleedingStacks += 1
@@ -190,14 +189,14 @@ func _on_Bleeding_Lifetime_timeout():
 
 
 func _on_Bleeding_Damage_timeout():
-	if bleeding:
-		player.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, player.global_position)
+	if bleeding and Bufor.PLAYER != null:
+		Bufor.PLAYER.take_dmg(bleedingDMG+(bleedingStacks*1.5), 0, Bufor.PLAYER.global_position)
 		$StatusContainer/Bleeding/Damage.start()
 
 
 # -------------- REGENERACJA -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func healing(var heal):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func healingSetter(var heal):
 	if heal:
 		if healingStacks <= healingMaxStacks:
 			healingStacks += 1
@@ -219,15 +218,15 @@ func _on_Healing_Lifetime_timeout():
 
 
 func _on_Healing_Healing_timeout():
-	if healing and player.health <= player.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
-		player.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, player.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
+	if healing and Bufor.PLAYER != null and Bufor.PLAYER.health <= Bufor.PLAYER.base_health - (healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)): # warunek sprawdzający aby funkcja nie wykroczyła poza maksymalną wartość życia gracza
+		Bufor.PLAYER.take_dmg(-(healAmount/($StatusContainer/Healing/DisplayTime/Lifetime.wait_time/$StatusContainer/Healing/Healing.wait_time)), 0, Bufor.PLAYER.global_position) # healing działa poprzez zadanie ujemnego dmg równego iloczynowi healAmount przez (iloczyn czasu życia i czasu healowania)
 		$StatusContainer/Healing/Healing.start()
 
 
 #=============== NIE-OKRESOWE EFEKTY ===============#
 # -------------- ZAMROŻENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func freeze(var freeze):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func freezeSetter(var freeze):
 	if freeze and prawdopodobienstwo(0.6) and immune == false:
 		if freezingStacks <= freezingMaxStacks:
 			freezingStacks += 1
@@ -255,8 +254,8 @@ func _on_Freezing_Lifetime_timeout():
 # -------------- KNOCKBACK -------------- #
 # UWAGA     WORK IN PROGRESS      UWAGA #
 # Funkcjonalność knockbacku nie jest zaimplementowana jeszcze
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func knockback(var knocked_back):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func knockbackSetter(var knocked_back):
 	if knocked_back and prawdopodobienstwo(0.5) and immune == false:
 		if knockbackStacks <= knockbackMaxStacks:
 			knockbackStacks += 1
@@ -281,8 +280,8 @@ func _on_Knockback_Lifetime_timeout():
 
 
 # -------------- OSŁABIENIE -------------- #
-# tak samo jak w funkcji burn(), zmiany opisane w komentarzach
-func weakness(var weak):
+# tak samo jak w funkcji burningSetter(), zmiany opisane w komentarzach
+func weaknessSetter(var weak):
 	if weak and prawdopodobienstwo(0.4) and immune == false:
 		if weaknessStacks <= weaknessMaxStacks:
 			weaknessStacks += 1

@@ -9,7 +9,7 @@ signal died(body) # sygnał, czy Lil Devil umarł
 export var speed = 0.5 # prędkość własna Lil Devila
 
 # deklaracje pomocnych zmiennych
-var player = null 
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO
 var right = 1 # zwrot prawo/lewo sprite'a
 var attack = false
@@ -74,14 +74,14 @@ func _physics_process(delta):
 	
 	
 	move = Vector2.ZERO
-	if player != null and health>0:
+	if playerIsInRange and health>0 and Bufor.PLAYER:
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -0.5 # sprite'y zostają obrócone
 		else:
 			$Sprites.scale.x = 0.5 # sprite'y zostają obrócone
@@ -90,8 +90,8 @@ func _physics_process(delta):
 		$HeadAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
-		var _m = move_and_collide(move) # ruch o Vector2D move
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -99,24 +99,24 @@ func _physics_process(delta):
 
 
 func _on_Wzrok_body_entered(body):
-	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
-		player = body
+	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = true
 
 
 func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
-		player = null
+	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = false
 
 
 func _on_Atak_body_entered(body):
 	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Atak, włącza przełącznik attack
 		attack = true
-		$Timer.start() # gdy wchodzi player do sfery ataku, to startuje timer
+		$Timer.start() # gdy wchodzi Player do sfery ataku, to startuje timer
 
 func _on_Atak_body_exited(body):
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
 		attack = false
-		$Timer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
+		$Timer.stop() # gdy wychodzi Player ze sfery ataku, to stopuje timer
 
 
 func _on_Timer_timeout():
@@ -134,10 +134,10 @@ func shoot():
 
 
 func get_dmg(dmg, weaponKnockback):
-	if health>0:
+	if health>0 and self:
 		
 		# ======= KNOCKBACK ======= #
-		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -151,7 +151,11 @@ func get_dmg(dmg, weaponKnockback):
 		$HeadAnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
-		
+		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# Animacje śmierci zostają aktywowane na sprite'ach
@@ -171,14 +175,16 @@ func get_dmg(dmg, weaponKnockback):
 			coin = coin.instance() # coin staje się nową instacją coina
 			coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
 			level.add_child(coin) # coin jest dzieckiem level
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
+		SoundController.play_hit()
 		queue_free() # instancja Lil Devila zostaje usunięta
 		
 	# floating_dmg zostaje stworzony poprzed dodanie nowej instancji sceny floating_dmg jako zmienna text
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
+
 		
 
 func random_potion():

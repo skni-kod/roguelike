@@ -15,9 +15,6 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -172.0
 margin_right = 173.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Background" type="ColorRect" parent="."]
 anchor_top = 1.0
@@ -31,7 +28,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="w1slotbg" type="ColorRect" parent="Background"]
+[node name="w1slot_activitybg" type="ColorRect" parent="Background"]
 margin_left = 66.0
 margin_right = 106.0
 margin_bottom = 72.0
@@ -41,7 +38,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="w2slotbg" type="ColorRect" parent="Background"]
+[node name="w2slot_activitybg" type="ColorRect" parent="Background"]
 visible = false
 margin_left = 66.0
 margin_top = 100.0

@@ -4,7 +4,7 @@ extends KinematicBody2D
 
 signal died(body)
 
-var player = null #Zmienna przechowująca węzeł gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.5 #Zmienna przechowująca szybkość poruszania
 export var dps = 5 #Zmienna przechowująca wartość ataku
@@ -68,15 +68,15 @@ func _physics_process(delta):
 		$Wzrok.scale = Vector2(1,1)
 	
 	move = Vector2.ZERO
-	if player != null and !attack and health>0: #Jeżeli gracz jest w polu widzenia i slime nie atakuje oraz życie jest większe niż 0 to
+	if playerIsInRange and !attack and health>0 and Bufor.PLAYER != null: #Jeżeli gracz jest w polu widzenia i slime nie atakuje oraz życie jest większe niż 0 to
 		$Sprite.scale.x = right #Obróć slime
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed # podchodzenie do gracza
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed # podchodzenie do gracza
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x-self.global_position.x < 0:
+		if Bufor.PLAYER.global_position.x-self.global_position.x < 0:
 			right = 1 #Slime ma być obrócony w prawo
 		else:
 			right = -1 #Slime ma być obrócony w lewo
@@ -85,8 +85,8 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 		
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
-		var _m = move_and_collide(move) # ruch o Vector2D move
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -94,11 +94,11 @@ func _physics_process(delta):
 
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player": #Jeśli gracz wejdzie w pole widzenia to przypisz jego węzeł do zmiennej
-		player = body
+		playerIsInRange = true
 
 func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": #Jeżeli gracz wyjdzie z pola widzenia to zmienną player ustaw na null
-		player = null
+	if body != self and body.name == "Player": #Jeżeli gracz wyjdzie z pola widzenia to zmienną playerIsInRange na false
+		playerIsInRange = false
 
 
 func _on_Atak_body_entered(body): 
@@ -109,12 +109,10 @@ func _on_Atak_body_exited(_body): #Jeżeli gracz wyjdzie z zasięgu ataku
 	attack = false #Slime nie atakuje
 
 func _on_Timer_timeout():
-	if attack and health>0: # funkcje wykonane gdy atakuje
-		player.take_dmg(dps, enemyKnockback, self.global_position)
+	if attack and health>0 and Bufor.PLAYER: # funkcje wykonane gdy atakuje
+		Bufor.PLAYER.take_dmg(dps, enemyKnockback, self.global_position)
 		
-		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-		var player = level.get_node("Player")
-		if player.equipped_armor == "Cactus":
+		if Bufor.PLAYER.equipped_armor == "Cactus":
 			get_dmg(dps,enemyKnockback)
 			
 		yield($AnimationPlayer,"animation_finished")
@@ -122,17 +120,11 @@ func _on_Timer_timeout():
 		yield($AnimationPlayer,"animation_finished")
 			
 func get_dmg(dmg, weaponKnockback):
-	
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	
-	if health>0:
+	if health>0 and Bufor.PLAYER != null:
 		
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -145,12 +137,17 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
-		#Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
+		# Po zakończeniu animacji umierania wyrzuć losową liczbę coinów
 		var level = get_tree().get_root().find_node("Main", true, false)
 		rng.randomize()
 		if is_elite == true:
@@ -162,7 +159,12 @@ func get_dmg(dmg, weaponKnockback):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free() #Usuń węzeł slime
 		
 func random_potion():

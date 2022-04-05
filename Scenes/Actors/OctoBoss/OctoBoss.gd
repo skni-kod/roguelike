@@ -52,6 +52,7 @@ func _on_Timer2_timeout(): # 0.2s po poprzednim
 			m.global_position = pozycjaMacki
 
 func dmg(dmg): # przyjmowanie obrażeń od ciosów w macki
+	SoundController.play_hit()
 	hp -= dmg
 	pasek_hp.value = hp/max_hp * 100
 	if hp <= 0:

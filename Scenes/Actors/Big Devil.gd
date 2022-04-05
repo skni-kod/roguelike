@@ -11,7 +11,7 @@ const SPEED = 100
 
 signal died(body)
 
-var player = null
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var player_close = false
 var move = Vector2.ZERO
 export var speed = 0.25
@@ -91,21 +91,21 @@ func _physics_process(delta):
 		aim() # strzał w czasie, gdy jakiś target został wyznaczony
 	# === ========= === #
 	
-	if player != null and health>0: # gdy BD żyje oraz w jego zasięgu jest gracz
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy BD żyje oraz w jego zasięgu jest gracz
 		$Sprite.scale.x = right
 		
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 			if player_close:
-				move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+				move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 			else:
-				move = global_position.direction_to(player.global_position) * speed # zbliżanie się od gracza, gdy jest za daleko
+				move = global_position.direction_to(Bufor.PLAYER.global_position) * speed # zbliżanie się od gracza, gdy jest za daleko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
 		
 		# === ZWROT SPRITE === #
-		if player.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
+		if Bufor.PLAYER.global_position.x-self.global_position.x < 0: # ustawianie zwrotu sprite w zależności od pozycji gracza wobec BD
 			right = 0.75
 			$AnimationPlayer.play("Walk") 
 		else:
@@ -116,8 +116,8 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
-		var _m = move_and_collide(move) # ruch o Vector2D move
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
 		knockback *= 0.95
@@ -128,23 +128,21 @@ func _physics_process(delta):
 func _on_Wzrok_body_entered(body):
 	if body != self and body.name == "Player":
 		player_close = true
-		player = body # player zostaje przypisane jako body, które jest Playerem, gdy wejdzie w Wzrok
-		
+		playerIsInRange = true
 func _on_Wzrok_body_exited(body):
 	if body != self and body.name == "Player":
 		player_close = false
-		player = null # player zostaje przypisany jako null/nic jak Player opuści Wzrok
+		playerIsInRange = false
 # ========== ================================= ========== #
 		
 		
 # ========== FUNKCJE INTERSEKCJI Z NODEM WZROK2 ========== #
 func _on_Wzrok2_body_entered(body):
 	if body != self and body.name == "Player":
-		player = body # player zostaje przypisane jako body, które jest Playerem, gdy wejdzie w Wzrok
-		
+		playerIsInRange = true
 func _on_Wzrok2_body_exited(body):
 	if body != self and body.name == "Player":
-		player = null # player zostaje przypisany jako null/nic jak Player opuści Wzrok
+		playerIsInRange = false
 # ========== ================================= ========== #
 		
 		
@@ -210,7 +208,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -self.global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -self.global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -224,6 +222,11 @@ func get_dmg(dmg, weaponKnockback):
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
 		# ======= ============== ======= #
+		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
@@ -237,13 +240,15 @@ func get_dmg(dmg, weaponKnockback):
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free()
 		
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)
+
 	
 func random_potion():
 	rng.randomize()

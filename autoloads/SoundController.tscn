@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://autoloads/SoundController.gd" type="Script" id=1]
+
+[node name="SoundController" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+bus = "Sounds"
+
+[node name="PlayerSound" type="AudioStreamPlayer" parent="."]
+bus = "Sounds"
+
+[node name="WeaponSound" type="AudioStreamPlayer" parent="."]
+bus = "Sounds"
+
+[node name="BossSound" type="AudioStreamPlayer" parent="."]
+volume_db = -20.0

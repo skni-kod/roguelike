@@ -1,7 +1,7 @@
 # summon.gd
 extends KinematicBody2D
 #summon
-var player = null #Zmienna przechowująca węzeł gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO #Zmienna inicjująca wektor poruszania
 export var speed = 0.8 #Zmienna przechowująca szybkość poruszania
 var attack = false #Czy summon jest w trakcie ataku
@@ -27,14 +27,14 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO
 	# === WEKTORY MOVE I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
-		if player != null and health>0: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
-			move = position.direction_to(player.position) * speed
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+		if playerIsInRange and health>0 and Bufor.PLAYER: #Jeżeli gracz jest w polu widzenia i summon nie atakuje oraz życie jest większe niż 0 to
+			move = position.direction_to(Bufor.PLAYER.position) * speed
 	else:
 		knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 	# === ======================== === #
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
@@ -44,12 +44,12 @@ func _physics_process(delta):
 func _on_Atak_body_entered(body): 
 	if body != self and body.name == "Player": #Jeżeli gracz znajdzie się w zasięgu ataku
 		attack = true #summon atakuje
-		player = body
+		playerIsInRange = true
 
 func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 	if body != self and body.name == "Player":
 		attack = false #summon nie atakuje
-		player = null
+		playerIsInRange = false
 
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
@@ -66,7 +66,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -78,6 +78,7 @@ func get_dmg(dmg, weaponKnockback):
 		$AnimationPlayer.play("Hurt")
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
 	#Jeżeli poziom zdrowia spadnie do 0
 	if health<=0:
 		$AnimationPlayer.play("Die")
@@ -86,6 +87,7 @@ func get_dmg(dmg, weaponKnockback):
 		var boss = get_tree().get_root().find_node("MageBoss", true, false)
 		boss.phase_active = false
 		boss.find_node("FireTimer", true, false).stop()
+		SoundController.play_hit()
 		queue_free() #Usuń węzeł summon
 		
 func fire():		# funkcja odpowiadająca za tworzenie pocisków
@@ -93,4 +95,5 @@ func fire():		# funkcja odpowiadająca za tworzenie pocisków
 	ball_scene= ball_scene.instance()
 	ball_scene.position = self.position
 	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).position
+	SoundController.play_random_mageboss_shoot()
 	main.add_child(ball_scene)

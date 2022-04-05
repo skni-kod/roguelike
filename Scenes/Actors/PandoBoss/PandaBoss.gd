@@ -27,7 +27,7 @@ var animHurt = false # żeby animacje Idle nie przerywały animacji Hurt
 # === ================ === #
 
 # === WYKRYWANIE CELU I ATAK === #
-var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var attack = false # zmienna ataku (czy atakuje)
 var player_pos = Vector2.ZERO # pozycja gracza
 onready var panda_direction = Vector2.ZERO
@@ -82,11 +82,10 @@ func _ready():
 func _physics_process(delta):
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
-	if player != null and health>0: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
-		
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO and rolling == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed  * poruszaSie # poruszanie się w stronę gracza 
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null and rolling == Vector2.ZERO:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed  * poruszaSie # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
@@ -103,7 +102,7 @@ func _physics_process(delta):
 			else:
 				$BodyAnimationPlayer.play("RollB")
 		else:
-			if player.global_position.y - self.global_position.y > 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+			if Bufor.PLAYER.global_position.y - self.global_position.y > 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 				if(!$BodyAnimationPlayer.is_playing()): # wymagane do poprawnego odtwarzania animacji
 					get_node("Sprites/BodySprite").region_rect = przod # odwraca się do przodu
 				tylem = false # wymagane do poprawnego odtwarzania animacji
@@ -124,8 +123,8 @@ func _physics_process(delta):
 			$BodyAnimationPlayer.play("Idle2") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO: # jeśli nie ma knockbacku
-		var _m = move_and_collide(move) # ruch o Vector2D move
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null: # jeśli nie ma knockbacku
+		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0: # jeśli jest knockback, to nie może się ruszać
 		knockback = move_and_slide(knockback) # poruszaj się w stronę wektora knockback
 		knockback *= 0.95 # zmniejszanie wektora knockbacku z czasem o 5%
@@ -137,18 +136,18 @@ func _physics_process(delta):
 # GRUPA LAYER AREA2D "WZROK" -> ENEMY
 # GRUPA COLLISION AREA2D "WZROK" -> PLAYER (JEŚLI MA WYKRYWAĆ INNE TO ZAZNACZYĆ INNE DODATKOWE COLLISION)
 func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
-		player = body
+	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia playerIsInRange na true
+		playerIsInRange = true
 
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
-		player = null
+	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia playerIsInRange na false
+		playerIsInRange = false
 # === ================== === #
 
 # === TIMEOUT NODA ATTACKTIMER === #
 func _on_AttackTimer_timeout():
 	attack = true
-	if player and health>0: # gdy gracz jest w polu widzenia i Panda żyje, to wykonuje funkcje
+	if playerIsInRange and health>0 and Bufor.PLAYER: # gdy gracz jest w polu widzenia i Panda żyje, to wykonuje funkcje
 		rolling_attack()
 		poruszaSie = 1
 # === ======================== === #
@@ -156,22 +155,20 @@ func _on_AttackTimer_timeout():
 # === FUNKCJA ATAKU === #
 func rolling_attack():
 	is_rolling = true
-	player_pos = player.global_position
+	player_pos = Bufor.PLAYER.global_position
 # === ============= === #
 
 func _on_RollingArea_body_entered(body): # jeśli tocząc się trafi w gracza
-	if player:
-		if is_rolling and body.name == player.name:
+	if playerIsInRange and Bufor.PLAYER:
+		if is_rolling and body.name == Bufor.PLAYER.name:
 			kombo = 0
 			statusEffect.knockback = true
 			poruszaSie = 0
 			is_rolling = false
 			attack = false
 			$AttackTimer.start()
-			player.take_dmg(dps, enemyKnockback, self.global_position)
-			var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
-			var player = level.get_node("Player")
-			if player.equipped_armor == "Cactus":
+			Bufor.PLAYER.take_dmg(dps, enemyKnockback, self.global_position)
+			if Bufor.PLAYER.equipped_armor == "Cactus":
 				get_dmg(dps,enemyKnockback)
 
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
@@ -185,7 +182,7 @@ func get_dmg(dmg, weaponKnockback):
 			$AttackTimer.start()
 			kombo = 0
 		# === KNOCKBACK === #
-		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance # knockbackResistance danego przeciwnika obniża iloczynowo otrzymany knockback
 		elif knockbackResistance <= 0.6:
@@ -202,7 +199,7 @@ func get_dmg(dmg, weaponKnockback):
 			$animHurtTimer.start()
 		health_bar.value = health # healthbar zostaje zupdateowany z nową procentową ilością hp
 		# === =============== === #
-	
+		SoundController.play_hit()
 	if health<=0:
 		$CollisionPolygon2D.set_deferred("disabled", true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
@@ -215,6 +212,7 @@ func get_dmg(dmg, weaponKnockback):
 		drop_coins()
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że PandaBoss umarł
 		health_bar.queue_free() # usunięcie paska życia
+		SoundController.play_hit()
 		queue_free() # instancja PandaBossa zostaje usunięta
 		# === ================= === #
 		

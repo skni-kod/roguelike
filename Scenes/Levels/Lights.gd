@@ -7,7 +7,7 @@ var pomnik = preload("res://Assets/Light/Lamp_3.tscn")
 var swietlik = preload("res://Assets/Light/swietlik.tscn")
 var rand = RandomNumberGenerator.new()
 onready var generation = get_node("../../../Main")
-var id_list = [] #Lista ID pokojów, w których był już player
+var id_list = [] #Lista ID pokojów, w których był już Player
 var current_id #ID aktualnego pokoju
 
 func check_boss(room): #sprawdzanie, czy w to pokój bossa
@@ -16,6 +16,7 @@ func check_boss(room): #sprawdzanie, czy w to pokój bossa
 
 func _ready():
 	generation.connect("boss", self, "check_boss")
+
 
 func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
 	if body.name == "Player": 
@@ -32,6 +33,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				var p = pomnik.instance()
 				if (randi() % 2 == 0):
 					p.Cuckshooter = true
+				p.z_index = 1
 				call_deferred('add_child', p)
 			#małe struktury
 			#kryształy
@@ -73,6 +75,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 							y = rand.randi_range(-130,130)
 						k.rotation_degrees = 270
 						k.position = Vector2(x, y)
+				k.z_index = 1
 				add_child(k)
 			if (get_parent().get_parent().BIOM == 2):
 				while randi() % 3 == 0:

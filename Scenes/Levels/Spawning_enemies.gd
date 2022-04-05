@@ -3,10 +3,7 @@ extends Node
 var arr = [] #Pusta tablica dla losowych liczb
 var names = [] #Pusta tablica dla nazw broni
 
-
-
-onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
-
+onready var ALL_WEAPONS_STATS = get_tree().get_root().find_node("Weapons", true, false).ALL_WEAPONS_STATS #Wczytanie z niewidzialnego node wszystkich broni
 onready var tilemap = get_node("../TileMap") #Wczytanie tilemapy
 onready var biom = get_parent().get_parent().BIOM
 var rand = RandomNumberGenerator.new() #Losowa generacja numeru
@@ -66,6 +63,7 @@ var right = Vector2(14,4) #Pozycja prawych drzwi
 var left = Vector2(0,4) #Pozycja lewych drzwi
 var drzwi = [true,true,true,true] #Lista determinująca, czy drzwi są otwarte czy zamknięte
 var boss = false #czy to jest pokoj z bossem
+var bossFightStarted := false
 var item
 var popups = {}
 
@@ -79,6 +77,7 @@ func _ready():
 func check_boss(room): #sprawdza czy dany pokoj jest pokojem z bossem
 	if room.x == int(round(self.global_position.x/512)) and room.y == int(round(self.global_position.y/288)):
 		boss = true
+		
 
 func close_door(): #Podmiana tekstur na zamknięte drzwi
 	if obecniPrzeciwnicy():
@@ -118,7 +117,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		else:
 			drzwi[3] = false
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
-		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0: #jezeli startowy pokoj
+		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0 and not current_id in id_list: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for _i in range(0, (5 + (Bufor.poziom - Bufor.poziom % 5) / 5)):
@@ -130,29 +129,17 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				enemy.position.y = rand.randf_range(-80,80) #pozycja y
 				call_deferred('add_child', enemy) #dodawanie sceny przeciwnika
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
-		elif boss: #respienie boss'a
+		elif boss and !bossFightStarted: #respienie boss'a
+			bossFightStarted = true
+			ilosc_enemy = 1
 			var bossIns
-			bossIns = bossScene[Bufor.poziom % len(bossScene)].instance()
+			bossIns = bossScene[Bufor.POZIOM % len(bossScene)].instance()
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
 			bossIns.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po zabiciu bossa
 			close_door() #zamkniecie drzwi
-		#elif is_sklep:
-		#	if odwiedzony == false:
-		#		weapon()
-		#		potion()
-		#		var popup = load("res://Scenes/UI/Sklep_ceny.tscn")
-		#		popup = popup.instance()
-		#		popup.rect_scale.x = 0.5
-		#		popup.rect_scale.y = 0.5
-		#		call_deferred("add_child", popup)
-		#		popups[body] = popup
-		#		odwiedzony = true
-		#	Bufor.in_sklep = true
-		#elif is_sklep == false:
-		#	if body in popups:
-		#		popups[body].call_deferred('free')
-		#	Bufor.in_sklep = false
-		id_list.append(current_id)
+		if not current_id in id_list:	
+			id_list.append(current_id)
+		print("[INFO]: Room saved to list:", id_list)
 	if body.is_in_group("Enemy"): #zamykanie drzwi po wejsciu do pokoju
 		close_door()
 
@@ -166,7 +153,7 @@ func potion():
 func weapon():
 	var weapon #Zmienna przechowująca scenę broni
 	var weapons #Zmienna przechowująca bronie
-	weapons = all_weapons["Weapons"] #Przypisanie wszystkich broni do zmiennej
+	weapons = ALL_WEAPONS_STATS #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
@@ -176,9 +163,9 @@ func weapon():
 
 	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
 	weapon = weapon.instance()
-	weapon.WeaponName = names[arr[0]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names
-	if weapon.WeaponName == "Fire Scepter":
-		weapon.WeaponName = names[arr[1]]
+	weapon.weaponName = names[arr[0]] #Przypisuje nazwę broni dla losowego indeksu zmiennej names
+	if weapon.weaponName == "Fire Scepter":
+		weapon.weaponName = names[arr[1]]
 	weapon.position = Vector2(60,60) #Przypisuje pozycję broni
 	call_deferred('add_child', weapon) #Tworzy broń na podłodze
 
@@ -219,7 +206,7 @@ func armor():
 
 func rand_num(from,to):
 	randomize() #Pobiera ziarno dla funkcji losowych
-	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"
+	for i in range(from,to): #Pętla dodaje do zmiennej arr wszystkie liczby od "from" do "to"a
 		   arr.append(i)
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 

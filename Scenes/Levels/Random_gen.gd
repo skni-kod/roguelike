@@ -12,7 +12,7 @@ export var map = [] #lista zawierająca współrzedne pokojów
 var rooms = [] #lista pokojów
 var queue = [] #kolejka do przechowywania koordynatów do generowania pokojów
 var rng := RandomNumberGenerator.new()
-var roomsNum = 20 #ilość pokojów
+var roomsNum = 3 #ilość pokojów
 var n = 0 #zmiennna pomocnicza do funkcji generate
 var szer = 512 #szerokość pokoju
 var dl = 288 #długość pokoju
@@ -20,7 +20,6 @@ var gen = 0
 var oneDoor = 0
 var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn") #wczytywanie sceny pokoju
-var player = load("res://Scenes/Actors/Player.tscn") #wczytywanie sceny playera
 var random_room_nr = RandomNumberGenerator.new()
 var room_variations = [
 {
@@ -37,6 +36,24 @@ var room_variations = [
 }
 ]
 var current_room_type
+
+
+func _ready():
+	get_node("UI").set_process_input(false)
+	match Bufor.POZIOM:
+		0:
+			current_room_type = 1
+		1:
+			current_room_type = 2
+		2:
+			current_room_type = 3
+		_:
+			current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			
+	MusicController.stop_music() #zapauzowanie muzyki z menu
+	generate() #generacja mapy
+	MusicController.play_game_music()
+
 
 func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów pokojów
 	var oneDoorRooms = [] #lista pokojów z jednymi otwartymi drzwiami

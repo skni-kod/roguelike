@@ -1,7 +1,6 @@
 extends MarginContainer
 
 # === POTRZEBNE NODE I PRELOAD === #
-onready var player = get_tree().get_root().find_node("Player", true, false)
 var seen_room_sprite = preload("res://Assets/UI/Minimap/room_active.png")
 # === ======================== === #
 
@@ -21,7 +20,7 @@ onready var room_marker= $MarginContainer/Grid/Room
 # === =========================================== === #
 
 func _ready():
-	player.connect("player_moved", self, "_on_player_movement") # Połączenie sygnału player_moved z _on_player_movement w celu uzyskania wektora poruszania się gracza
+	Bufor.PLAYER.connect("player_moved", self, "_on_player_movement") # Połączenie sygnału player_moved z _on_player_movement w celu uzyskania wektora poruszania się gracza
 	player_marker.position = grid.rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
 
 

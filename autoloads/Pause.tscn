@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Levels/Pause.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/DynFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 27
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=2]
-size = 32
+[sub_resource type="DynamicFont" id=3]
+size = 38
 font_data = ExtResource( 3 )
 
 [node name="CanvasLayer" type="CanvasLayer"]
@@ -41,10 +42,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -216.997
-margin_top = -149.765
-margin_right = 211.003
-margin_bottom = -115.765
+margin_left = -217.965
+margin_top = -282.683
+margin_right = 210.035
+margin_bottom = -248.683
 custom_fonts/font = SubResource( 1 )
 text = "Paused - press ESC to resume"
 __meta__ = {
@@ -56,18 +57,108 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -140.0
-margin_top = -48.0
-margin_right = 140.0
-margin_bottom = 48.0
+margin_left = -193.965
+margin_top = -166.502
+margin_right = 190.0
+margin_bottom = 167.498
+custom_constants/separation = 29
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Return to Menu" type="Button" parent="Pause/BlackOverlay/VBoxContainer"]
-margin_right = 280.0
+[node name="Resume" type="Button" parent="Pause/BlackOverlay/VBoxContainer"]
+margin_right = 383.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = ExtResource( 2 )
+text = "Resume"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Pause/BlackOverlay/VBoxContainer"]
+margin_top = 75.0
+margin_right = 383.0
+margin_bottom = 142.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer2"]
+margin_right = 383.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 3 )
+text = "Master volume:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MasterSlider" type="HSlider" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer2"]
+margin_top = 51.0
+margin_right = 383.0
+margin_bottom = 67.0
+min_value = -50.0
+max_value = 10.0
+value = -20.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Pause/BlackOverlay/VBoxContainer"]
+margin_top = 171.0
+margin_right = 383.0
+margin_bottom = 238.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer3"]
+margin_right = 383.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 3 )
+text = "Music volume:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicSlider" type="HSlider" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer3"]
+margin_top = 51.0
+margin_right = 383.0
+margin_bottom = 67.0
+min_value = -50.0
+max_value = 0.0
+value = -20.0
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="Pause/BlackOverlay/VBoxContainer"]
+margin_top = 267.0
+margin_right = 383.0
+margin_bottom = 334.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer4"]
+margin_right = 383.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 3 )
+text = "Sound volume:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SoundSlider" type="HSlider" parent="Pause/BlackOverlay/VBoxContainer/VBoxContainer4"]
+margin_top = 51.0
+margin_right = 383.0
+margin_bottom = 67.0
+min_value = -50.0
+max_value = 0.0
+value = -20.0
+
+[node name="Return to Menu" type="Button" parent="Pause/BlackOverlay/VBoxContainer"]
+margin_top = 363.0
+margin_right = 383.0
+margin_bottom = 409.0
+custom_fonts/font = ExtResource( 2 )
 text = "Return to menu"
 
+[connection signal="pressed" from="Pause/BlackOverlay/VBoxContainer/Resume" to="." method="_on_Resume_pressed"]
+[connection signal="value_changed" from="Pause/BlackOverlay/VBoxContainer/VBoxContainer2/MasterSlider" to="." method="_on_MasterSlider_value_changed"]
+[connection signal="value_changed" from="Pause/BlackOverlay/VBoxContainer/VBoxContainer3/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
+[connection signal="value_changed" from="Pause/BlackOverlay/VBoxContainer/VBoxContainer4/SoundSlider" to="." method="_on_SoundSlider_value_changed"]
 [connection signal="pressed" from="Pause/BlackOverlay/VBoxContainer/Return to Menu" to="." method="_on_Return_to_Menu_pressed"]

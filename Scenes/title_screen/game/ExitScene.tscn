@@ -1,63 +1,550 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=96 format=2]
 
-[ext_resource path="res://Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Scenes/title_screen/game/NewGame.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Enemies/bigdevil.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/title_screen/title_screen.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/title_screen/buttons/ExitButton.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/title_screen/fade_in/FadeIn.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Hero/RedHeroTrimmed.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Loot/Weapons/blade.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Enemies/lil_devil_head.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Enemies/goblin_shaman.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Enemies/lil_devil_body.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Enemies/slime.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Enemies/orc.png" type="Texture" id=11]
+[ext_resource path="res://Fonts/PressStart2P.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://Assets/Theme/RoguelikeTheme.tres" type="Theme" id=13]
+[ext_resource path="res://Assets/Light/Light_texture.png" type="Texture" id=14]
+[ext_resource path="res://Scenes/title_screen/MenuLights.gd" type="Script" id=15]
+[ext_resource path="res://Assets/UI/Slots/titlescreen_focus.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Loot/Weapons/knife.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Loot/Weapons/bloodsword.png" type="Texture" id=18]
+[ext_resource path="res://Scenes/title_screen/buttons/MenuButton.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Assets/Theme/button_box_style_pressed.tres" type="StyleBox" id=20]
+[ext_resource path="res://Assets/Theme/button_box_style.tres" type="StyleBox" id=21]
+[ext_resource path="res://Assets/Theme/grabber_high_style.tres" type="StyleBox" id=22]
+[ext_resource path="res://Assets/Theme/slider_style.tres" type="StyleBox" id=23]
+[ext_resource path="res://Assets/Theme/button_box_style_disabled.tres" type="StyleBox" id=24]
+[ext_resource path="res://Assets/Theme/button_box_style_hover.tres" type="StyleBox" id=25]
+[ext_resource path="res://Assets/Theme/grabber_area_style.tres" type="StyleBox" id=26]
 
-[sub_resource type="DynamicFont" id=1]
-size = 38
-font_data = ExtResource( 1 )
+[sub_resource type="DynamicFont" id=94]
+size = 48
+outline_size = 5
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 3
+extra_spacing_bottom = 3
+extra_spacing_char = 4
+extra_spacing_space = -1
+font_data = ExtResource( 12 )
 
-[sub_resource type="DynamicFont" id=2]
-size = 38
-font_data = ExtResource( 1 )
+[sub_resource type="AtlasTexture" id=85]
+atlas = ExtResource( 5 )
+region = Rect2( 60, 0, 15, 23 )
 
-[sub_resource type="DynamicFont" id=3]
-size = 38
-font_data = ExtResource( 1 )
+[sub_resource type="AtlasTexture" id=86]
+atlas = ExtResource( 5 )
+region = Rect2( 75, 0, 15, 23 )
 
-[node name="ExitScreen" instance=ExtResource( 2 )]
+[sub_resource type="AtlasTexture" id=87]
+atlas = ExtResource( 5 )
+region = Rect2( 90, 0, 15, 23 )
 
-[node name="VBoxContainer" parent="." index="0"]
-margin_top = -165.0
-margin_bottom = -1251.0
+[sub_resource type="AtlasTexture" id=88]
+atlas = ExtResource( 5 )
+region = Rect2( 105, 0, 15, 23 )
 
-[node name="Label" parent="VBoxContainer" index="0"]
-custom_fonts/font = SubResource( 1 )
+[sub_resource type="AtlasTexture" id=89]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 23, 15, 23 )
 
-[node name="Button" parent="VBoxContainer" index="1"]
-script = null
+[sub_resource type="AtlasTexture" id=90]
+atlas = ExtResource( 5 )
+region = Rect2( 15, 23, 15, 23 )
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="." index="1"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -274.0
-margin_top = -52.0
-margin_right = 274.0
-margin_bottom = 52.0
-rect_scale = Vector2( 1.00179, 0.989833 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[sub_resource type="AtlasTexture" id=91]
+atlas = ExtResource( 5 )
+region = Rect2( 30, 23, 15, 23 )
 
-[node name="Label" type="Label" parent="VBoxContainer2" index="0"]
-margin_right = 548.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 2 )
-text = "Do you really want to quit?"
+[sub_resource type="AtlasTexture" id=92]
+atlas = ExtResource( 5 )
+region = Rect2( 45, 23, 15, 23 )
 
-[node name="ButtonQuit" type="Button" parent="VBoxContainer2" index="1"]
-margin_top = 51.0
-margin_right = 548.0
-margin_bottom = 104.0
-custom_fonts/font = SubResource( 3 )
+[sub_resource type="AtlasTexture" id=93]
+atlas = ExtResource( 5 )
+region = Rect2( 60, 23, 15, 23 )
+
+[sub_resource type="SpriteFrames" id=95]
+animations = [ {
+"frames": [ SubResource( 85 ), SubResource( 86 ), SubResource( 87 ), SubResource( 88 ), SubResource( 89 ), SubResource( 90 ), SubResource( 91 ), SubResource( 92 ), SubResource( 93 ), SubResource( 88 ) ],
+"loop": true,
+"name": "playertitlescreen",
+"speed": 6.0
+} ]
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 96, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 96, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 96, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 96, 64, 96 )
+
+[sub_resource type="SpriteFrames" id=96]
+animations = [ {
+"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 35 ), SubResource( 34 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
+"loop": true,
+"name": "titlescreenanimation",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=42]
+atlas = ExtResource( 11 )
+region = Rect2( 192, 0, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=43]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 32, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=44]
+atlas = ExtResource( 11 )
+region = Rect2( 48, 32, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=45]
+atlas = ExtResource( 11 )
+region = Rect2( 96, 32, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=46]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 64, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 11 )
+region = Rect2( 48, 64, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=48]
+atlas = ExtResource( 11 )
+region = Rect2( 96, 64, 48, 32 )
+
+[sub_resource type="AtlasTexture" id=49]
+atlas = ExtResource( 11 )
+region = Rect2( 144, 64, 48, 32 )
+
+[sub_resource type="SpriteFrames" id=97]
+animations = [ {
+"frames": [ SubResource( 42 ), SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 44 ), SubResource( 46 ), SubResource( 47 ), SubResource( 48 ), SubResource( 49 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=51]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=52]
+atlas = ExtResource( 9 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=53]
+atlas = ExtResource( 9 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=54]
+atlas = ExtResource( 9 )
+region = Rect2( 96, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=55]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=56]
+atlas = ExtResource( 9 )
+region = Rect2( 160, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=57]
+atlas = ExtResource( 9 )
+region = Rect2( 192, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=58]
+atlas = ExtResource( 9 )
+region = Rect2( 224, 0, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=98]
+animations = [ {
+"frames": [ SubResource( 51 ), SubResource( 52 ), SubResource( 53 ), SubResource( 54 ), SubResource( 55 ), SubResource( 56 ), SubResource( 57 ), SubResource( 58 ) ],
+"loop": true,
+"name": "titlescreenanimation",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=60]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=61]
+atlas = ExtResource( 7 )
+region = Rect2( 32, 0, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=62]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 0, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=63]
+atlas = ExtResource( 7 )
+region = Rect2( 96, 0, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=64]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 0, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=65]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=66]
+atlas = ExtResource( 7 )
+region = Rect2( 32, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=67]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=68]
+atlas = ExtResource( 7 )
+region = Rect2( 96, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=69]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=70]
+atlas = ExtResource( 7 )
+region = Rect2( 160, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=71]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 47, 32, 47 )
+
+[sub_resource type="AtlasTexture" id=72]
+atlas = ExtResource( 7 )
+region = Rect2( 224, 47, 32, 47 )
+
+[sub_resource type="SpriteFrames" id=99]
+animations = [ {
+"frames": [ SubResource( 60 ), SubResource( 61 ), SubResource( 62 ), SubResource( 63 ), SubResource( 64 ), SubResource( 65 ), SubResource( 66 ), SubResource( 67 ), SubResource( 68 ), SubResource( 69 ), SubResource( 70 ), SubResource( 71 ), SubResource( 72 ), SubResource( 71 ), SubResource( 70 ), SubResource( 69 ), SubResource( 68 ) ],
+"loop": true,
+"name": "titlescreenanimation",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=74]
+atlas = ExtResource( 8 )
+region = Rect2( 384, 0, 96, 144 )
+
+[sub_resource type="AtlasTexture" id=75]
+atlas = ExtResource( 8 )
+region = Rect2( 480, 0, 96, 144 )
+
+[sub_resource type="AtlasTexture" id=76]
+atlas = ExtResource( 8 )
+region = Rect2( 576, 0, 96, 144 )
+
+[sub_resource type="AtlasTexture" id=77]
+atlas = ExtResource( 8 )
+region = Rect2( 672, 0, 96, 144 )
+
+[sub_resource type="SpriteFrames" id=100]
+animations = [ {
+"frames": [ SubResource( 74 ), SubResource( 75 ), SubResource( 76 ), SubResource( 77 ), SubResource( 74 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=79]
+atlas = ExtResource( 10 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=80]
+atlas = ExtResource( 10 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=81]
+atlas = ExtResource( 10 )
+region = Rect2( 96, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=82]
+atlas = ExtResource( 10 )
+region = Rect2( 64, 64, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=83]
+atlas = ExtResource( 10 )
+region = Rect2( 96, 64, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=101]
+animations = [ {
+"frames": [ SubResource( 79 ), SubResource( 80 ), SubResource( 81 ), SubResource( 80 ), SubResource( 82 ), SubResource( 83 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 16 )
+region_rect = Rect2( 1, 0, 128, 128 )
+margin_left = 63.0
+margin_right = 65.0
+margin_top = 64.0
+margin_bottom = 64.0
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.180392, 0.105882, 0.45098, 0.509804 )
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0, 1, 0.0392157, 0.509804 )
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.0588235, 0.0784314, 0.105882, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+shadow_size = 2
+shadow_offset = Vector2( 2, 2 )
+
+[sub_resource type="DynamicFont" id=102]
+size = 24
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 8
+extra_spacing_bottom = 8
+font_data = ExtResource( 12 )
+
+[sub_resource type="Theme" id=103]
+default_font = SubResource( 102 )
+Button/styles/disabled = ExtResource( 24 )
+Button/styles/focus = SubResource( 8 )
+Button/styles/hover = ExtResource( 25 )
+Button/styles/normal = ExtResource( 21 )
+Button/styles/pressed = ExtResource( 20 )
+HSlider/icons/grabber = ExtResource( 6 )
+HSlider/icons/grabber_disabled = ExtResource( 17 )
+HSlider/icons/grabber_highlight = ExtResource( 18 )
+HSlider/styles/grabber_area = ExtResource( 26 )
+HSlider/styles/grabber_area_highlight = ExtResource( 22 )
+HSlider/styles/slider = ExtResource( 23 )
+VSlider/styles/grabber_area = SubResource( 9 )
+VSlider/styles/grabber_area_highlight = SubResource( 10 )
+VSlider/styles/slider = SubResource( 11 )
+
+[node name="ExitScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -342.369, -123.139 )
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+light_mask = 0
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0.160784, 0.0352941, 0.298039, 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 40.0
+margin_top = 60.0
+margin_right = 508.898
+margin_bottom = 98.8985
+custom_fonts/font = SubResource( 94 )
+text = "Roguelike"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Background Decorations" type="Control" parent="."]
+margin_right = 720.0
+margin_bottom = 720.0
+
+[node name="PlayerBackground" type="AnimatedSprite" parent="Background Decorations"]
+position = Vector2( 131.669, 528.624 )
+scale = Vector2( -16, 16 )
+frames = SubResource( 95 )
+animation = "playertitlescreen"
+frame = 1
+playing = true
+
+[node name="Sprite" type="Sprite" parent="Background Decorations"]
+position = Vector2( 608.732, 681.556 )
+rotation = 1.71217
+scale = Vector2( 7.342, 10 )
+texture = ExtResource( 6 )
+
+[node name="Monster1Sprite2" type="AnimatedSprite" parent="Background Decorations"]
+position = Vector2( 1107.37, 348.46 )
+rotation = 3.14159
+scale = Vector2( 8, -8 )
+frames = SubResource( 96 )
+animation = "titlescreenanimation"
+frame = 7
+playing = true
+
+[node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations"]
+position = Vector2( 1146.23, 529.07 )
+rotation = 3.14159
+scale = Vector2( 12, -12 )
+frames = SubResource( 97 )
+frame = 3
+playing = true
+
+[node name="TSLilDevil" type="Node2D" parent="Background Decorations"]
+position = Vector2( 861.552, 591.999 )
+
+[node name="Monster1Sprite" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
+position = Vector2( 24.3951, -9.34723 )
+rotation = 3.14159
+scale = Vector2( 8, -8 )
+frames = SubResource( 98 )
+animation = "titlescreenanimation"
+frame = 3
+playing = true
+
+[node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
+position = Vector2( -7.64111, -52.0622 )
+rotation = 3.14159
+scale = Vector2( 8, -8 )
+frames = SubResource( 99 )
+animation = "titlescreenanimation"
+frame = 1
+playing = true
+
+[node name="ShamanSprite" type="AnimatedSprite" parent="Background Decorations"]
+position = Vector2( 1017.38, 584.507 )
+scale = Vector2( -2, 2 )
+frames = SubResource( 100 )
+frame = 4
+playing = true
+
+[node name="MonsterSprite" type="AnimatedSprite" parent="Background Decorations"]
+position = Vector2( 1209.16, 591.999 )
+scale = Vector2( -8, 8 )
+frames = SubResource( 101 )
+frame = 1
+playing = true
+
+[node name="Menu" type="VBoxContainer" parent="."]
+margin_left = 297.302
+margin_top = 260.657
+margin_right = 697.302
+margin_bottom = 553.657
+theme = ExtResource( 13 )
+custom_constants/separation = 42
+
+[node name="Label" type="Label" parent="Menu"]
+margin_right = 400.0
+margin_bottom = 83.0
+text = "Do you really 
+want to quit?"
+align = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Menu"]
+margin_top = 125.0
+margin_right = 400.0
+margin_bottom = 261.0
+theme = ExtResource( 13 )
+custom_constants/separation = 16
+
+[node name="BackButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
+margin_right = 400.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 50, 60 )
+theme = SubResource( 103 )
+text = "Back to menu"
+scene_to_load = "res://Scenes/title_screen/TitleScreen.tscn"
+
+[node name="QuitButton" parent="Menu/Buttons" instance=ExtResource( 19 )]
+margin_top = 76.0
+margin_right = 400.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 50, 60 )
+theme = SubResource( 103 )
 text = "Quit"
 script = ExtResource( 3 )
 
-[node name="FadeIn" parent="." index="2" instance=ExtResource( 4 )]
+[node name="FadeIn" parent="." instance=ExtResource( 4 )]
 visible = false
 
-[connection signal="button_up" from="VBoxContainer2/ButtonQuit" to="VBoxContainer2/ButtonQuit" method="_on_ButtonQuit_button_up"]
+[node name="Lights" type="Node2D" parent="."]
+script = ExtResource( 15 )
+
+[node name="CursorLight" type="Light2D" parent="Lights"]
+position = Vector2( 160.741, 318.943 )
+texture = ExtResource( 14 )
+texture_scale = 0.5
+energy = 2.0
+mode = 2
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Lights"]
+color = Color( 0.364706, 0.231373, 0.513726, 1 )
+
+[node name="Light2D" type="Light2D" parent="Lights"]
+position = Vector2( 321.048, 250.366 )
+scale = Vector2( 2.228, 1.986 )
+texture = ExtResource( 14 )
+texture_scale = 3.38
+mode = 2
+
+[node name="Light2D2" type="Light2D" parent="Lights"]
+position = Vector2( 1100.95, 672.547 )
+scale = Vector2( 1.34, 3.332 )
+texture = ExtResource( 14 )
+texture_scale = 3.38
+color = Color( 1, 0.14902, 0.866667, 1 )
+mode = 2
+
+[node name="Light2D3" type="Light2D" parent="Lights"]
+position = Vector2( 503.58, 448.971 )
+scale = Vector2( 0.821422, 0.832781 )
+texture = ExtResource( 14 )
+texture_scale = 3.38
+mode = 2
+
+[connection signal="pressed" from="Menu/Buttons/QuitButton" to="Menu/Buttons/QuitButton" method="_on_QuitButton_pressed"]
+[connection signal="fade_finished" from="FadeIn" to="." method="_on_FadeIn_fade_finished"]

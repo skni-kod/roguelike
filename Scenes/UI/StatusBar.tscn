@@ -7,24 +7,29 @@
 [ext_resource path="res://Assets/UI/StatusEffects/Poison.png" type="Texture" id=5]
 [ext_resource path="res://Assets/UI/StatusEffects/Bleeding.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/UI/StatusBar.gd" type="Script" id=7]
-[ext_resource path="res://Fonts/Fipps-Regular.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Fonts/PressStart2P.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Scenes/UI/DisplayTime.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/UI/DisplayStacks.gd" type="Script" id=10]
-[ext_resource path="res://Fonts/Fipps-Regular.otf" type="DynamicFontData" id=11]
 [ext_resource path="res://Assets/UI/StatusEffects/Regeneration.png" type="Texture" id=12]
 
-[sub_resource type="Theme" id=1]
-default_font = ExtResource( 8 )
+[sub_resource type="DynamicFont" id=4]
+size = 10
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_bottom = 4
+font_data = ExtResource( 8 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="Theme" id=1]
+default_font = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=5]
 size = 8
 outline_color = Color( 0, 0, 0, 1 )
-extra_spacing_top = 32
-extra_spacing_char = 2
-font_data = ExtResource( 11 )
+extra_spacing_top = 35
+extra_spacing_bottom = 8
+font_data = ExtResource( 8 )
 
 [sub_resource type="Theme" id=3]
-default_font = SubResource( 2 )
+default_font = SubResource( 5 )
 
 [node name="StatusBar" type="Control"]
 grow_horizontal = 0
@@ -49,9 +54,9 @@ __meta__ = {
 
 [node name="Burning" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 8.0
-margin_right = 40.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 51 )
 size_flags_horizontal = 8
 size_flags_vertical = 2
@@ -66,7 +71,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Burning"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -84,7 +89,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Burning"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_vertical = 2
@@ -111,9 +116,9 @@ one_shot = true
 
 [node name="Poison" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 44.0
-margin_right = 76.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -128,7 +133,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Poison"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -146,7 +151,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Poison"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
@@ -173,9 +178,9 @@ one_shot = true
 
 [node name="Bleeding" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 80.0
-margin_right = 112.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -190,7 +195,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Bleeding"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -208,7 +213,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Bleeding"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
@@ -236,9 +241,9 @@ one_shot = true
 
 [node name="Freezing" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 116.0
-margin_right = 148.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -253,7 +258,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Freezing"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -271,7 +276,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Freezing"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
@@ -295,9 +300,9 @@ one_shot = true
 
 [node name="Weakness" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -312,7 +317,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Weakness"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -330,7 +335,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Weakness"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
@@ -354,9 +359,9 @@ one_shot = true
 
 [node name="Knockback" type="MarginContainer" parent="StatusContainer"]
 visible = false
-margin_left = 188.0
-margin_right = 220.0
-margin_bottom = 52.0
+margin_left = 224.0
+margin_right = 256.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -371,7 +376,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Knockback"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -389,7 +394,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Knockback"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0
@@ -415,7 +420,7 @@ one_shot = true
 visible = false
 margin_left = 224.0
 margin_right = 256.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -430,7 +435,7 @@ hframes = 3
 
 [node name="DisplayStacks" type="Label" parent="StatusContainer/Healing"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 32 )
 rect_clip_content = true
 size_flags_vertical = 1
@@ -448,7 +453,7 @@ __meta__ = {
 
 [node name="DisplayTime" type="Label" parent="StatusContainer/Healing"]
 margin_right = 32.0
-margin_bottom = 52.0
+margin_bottom = 51.0
 rect_min_size = Vector2( 32, 19 )
 rect_clip_content = true
 size_flags_horizontal = 0

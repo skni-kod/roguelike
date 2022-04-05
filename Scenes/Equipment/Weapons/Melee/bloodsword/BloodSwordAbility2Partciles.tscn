@@ -1,0 +1,95 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scenes/Equipment/Weapons/Melee/bloodsword/Ability2DirectionalParticles.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSwordAbility2Node.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=10]
+offsets = PoolRealArray( 0, 0.208791, 0.593407, 1 )
+colors = PoolColorArray( 0.659931, 0, 0, 1, 0.368443, 0, 0, 1, 1, 0, 0, 1, 0.263184, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
+
+[sub_resource type="Curve" id=8]
+max_value = 20.0
+_data = [ Vector2( 0, 0 ), 0.0, 20.0, 0, 1, Vector2( 1, 20 ), 85.2645, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=9]
+curve = SubResource( 8 )
+
+[sub_resource type="Curve" id=15]
+min_value = -500.0
+max_value = 500.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 15 )
+
+[sub_resource type="Curve" id=12]
+min_value = -300.0
+max_value = 300.0
+_data = [ Vector2( 0, 178.636 ), 0.0, 0.0, 0, 0, Vector2( 1, -300 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="Curve" id=4]
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 1.29318 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, -200 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 5
+emission_ring_radius = 4.0
+emission_ring_inner_radius = 3.0
+emission_ring_height = 1.0
+emission_ring_axis = Vector3( 0, 0, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+orbit_velocity_curve = SubResource( 3 )
+radial_accel = 1.0
+radial_accel_random = 1.0
+radial_accel_curve = SubResource( 13 )
+tangential_accel_curve = SubResource( 7 )
+damping_curve = SubResource( 9 )
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 100.0
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 11 )
+
+[node name="BloodSwordAbilty2Particles" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="BloodParticles" type="Particles2D" parent="."]
+amount = 128
+local_coords = false
+process_material = SubResource( 1 )
+
+[node name="DirectionalParticles" type="Particles2D" parent="."]
+amount = 16
+local_coords = false
+process_material = SubResource( 14 )
+script = ExtResource( 1 )
