@@ -54,6 +54,16 @@ func _ready():
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+		$Strzelanie.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+		$Strzelanie.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
 	enemyPos = self.global_position
 	if player !=null and health>0: #jezeli playera jest w polu widzenia i jest zywy

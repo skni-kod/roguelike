@@ -206,6 +206,20 @@ tracks/6/keys = {
 "update": 1,
 "values": [ SubResource( 1 ), SubResource( 20 ) ]
 }
+tracks/7/type = "method"
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 2.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_death_sound"
+} ]
+}
 
 [node name="MageBoss" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 4

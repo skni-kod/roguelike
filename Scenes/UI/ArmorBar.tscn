@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/UI/ArmorBar.gd" type="Script" id=1]
+[ext_resource path="res://Assets/UI/HealthBar/Background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/HealthBar/Frame.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/HealthBar/Filling.png" type="Texture" id=4]
+
+[node name="ArmorBar" type="Control"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ArmorUnder" type="TextureProgress" parent="."]
+margin_top = 85.0
+margin_right = 100.0
+margin_bottom = 95.0
+rect_scale = Vector2( 1.5, 1.5 )
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 4 )
+
+[node name="ArmorOver" type="TextureProgress" parent="."]
+margin_left = 0.000816345
+margin_top = 84.7263
+margin_right = 100.001
+margin_bottom = 94.7263
+rect_scale = Vector2( 1.5, 1.5 )
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+
+[node name="UpdateTween" type="Tween" parent="."]
+
+[node name="PulseTween" type="Tween" parent="."]
+
+[node name="FlashTween" type="Tween" parent="."]

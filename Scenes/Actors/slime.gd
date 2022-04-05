@@ -59,6 +59,14 @@ func _ready():
 	health_bar.on_health_updated(health)
 
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
 	if player != null and !attack and health>0: #Jeżeli gracz jest w polu widzenia i slime nie atakuje oraz życie jest większe niż 0 to
 		$Sprite.scale.x = right #Obróć slime
@@ -103,6 +111,12 @@ func _on_Atak_body_exited(body): #Jeżeli gracz wyjdzie z zasięgu ataku
 func _on_Timer_timeout():
 	if attack and health>0: # funkcje wykonane gdy atakuje
 		player.take_dmg(dps, enemyKnockback, self.global_position)
+		
+		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		var player = level.get_node("Player")
+		if player.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+			
 		yield($AnimationPlayer,"animation_finished")
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")

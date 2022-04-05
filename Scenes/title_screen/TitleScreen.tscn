@@ -50,9 +50,6 @@ font_data = ExtResource( 5 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Background Decorations" type="Control" parent="."]
 margin_right = 1283.0
@@ -76,6 +73,7 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
+frame = 7
 playing = true
 flip_h = true
 
@@ -85,7 +83,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 4
+frame = 6
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
