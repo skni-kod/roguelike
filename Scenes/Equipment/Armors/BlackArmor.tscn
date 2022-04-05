@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Assets/Loot/Armors/dark_knight_drop.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Loot/Armors/blackarmor_drop.png" type="Texture" id=1]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.02847
@@ -10,15 +10,15 @@ height = 3.56555
 radius = 4.0
 height = 0.929382
 
-[node name="Cactus" type="StaticBody2D" groups=["Pickable"]]
+[node name="BlackArmor" type="StaticBody2D" groups=["Pickable"]]
 collision_layer = 32
 collision_mask = 0
 
-[node name="CactusNameHolder" type="Label" parent="."]
+[node name="BlackArmorNameHolder" type="Label" parent="."]
 visible = false
 margin_right = 40.0
 margin_bottom = 14.0
-text = "Cactus"
+text = "BlackArmor"
 __meta__ = {
 "_edit_use_anchors_": false
 }

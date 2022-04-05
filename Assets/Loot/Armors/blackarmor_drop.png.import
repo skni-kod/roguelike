@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dark_knight_drop.png-4be6d3b8f90efe9dd1326da915deb9e8.stex"
+path="res://.import/blackarmor_drop.png-b4731c9e9ecd1e7a77d43ce9a7c4ab46.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Armors/dark_knight_drop.png"
-dest_files=[ "res://.import/dark_knight_drop.png-4be6d3b8f90efe9dd1326da915deb9e8.stex" ]
+source_file="res://Assets/Loot/Armors/blackarmor_drop.png"
+dest_files=[ "res://.import/blackarmor_drop.png-b4731c9e9ecd1e7a77d43ce9a7c4ab46.stex" ]
 
 [params]
 
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

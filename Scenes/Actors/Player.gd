@@ -324,7 +324,7 @@ func _physics_process(delta): #funkcja wywoływana co klatkę
 				armor_durability = 100
 				equipped_armor = "Amogus"
 				UpdateArmorSprite()
-				armor_to_pick.queue_free
+				armor_to_pick.queue_free()
 
 			if "Cactus" in armor_to_pick.name:
 				armor_durability = 100
