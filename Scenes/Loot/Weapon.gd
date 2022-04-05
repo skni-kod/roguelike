@@ -5,7 +5,7 @@ var Stats = {}
 var popups = {}
 var weapons = {}
 onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
-
+onready var player_node = get_tree().get_root().find_node("Player", true, false)
 func _ready():
 	Stats = all_weapons["Weapons"][WeaponName]
 	Stats['attack'] = float(Stats['attack'])
@@ -24,8 +24,12 @@ func take_dmg(a):
 	pass
 func _on_PopUp_body_entered(body):
 	 #Przypisuje zmienne i tworzy okienko statystyk broni
+	var popup
 	if body.name == "Player":
-		var popup = load("res://Scenes/UI/ItemStats.tscn")
+		if all_weapons["Weapons"][WeaponName]["plus"]=="1" and WeaponName==player_node.weapons[player_node.check_current_weapon()]:
+			 popup = load("res://Scenes/UI/ItemStats+.tscn")
+		else:
+			 popup = load("res://Scenes/UI/ItemStats.tscn")
 		popup = popup.instance()
 		popup.itemName = WeaponName
 		popup.itemAttack = Stats['attack']
