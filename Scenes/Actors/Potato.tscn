@@ -5,7 +5,6 @@
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=4]
 
-
 [sub_resource type="OccluderPolygon2D" id=9]
 polygon = PoolVector2Array( -3, 0, 4, 0, 4, 4, -3, 4 )
 

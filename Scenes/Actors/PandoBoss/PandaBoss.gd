@@ -168,6 +168,10 @@ func _on_RollingArea_body_entered(body): # jeśli tocząc się trafi w gracza
 			attack = false
 			$AttackTimer.start()
 			player.take_dmg(dps, enemyKnockback, self.global_position)
+			var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+			var player = level.get_node("Player")
+			if player.equipped_armor == "Cactus":
+				get_dmg(dps,enemyKnockback)
 
 # === FUNKCJA OTRZYMYWANIA OBRAŻEŃ === #
 func get_dmg(dmg, weaponKnockback):

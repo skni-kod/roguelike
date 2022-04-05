@@ -31,6 +31,8 @@ var enemyKnockback = 0.5
 var is_elite = false
 onready var main := get_tree().get_root().find_node("Main", true, false)
 
+
+
 func elite():
 	rng.randomize()
 	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
@@ -54,6 +56,14 @@ func _ready():
 	health_bar.on_health_updated(health)
 	
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
 	if player !=null and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
 		$Sprite.scale.x= right
@@ -98,6 +108,12 @@ func _on_Timer_timeout():
 	if attack and health>0:
 		statusEffect.bleeding = true
 		player.take_dmg(dps, enemyKnockback, self.global_position) #wywolywana jest funkcja zabierania dmg playerowi
+		
+		var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+		var player = level.get_node("Player")
+		if player.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+		
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		
