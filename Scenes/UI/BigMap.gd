@@ -1,7 +1,5 @@
 extends MarginContainer
 
-onready var player = get_tree().get_root().find_node("Player", true, false)
-
 onready var map = []
 var grid_map = []
 var activeRooms = []
@@ -23,7 +21,7 @@ var markers = {}
 var playerMovement = Vector2.ZERO
 
 func _ready():
-	player.connect("player_moved", self, "_on_player_movement")
+	Bufor.PLAYER.connect("player_moved", self, "_on_player_movement")
 	player_marker.position = grid.rect_size / 2 #Wyśrodkowanie pozycji ikony gracza na mapie
 	grid_scale = grid.rect_size / (get_viewport_rect().size * zoom) #Skalowanie wielkości minimapy
 
@@ -37,7 +35,7 @@ func mapping():
 	grid_map = markers
 	
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	for item in markers: #Pętla ustala położenie ikon względem gracza
 		item.position = (grid.rect_size/2 + markers[item])
 		#markers[item] -= Vector2(playerMovement.x/16/1.7, playerMovement.y/9/5.5)/((get_viewport_rect().size)/(grid.rect_size*zoom))

@@ -1,6 +1,6 @@
 extends Node2D
 
-const M = preload("Moon_particles.tscn") #pobieramy particle do umiejek
+const M = preload("effects/Moon_particles.tscn") #pobieramy particle do umiejek
 var main = get_tree().get_root().find_node("Main", true, false) # odwołanie do node Main, potrzebne do particli
 
 var player_node = get_tree().get_root().find_node("Player", true, false)
@@ -15,7 +15,7 @@ var ability2ManaCost=1 #koszt do zmiany w balansie
 var damage
 var weaponKnockback
 var a = 1
-var weaponName = "FMS"
+var weaponName = "Fms"
 var smoothing = 1
 
 var rng = RandomNumberGenerator.new()
@@ -34,7 +34,7 @@ var ph = 0
 var basedmg
 var basespd
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(animation_step)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
@@ -70,7 +70,7 @@ func _physics_process(delta):
 			player_node.updateMana(-ability2ManaCost)
 			ability2()
 
-	if mc == 20:
+	if mc == 10:
 		ph+=1
 		mc = 0
 		if ph == 6: ph=0
@@ -91,7 +91,7 @@ func _physics_process(delta):
 				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms4.png")
 				damage = basedmg*1.8
 			5:
-				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms5.png")
+				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms.png")
 				damage = basedmg*2
 		
 	
@@ -144,7 +144,7 @@ func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z pr
 func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
 		if player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				basespd = player_node.speed
 				player_node.speed += 100
@@ -154,7 +154,7 @@ func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifeste
 func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
 	if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability = 1
 				$AttackCollision.disabled = false

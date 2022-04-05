@@ -1,8 +1,10 @@
 extends Node
 
+var BIOM = 0
+# 0 - standardowy/podziemia, 1 - ul, 2 - dżungla
+
 signal boss(bossRoom)
 signal map_generated(map)
-signal skl(skl_room)
 
 var directions = [Vector2.DOWN,Vector2.UP,Vector2.RIGHT,Vector2.LEFT]
 var position = Vector2.ZERO
@@ -10,7 +12,7 @@ export var map = [] #lista zawierająca współrzedne pokojów
 var rooms = [] #lista pokojów
 var queue = [] #kolejka do przechowywania koordynatów do generowania pokojów
 var rng := RandomNumberGenerator.new()
-var roomsNum = 20 #ilość pokojów
+var roomsNum = 15 #ilość pokojów
 var n = 0 #zmiennna pomocnicza do funkcji generate
 var szer = 512 #szerokość pokoju
 var dl = 288 #długość pokoju
@@ -18,20 +20,45 @@ var gen = 0
 var oneDoor = 0
 var drawn = false
 var scene = load("res://Scenes/Levels/Room.tscn") #wczytywanie sceny pokoju
-var player = load("res://Scenes/Actors/Player.tscn") #wczytywanie sceny playera
 var random_room_nr = RandomNumberGenerator.new()
-var room_variations = {
+var room_variations = [
+{
 	1 : load("res://Assets/TileMap/Room2.tres"),
 	2 : load("res://Assets/TileMap/Room3.tres"),
 	3 : load("res://Assets/TileMap/Room4.tres"),
 	4 : load("res://Assets/TileMap/Room1.tres")
+},
+{
+	1 : load("res://Assets/TileMap/room7.tres"),
+},
+{
+	1 : load("res://Assets/TileMap/room6.tres"),
 }
+]
 var current_room_type
 
-var los_skl
-var prob = 1
-var issklep = false
-var skl_room = [Vector2.ZERO]
+
+func _ready():
+	get_node("UI").set_process_input(false)
+	match Bufor.POZIOM:
+		0:
+			current_room_type = 1
+		1:
+			current_room_type = 2
+		2:
+			current_room_type = 3
+		_:
+			var b =  RandomNumberGenerator.new()
+			b.randomize()
+			BIOM = b.randi_range(0,2)
+			current_room_type = 1
+			if BIOM == 0:
+				current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			
+	MusicController.stop_music() #zapauzowanie muzyki z menu
+	generate() #generacja mapy
+	MusicController.play_game_music()
+
 
 func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów pokojów
 	var oneDoorRooms = [] #lista pokojów z jednymi otwartymi drzwiami
@@ -41,7 +68,7 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 		var room = scene.instance()
 		add_child(room) #dodawanie sceny pokoju
 		var tilemap = room.get_node("TileMap")
-		tilemap.tile_set = room_variations[current_room_type]
+		tilemap.tile_set = room_variations[BIOM][current_room_type]
 		room.position.x = map[i].x * szer #przypisywanie pozycji x pokoju 
 		room.position.y = map[i].y * dl #przypisywanie pozycji y pokoju
 		if not map[i] + Vector2.DOWN in map: #jeżeli nie ma pokoju pod pokojem, zamknij drzwi
@@ -74,18 +101,8 @@ func draw(map): #rysowanie poziomu na podstawie wygenerowanych koordynatów poko
 	for room in oneDoorRooms: #szukanie najdalszego pokoju
 		if abs(room[0].length()) > abs(furthestRoom[0].length()):
 			furthestRoom = room
-	if issklep == false:
-		for room in oneDoorRooms: #szukanie pokoju ze sklepem
-			los_skl = rng.randi_range(prob,len(oneDoorRooms)) #losowanie czy w pokoju ma sie znajdować sklep
-			if los_skl == len(oneDoorRooms) and room != furthestRoom:
-				skl_room = room
-				issklep = true
-				break
-			else:
-				prob=prob+1
 	emit_signal("boss", furthestRoom[0])
 	emit_signal("map_generated", map)
-	emit_signal("skl", skl_room[0])
 	
 func generate(): #funkcja generująca poziom (położenia pokojów)
 	map.append(Vector2(0,0)) #dodanie pierwszego pokoju do mapy
@@ -141,16 +158,4 @@ func step(direction): #funkcja, która określa w którą stronę może zostać 
 	else: #jezeli jest juz w mapie to zmniejszamy "n" poniewaz nie wygenerowalismy pokoju
 		n -= 1
 
-func _ready():
-	match Bufor.poziom:
-		0:
-			current_room_type = 1
-		1:
-			current_room_type = 2
-		2:
-			current_room_type = 3
-		_:
-			current_room_type = random_room_nr.randi_range(1, room_variations.size())
-			
-	MusicController.stop_music() #zapauzowanie muzyki z menu
-	generate() #generacja mapy
+

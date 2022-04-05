@@ -4,7 +4,7 @@ extends KinematicBody2D
 
 export var speed = 0.8  #Zmienna definujaca szybkosc poruszania
 export var max_hp = 100  #Zmienna definiujaca ilosc zycia
-var player = null  #Zmienna przechowujaca wezel gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO  #Zmienna inicjujaca wektor poruszania
 var hp: float = max_hp  #Zmienna przechowujaca ilosc pozostalego zycia
 var health = 100  #Pozostale zycie w procentach
@@ -21,28 +21,30 @@ func _ready():
 		$Particles2D.texture = load("res://Assets/Enemies/fireball_new.png")
 	elif boss.phase == 2:
 		$WaterL.visible = true #włącza odpowiednie światło
-		$Particles2D.texture = load("res://Assets/Enemies/WaterBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/waterball.png")
 	elif boss.phase == 3:
 		$EarthL.visible = true
-		$Particles2D.texture = load("res://Assets/Enemies/EarthBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/earthball.png")
 	elif boss.phase == 4:
 		$WindL.visible = true #włącza odpowiednie światło
-		$Particles2D.texture = load("res://Assets/Enemies/WindBall.png")
+		$Particles2D.texture = load("res://Assets/Enemies/windball.png")
 
 func _physics_process(delta):
 	move = Vector2.ZERO
-	if player != null and health > 0:  #Jezeli gracz jest w polu widzenia bossa oraz jego zycie jest wieksze od 0
+	if playerIsInRange and health > 0:  #Jezeli gracz jest w polu widzenia bossa oraz jego zycie jest wieksze od 0
 		#Podejdz do gracza
-		move = position.direction_to(player.position) * speed
+		move = position.direction_to(Bufor.PLAYER.position) * speed
 	move_and_collide(move)
 
+# [!!!]: TBR
 func _on_Wzrok_body_entered(body):
 	if body.name == "Player":  #Jesli gracz wejdzie w pole widzenia, przypisz jego wezel do zmiennej
-		player = body
+		playerIsInRange = true
 
+# [!!!]: TBR
 func _on_Wzrok_body_exited(body):
 	if body.name == "Player":  #Jesli gracz wyjdzie z pola widzenia, ustaw zmienna na null
-		player = null
+		playerIsInRange = false
 
 func _on_FireTimer_timeout():
 	if health > 0:  #Jesli zycie jest wieksze od 0, atakuj
@@ -74,5 +76,5 @@ func fire():  #Strzelanie przez summona
 	var ball_scene = load("res://Scenes/Actors/MageBoss/Projectile.tscn")  #Wczytaj scene pocisku
 	ball_scene = ball_scene.instance()  #Stworz pocisk
 	ball_scene.position = self.position  #Ustaw pozycje pocisku na summona
-	ball_scene.player_Pos = get_tree().get_root().find_node("Player", true, false).position  #Ustaw pozycje gracza
+	ball_scene.player_Pos = Bufor.PLAYER.position  #Ustaw pozycje gracza
 	main.add_child(ball_scene)  #Dodaj pocisk do glownej sceny

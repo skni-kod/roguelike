@@ -1,33 +1,42 @@
 extends StaticBody2D
 
-var WeaponName
+var weaponName
 var Stats = {}
 var popups = {}
 var weapons = {}
-onready var all_weapons = get_tree().get_root().find_node("Weapons", true, false).all_weapons #Wczytanie z niewidzialnego node wszystkich broni
+var texture = null
+onready var ALL_WEAPONS_STATS = Weapons.ALL_WEAPONS_STATS #Wczytanie z niewidzialnego node wszystkich broni
 
 func _ready():
-	Stats = all_weapons["Weapons"][WeaponName]
+	Stats = ALL_WEAPONS_STATS[weaponName]
 	Stats['attack'] = float(Stats['attack'])
-	var texture = load("res://Assets/Loot/Weapons/"+WeaponName+".png")
-	if WeaponName == "katana":
+	texture = load("res://Assets/Loot/Weapons/"+weaponName+".png")
+	if weaponName == "Katana":
 		$Sprite.scale.x = .5
 		$Sprite.scale.y = .5
+	elif weaponName == "Spear":
+		$Sprite.scale.x = .8
+		$Sprite.scale.y = .8
 	else:
 		$Sprite.scale.x = 1
 		$Sprite.scale.y = 1
 	$Sprite.texture = texture
-	if (WeaponName == null):
+	if (weaponName == null):
 		queue_free()
 #test
-func take_dmg(a):
+func take_dmg(_a):
 	pass
 func _on_PopUp_body_entered(body):
 	 #Przypisuje zmienne i tworzy okienko statystyk broni
+	var popup
 	if body.name == "Player":
-		var popup = load("res://Scenes/UI/ItemStats.tscn")
+#		if ALL_WEAPONS_STATS["Weapons"][WeaponName]["plus"]=="d1" and WeaponName==player_node.weapons[player_node.check_current_weapon()]:
+#			 popup = load("res://Scenes/UI/ItemStats+.tscn")
+#		else:
+#			 popup = load("res://Scenes/UI/ItemStats.tscn")
+		popup = load("res://Scenes/UI/ItemStats.tscn")
 		popup = popup.instance()
-		popup.itemName = WeaponName
+		popup.itemName = weaponName
 		popup.itemAttack = Stats['attack']
 		popup.itemSpd = Stats['spd']
 		popup.itemKnc = Stats['knc']

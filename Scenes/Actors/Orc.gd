@@ -22,7 +22,7 @@ var move = Vector2.ZERO # wektor poruszania się (potrzebny potem)
 # === ================ === #
 
 # === WYKRYWANIE CELU I ATAK === #
-var player = null # zmienna do ktorej zostaje przypisany player gdy go wykryje
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var attack = false # zmienna ataku (czy atakuje)
 # === ====================== === #
 
@@ -97,18 +97,25 @@ func _ready():
 # _physics_process wykonuje się co klatkę, delta to zmienna czasowa, definiuje klatkę
 # nie stosować _process, ponieważ działa on zależnie od prędkości sprzętu
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO # wektor poruszania się jest zerowany z każdą klatką gry
 	
-	if player != null and health>0 and !attack: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
-		
+	if playerIsInRange and health>0 and Bufor.PLAYER and !attack: # gdy wykryje gracza/obiekt w swoim zasięgu i żyje
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed # poruszanie się w stronę gracza 
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed # poruszanie się w stronę gracza 
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		$BodyAnimationPlayer.play("Walk")
 		# === MODYFIKACJA SPRITE'ÓW === #
-		if player.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0: # warunek odwracania się sprite względem pozycji playera (do playera, od playera)
 			$Sprites.scale.x = -1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
 		else:
 			$Sprites.scale.x = 1 # sprite'y zostają obrócone (skalę dostosować do wymiarów)
@@ -121,7 +128,7 @@ func _physics_process(delta):
 		$BodyAnimationPlayer.play("Idle") # Animacja Idle zostaje aktywowana
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO: # jeśli nie ma knockbacku
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null: # jeśli nie ma knockbacku
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0: # jeśli jest knockback, to nie może się ruszać
 		knockback = move_and_slide(knockback) # poruszaj się w stronę wektora knockback
@@ -134,13 +141,13 @@ func _physics_process(delta):
 # GRUPA LAYER AREA2D "WZROK" -> ENEMY
 # GRUPA COLLISION AREA2D "WZROK" -> PLAYER (JEŚLI MA WYKRYWAĆ INNE TO ZAZNACZYĆ INNE DODATKOWE COLLISION)
 func _on_Wzrok_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia player jako body
-		player = body
+	if body != self and body.name == "Player": # gdy body o nazwie Player wejdzie do Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = true
 
 
 func _on_Wzrok_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
-	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia player jako body
-		player = null
+	if body != self and body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Wzrok, ustawia Player jako body
+		playerIsInRange = true
 # === ================== === #
 
 
@@ -153,12 +160,12 @@ func _on_Atak_body_entered(body): # (WYKONUJE SIĘ RAZ GDY BODY WEJDZIE DO ZASI�
 		statusEffect.poison = true # w trakcie kolizji z playerem, ten może zostać zatruty 
 		body.take_dmg(dps, enemyKnockback, self.global_position) # jeśli przeciwnik natrafi na body playera to zadaje mu damage o wartości dmg
 		attack = true
-		$AttackTimer.start() # gdy wchodzi player do sfery ataku, to startuje timer 
+		$AttackTimer.start() # gdy wchodzi Player do sfery ataku, to startuje timer 
 		
 func _on_Atak_body_exited(body): # (WYKONUJE SIĘ RAZ GDY BODY WYJDZIE Z ZASIĘGU)
 	if body.name == "Player": # gdy body o nazwie Player wyjdzie z Area2D o nazwie Atak, wyłącza przełącznik attack
 		attack = false
-		$AttackTimer.stop() # gdy wychodzi player ze sfery ataku, to stopuje timer
+		$AttackTimer.stop() # gdy wychodzi Player ze sfery ataku, to stopuje timer
 # === ================== === #
 
 
@@ -171,8 +178,12 @@ func _on_AttackTimer_timeout():
 
 # === FUNCKJA ATAKU === #
 func attack():
-	player.take_dmg(dps, enemyKnockback, self.global_position)	
-	pass
+	if Bufor.PLAYER:
+		Bufor.PLAYER.take_dmg(dps, enemyKnockback, self.global_position)	
+		
+		if Bufor.PLAYER.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+		pass
 # === ============= === #
 
 
@@ -181,7 +192,7 @@ func get_dmg(dmg, weaponKnockback):
 	if health>0:
 		
 		# === KNOCKBACK === #
-		knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+		knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance # knockbackResistance danego przeciwnika obniża iloczynowo otrzymany knockback
 		elif knockbackResistance <= 0.6:
@@ -191,13 +202,19 @@ func get_dmg(dmg, weaponKnockback):
 		# === ZMNIEJSZANIE HP === #
 		hp -= dmg # zmniejszanie hp o otrzymany dmg
 		health = hp/max_hp*100 # procentowo się zmienia ilośc hp na pasku
-		# Animacje obrażeń zostają aktywowane na sprite Body i Head
+		# Animacja obrażeń własnych
 		$BodyAnimationPlayer.play("Hurt")
 		 
 		health_bar.on_health_updated(health) # healthbar zostaje zupdateowany z nową procentową ilością hp
 		health_bar.visible = true
 		# === =============== === #
-		
+		SoundController.play_hit()
+		# === WIZUALIZACJA ZADANEGO DMG === #
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)	
+		# === ========================= === #
 	if health<=0:
 		$CollisionShape2D.set_deferred("disabled",true) # maska kolizji zostaje dezaktywowana aby nie móc atakować po śmierci
 		# === ANIMACJE === #
@@ -211,16 +228,18 @@ func get_dmg(dmg, weaponKnockback):
 		# === UMIERANIE I COINSY (I POTION JESLI JEST ELITA) === #
 		random_potion()
 		drop_coins()
+		# === WIZUALIZACJA ZADANEGO DMG === #
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
+		# === ========================= === #
 		emit_signal("died", self) # zostaje wyemitowany sygnał, że Lil Devil umarł
+		SoundController.play_hit()
 		queue_free() # instancja Lil Devila zostaje usunięta
 		# === ================= === #
 		
-	# === WIZUALIZACJA ZADANEGO DMG === #
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)	
-	# === ========================= === #
+
 	
 
 # === ============================ === #
@@ -231,7 +250,7 @@ func drop_coins():
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
-	for i in range(0,coins): # pętla tworząca monety
+	for _i in range(0,coins): # pętla tworząca monety
 		randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
 		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina
@@ -247,7 +266,7 @@ func random_potion():
 		potion = int(rng.randi_range(2,3))
 	else:
 		potion = int(rng.randi_range(0,3))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	if potion == 0:
 		tmp = load("res://Scenes/Loot/20healthPotion.tscn")

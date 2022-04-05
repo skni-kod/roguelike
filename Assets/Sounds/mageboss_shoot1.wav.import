@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mageboss_shoot1.wav-4de05c71f571f7bd0913e61b28136bbc.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/mageboss_shoot1.wav"
+dest_files=[ "res://.import/mageboss_shoot1.wav-4de05c71f571f7bd0913e61b28136bbc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

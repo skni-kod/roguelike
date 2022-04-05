@@ -1,0 +1,92 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/UI/ItemStats+.gd" type="Script" id=2]
+[ext_resource path="res://Fonts/m5x7.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="StreamTexture" id=1]
+load_path = "res://.import/Bron+.png-7a90db208300929d4b3912963283bcee.stex"
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 4 )
+
+[node name="ItemStats+" type="TextEdit"]
+margin_right = 150.0
+margin_bottom = 150.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Frame+" type="NinePatchRect" parent="."]
+margin_right = 150.0
+margin_bottom = 150.0
+texture = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 15.0
+margin_top = 14.0
+margin_right = 136.0
+margin_bottom = 136.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Grid" type="TextureRect" parent="MarginContainer"]
+margin_right = 121.0
+margin_bottom = 122.0
+
+[node name="Name" type="Label" parent="MarginContainer/Grid"]
+anchor_right = 1.0
+margin_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 2 )
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Stats" type="Label" parent="MarginContainer/Grid"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -25.0
+margin_right = 242.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 3 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="MarginContainer/Grid"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2.0
+margin_top = -39.0
+custom_fonts/font = SubResource( 4 )
+text = "Press E to equip"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

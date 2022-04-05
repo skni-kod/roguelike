@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 signal died(body)
 
-var player = null	#Zmienna przechowująca węzeł gracza
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO		#Zmienna inicjująca wektor poruszania
 export var speed = 0.5		#Zmienna przechowująca szybkość poruszania
 var right = 0.17		#Kierunek obrócenia
@@ -57,17 +57,28 @@ func _ready():
 
 	
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$wzrok.scale = Vector2(0.5,0.5)
+		$Area2D.scale = Vector2(0.75,0.75)
+	else:
+		$wzrok.scale = Vector2(1,1)
+		$Area2D.scale = Vector2(1,1)
+	
+	
 	move = Vector2.ZERO
 	enemyPos = self.global_position
-	if player != null and health>0 and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
+	if playerIsInRange and health>0 and Bufor.PLAYER and !summon :	# wykonuje się jeśli widzi gracza i nie atakuje oraz żyje
 		$Goblin_shaman.scale.x = right		# obrót w stronę gracza
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * -speed # odsuwanie się od gracza, gdy jest za blisko
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x-self.global_position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
+		if Bufor.PLAYER.global_position.x-self.global_position.x < 0:		# sprawdzenie w którą stone jest obrócony gracz
 			right = 0.17
 		else:
 			right = -0.17
@@ -76,7 +87,7 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
@@ -105,12 +116,12 @@ func fire():		# funkcja odpowiadająca za tworzenie pocisków
 	
 func _on_wzrok_body_entered(body):
 	if body != self and body.name == "Player":	#Jeśli gracz znajduję się w polu wzrok przypisz jego węzeł do zmiennej i przywołuj
-		player = body
+		playerIsInRange = true
 		summon = true
 
-func _on_wzrok_body_exited(body):		#Jeżeli gracz nie znajduję się w polu wzrok to zmień player na null i nie przywołuj 
+func _on_wzrok_body_exited(body):		#Jeżeli gracz nie znajduję się w polu wzrok to zmień Player na null i nie przywołuj 
 	if body != self and body.name == "Player":
-		player = null
+		playerIsInRange = false
 		summon = false
 	
 func _on_Area2D_body_entered(body):		#Jeżeli gracz wszedł w pole atak (Area2D) to atakuj nie przywołuj
@@ -124,12 +135,12 @@ func _on_Area2D_body_exited(body):		#Jeżeli gracz wyszedł z pola atak (Area2D)
 		summon = true
 		
 func _on_summon_timeout():
-	if player!=null and health>0 and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
+	if playerIsInRange and health>0 and Bufor.PLAYER and !attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz nie atakuje to przywołuje gobliny
 		summon()
 
 
 func _on_attack_timeout():
-	if player != null and health>0 and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
+	if playerIsInRange and health>0 and Bufor.PLAYER and attack:		# Jeżeli gracza znajduje się w polu wzrok ,żyje oraz gracz znajduję się w polu atak strzelaj
 		fire()
 		
 		
@@ -138,7 +149,7 @@ func get_dmg(dmg, weaponKnockback):
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -149,13 +160,18 @@ func get_dmg(dmg, weaponKnockback):
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health <=0:
 		$CollisionShape2D.set_deferred("disabled",true)
 		$AnimationPlayer.play("Die")
 		yield($AnimationPlayer,"animation_finished")
 		var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"])
 		random_potion()
-		for i in range(0,coins):
+		for _i in range(0,coins):
 			randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
@@ -163,13 +179,15 @@ func get_dmg(dmg, weaponKnockback):
 			main.add_child(coin)
 		for summoners in get_tree().get_nodes_in_group(name):
 			summoners.queue_free()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free()
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)
-	
+
+
 func random_potion():
 	rng.randomize()
 	var potion
@@ -177,7 +195,7 @@ func random_potion():
 		potion = int(rng.randi_range(2,3))
 	else:
 		potion = int(rng.randi_range(0,2))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	
 	if potion == 0:

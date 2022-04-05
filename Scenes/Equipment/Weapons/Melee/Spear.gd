@@ -29,7 +29,7 @@ var swing_back = 0.5
 var animation_step = 0.02
 var ability = 0
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if isWeaponReady==1: #Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/spear.png")
@@ -61,7 +61,7 @@ func _physics_process(delta):
 		#Really powerful blow - 40 bonus damage
 		if !ability and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability1()
 				spell = 0
@@ -70,7 +70,7 @@ func _physics_process(delta):
 		#Increase next attack damage by 12 costs 20 mana
 		if !ability and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				ability2()
 				spell = 0

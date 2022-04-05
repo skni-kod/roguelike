@@ -2,6 +2,7 @@ extends YSort
 
 var gracz
 var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
+var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 # == PUNKTY ŻYCIA (HP) ==
 export var max_hp = 900
 var hp = max_hp
@@ -51,6 +52,7 @@ func _on_Timer2_timeout(): # 0.2s po poprzednim
 			m.global_position = pozycjaMacki
 
 func dmg(dmg): # przyjmowanie obrażeń od ciosów w macki
+	SoundController.play_hit()
 	hp -= dmg
 	pasek_hp.value = hp/max_hp * 100
 	if hp <= 0:
@@ -59,19 +61,18 @@ func dmg(dmg): # przyjmowanie obrażeń od ciosów w macki
 func die(): # umieranie
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 	# == TWORZY PORTAL ==
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
+	stworzPortal(level)
 	# == ============= ==
 	# == TWORZY MONETY ==
 	rng.randomize() # losowanie generatora liczb
 	var coins = rng.randf_range(drop['minCoins'], drop["maxCoins"]) # wylosowanie ilości coinsów
-	for i in range (0, coins): # pętla tworząca monety
+	for _i in range (0, coins): # pętla tworząca monety
 		randomPosition = Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10)) # precyzowanie losowej pozycji monet
 		var coin = load("res://Scenes/Loot/GoldCoin.tscn") # zmienna coin to odwołanie do sceny GoldCoin.tscn
 		coin = coin.instance() # coin staje się nową instacją coina
 		coin.position = randomPosition # pozycją coina jest wylosowana wcześniej pozycja
-		level.add_child(coin) # coin jest dzieckiem level
+		#level.add_child(coin) # coin jest dzieckiem level
+		level.call_deferred('add_child', coin)
 	# == ============= ==
 	self.queue_free() # usunięcie bossa ze sceny
 
@@ -85,3 +86,15 @@ func _on_miniTimer_timeout():
 		swap.global_position = pozycjaMacki
 		swap.uderzyla = true
 		swap = null
+
+func stworzPortal(lvl):
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position
+	if true:#Bufor.POZIOM > len(get_parent().bossScene):
+		var q = portalf.instance()
+		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
+		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
+		#lvl.add_child(q) #Tworzy portal
+		lvl.call_deferred('add_child', q)
+	#lvl.add_child(p) #Tworzy portal
+	lvl.call_deferred('add_child', p)

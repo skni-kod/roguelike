@@ -4,7 +4,7 @@ signal died(body)
 
 onready var statusEffect = get_node("../../../UI/StatusBar")
 
-var player = null
+var playerIsInRange: bool = false # bool variable that changes to true when the Player is in attack range
 var move = Vector2.ZERO
 export var speed = 1.7
 export var dps = 8
@@ -31,6 +31,8 @@ var enemyKnockback = 0.5
 var is_elite = false
 onready var main := get_tree().get_root().find_node("Main", true, false)
 
+
+
 func elite():
 	rng.randomize()
 	var rgb = rng.randi_range(1,2) 	# od 1 do 3 rodzaj elity 
@@ -54,16 +56,24 @@ func _ready():
 	health_bar.on_health_updated(health)
 	
 func _physics_process(delta):
+	
+	var level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
+	var player = level.get_node("Player")
+	if player.equipped_armor == "Ninja":
+		$Wzrok.scale = Vector2(0.5,0.5)
+	else:
+		$Wzrok.scale = Vector2(1,1)
+	
 	move = Vector2.ZERO
-	if player !=null and !attack and health>0: #jezeli playera jest w polu widzenia i cuck jest zywy
+	if playerIsInRange and !attack and health>0 and Bufor.PLAYER != null: #jezeli playera jest w polu widzenia i cuck jest zywy
 		$Sprite.scale.x= right
 		# === WEKTORY MOVE I KNOCKBACK === #
-		if knockback == Vector2.ZERO:
-			move = global_position.direction_to(player.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
+		if knockback == Vector2.ZERO and Bufor.PLAYER != null:
+			move = global_position.direction_to(Bufor.PLAYER.global_position) * speed #parametr, ktory przekazywany jest do move_and_collide() na samym dole funkcji, powoduje ze cuck idzie w strone playera
 		else:
 			knockback = knockback.move_toward(Vector2.ZERO, 500*delta) # gdy zaistnieje knockback, to przesuń o dany wektor knockback
 		# === ======================== === #
-		if player.global_position.x - self.global_position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
+		if Bufor.PLAYER.global_position.x - self.global_position.x < 0: #sprite cucka jest obrocony w zaleznosci od ponizszego warunku
 			right = -1
 		else:
 			right = 1
@@ -72,7 +82,7 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Idle")
 	
 	# === PORUSZANIE SIĘ I KNOCKBACK === #
-	if knockback == Vector2.ZERO:
+	if knockback == Vector2.ZERO and Bufor.PLAYER != null:
 		move_and_collide(move) # ruch o Vector2D move
 	elif knockback != Vector2.ZERO and health > 0:
 		knockback = move_and_slide(knockback)
@@ -80,24 +90,26 @@ func _physics_process(delta):
 	# === ========================== === #
 	
 func _on_Wzrok_body_entered(body):
-	if body != self and body.name == "Player": #jezeli player wszedl w pole wzrok (wzrok -> collisionshape) to:
-		player = body #player juz nie jest nullem, dzieki czemu cuck moze isc w jego strone (patrz -> _physics_process(delta))
-		
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = true
 func _on_Wzrok_body_exited(body):
-	if body != self and body.name == "Player": #jezeli player wyszedl z pola wzrok (wzrok -> collisionshape) to:
-		player = null #player jest nullem, dzieki czemu cuck sobie stoi(patrz -> _physics_process(delta))
-		
+	if body != self and body.name == "Player": #jezeli Player wyszedl z pola wzrok (wzrok -> collisionshape) to:
+		playerIsInRange = false
 func  _on_Atak_body_entered(body):
-	if body != self and body.name == "Player": #jezeli player wszedl w pole ataku (atak -> collisionshape) to:
+	if body != self and body.name == "Player": #jezeli Player wszedl w pole ataku (atak -> collisionshape) to:
 		attack = true #cuck atakuje playera
 		
-func _on_Atak_body_exited(body):#jezeli player wyszedl z pola ataku (atak -> collisionshape) to:
+func _on_Atak_body_exited(body): # jezeli Player wyszedl z pola ataku (atak -> collisionshape) to:
 	attack = false #cuck przestaje atakowac playera
 	
 func _on_Timer_timeout():
-	if attack and health>0:
+	if attack and health>0 and Bufor.PLAYER:
 		statusEffect.bleeding = true
-		player.take_dmg(dps, enemyKnockback, self.global_position) #wywolywana jest funkcja zabierania dmg playerowi
+		Bufor.PLAYER.take_dmg(dps, enemyKnockback, self.global_position) #wywolywana jest funkcja zabierania dmg playerowi
+		
+		if Bufor.PLAYER.equipped_armor == "Cactus":
+			get_dmg(dps,enemyKnockback)
+		
 		$AnimationPlayer.play("Attack")
 		yield($AnimationPlayer,"animation_finished")
 		
@@ -106,7 +118,7 @@ func get_dmg(dmg, weaponKnockback):
 		
 #		# ======= KNOCKBACK ======= #
 		if weaponKnockback != 0:
-			knockback = -global_position.direction_to(player.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
+			knockback = -global_position.direction_to(Bufor.PLAYER.global_position)*(100+(100*weaponKnockback)) # knockback w przeciwną stronę od gracza z uwzględnieniem knockbacku broni
 		if knockbackResistance != 0:
 			knockback /= knockbackResistance
 		elif knockbackResistance <= 0.6:
@@ -117,6 +129,11 @@ func get_dmg(dmg, weaponKnockback):
 		health = hp/max_hp*100
 		health_bar.on_health_updated(health)
 		health_bar.visible = true
+		SoundController.play_hit()
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 	if health<=0: #jezeli cuck nie zyje
 		attack = false 
 		$CollisionShape2D.set_deferred("disabled",true)
@@ -127,23 +144,24 @@ func get_dmg(dmg, weaponKnockback):
 		if is_elite == true:
 			random_potion()
 		var coins = rng.randf_range(drop["minCoins"], drop["maxCoins"])
-		for i in range(0,coins): #losowane ilosc coinsow ktore wypadna po zabiciu
+		for _i in range(0,coins): #losowane ilosc coinsow ktore wypadna po zabiciu
 			randomPosition= Vector2(rng.randf_range(self.global_position.x-10,self.global_position.x+10),rng.randf_range(self.global_position.y-10,self.global_position.y+10))
 			var coin = load("res://Scenes/Loot/GoldCoin.tscn")
 			coin = coin.instance()
 			coin.position = randomPosition
 			level.add_child(coin)
+		var text = floating_dmg.instance()
+		text.amount = dmg
+		text.type = "Damage"
+		add_child(text)
 		emit_signal("died", self)
+		SoundController.play_hit()
 		queue_free()
-	var text = floating_dmg.instance()
-	text.amount = dmg
-	text.type = "Damage"
-	add_child(text)		
 
 func random_potion():
 	rng.randomize()
 	var potion = int(rng.randi_range(0,1))
-	print(potion)
+	print("[INFO]: at " + self.name + ": potion dropped: " + str(potion))
 	var tmp
 	
 	if potion == 0:

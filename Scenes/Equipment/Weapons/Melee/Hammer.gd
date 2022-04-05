@@ -36,7 +36,7 @@ var range_y = 6
 #do um 2
 var immortal_time = 5 #czas niesmiertelnosci w sekundach
 var immortal_knockback = 20
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/hammer.png")
@@ -66,7 +66,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if active_ability1!=1 and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				active_ability1 = 1
 		
@@ -118,9 +118,9 @@ func _physics_process(delta):
 		
 		if active_ability1!=1 and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(2,50) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
-				var player_node := get_tree().get_root().find_node("Player", true, false)
+				var _player_node := get_tree().get_root().find_node("Player", true, false)
 				var equipped_weapon := get_tree().get_root().find_node("EquippedWeapon", true, false)
 				
 				var tmp = {
@@ -164,10 +164,7 @@ func _physics_process(delta):
 				yield(t, "timeout")
 				level.get_node("Player").immortal = 0
 				spell =0
-	
-func reset_pivot():#Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-	position.x=0.281
-	position.y=0.281
+
 
 func _on_Player_attacked():
 	if !attack:#Sprawdza czy broń nie jest w trakcie ataku

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Levels/Portal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Levels/Portal.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Levels/Portal2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Light/Light.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 48, 30 )
@@ -23,6 +24,29 @@ animations = [ {
 "speed": 2.0
 } ]
 
+[sub_resource type="Animation" id=5]
+resource_name = "portal"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("krysztaly:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, -21 ), Vector2( 0, -22 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 7, 13 )
+
+[sub_resource type="OccluderPolygon2D" id=7]
+polygon = PoolVector2Array( -34.6667, 19.3333, -34.6667, 29.3333, -47.3333, 29.3333, -47.3333, 19.3333 )
+
 [node name="Portal" type="Area2D"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 1 )
@@ -35,12 +59,102 @@ visible = false
 position = Vector2( 0, -66 )
 z_index = 2
 frames = SubResource( 4 )
-frame = 1
 playing = true
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="podstawa" type="Sprite" parent="."]
 position = Vector2( 0, -21 )
 texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 96, 101 )
+
+[node name="krysztaly" type="Sprite" parent="."]
+position = Vector2( 0, -22 )
+z_index = 3
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 96, 0, 96, 101 )
+
+[node name="Light2D" parent="krysztaly" instance=ExtResource( 4 )]
+position = Vector2( 41, -46 )
+scale = Vector2( 0.5, 0.5 )
+color = Color( 0.827451, 0, 1, 1 )
+
+[node name="Light2D2" parent="krysztaly" instance=ExtResource( 4 )]
+position = Vector2( -41, -46 )
+scale = Vector2( 0.5, 0.5 )
+color = Color( 0.827451, 0, 1, 1 )
+
+[node name="Light2D3" parent="krysztaly" instance=ExtResource( 4 )]
+position = Vector2( 41, 5 )
+scale = Vector2( 0.5, 0.5 )
+color = Color( 0.827451, 0, 1, 1 )
+
+[node name="Light2D4" parent="krysztaly" instance=ExtResource( 4 )]
+position = Vector2( -41, 5 )
+scale = Vector2( 0.5, 0.5 )
+color = Color( 0.827451, 0, 1, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/portal = SubResource( 5 )
+
+[node name="filary" type="Sprite" parent="."]
+light_mask = 2
+position = Vector2( 0, -21 )
+z_index = 2
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 192, 0, 96, 101 )
+
+[node name="filary2" type="Sprite" parent="."]
+light_mask = 2
+position = Vector2( 0, -21 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 288, 0, 96, 101 )
+
+[node name="filar1" type="StaticBody2D" parent="."]
+position = Vector2( -40.6667, 16.6667 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="filar1"]
+position = Vector2( -3.8147e-06, 0 )
+shape = SubResource( 6 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="filar1"]
+position = Vector2( 40.6667, -16.6667 )
+occluder = SubResource( 7 )
+
+[node name="filar2" type="StaticBody2D" parent="."]
+position = Vector2( 40.6667, 16.6667 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="filar2"]
+position = Vector2( -3.8147e-06, 0 )
+shape = SubResource( 6 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="filar2"]
+position = Vector2( 40.6667, -16.6667 )
+occluder = SubResource( 7 )
+
+[node name="filar3" type="StaticBody2D" parent="."]
+position = Vector2( -40.6667, -33.3333 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="filar3"]
+position = Vector2( -3.8147e-06, 0 )
+shape = SubResource( 6 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="filar3"]
+position = Vector2( 40.6667, -16.6667 )
+occluder = SubResource( 7 )
+
+[node name="filar4" type="StaticBody2D" parent="."]
+position = Vector2( 40.6667, -33.3333 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="filar4"]
+position = Vector2( -3.8147e-06, 0 )
+shape = SubResource( 6 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="filar4"]
+position = Vector2( 40.6667, -16.6667 )
+occluder = SubResource( 7 )
 
 [connection signal="body_entered" from="." to="." method="_on_Portal_body_entered"]
 [connection signal="body_shape_exited" from="." to="." method="_on_Portal_body_shape_exited"]

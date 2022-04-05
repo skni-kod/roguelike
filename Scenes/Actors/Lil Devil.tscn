@@ -6,7 +6,6 @@
 [ext_resource path="res://Assets/Enemies/lil_devil_body.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Enemies/shadow.png" type="Texture" id=5]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.51628, 5.90472 )
 

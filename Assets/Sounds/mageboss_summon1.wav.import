@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mageboss_summon1.wav-c9fe2ce7b59badfa4470eab90b757f64.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/mageboss_summon1.wav"
+dest_files=[ "res://.import/mageboss_summon1.wav-c9fe2ce7b59badfa4470eab90b757f64.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

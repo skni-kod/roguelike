@@ -43,7 +43,7 @@ var attack_speedmultipler = 2
 var ability2duration = 5
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if a:#Zmienia ustawienia timera i teksturę a także skaluje kolizję (_ready() nie działa)
 		timer.set_wait_time(0.01)
 		$WeaponSprite.texture = load("res://Assets/Loot/Weapons/axe.png")
@@ -73,7 +73,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_1"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=25:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-				player_node.on_skill_used(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 				spell = 1
 				attack = true
 				active_ability1 = true
@@ -90,7 +90,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("use_ability_2"):
 		if active_ability1==false and active_ability2==false and player_node.mana>=50:
 			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()):
-				player_node.on_skill_used(2,50)
+				player_node.start_skill_cooldown(2,50)
 				spell = 1
 				StatusBar_node.immune = true
 				tmpspeed = player_node.speed
@@ -106,6 +106,7 @@ func _physics_process(delta):
 				self.add_child(t)				
 				t.start()						
 				yield(t, "timeout")
+				t.queue_free()
 				
 				player_node.speed = tmpspeed
 				damage = tmpdmg

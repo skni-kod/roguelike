@@ -22,8 +22,14 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 MusicController="*res://autoloads/MusicController.tscn"
+SoundController="*res://autoloads/SoundController.tscn"
 Bufor="*res://autoloads/bufor.gd"
 Pause="*res://autoloads/Pause.tscn"
+Weapons="*res://autoloads/Weapons.gd"
+
+[debug]
+
+settings/stdout/verbose_stdout=true
 
 [display]
 
@@ -32,11 +38,36 @@ window/size/height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[global]
+
+use_ability_1=false
+
 [importer_defaults]
 
 ogg_vorbis={
 "loop": true,
 "loop_offset": 0
+}
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
 }
 
 [input]
@@ -117,6 +148,11 @@ skok={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+die={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":75,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -132,3 +168,4 @@ skok={
 [rendering]
 
 environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=false

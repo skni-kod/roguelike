@@ -4,9 +4,10 @@ var boss = false
 var totem = preload("res://Assets/Light/Lamp_1.tscn")
 var krysztal = preload("res://Assets/Light/Lamp_2.tscn")
 var pomnik = preload("res://Assets/Light/Lamp_3.tscn")
+var swietlik = preload("res://Assets/Light/swietlik.tscn")
 var rand = RandomNumberGenerator.new()
 onready var generation = get_node("../../../Main")
-var id_list = [] #Lista ID pokojów, w których był już player
+var id_list = [] #Lista ID pokojów, w których był już Player
 var current_id #ID aktualnego pokoju
 
 func check_boss(room): #sprawdzanie, czy w to pokój bossa
@@ -15,6 +16,7 @@ func check_boss(room): #sprawdzanie, czy w to pokój bossa
 
 func _ready():
 	generation.connect("boss", self, "check_boss")
+
 
 func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w kolizje playere z polem("area")
 	if body.name == "Player": 
@@ -25,13 +27,14 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			#"duża struktura" - tylko jedna
 			#"duże struktury" nie mogą się pojawiać w pokoju bossa
 			#(wystawałyby z portalu)
-			if (randi() % 10 == 0 and !boss): #szansa generacji totemu 10%
-				add_child(totem.instance())
+			if (randi() % 100 < min(Bufor.POZIOM*2,48) and !boss): #szansa generacji totemu zależna od poziomu
+				call_deferred('add_child', totem.instance())
 			elif (randi() % 4 == 0 and !boss): #szansa generacji pomników 25%
 				var p = pomnik.instance()
 				if (randi() % 2 == 0):
 					p.Cuckshooter = true
-				add_child(p)
+				p.z_index = 1
+				call_deferred('add_child', p)
 			#małe struktury
 			#kryształy
 			var i = 4
@@ -72,4 +75,9 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 							y = rand.randi_range(-130,130)
 						k.rotation_degrees = 270
 						k.position = Vector2(x, y)
+				k.z_index = 1
 				add_child(k)
+			if (get_parent().get_parent().BIOM == 2):
+				while randi() % 3 == 0:
+					var s = swietlik.instance()
+					add_child(s)

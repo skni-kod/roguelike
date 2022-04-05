@@ -13,7 +13,7 @@ func _ready():
 	set_as_toplevel(true)
 	update_grid_position()
 	
-func update_grid_position(): #sprawdzanie czy player wyszedł poza granice siatki, jeżeli tak to przełącza kamerę w nową pozycję
+func update_grid_position(): #sprawdzanie czy Player wyszedł poza granice siatki, jeżeli tak to przełącza kamerę w nową pozycję
 	var x = round(parent.position.x / grid_size.x) 
 	var y = round(parent.position.y / grid_size.y)
 	var new_grid_position = Vector2(x,y)
@@ -22,5 +22,5 @@ func update_grid_position(): #sprawdzanie czy player wyszedł poza granice siatk
 	grid_position = new_grid_position 
 	position = grid_position * grid_size
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	update_grid_position()

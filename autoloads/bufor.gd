@@ -3,12 +3,14 @@ extends Node
 # globalny skrypt, który pozwala przerzucać wartości
 # po ponowym wczytaniu sceny (po walce z bossem)
 # ==================================================
-var coins = null
-var poziom = 0 # numer poziomu
-var weapons = null
-var first_weapon_stats = null
-var second_weapon_stats = null
-var equipped = null
-var potions = null
-var potions_amount = null
-var in_sklep = false
+var PLAYER = null
+var COINS = null
+var POZIOM = 0 # numer poziomu
+var WEAPONS = null
+var CURRENTLY_EQUIPPED_WEAPON = null
+var EQUIPPED = null
+var POTIONS = null
+var POTIONS_AMOUNT = null
+var armor_durability = 0
+var equipped_armor = null
+
