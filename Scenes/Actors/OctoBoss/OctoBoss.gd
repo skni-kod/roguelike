@@ -90,7 +90,7 @@ func _on_miniTimer_timeout():
 func stworzPortal(lvl):
 	var p = portal.instance()
 	p.global_position = get_node("../..").global_position
-	if true:#Bufor.poziom > len(get_parent().bossScene):
+	if true:#Bufor.POZIOM > len(get_parent().bossScene):
 		var q = portalf.instance()
 		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
 		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)

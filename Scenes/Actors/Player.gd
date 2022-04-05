@@ -115,25 +115,6 @@ var speedtmp = speed
 #zmienne przechowująca wartość o jaką zmiejsza się wytrzymałość armoru przy każdym hicie
 var armor_damage_on_hit = 2  
 
-func UpdatePotions(): #funkcja aktualizująca status potek
-	if potions_amount[potions[1]] == 0: #jeżeli ilosc potek na slocie 1 jest rowna 0 to:
-		ui_access_pslot1.texture = null  # usuniecie tekstury z slotu pierwszego
-		potion1_amount.text = "" # ustawienie textu ilosci potek na nic
-		potions[1] = "Empty" #przypisanie potxe z slotu 1 nazwe Empty potrzebne do poprawnego działania
-	if potions_amount[potions[2]] == 0: #to samo co wyżej tylko dla slotu 2
-		ui_access_pslot2.texture = null
-		potion2_amount.text = ""
-		potions[2] = "Empty"
-		
-	if potions[2] != "Empty" and potions[1] != "Empty": #jeżeli niema potki na slocie pierwszy ani drugim to:
-		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
-		ui_access_pslot2.texture = all_potions[potions[2]] #przypisanie do textury slotu drugiego textury aktualnego drugiego potka
-		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
-		potion2_amount.text = str(potions_amount[potions[2]]) #aktualizacja textu ilości potek w eq
-	elif potions[1] != "Empty":
-		ui_access_pslot1.texture = all_potions[potions[1]] #przypisanie do textury slotu pierwszego textury aktualnego pierwszego potka
-		potion1_amount.text = str(potions_amount[potions[1]]) #aktualizacja textu ilości potek w eq
-
 func UpdateArmorSprite():
 	level = get_tree().get_root().find_node("Main", true, false) #pobranie głównej sceny
 	emit_signal("armor_updated", armor_durability)
@@ -205,8 +186,8 @@ func _ready() -> void: #po inicjacji bohatera
 		equipped_armor = "Hero"
 		armor_durability = 0;
 	
-	if Bufor.coins:
-		coins = Bufor.coins
+	if Bufor.COINS:
+		coins = Bufor.COINS
 	level.get_node("UI/Coins").text = "Coins:"+str(coins) #aktualizacja napisu z ilością coinsów bohatera
 	
 	equippedWeapons = {
@@ -742,20 +723,18 @@ func take_dmg(dps, enemyKnockback, enemyPos) -> void: #otrzymanie obrażeń prze
 				#-----KNOCKBACK-----
 				
 			else:
-				get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
-		SoundController.play_player_hit()
-#		if health <= 0 and !dying:
-#			dying = true
-#			$PlayerCollision.disabled = true
-#			health = 0
-#			$AnimationPlayer.play("Die")
-#			yield($AnimationPlayer, "animation_finished")
-#			Bufor.PLAYER = null
-#			self.queue_free()
+				if !dying:
+					dying = true
+					$PlayerCollision.disabled = true
+					health = 0
+					$AnimationPlayer.play("Die")
+					yield($AnimationPlayer, "animation_finished")
+					Bufor.PLAYER = null
+					self.queue_free()
 # warning-ignore:return_value_discarded
-#			get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+					get_tree().change_scene("res://Scenes/UI/DeathScene.tscn")
+		SoundController.play_player_hit()
 			
-
 
 func _on_Pick_body_entered(body) -> void: #Jeśli coś do podniesienia jest w zasięgu gracza to przypisz do zmiennych węzeł
 	if body.is_in_group("Pickable"):

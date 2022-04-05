@@ -30,7 +30,7 @@ var wrogowie = [
 		1 : preload("res://Scenes/Actors/kaktus/kaktus.tscn"),
 	},
 	]
-	}
+	
 var all_armors = {
 	'BlackArmor' : preload("res://Scenes/Equipment/Armors/BlackArmor.tscn"),
 	"Angel" : preload("res://Scenes/Equipment/Armors/Angel.tscn"),
@@ -120,7 +120,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0 and not current_id in id_list: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
-			for _i in range(0, (5 + (Bufor.poziom - Bufor.poziom % 5) / 5)):
+			for _i in range(0, (5 + (Bufor.POZIOM - Bufor.POZIOM % 5) / 5)):
 				rand.randomize()
 				var enemy = wrogowie[biom][rand.randi_range(0,len(wrogowie[biom])-1)].instance() #rodzaj przeciwnika
 				rand.randomize()
@@ -131,7 +131,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 				enemy.connect("died", self, "open") #polaczenie sygnalu ktory otwiera drzwi po pokonaniu wszystkich przeciwnikow
 		elif boss and !bossFightStarted: #respienie boss'a
 			bossFightStarted = true
-			ilosc_enemy = 1
+#			ilosc_enemy = 1
 			var bossIns
 			bossIns = bossScene[Bufor.POZIOM % len(bossScene)].instance()
 			call_deferred("add_child",bossIns) #dodawanie sceny boss'a
@@ -156,9 +156,9 @@ func weapon():
 	weapons = ALL_WEAPONS_STATS #Przypisanie wszystkich broni do zmiennej
 	for i in weapons: #Pętla przypisująca nazwy do zmiennej
 		names.append(i)
-	for i in weapons: #Pętla przypisująca nazwy do zmiennej
-		if int(weapons[i]["plus"])==0: 
-			names.append(i)
+#	for i in weapons: #Pętla przypisująca nazwy do zmiennej
+#		if int(weapons[i]["plus"])==0: 
+#			names.append(i)
 	rand_num(0,len(names)) #Wywołanie funkcji rand_num()
 
 	weapon = load("res://Scenes/Loot/Weapon.tscn") #Ładuje scenę broni do zmiennej 
@@ -211,7 +211,9 @@ func rand_num(from,to):
 	arr.shuffle() #Funkcja losuje kolejność dla elementów w zmiennej arr
 
 func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
-	var ilosc_enemy = -1 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
+	var ilosc_enemy = 0 # open jest wywoływana przed usunięciem umierającego przeciwnika ze sceny
+	if biom == 1:
+		ilosc_enemy = -1
 	for i in get_children():
 		if i.is_in_group("Enemy") and not i.is_in_group("Ignored"):
 			ilosc_enemy += 1

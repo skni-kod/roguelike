@@ -48,7 +48,12 @@ func _ready():
 		2:
 			current_room_type = 3
 		_:
-			current_room_type = random_room_nr.randi_range(1, room_variations.size())
+			var b =  RandomNumberGenerator.new()
+			b.randomize()
+			BIOM = b.randi_range(0,2)
+			current_room_type = 1
+			if BIOM == 0:
+				current_room_type = random_room_nr.randi_range(1, room_variations.size())
 			
 	MusicController.stop_music() #zapauzowanie muzyki z menu
 	generate() #generacja mapy
@@ -153,21 +158,4 @@ func step(direction): #funkcja, która określa w którą stronę może zostać 
 	else: #jezeli jest juz w mapie to zmniejszamy "n" poniewaz nie wygenerowalismy pokoju
 		n -= 1
 
-func _ready():
-	match Bufor.poziom:
-		0:
-			current_room_type = 1
-		1:
-			current_room_type = 2
-		2:
-			current_room_type = 3
-		_:
-			var b =  RandomNumberGenerator.new()
-			b.randomize()
-			BIOM = b.randi_range(0,2)
-			current_room_type = 1
-			if BIOM == 0:
-				current_room_type = random_room_nr.randi_range(1, room_variations.size())
-			
-	MusicController.stop_music() #zapauzowanie muzyki z menu
-	generate() #generacja mapy
+
