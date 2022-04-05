@@ -4,7 +4,7 @@ var ALL_WEAPONS_SCENES = {
 	"Axe" : preload("res://Scenes/Equipment/Weapons/Melee/axe/Axe.tscn"),
 	"Blade" : preload("res://Scenes/Equipment/Weapons/Melee/blade/Blade.tscn"),
 	"BloodSword" : preload("res://Scenes/Equipment/Weapons/Melee/bloodsword/BloodSword.tscn"),
-#	"FMS" : preload("res://Scenes/Equipment/Weapons/Melee/fms/FMS.tscn"),
+	"Fms" : preload("res://Scenes/Equipment/Weapons/Melee/fms/Fms.tscn"),
 	"Hammer" :preload("res://Scenes/Equipment/Weapons/Melee/hammer/Hammer.tscn"),
 	"Katana" : preload("res://Scenes/Equipment/Weapons/Melee/katana/Katana.tscn"),
 	"Knife" : preload("res://Scenes/Equipment/Weapons/Melee/knife/Knife.tscn"),
@@ -15,7 +15,7 @@ var ALL_WEAPONS_TEXTURES = {
 	"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 	"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 	"Fire Scepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-#	"FMS" : preload("res://Assets/Loot/Weapons/fms.png"),
+	"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
 	"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 	"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 	"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
@@ -71,78 +71,11 @@ var ALL_WEAPONS_STATS = {
 		"range": "melee",
 		"effect": "none"
 	},
-#	 "FMS": {
-#		"attack": "22",
-#		"spd": "0.5",
-#		"knc": float(0.5),
-#		"range": "melee",
-#		"effect": "none"
-#	}
-}
-
-var all_weapons_p = {
-		"blade+": {
-			"attack": "15",
-			"spd": "0.5",
-			"knc": float(0.75),
-			"range": "melee",
-			"effect": "none"
-		},
-		"axe+": {
-			"attack": "15",
-			"spd": "0.5",
-			"knc": float(0.75),
-			"range": "melee",
-			"effect": "none"
-		},
-		"katana+": {
-			"attack": "18",
-			"spd": "0.8",
-			"knc": float(0.1),
-			"range": "melee",
-			"effect": "none"
-		},
-		"knife+": {
-			"attack": "5",
-			"spd": "1.5",
-			"knc": float(0),
-			"range": "melee",
-			"effect": "none"
-		},
-		"hammer+": {
-			"attack": "30",
-			"spd": "0.3",
-			"knc": float(3),
-			"range": "melee",
-			"effect": "none"
-		},
-		"spear+": {
-			"attack": "15",
-			"spd": "1",
-			"knc": float(0.25),
-			"range": "melee",
-			"effect": "none"
-		},
-		"fire Scepter+": {
-			"attack": "13",
-			"spd": "1",
-			"knc": float(0.75),
-			"range": "magic",
-			"effect": "none"
-		},
-		"bloodsword+": {
-			"attack": "20",
-			"spd": "1",
-			"knc": float(0.3),
-			"range": "melee",
-			"effect": "none"
-		},
-#		"fms+": {
-#			"attack": "22",
-#			"spd": "1",
-#			"knc": float(0.5),
-#			"range": "melee",
-#			"effect": "none"
-#		}
-		
+	 "Fms": {
+		"attack": "22",
+		"spd": "0.5",
+		"knc": float(0.5),
+		"range": "melee",
+		"effect": "none"
+	}
 }

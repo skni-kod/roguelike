@@ -1,169 +1,209 @@
-#extends Node2D
-#
-##const M = preload("../Moon_particles.tscn") #pobieramy particle do umiejek
-#
-#onready var player_node = get_tree().get_root().find_node("Player", true, false)
-#var spell = 0
-#var mouse_position #Pozycja kursora
-#var attack = false #Czy postać atakuje
-#var attack_vector = Vector2.ZERO #Wektor po którym porusza się broń podczas ataku
-#export var attack_range = 15 #Zasięg ataku
-#var timer #Stoper
-#var ability1ManaCost=1 #koszt do zmiany w balansie
-#var ability2ManaCost=1 #koszt do zmiany w balansie
-#var damage
-#var weaponKnockback
-#var a = 1
-#var weaponName = "fms"
-#var smoothing = 1
-#
-#var rng = RandomNumberGenerator.new()
-#var crit_chance = rng.randi_range(0,10)
-#var crit = false
-#var crit_damage = 2
-#
-#var attack_speed = 0
-#var swing_to = 0.2
-#var swing_back = 0.8
-#var animation_step = 0.02
-#var ability = 0
-#
-#var mc = 0
-#var ph = 0
-#var basedmg
-#var basespd
-#
-#func _physics_process(_delta):
-#	if Input.is_action_just_pressed("use_ability_1"):
-#		if player_node.mana>=ability1ManaCost and !ability:
-#			player_node.updateMana(-ability1ManaCost)
-#
-#			ability1()
-#	if Input.is_action_just_pressed("use_ability_2"):
-#		if player_node.mana>=ability2ManaCost and !ability:
-#			player_node.updateMana(-ability2ManaCost)
-#			ability2()
-#
-#	if mc == 10:
-#		ph+=1
-#		mc = 0
-#		if ph == 6: ph=0
-#		match ph:
-#			0:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms0.png")
-#			1:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms1.png")
-#				basedmg = damage
-#				damage = damage*1.2
-#			2:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms2.png")
-#				damage = basedmg*1.4
-#			3:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms3.png")
-#				damage = basedmg*1.6
-#			4:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms4.png")
-#				damage = basedmg*1.8
-#			5:
-#				$WeaponSprite.texture = load("res://Assets/Loot/Weapons/fms.png")
-#				damage = basedmg*2
-#
-#
-#func _unhandled_input(event):
-#	if event is InputEventMouseButton:
-#		if event.button_index == BUTTON_LEFT and event.pressed:
-#			$AnimationPlayer.play("Attack")
-#			yield($AnimationPlayer, "animation_finished")
-#			$AnimationPlayer.play("RESET")
-#
-#
-#func reset_pivot(): #Zresetuj broń. Nawet jak animacja jest spieprzona to broń nie oddali się od gracza
-#	position.x=0.281
-#	position.y=0.281
-#
-#
-#func _on_Player_attacked():
-#	if !attack:#Sprawdza czy broń nie jest w trakcie ataku
-#		attack = true
-#		$AttackCollision.disabled = false
-#		attack_vector = Vector2(attack_range * cos(rotation), attack_range * sin(rotation))
-#		timer.start()
-#
-#func _on_Timer_timeout(): #Wykonuje się kiedy zejdzie cooldown ataku
-#	attack_speed += animation_step
-#	if attack_speed <= swing_to:
-#		position += attack_vector * (animation_step/swing_to)
-#		if rotation < -PI/2 or rotation > PI/2:
-#			$WeaponSprite.rotation_degrees += -90 * (animation_step/swing_to)
-#		else:
-#			$WeaponSprite.rotation_degrees += 90 * (animation_step/swing_to)
-#	elif attack_speed > swing_back:
-#		position -= attack_vector
-#		$WeaponSprite.rotation_degrees = 0
-#		$AttackCollision.disabled = true
-#		attack = false
-#		attack_speed = 0
-#		timer.stop()
-#		reset_pivot()
-#
-#func change_weapon(texture):
-#	$WeaponSprite.texture = texture
-#
-#func _on_EquippedWeapon_body_entered(body): #Zadaje obrażenia przy kolizji z przeciwnikiem
-#	if body.is_in_group("Enemy"):
-#		mc+=1
-#		rng.randomize()
-#		crit_chance = rng.randi_range(0,10)
-#		crit = false
-#		if(crit_chance == 0):
-#			damage *= crit_damage
-#			crit = true
-#		body.get_dmg(damage, weaponKnockback)
-#		if crit:
-#			damage /= crit_damage
-#
-#func ability1(): # "Thirst" na krótki czas zwiększa prędkośc ataku i lifesteal
-#		if player_node.mana>=25:
-#			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS1").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-#				player_node.start_skill_cooldown(1,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-#				spell = 1
-#				basespd = player_node.speed
-#				player_node.speed += 100
-#				yield(get_tree().create_timer(10), "timeout")
-#				player_node.speed = basespd
-#				spell = 0
-#func ability2(): # "Gluttony" seria 4 ataków, każdy zadaje większe obrażenia na większej powierzchni, kosztuje życie
-#	if !ability and player_node.mana>=50:
-#			if (player_node.weapons[1]==weaponName and !player_node.get_node("CoolDownS2").get_time_left()) or (player_node.weapons[2]==weaponName and !player_node.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-#				player_node.start_skill_cooldown(2,25) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
-#				spell = 1
-#				ability = 1
-#				$AttackCollision.disabled = false
-#				var Beam = M.instance() #towrzymy jedną instancję animacji krwi
-#				Beam.position = (get_tree().get_root().find_node("Player", true, false).global_position + Vector2(0,-70)) #ustawiamy jej pozycję jako pozycja gracza + wektor kierunku broni
-#				player_node.add_child(Beam) #dodajemy krew do sceny
-#				Beam.scale = 2*Beam.scale  #dostosowujemy wielkość krwi, używamy iteracji by była ona takiej samej wielkości co hitboxy
-#				$AttackCollision.scale.x = 6
-#				$AttackCollision.scale.y = 3
-#				$AttackCollision.position.x = 0
-#				$AttackCollision.position.y = -1
-#				damage = damage*3
-#				weaponKnockback = weaponKnockback*3
-#				basespd = player_node.speed
-#				player_node.speed -= player_node.speed
-#				player_node.knockbackResistance = 10
-#				player_node.immortal = 1
-#				yield(get_tree().create_timer(10), "timeout") #czas pomiędzy atakami
-#				Beam.queue_free()
-#				$AttackCollision.scale.x = 1.8
-#				$AttackCollision.scale.y = 0.3
-#				$AttackCollision.position.x = 13
-#				$AttackCollision.position.y = 0
-#				damage = damage/3
-#				weaponKnockback = weaponKnockback/3
-#				player_node.speed = basespd
-#				player_node.knockbackResistance = 1
-#				player_node.immortal = 0
-#				$AttackCollision.disabled = true
-#				ability = 0
-#				spell = 0
+extends Node2D
+
+signal fmsability2used(direction, currPos)
+
+export var attack_range = 15 #Zasięg ataku
+export var attacking = false setget set_attack_state, get_attack_state #Czy postać atakuje
+
+onready var Player_node = get_tree().get_root().find_node("Player", true, false)
+onready var StatusBar_node = get_tree().get_root().find_node("StatusBar", true, false)
+
+var damage
+var weaponKnockback
+var attack_speed
+
+var weaponName = "Fms"
+var spell = 0
+
+var rng = RandomNumberGenerator.new()
+var crit_chance = rng.randi_range(0,10)
+var crit = false
+var crit_damage = 2
+
+#for passive 
+var phase = 0
+var basedmg 
+#for ability1
+var EhpHero = preload("res://Assets/Hero/FmsEphermalForm.png")
+var NormalHero = preload("res://Assets/Hero/RedHero.png")
+#for ability2
+onready var main = get_tree().get_root().find_node("Main", true, false)
+var Projectiles = load("res://Scenes/Equipment/Weapons/Melee/fms/Ability2.tscn")
+var Ability2Active = 0
+func _fire_projectile() -> void:
+	var Projectile = Projectiles.instance()
+	var diry: int = get_parent().scale.y
+	var dirx = scale.x
+	match diry:
+		-1:
+			Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 0, -dirx)
+			Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 1, -dirx)
+		1:
+			Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 0, dirx)
+			Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 1, dirx)
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(0, 0, global_position.x)
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(1, 0, global_position.y)
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
+	var flip = 0
+	if abs(Bufor.PLAYER.get_node("Hand").rotation_degrees) > 90:
+		flip = 180
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(2, 0, flip+Bufor.PLAYER.get_node("Hand").rotation_degrees) 
+	Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(2, 1, flip+Bufor.PLAYER.get_node("Hand").rotation_degrees) 
+	main.add_child(Projectile)
+	Projectile.get_node("Ab2Attack").play("Attack")
+	yield(Projectile.get_node("Ab2Attack"), "animation_finished")
+	Projectile.queue_free()
+
+
+func _ready() -> void:
+	damage = float(Weapons.all_weapons.Axe["attack"])
+	basedmg = damage
+	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
+	attack_speed = float(Weapons.all_weapons.Axe["spd"])
+	$WeakAttack.play("RESET")
+func _physics_process(_delta):
+#	print("[INFO]: Axe rotation: ", rotation_degrees)
+	pass
+
+func _unhandled_input(event) -> void:
+
+	if !attacking:
+		if Input.is_action_just_pressed("attack"):
+			print("[INFO]: Event identified as BUTTON_LEFT pressed")
+			$WeakAttack.playback_speed = attack_speed
+			$WeakAttack.play("Attack")
+			if Ability2Active == 1:
+				_fire_projectile()
+			yield($WeakAttack, "animation_finished")
+			$WeakAttack.play("RESET")
+
+
+		if event.is_action_pressed("use_ability_1"):
+			if Player_node.mana>=25:
+				if (Player_node.equippedWeapons[1]==weaponName and !Player_node.get_node("CoolDownS1").get_time_left()) or (Player_node.equippedWeapons[2]==weaponName and !Player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
+					Player_node.start_skill_cooldown(1, 10, 5)
+					spell = 1
+					Bufor.PLAYER.get_node("PlayerSprite").set_texture(EhpHero)
+					Bufor.PLAYER.speed = Bufor.PLAYER.speed*2
+					yield(get_tree().create_timer(3.0), "timeout")
+					Bufor.PLAYER.speed = Bufor.PLAYER.speed/2
+					Bufor.PLAYER.get_node("PlayerSprite").set_texture(NormalHero)
+					spell = 0
+		elif event.is_action_pressed("use_ability_2"):
+			if Player_node.mana>=50:
+				if (Player_node.equippedWeapons[1]==weaponName and !Player_node.get_node("CoolDownS2").get_time_left()) or (Player_node.equippedWeapons[2]==weaponName and !Player_node.get_node("CoolDownS4").get_time_left()):
+					Player_node.start_skill_cooldown(2, 1, 0)
+					spell = 1
+					Ability2Active = 1
+					yield(get_tree().create_timer(5.0), "timeout")
+#					var Projectile = Projectiles.instance()
+#					var diry: int = get_parent().scale.y
+#					var dirx = scale.x
+#					match diry:
+#						-1:
+#							Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 0, -dirx)
+#							Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 1, -dirx)
+#						1:
+#							Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 0, dirx)
+#							Projectile.get_node("Ab2Attack").get_animation("Attack").track_set_key_value(3, 1, dirx)
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(0, 0, global_position.x)
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(0, 1, get_global_mouse_position().x)
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(1, 0, global_position.y)
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(1, 1, get_global_mouse_position().y)
+#					var flip = 0
+#					if abs(Bufor.PLAYER.get_node("Hand").rotation_degrees) > 90:
+#						flip = 180
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(2, 0, flip+Bufor.PLAYER.get_node("Hand").rotation_degrees) 
+#					Projectile.get_node("Ab2Attack").get_animation("Attack").bezier_track_set_key_value(2, 1, flip+Bufor.PLAYER.get_node("Hand").rotation_degrees) 
+#					main.add_child(Projectile)
+#					Projectile.get_node("Ab2Attack").play("Attack")
+#					yield(Projectile.get_node("Ab2Attack"), "animation_finished")
+#					Projectile.queue_free()
+					Ability2Active = 0
+					spell = 0
+					
+	match phase:
+		0:
+			$Phase9.visible=false
+			$Phase0.visible=true
+			damage = basedmg*1
+		1:
+			$Phase0.visible=false
+			$Phase1.visible=true
+			damage = basedmg*1.25
+		2:
+			$Phase1.visible=false
+			$Phase2.visible=true
+			damage = basedmg*1.5
+		3:
+			$Phase2.visible=false
+			$Phase3.visible=true
+			damage = basedmg*1.75
+		4:
+			$Phase3.visible=false
+			$Phase4.visible=true
+			damage = basedmg*2
+		5:
+			$Phase4.visible=false
+			$Phase5.visible=true
+			damage = basedmg*2.5
+		6:
+			$Phase5.visible=false
+			$Phase6.visible=true
+			damage = basedmg*2
+		7:
+			$Phase6.visible=false
+			$Phase7.visible=true
+			damage = basedmg*1.75
+		8:
+			$Phase7.visible=false
+			$Phase8.visible=true
+			damage = basedmg*1.5
+		9:
+			$Phase8.visible=false
+			$Phase9.visible=true
+			damage = basedmg*1.25
+
+func _on_Player_attacked() -> void:
+	if !attacking: #Sprawdza czy broń nie jest w trakcie ataku
+		set_attack_state(true)
+		$AttackCollision.disabled = false
+
+
+func change_weapon(texture) -> void:
+	$WeaponSprite.texture = texture
+
+
+func _on_Fms_body_entered(body) -> void:
+#	print("[INFO]: Axe collided with ", body)
+	if body.is_in_group("Enemy"):
+		print("[INFO]: Fms hit: ", body)
+		rng.randomize()
+		crit_chance = rng.randi_range(0,10)
+		crit = false
+		if(crit_chance == 0):
+			damage *= crit_damage
+			crit = true
+		body.get_dmg(damage, weaponKnockback)
+		if crit:
+			damage /= crit_damage
+
+
+func play_swoosh():
+	SoundController.play_Player_swoosh1()
+
+# === SET/GET FOR THE ATTACK STATE === #
+# setter is called at the animations
+func set_attack_state(value: bool) -> void:
+	attacking = value
+
+
+# getter is called at _unhandled_input() to check if not already attacking
+func get_attack_state() -> bool:
+	return attacking
+# === ============================ === #
+
+
+
+

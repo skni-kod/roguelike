@@ -957,6 +957,14 @@ anims/RESET = SubResource( 31 )
 anims/Run = SubResource( 32 )
 anims/skok = SubResource( 33 )
 
+[node name="Pick" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 97
+
+[node name="PickCollision" type="CollisionShape2D" parent="Pick"]
+position = Vector2( 0, -0.0787468 )
+shape = SubResource( 17 )
+
 [node name="BurningParticles" type="Particles2D" parent="."]
 position = Vector2( 0.198425, 5.55624 )
 emitting = false

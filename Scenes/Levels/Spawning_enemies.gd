@@ -119,6 +119,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 		current_id = get_instance_id() #pobieranie aktualnego ID pokoju
 		if int(round(self.global_position.x/512)) == 0 and int(round(self.global_position.y/288)) == 0 and not current_id in id_list: #jezeli startowy pokoj
 			id_list.append(current_id) #Dodawanie pokoju do listy odwiedzonych
+			
 		if not current_id in id_list and not boss: #losowanie przeciwników do poziomu
 			for _i in range(0, (5 + (Bufor.POZIOM - Bufor.POZIOM % 5) / 5)):
 				rand.randomize()
@@ -224,6 +225,13 @@ func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 
 func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 	if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
+		if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
+			ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
+		if ilosc_enemy == 0: #jeżeli nie ma przeciwników
+			if Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase < 9: #Fms
+				Bufor.PLAYER.get_node("Hand").get_child(0).phase += 1 
+			elif Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase == 9:
+				Bufor.PLAYER.get_node("Hand").get_child(0).phase = 0
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()
@@ -275,3 +283,7 @@ func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 				tilemap.set_cell(0,4,1)
 				tilemap.set_cell(0,5,2)
 				tilemap.set_cell(1,4,3)
+
+
+func _on_Enemies_Cleared() -> void:
+	pass # Replace with function body.

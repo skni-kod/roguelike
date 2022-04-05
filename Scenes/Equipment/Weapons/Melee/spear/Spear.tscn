@@ -1,15 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Loot/Weapons/spear.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Equipment/Weapons/Melee/spear/Spear.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Effects/0deg_swoosh.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Effects/180deg_swoosh.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Effects/90deg_swoosh.png" type="Texture" id=5]
 
-[sub_resource type="CapsuleShape2D" id=14]
+[sub_resource type="ParticlesMaterial" id=1]
+flag_disable_z = true
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="CapsuleShape2D" id=2]
 radius = 3.90486
 height = 12.1059
 
-[sub_resource type="Animation" id=12]
-resource_name = "Attack"
-length = 0.55
+[sub_resource type="Animation" id=3]
+length = 0.6
 step = 0.05
 tracks/0/type = "bezier"
 tracks/0/path = NodePath(".:position:x")
@@ -18,7 +26,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.15, 0.35, 0.55 )
 }
 tracks/1/type = "bezier"
@@ -38,13 +46,436 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.15, 0.55 ),
+"times": PoolRealArray( 0, 0.15, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ true, false, true ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("ThrustSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("ThrustSprite:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.2, 0.4 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("ThrustSprite:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath(".:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AttackCollision:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 5.0
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -8.421, -0.25, 0, 0.25, 0, 16.2927, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.15, 0.35, 0.55, 0.7, 0.9, 1.1, 1.25, 1.45, 1.65, 1.8, 2, 2.2, 2.35, 2.55, 2.75, 2.9, 3.1, 3.3, 3.45, 3.65, 3.85, 4, 4.2, 4.4, 4.55, 4.75, 4.95 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 15, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -9, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 7, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -4, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 14, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 11, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -19, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 14, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -3, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.15, 0.55, 0.7, 1.1, 1.25, 1.65, 1.8, 2.2, 2.35, 2.75, 2.9, 3.3, 3.45, 3.85, 4, 4.4, 4.55, 4.95 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AttackCollision:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.15, 0.55, 0.7, 1.1, 1.25, 1.65, 1.8, 2.2, 2.35, 2.75, 2.9, 3.35, 3.5, 3.95, 4.1, 4.55, 4.7, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("ThrustSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.75, 1.05, 1.3, 1.6, 1.85, 2.15, 2.4, 2.7, 2.95, 3.25, 3.5, 3.8, 4.05, 4.35, 4.6, 4.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false ]
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("ThrustSprite:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.2, 0.4, 0.75, 0.95, 1.3, 1.5, 1.85, 2.05, 2.4, 2.6, 2.95, 3.15, 3.5, 3.7, 4.05, 4.25, 4.6, 4.8 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("ThrustSprite:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath(".:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AttackCollision:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.5
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.45, -20.8947, 5, -0.25, 0, 0.25, 0, 7, -0.25, 0, 0.25, 0, 11, -0.25, 0, 0.25, 0, 14, -0.25, 0, 0.25, 0, 14, -0.586138, 25.0117, 0.58, -24.7498, 14, -0.208484, 11.4971, 0.34, -18.7498, 11, -0.161921, 15.8731, 0.33, -32.3498, 7, -0.188787, 13.6574, 0.32, -23.1498, 5, -0.198023, 12.7167, 0.32, -20.5498, 0, -0.203091, 12.149, 0.28, -16.7498 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, -12, -0.25, 0, 0.25, 0, -9, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 9, -0.25, 0, 0.25, 0, 12, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AttackCollision:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -20, -0.25, 0, 0.25, 0, -60, -0.25, 0, 0.25, 0, -40, -0.25, 0, 0.25, 0, -20, -0.25, 0, 0.25, 0, 4.76837e-07, -0.25, 0, 0.25, 0, 20, -0.25, 0, 0.25, 0, 40, -0.25, 0, 0.25, 0, 60, -0.25, 0, 0.25, 0, 20, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("SweepSprite:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("SweepSprite:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath("AttackCollision:scale:y")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 )
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath("AttackCollision:position:x")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 18, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 18, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 )
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AttackCollision:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 1.05
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.05 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.05 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AttackCollision:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.05, 1.05 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.01, 0, 0.01, 0, 90, -0.01, 0, 0.01, 0, 180, -0.01, 0, 0.01, 0, 270, -0.01, 0, 0.01, 0, 360, -0.01, 0, 0.01, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.5, 0.75, 1 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("AttackCollision:scale:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.05, 1, 1.05 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("AttackCollision:position:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 18, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 18, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.05, 1, 1.05 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("SwooshSprite:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=10]
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/path = NodePath(".:rotation_degrees")
@@ -90,8 +521,28 @@ tracks/3/keys = {
 }
 
 [node name="Spear" type="Area2D"]
+rotation = 6.28319
 collision_mask = 4
 script = ExtResource( 2 )
+
+[node name="ThrustSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 10, 0 )
+scale = Vector2( 0.45, 0.45 )
+texture = ExtResource( 3 )
+
+[node name="SweepSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 23.0318, -13.4657 )
+rotation = -0.392699
+scale = Vector2( 0.223058, 0.240752 )
+texture = ExtResource( 4 )
+
+[node name="SwooshSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 21.3603, -11.0275 )
+scale = Vector2( 0.291512, 0.367471 )
+texture = ExtResource( 5 )
 
 [node name="WeaponSprite" type="Sprite" parent="."]
 light_mask = 2
@@ -99,13 +550,42 @@ position = Vector2( 6.60712, 0 )
 rotation = 0.785398
 texture = ExtResource( 1 )
 
+[node name="ImpactParticles" type="Particles2D" parent="WeaponSprite"]
+position = Vector2( 15.9515, -15.7842 )
+emitting = false
+amount = 128
+speed_scale = 7.72
+local_coords = false
+process_material = SubResource( 1 )
+
 [node name="AttackCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 18.2876, -0.268075 )
+position = Vector2( 18, 0 )
 rotation = 1.5708
-shape = SubResource( 14 )
+shape = SubResource( 2 )
 disabled = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="WeakAttack" type="AnimationPlayer" parent="."]
 playback_speed = 2.0
-anims/Attack = SubResource( 12 )
-anims/RESET = SubResource( 13 )
+anims/Attack = SubResource( 3 )
+anims/RESET = SubResource( 4 )
+
+[node name="FlurryAttack" type="AnimationPlayer" parent="."]
+playback_speed = 2.0
+anims/Attack = SubResource( 5 )
+anims/RESET = SubResource( 6 )
+
+[node name="StrongAttack" type="AnimationPlayer" parent="."]
+playback_speed = 2.0
+anims/Attack = SubResource( 7 )
+anims/RESET = SubResource( 8 )
+
+[node name="RepelAttack" type="AnimationPlayer" parent="."]
+playback_speed = 4.0
+anims/Attack = SubResource( 9 )
+anims/RESET = SubResource( 10 )
+
+[node name="ComboTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+[connection signal="body_entered" from="." to="." method="_on_Spear_body_entered"]
+[connection signal="timeout" from="ComboTimer" to="." method="_on_ComboTimer_timeout"]

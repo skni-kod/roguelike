@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fms.png-382ec645bddfdf0bdf6880bae99f5f17.stex"
+path="res://.import/0deg_swoosh.png-78de2be0115b27017d713569fd8e7c28.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Loot/Weapons/fms.png"
-dest_files=[ "res://.import/fms.png-382ec645bddfdf0bdf6880bae99f5f17.stex" ]
+source_file="res://Assets/Effects/0deg_swoosh.png"
+dest_files=[ "res://.import/0deg_swoosh.png-78de2be0115b27017d713569fd8e7c28.stex" ]
 
 [params]
 

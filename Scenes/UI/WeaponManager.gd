@@ -13,13 +13,13 @@ func _ready():
 	ALL_WEAPONS_STATS = {
 		"Axe" : preload("res://Assets/Loot/Weapons/axe.png"),
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
-		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
-		"FireScepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-#		"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
-		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
-		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
-		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),
-		"Spear" : preload("res://Assets/Loot/Weapons/spear.png")
+		"BloodSword" : preload("res://Assets/Loot/Weapons/BloodSword.png"),
+		"FireScepter" : preload("res://Assets/Loot/Weapons/fire scepter.png"),
+		"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
+		"Hammer" : preload("res://Assets/Loot/Weapons/Hammer.png"),
+		"Katana" : preload("res://Assets/Loot/Weapons/Katana.png"),
+		"Knife" : preload("res://Assets/Loot/Weapons/Knife.png"),
+		"Spear" : preload("res://Assets/Loot/Weapons/Spear.png")
 	}
 	weapons = {
 		"Slot1" : "Blade",
