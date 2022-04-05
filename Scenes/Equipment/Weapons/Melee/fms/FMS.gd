@@ -57,17 +57,17 @@ func _fire_projectile() -> void:
 
 
 func _ready() -> void:
-	damage = float(Weapons.all_weapons.Axe["attack"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Fms["attack"])
 	basedmg = damage
-	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
-	attack_speed = float(Weapons.all_weapons.Axe["spd"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Fms["knc"])
+	attack_speed = float(Weapons.ALL_WEAPONS_STATS.Fms["spd"])
 	$WeakAttack.play("RESET")
+
 func _physics_process(_delta):
 #	print("[INFO]: Axe rotation: ", rotation_degrees)
 	pass
 
 func _unhandled_input(event) -> void:
-
 	if !attacking:
 		if Input.is_action_just_pressed("attack"):
 			print("[INFO]: Event identified as BUTTON_LEFT pressed")
@@ -82,7 +82,7 @@ func _unhandled_input(event) -> void:
 		if event.is_action_pressed("use_ability_1"):
 			if Player_node.mana>=25:
 				if (Player_node.equippedWeapons[1]==weaponName and !Player_node.get_node("CoolDownS1").get_time_left()) or (Player_node.equippedWeapons[2]==weaponName and !Player_node.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-					Player_node.start_skill_cooldown(1, 10, 5)
+					Player_node.start_skill_cooldown(1, 10, 0)
 					spell = 1
 					Bufor.PLAYER.get_node("PlayerSprite").set_texture(EhpHero)
 					Bufor.PLAYER.speed = Bufor.PLAYER.speed*2
@@ -93,7 +93,7 @@ func _unhandled_input(event) -> void:
 		elif event.is_action_pressed("use_ability_2"):
 			if Player_node.mana>=50:
 				if (Player_node.equippedWeapons[1]==weaponName and !Player_node.get_node("CoolDownS2").get_time_left()) or (Player_node.equippedWeapons[2]==weaponName and !Player_node.get_node("CoolDownS4").get_time_left()):
-					Player_node.start_skill_cooldown(2, 1, 0)
+					Player_node.start_skill_cooldown(2, 35, 0)
 					spell = 1
 					Ability2Active = 1
 					yield(get_tree().create_timer(5.0), "timeout")

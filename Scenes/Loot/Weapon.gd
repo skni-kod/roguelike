@@ -30,7 +30,7 @@ func _on_PopUp_body_entered(body):
 	 #Przypisuje zmienne i tworzy okienko statystyk broni
 	var popup
 	if body.name == "Player":
-#		if all_weapons["Weapons"][WeaponName]["plus"]=="d1" and WeaponName==player_node.weapons[player_node.check_current_weapon()]:
+#		if ALL_WEAPONS_STATS["Weapons"][WeaponName]["plus"]=="d1" and WeaponName==player_node.weapons[player_node.check_current_weapon()]:
 #			 popup = load("res://Scenes/UI/ItemStats+.tscn")
 #		else:
 #			 popup = load("res://Scenes/UI/ItemStats.tscn")

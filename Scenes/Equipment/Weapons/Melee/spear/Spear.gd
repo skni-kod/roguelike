@@ -25,9 +25,9 @@ var combo=1
 #do um2
 
 func _ready() -> void:
-	damage = float(Weapons.all_weapons.Axe["attack"])
-	weaponKnockback = float(Weapons.all_weapons.Axe["knc"])
-	attack_speed = float(Weapons.all_weapons.Axe["spd"])
+	damage = float(Weapons.ALL_WEAPONS_STATS.Spear["attack"])
+	weaponKnockback = float(Weapons.ALL_WEAPONS_STATS.Spear["knc"])
+	attack_speed = float(Weapons.ALL_WEAPONS_STATS.Spear["spd"])
 	$WeakAttack.play("RESET")
 
 

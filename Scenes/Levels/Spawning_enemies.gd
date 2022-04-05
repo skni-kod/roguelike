@@ -225,13 +225,10 @@ func obecniPrzeciwnicy(): # sprawdza czy w pokoju są obecni przeciwnicy
 
 func open(_body): #funkcja otwierania drzwi po pokonaniu przeciwników
 	if not obecniPrzeciwnicy(): #jeżeli nie ma przeciwników
-		if body.health <= 0: #jeżeli życie przeciwnika spadnie poniżej 0
-			ilosc_enemy -= 1 #odejmij o 1 ilość przeciwników
-		if ilosc_enemy == 0: #jeżeli nie ma przeciwników
-			if Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase < 9: #Fms
-				Bufor.PLAYER.get_node("Hand").get_child(0).phase += 1 
-			elif Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase == 9:
-				Bufor.PLAYER.get_node("Hand").get_child(0).phase = 0
+		if Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase < 9: #Fms
+			Bufor.PLAYER.get_node("Hand").get_child(0).phase += 1 
+		elif Bufor.PLAYER.get_node("Hand").get_child(0).weaponName == "Fms" and Bufor.PLAYER.get_node("Hand").get_child(0).phase == 9:
+			Bufor.PLAYER.get_node("Hand").get_child(0).phase = 0
 		rand.randomize()
 		if rand.randf_range(0,100) <= 100: #drop broni
 			weapon()

@@ -25,10 +25,7 @@ extents = Vector2( 6.38266, 18.6887 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 8.24753, 19.0661 )
 
-[node name="Node2D" type="Area2D" groups=["walls"]]
-[node name="Room" type="Area2D" groups=[
-"walls",
-]]
+[node name="Room" type="Area2D" groups=["walls"]]
 collision_layer = 0
 collision_mask = 5
 script = ExtResource( 5 )
@@ -86,4 +83,3 @@ shape = SubResource( 6 )
 [connection signal="body_entered" from="BottomEntrance" to="." method="_on_BottomEntrance_body_entered"]
 [connection signal="body_entered" from="LeftEntrance" to="." method="_on_LeftEntrance_body_entered"]
 [connection signal="body_entered" from="RightEntrance" to="." method="_on_RightEntrance_body_entered"]
-[connection signal="Cleared" from="Enemies" to="." method="_on_Enemies_Cleared"]

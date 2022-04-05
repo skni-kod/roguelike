@@ -402,7 +402,7 @@ position = Vector2( 429.262, 532.726 )
 scale = Vector2( 16, 16 )
 frames = SubResource( 10 )
 animation = "playertitlescreen"
-frame = 7
+frame = 8
 playing = true
 
 [node name="Monster1Sprite2" type="AnimatedSprite" parent="Background Decorations"]
@@ -411,7 +411,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 19 )
 animation = "titlescreenanimation"
-frame = 7
+frame = 2
 playing = true
 
 [node name="OrcSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -419,7 +419,6 @@ position = Vector2( 1146.23, 529.07 )
 rotation = 3.14159
 scale = Vector2( 12, -12 )
 frames = SubResource( 28 )
-frame = 1
 playing = true
 
 [node name="TSLilDevil" type="Node2D" parent="Background Decorations"]
@@ -431,7 +430,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 37 )
 animation = "titlescreenanimation"
-frame = 1
+frame = 6
 playing = true
 
 [node name="Monster1Sprite3" type="AnimatedSprite" parent="Background Decorations/TSLilDevil"]
@@ -440,7 +439,7 @@ rotation = 3.14159
 scale = Vector2( 8, -8 )
 frames = SubResource( 51 )
 animation = "titlescreenanimation"
-frame = 13
+frame = 2
 playing = true
 
 [node name="ShamanSprite" type="AnimatedSprite" parent="Background Decorations"]
@@ -454,7 +453,7 @@ playing = true
 position = Vector2( 1209.16, 591.999 )
 scale = Vector2( -8, 8 )
 frames = SubResource( 62 )
-frame = 5
+frame = 4
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
@@ -524,7 +523,7 @@ margin_right = 680.0
 margin_bottom = 640.0
 theme = ExtResource( 15 )
 custom_fonts/font = SubResource( 69 )
-text = "Version v0.3
+text = "Version v0.3 (DEMO)
 By SKNI KOD"
 
 [node name="FadeIn" parent="." instance=ExtResource( 7 )]

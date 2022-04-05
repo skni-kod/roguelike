@@ -84,34 +84,8 @@ tracks/2/keys = {
 "points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("AttackCollision:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ true ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("SwooshSprite:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ false ]
-}
 
 [node name="Ab2" type="Area2D"]
-position = Vector2( 52.5, 24 )
-rotation = -0.004868
 collision_mask = 4
 script = ExtResource( 2 )
 
@@ -126,4 +100,3 @@ shape = SubResource( 1 )
 [node name="Ab2Attack" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 2 )
 anims/RESET = SubResource( 3 )
-[connection signal="body_entered" from="." to="." method="_on_Ab2_body_entered"]
