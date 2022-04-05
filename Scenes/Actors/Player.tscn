@@ -866,9 +866,7 @@ orbit_velocity_random = 0.0
 orbit_velocity_curve = SubResource( 50 )
 scale_curve = SubResource( 52 )
 
-[node name="Player" type="KinematicBody2D" groups=[
-"Player",
-]]
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 collision_mask = 6
 script = ExtResource( 2 )
 
@@ -974,7 +972,7 @@ process_material = SubResource( 45 )
 
 [node name="Light2D" parent="." instance=ExtResource( 7 )]
 modulate = Color( 1, 1, 1, 0.498039 )
-color = Color( 0.972549, 0.976471, 0.815686, 1 )
+color = Color( 0.815686, 0.976471, 0.976471, 1 )
 mode = 2
 shadow_filter = 2
 shadow_filter_smooth = 8.0

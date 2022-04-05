@@ -22,13 +22,13 @@ var isWeaponReady = true
 
 #	Ability 1
 var ability1ManaNeeded = 0
-var ability1Cooldown = 0
+var ability1Cooldown = 5
 var ability1Multiplier = 1.5
 #	=========
 
 #	Ability 2
 var ability2ManaNeeded = 0
-var ability2Cooldown = 0
+var ability2Cooldown = 20
 var ability2Duration = 5
 #	=========
 

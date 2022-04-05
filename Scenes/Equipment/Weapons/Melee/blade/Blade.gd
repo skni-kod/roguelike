@@ -46,7 +46,7 @@ func _unhandled_input(_event):
 		if Input.is_action_just_pressed("use_ability_1"):
 			if !activeAbility1 and !activeAbility2 and Bufor.PLAYER.mana>=25:
 				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-					Bufor.PLAYER.start_skill_cooldown(1, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					Bufor.PLAYER.start_skill_cooldown(1, 10, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 					activeAbility1 = true;
 					$AnimationPlayer.play("Vortex")
 					yield($AnimationPlayer, "animation_finished")
@@ -55,7 +55,7 @@ func _unhandled_input(_event):
 		if Input.is_action_just_pressed("use_ability_2"):
 			if !activeAbility1 and !activeAbility2 and Bufor.PLAYER.mana>=50:
 				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS2").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS4").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-					Bufor.PLAYER.start_skill_cooldown(2, 0, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
+					Bufor.PLAYER.start_skill_cooldown(2, 15, 0) #Wywolanie funkcji playera odpowiedzialnej za cooldowny
 					activeAbility2 = true
 					$AnimationPlayer.play("Chopping")
 					yield($AnimationPlayer, "animation_finished")

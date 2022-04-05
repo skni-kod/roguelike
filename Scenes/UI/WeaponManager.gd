@@ -15,7 +15,7 @@ func _ready():
 		"Blade" : preload("res://Assets/Loot/Weapons/blade.png"),
 		"BloodSword" : preload("res://Assets/Loot/Weapons/bloodsword.png"),
 		"FireScepter" : preload("res://Assets/Loot/Weapons/firescepter.png"),
-		"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
+#		"Fms" : preload("res://Assets/Loot/Weapons/fms.png"),
 		"Hammer" : preload("res://Assets/Loot/Weapons/hammer.png"),
 		"Katana" : preload("res://Assets/Loot/Weapons/katana.png"),
 		"Knife" : preload("res://Assets/Loot/Weapons/knife.png"),

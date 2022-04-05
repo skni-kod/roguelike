@@ -64,7 +64,7 @@ func _unhandled_input(event) -> void:
 		if event.is_action_pressed("use_ability_1"):
 			if Bufor.PLAYER.mana>=25:
 				if (Bufor.PLAYER.activeWeapon["slot"] == 1 and !Bufor.PLAYER.get_node("CoolDownS1").get_time_left() or Bufor.PLAYER.activeWeapon["slot"] == 2 and !Bufor.PLAYER.get_node("CoolDownS3").get_time_left()): #if sprawdzający czy nie ma cooldownu na umce
-					Bufor.PLAYER.start_skill_cooldown(1, 0, 0)
+					Bufor.PLAYER.start_skill_cooldown(1, 25, 0)
 	#				print("[INFO]: Axe abilty 1 used")
 					tmpdmg = damage 
 					damage *= ability1damagemultipler
@@ -110,7 +110,7 @@ func _unhandled_input(event) -> void:
 		elif event.is_action_pressed("use_ability_2"):
 			if Bufor.PLAYER.mana>=50:
 				if (Bufor.PLAYER.equippedWeapons[1]==weaponName and !Bufor.PLAYER.get_node("CoolDownS2").get_time_left()) or (Bufor.PLAYER.equippedWeapons[2]==weaponName and !Bufor.PLAYER.get_node("CoolDownS4").get_time_left()):
-					Bufor.PLAYER.start_skill_cooldown(2, 0, 0)
+					Bufor.PLAYER.start_skill_cooldown(2, 20, 0)
 					spell = 1
 					StatusBar_node.immune = true
 					tmpspeed = Bufor.PLAYER.speed
