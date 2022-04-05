@@ -7,7 +7,7 @@
 [ext_resource path="res://Scenes/UI/MiniMap.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/UI/BigMap.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/UI/ManaBar.gd" type="Script" id=7]
-[ext_resource path="res://Scenes/UI/ArmorBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Levels/Shadow.gd" type="Script" id=8]
 [ext_resource path="res://Scenes/UI/HealthBar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/UI/Slots.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/UI/Coins.tscn" type="PackedScene" id=16]
@@ -86,7 +86,8 @@ z_index = 2
 
 [node name="Weapons" parent="." instance=ExtResource( 4 )]
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.160784, 0.109804, 0.282353, 1 )
+[node name="Shadow" type="CanvasModulate" parent="."]
+color = Color( 0.0392157, 0, 0.101961, 1 )
+script = ExtResource( 8 )
 
 [connection signal="map_generated" from="." to="UI/Map" method="_on_map_generated"]

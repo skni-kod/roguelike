@@ -25,7 +25,7 @@ func _on_Node2D_body_entered(body): #Funkcja,która się aktywuje po wejsciu w k
 			#"duża struktura" - tylko jedna
 			#"duże struktury" nie mogą się pojawiać w pokoju bossa
 			#(wystawałyby z portalu)
-			if (randi() % 10 == 0 and !boss): #szansa generacji totemu 10%
+			if (randi() % 100 < min(Bufor.poziom*2,48) and !boss): #szansa generacji totemu zależna od poziomu
 				call_deferred('add_child', totem.instance())
 			elif (randi() % 4 == 0 and !boss): #szansa generacji pomników 25%
 				var p = pomnik.instance()
