@@ -2,6 +2,7 @@ extends YSort
 
 var gracz
 var portal = preload("res://Scenes/Levels/Portal.tscn") # portal do przechodzenia na kolejny poziom
+var portalf = preload("res://Scenes/Levels/portalf.tscn") # portal końcowy/fabularny
 # == PUNKTY ŻYCIA (HP) ==
 export var max_hp = 900
 var hp = max_hp
@@ -59,9 +60,7 @@ func dmg(dmg): # przyjmowanie obrażeń od ciosów w macki
 func die(): # umieranie
 	var level = get_tree().get_root().find_node("Main", true, false) # odwołanie do node'a Main
 	# == TWORZY PORTAL ==
-	var p = portal.instance()
-	p.global_position = get_node("../..").global_position #dokładnie na środku pokoju
-	level.add_child(p)
+	stworzPortal(level)
 	# == ============= ==
 	# == TWORZY MONETY ==
 	rng.randomize() # losowanie generatora liczb
@@ -85,3 +84,13 @@ func _on_miniTimer_timeout():
 		swap.global_position = pozycjaMacki
 		swap.uderzyla = true
 		swap = null
+
+func stworzPortal(lvl):
+	var p = portal.instance()
+	p.global_position = get_node("../..").global_position
+	if true:#Bufor.poziom > len(get_parent().bossScene):
+		var q = portalf.instance()
+		p.global_position = Vector2(get_node("../..").global_position.x - 108, get_node("../..").global_position.y)
+		q.global_position = Vector2(get_node("../..").global_position.x + 108, get_node("../..").global_position.y)
+		lvl.add_child(q) #Tworzy portal
+	lvl.add_child(p) #Tworzy portal
