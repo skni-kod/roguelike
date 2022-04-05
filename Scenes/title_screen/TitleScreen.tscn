@@ -73,7 +73,7 @@ position = Vector2( 226.176, 732.406 )
 scale = Vector2( 5.22092, 5.22092 )
 frames = SubResource( 2 )
 animation = "octoboss_menu"
-frame = 12
+frame = 8
 playing = true
 flip_h = true
 
@@ -83,7 +83,7 @@ position = Vector2( 1198.72, 619.51 )
 scale = Vector2( 9.61799, 9.61799 )
 frames = SubResource( 6 )
 animation = "pandoboss_menu"
-frame = 5
+frame = 10
 playing = true
 
 [node name="Menu" type="VBoxContainer" parent="."]
